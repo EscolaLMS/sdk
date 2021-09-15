@@ -1,5 +1,5 @@
 
-declare module "escolalms-connector" {    
+declare module "@escolalms/connector" {    
 
     export * from './src/typings.d.ts'
 
