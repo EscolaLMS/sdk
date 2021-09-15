@@ -1,4 +1,5 @@
 import request from "umi-request";
+import * as API from "../types/api";
 
 /**  GET /api/courses */
 export async function categoryTree() {

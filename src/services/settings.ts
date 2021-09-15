@@ -1,4 +1,5 @@
 import request from "umi-request";
+import * as API from "../types/api";
 
 export enum Currency {
   USD = "USD",

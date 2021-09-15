@@ -1,4 +1,5 @@
 import request from "umi-request";
+import * as API from "../types/api";
 
 export async function login(
   body: API.LoginRequest,

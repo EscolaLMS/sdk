@@ -1,6 +1,7 @@
 // @ts-ignore
 /* eslint-disable */
 import request from "umi-request";
+import * as API from "../types/api";
 
 export enum TopicType {
   Unselected = "",

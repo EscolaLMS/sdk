@@ -41,6 +41,8 @@ import {
 } from "./../services/cart";
 import { useLocalStorage } from "./../hooks/useLocalStorage";
 import { EditorContextProvider } from "h5p-headless-player";
+import * as API from "../types/api";
+
 interface IMock {
   children?: React.ReactElement[] | React.ReactElement;
   apiUrl: string;
@@ -100,7 +102,7 @@ const questionSet: API.IEventException = "QuestionSet";
 interface EscolaLMSContextConfig {
   apiUrl: string;
   courses: ContextPaginatedState<API.CourseListItem>;
-  fetchCourses: (filter?: API.CourseParams) => Promise<void>;
+  fetchCourses: (filter: API.CourseParams) => Promise<void>;
   course: ContextStateValue<API.CourseListItem>;
   fetchCourse: (id: number) => Promise<void>;
   program: ContextStateValue<API.CourseProgram>;
@@ -113,8 +115,8 @@ interface EscolaLMSContextConfig {
   register: (
     body: API.RegisterRequest
   ) => Promise<API.DefaultResponse<API.RegisterResponse>>;
-  forgot: (body: API.ForgotRequest) => Promise<void>;
-  reset: (body: API.ResetPasswordRequest) => Promise<void>;
+  forgot: (body: API.ForgotRequest) => Promise<API.ForgotResponse>;
+  reset: (body: API.ResetPasswordRequest) => Promise<API.ResetPasswordResponse>;
   user: ContextStateValue<API.UserItem>;
   addToCart: (courseId: number) => Promise<void>;
   removeFromCart: (courseId: number) => Promise<void>;
@@ -260,11 +262,17 @@ type SortProgram = (lessons: API.Lesson[]) => API.Lesson[];
 
 export const sortProgram: SortProgram = (lessons) => {
   return [...lessons]
-    .sort((lessonA, lessonB) => typeof lessonA.order  === 'number' && typeof lessonB.order  === 'number' ? lessonA.order - lessonB.order: 0) 
+    .sort((lessonA, lessonB) =>
+      typeof lessonA.order === "number" && typeof lessonB.order === "number"
+        ? lessonA.order - lessonB.order
+        : 0
+    )
     .map((lesson) => ({
       ...lesson,
-      topics: [...(lesson.topics || [])].sort(
-        (topicA, topicB) => typeof topicA.order  === 'number' && typeof topicB.order  === 'number' ? topicA.order - topicB.order: 0
+      topics: [...(lesson.topics || [])].sort((topicA, topicB) =>
+        typeof topicA.order === "number" && typeof topicB.order === "number"
+          ? topicA.order - topicB.order
+          : 0
       ),
     }));
 };
@@ -331,7 +339,11 @@ export const EscolaLMSContextProvider: FunctionComponent<IMock> = ({
     defaultConfig.cart
   );
 
-  const [token, setToken] = useLocalStorage<string | null>("lms", "token", null);
+  const [token, setToken] = useLocalStorage<string | null>(
+    "lms",
+    "token",
+    null
+  );
 
   const [user, setUser] = useLocalStorage<ContextStateValue<API.UserItem>>(
     "lms",
@@ -355,11 +367,9 @@ export const EscolaLMSContextProvider: FunctionComponent<IMock> = ({
     defaultConfig.orders
   );
 
-  const [payments, setPayments] = useLocalStorage<ContextListState<API.Payment>>(
-    "lms",
-    "payments",
-    defaultConfig.payments
-  );
+  const [payments, setPayments] = useLocalStorage<
+    ContextListState<API.Payment>
+  >("lms", "payments", defaultConfig.payments);
 
   const [tutor, setTutor] = useState<ContextStateValue<API.UserItem>>(
     defaultConfig.tutor
@@ -371,7 +381,7 @@ export const EscolaLMSContextProvider: FunctionComponent<IMock> = ({
     defaultConfig.fontSize
   );
 
-  // TODO. remove from here 
+  // TODO. remove from here
   const [isDisabledNextTopicButton, setIsDisabledNextTopicButton] =
     useLocalStorage<boolean>(
       "lms",
@@ -380,7 +390,7 @@ export const EscolaLMSContextProvider: FunctionComponent<IMock> = ({
     );
 
   const abortControllers = useRef<{
-    cart: AbortController | null
+    cart: AbortController | null;
   }>({
     cart: null,
   });
@@ -447,32 +457,34 @@ export const EscolaLMSContextProvider: FunctionComponent<IMock> = ({
   const fetchProgram = useCallback(
     (id) => {
       setProgram((prevState) => ({ ...prevState, loading: true }));
-      return token ? getCourseProgram(id, token)
-        .then((response) => {
-          if (response.success) {
-            setProgram({
-              loading: false,
-              value: {
-                ...response.data,
-                lessons: sortProgram(response.data.lessons),
-              },
-            });
-          }
-          if (response.success === false) {
-            setProgram((prevState) => ({
-              ...prevState,
-              loading: false,
-              error: response,
-            }));
-          }
-        })
-        .catch((error) => {
-          setProgram((prevState) => ({
-            ...prevState,
-            loading: false,
-            error: error.data,
-          }));
-        }) : Promise.reject();
+      return token
+        ? getCourseProgram(id, token)
+            .then((response) => {
+              if (response.success) {
+                setProgram({
+                  loading: false,
+                  value: {
+                    ...response.data,
+                    lessons: sortProgram(response.data.lessons),
+                  },
+                });
+              }
+              if (response.success === false) {
+                setProgram((prevState) => ({
+                  ...prevState,
+                  loading: false,
+                  error: response,
+                }));
+              }
+            })
+            .catch((error) => {
+              setProgram((prevState) => ({
+                ...prevState,
+                loading: false,
+                error: error.data,
+              }));
+            })
+        : Promise.reject();
     },
     [token]
   );
@@ -561,8 +573,8 @@ export const EscolaLMSContextProvider: FunctionComponent<IMock> = ({
           }
         });
     } catch (err: any) {
-      return Promise.reject(err)
-      if (typeof err === 'object' && err && err.name !== "AbortError") {
+      return Promise.reject(err);
+      if (typeof err === "object" && err && err.name !== "AbortError") {
         console.log(err);
       }
     }
@@ -582,7 +594,7 @@ export const EscolaLMSContextProvider: FunctionComponent<IMock> = ({
           fetchCart();
         })
         .catch((error) => {
-          setCart((prevState) => ({            
+          setCart((prevState) => ({
             ...prevState,
             loading: false,
             error: error.data,
@@ -608,9 +620,10 @@ export const EscolaLMSContextProvider: FunctionComponent<IMock> = ({
             loading: false,
             value: {
               ...prevState.value,
-              items: prevState && prevState.value ? prevState.value.items.filter(
-                (item) => item.id !== courseId
-              ) : [],
+              items:
+                prevState && prevState.value
+                  ? prevState.value.items.filter((item) => item.id !== courseId)
+                  : [],
             },
           }));
           fetchCart();
@@ -618,7 +631,7 @@ export const EscolaLMSContextProvider: FunctionComponent<IMock> = ({
         .catch((error) => {
           setCart((prevState) => ({
             ...prevState,
-            loading: false,            
+            loading: false,
             error: error.data,
           }));
         });
@@ -628,9 +641,11 @@ export const EscolaLMSContextProvider: FunctionComponent<IMock> = ({
 
   const payWithStripe = useCallback(
     (paymentMethodId: string) => {
-      return token ? postPayWithStripe(paymentMethodId, token).then((res) => {
-        console.log(res);
-      }) : Promise.reject();
+      return token
+        ? postPayWithStripe(paymentMethodId, token).then((res) => {
+            console.log(res);
+          })
+        : Promise.reject();
     },
     [token]
   );
@@ -640,12 +655,14 @@ export const EscolaLMSContextProvider: FunctionComponent<IMock> = ({
       ...prevState,
       loading: true,
     }));
-    return token ? getProgress(token).then((res) => {
-      setProgress({
-        loading: false,
-        value: res,
-      });
-    }) : Promise.reject();
+    return token
+      ? getProgress(token).then((res) => {
+          setProgress({
+            loading: false,
+            value: res,
+          });
+        })
+      : Promise.reject();
   }, [token]);
 
   const fetchTutors = useCallback(() => {
@@ -711,28 +728,30 @@ export const EscolaLMSContextProvider: FunctionComponent<IMock> = ({
       ...prevState,
       loading: true,
     }));
-    return token ? getOrders(token)
-      .then((res) => {
-        if (res.hasOwnProperty("data")) {
-          setOrders({
-            loading: false,
-            list: (res as API.DefaultResponseSuccess<API.Order[]>).data,
-          });
-        } else if (res.success === false) {
-          {
+    return token
+      ? getOrders(token)
+          .then((res) => {
+            if (res.success) {
+              setOrders({
+                loading: false,
+                list: res.data,
+              });
+            } else if (res.success === false) {
+              {
+                setOrders({
+                  loading: false,
+                  error: res,
+                });
+              }
+            }
+          })
+          .catch((error) => {
             setOrders({
               loading: false,
-              error: res,
+              error: error.data,
             });
-          }
-        }
-      })
-      .catch((error) => {
-        setOrders({
-          loading: false,
-          error: error.data,
-        });
-      }) : Promise.reject();
+          })
+      : Promise.reject();
   }, [token]);
 
   const fetchPayments = useCallback(() => {
@@ -740,54 +759,61 @@ export const EscolaLMSContextProvider: FunctionComponent<IMock> = ({
       ...prevState,
       loading: true,
     }));
-    return token ? getPayments(token)
-      .then((res) => {
-        if (res.success) {
-          setPayments({
-            loading: false,
-            list: (res as any).data,
-          });
-        } else if (res.success === false) {
-          {
+    return token
+      ? getPayments(token)
+          .then((res) => {
+            if (res.success) {
+              setPayments({
+                loading: false,
+                list: (res as any).data,
+              });
+            } else if (res.success === false) {
+              {
+                setPayments({
+                  loading: false,
+                  error: res,
+                });
+              }
+            }
+          })
+          .catch((error) => {
             setPayments({
               loading: false,
-              error: res,
+              error: error.data,
             });
-          }
-        }
-      })
-      .catch((error) => {
-        setPayments({
-          loading: false,
-          error: error.data,
-        });
-      }) : Promise.reject();
+          })
+      : Promise.reject();
   }, [token]);
 
   const sendProgress = useCallback(
     (courseId: number, data: API.CourseProgressItemElement[]) => {
-      return token ? postSendProgress(courseId, data, token).then((res) => {
-        setProgress((prevState) => ({
-          ...prevState,
-          value: prevState && prevState.value ? prevState.value.map((courseProgress) => {
-            if (courseProgress.course.id === courseId) {
-              return {
-                ...courseProgress,
-                progress: courseProgress.progress.map((progress) => {
-                  const el = data.find(
-                    (item) => item.topic_id === progress.topic_id
-                  );
-                  if (el) {
-                    return el;
-                  }
-                  return progress;
-                }),
-              };
-            }
-            return courseProgress;
-          }) : [],
-        }));
-      }) : Promise.reject();
+      return token
+        ? postSendProgress(courseId, data, token).then((res) => {
+            setProgress((prevState) => ({
+              ...prevState,
+              value:
+                prevState && prevState.value
+                  ? prevState.value.map((courseProgress) => {
+                      if (courseProgress.course.id === courseId) {
+                        return {
+                          ...courseProgress,
+                          progress: courseProgress.progress.map((progress) => {
+                            const el = data.find(
+                              (item) => item.topic_id === progress.topic_id
+                            );
+                            if (el) {
+                              return el;
+                            }
+                            return progress;
+                          }),
+                        };
+                      }
+                      return courseProgress;
+                    })
+                  : [],
+            }));
+          })
+        : Promise.reject();
     },
     [token]
   );
@@ -836,7 +862,9 @@ export const EscolaLMSContextProvider: FunctionComponent<IMock> = ({
         }
       }
 
-      return token ? postSendh5pProgress(topicId, statementId, statement, token) : null;
+      return token
+        ? postSendh5pProgress(topicId, statementId, statement, token)
+        : null;
     },
     [token]
   );
@@ -848,22 +876,24 @@ export const EscolaLMSContextProvider: FunctionComponent<IMock> = ({
         loading: true,
       }));
 
-      return token ? postUpdateProfile(body, token).then((res) => {
-        if (res.success === true) {
-          setUser((prevState) => ({
-            value: {
-              ...res.data,
-            },
-            loading: false,
-          }));
-        } else if (res.success === false) {
-          setUser((prevState) => ({
-            ...prevState,
-            error: res,
-            loading: false,
-          }));
-        }
-      }) : Promise.reject();
+      return token
+        ? postUpdateProfile(body, token).then((res) => {
+            if (res.success === true) {
+              setUser((prevState) => ({
+                value: {
+                  ...res.data,
+                },
+                loading: false,
+              }));
+            } else if (res.success === false) {
+              setUser((prevState) => ({
+                ...prevState,
+                error: res,
+                loading: false,
+              }));
+            }
+          })
+        : Promise.reject();
     },
     [token]
   );
@@ -876,41 +906,47 @@ export const EscolaLMSContextProvider: FunctionComponent<IMock> = ({
           loading: true,
         };
       });
-      return token ? postUpdateAvatar(file, token).then((res) => {
-        if (res.success === true) {
-          setUser((prevState) => ({
-            ...prevState, 
-            value: {
-              ...res.data,
-              avatar: res.data.avatar,
-              path_avatar: res.data.path_avatar,
-            },
-            loading: false,
-          }));
-        }
-      }) : Promise.reject();
+      return token
+        ? postUpdateAvatar(file, token).then((res) => {
+            if (res.success === true) {
+              setUser((prevState) => ({
+                ...prevState,
+                value: {
+                  ...res.data,
+                  avatar: res.data.avatar,
+                  path_avatar: res.data.path_avatar,
+                },
+                loading: false,
+              }));
+            }
+          })
+        : Promise.reject();
     },
     [token]
   );
 
   const topicPing = useCallback(
     (topicId: number) => {
-      return token ? putTopicPing(topicId, token).catch((err) => err) : Promise.reject();
+      return token
+        ? putTopicPing(topicId, token).catch((err) => err)
+        : Promise.reject();
     },
     [token]
   );
 
   const progressMap = useMemo(() => {
-    const defaultMap:{
-      coursesProcProgress:Record<number, number>,
-      finishedTopics : number[]
+    const defaultMap: {
+      coursesProcProgress: Record<number, number>;
+      finishedTopics: number[];
     } = {
       coursesProcProgress: {},
       finishedTopics: [],
     };
     if (progress.value) {
       progress.value.reduce((acc, course) => {
-        acc.coursesProcProgress[typeof course.course.id === 'number' ? course.course.id : 0] =
+        acc.coursesProcProgress[
+          typeof course.course.id === "number" ? course.course.id : 0
+        ] =
           course.progress.reduce((sum, item) => sum + item.status, 0) /
           course.progress.length;
         acc.finishedTopics = acc.finishedTopics.concat(
@@ -956,11 +992,13 @@ export const EscolaLMSContextProvider: FunctionComponent<IMock> = ({
       );
       if (currentLessonIndex === undefined) {
         return null;
-      }      
-      
-      const currentTopicIndex = (program.value && program.value.lessons ? program.value.lessons : [])   [
-        currentLessonIndex
-      ].topics?.findIndex((topic) => Number(topic.id) === Number(topicId));
+      }
+
+      const currentTopicIndex = (
+        program.value && program.value.lessons ? program.value.lessons : []
+      )[currentLessonIndex].topics?.findIndex(
+        (topic) => Number(topic.id) === Number(topicId)
+      );
 
       if (currentTopicIndex === undefined) {
         return null;
@@ -969,30 +1007,25 @@ export const EscolaLMSContextProvider: FunctionComponent<IMock> = ({
       const topics = program.value.lessons[currentLessonIndex].topics;
 
       if (next) {
-       
-        if (
-          Array.isArray(topics) && topics[
-            currentTopicIndex + 1
-          ]
-        ) {
+        if (Array.isArray(topics) && topics[currentTopicIndex + 1]) {
           return topics[currentTopicIndex + 1] || null;
         } else {
           if (program.value.lessons[currentLessonIndex + 1]) {
             const newLesson = program.value.lessons[currentLessonIndex + 1];
-            return newLesson.topics && newLesson.topics[0] || null;
+            return (newLesson.topics && newLesson.topics[0]) || null;
           }
         }
       } else {
-        if (
-          Array.isArray(topics) && topics[
-            currentTopicIndex - 1
-          ]
-        ) {
+        if (Array.isArray(topics) && topics[currentTopicIndex - 1]) {
           return topics[currentTopicIndex - 1] || null;
         } else {
           if (program.value.lessons[currentLessonIndex - 1]) {
             const newLesson = program.value.lessons[currentLessonIndex - 1];
-            return newLesson.topics && newLesson.topics[newLesson.topics.length - 1] || null;
+            return (
+              (newLesson.topics &&
+                newLesson.topics[newLesson.topics.length - 1]) ||
+              null
+            );
           }
         }
       }
