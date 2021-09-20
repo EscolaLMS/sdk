@@ -79,6 +79,8 @@ enum FontSize {
   big = 3,
 }
 
+// npm test
+
 const blackList: API.IEvent[] = [
   "http://adlnet.gov/expapi/verbs/attended",
   "http://adlnet.gov/expapi/verbs/attempted",
