@@ -79,6 +79,8 @@ enum FontSize {
   big = 3,
 }
 
+// npm test
+
 const blackList: API.IEvent[] = [
   "http://adlnet.gov/expapi/verbs/attended",
   "http://adlnet.gov/expapi/verbs/attempted",
@@ -150,8 +152,6 @@ interface EscolaLMSContextConfig {
   courseProgress: (courseId: number) => number;
   fontSizeToggle: (bigger: boolean) => void;
   fontSize: FontSize;
-  isDisabledNextTopicButton: boolean;
-  setIsDisabledNextTopicButton: (state: boolean) => void;
 }
 
 const defaultConfig: EscolaLMSContextConfig = {
@@ -244,8 +244,6 @@ const defaultConfig: EscolaLMSContextConfig = {
   getNextPrevTopic: (topicId: number, next?: boolean) => null,
   fontSizeToggle: (bigger: boolean) => 0,
   fontSize: FontSize.regular,
-  isDisabledNextTopicButton: false,
-  setIsDisabledNextTopicButton: (state: boolean) => false,
 };
 
 export const SCORMPlayer: React.FC<{
@@ -380,14 +378,6 @@ export const EscolaLMSContextProvider: FunctionComponent<IMock> = ({
     "fontSize",
     defaultConfig.fontSize
   );
-
-  // TODO. remove from here
-  const [isDisabledNextTopicButton, setIsDisabledNextTopicButton] =
-    useLocalStorage<boolean>(
-      "lms",
-      "isDisabledNextTopicButton",
-      defaultConfig.isDisabledNextTopicButton
-    );
 
   const abortControllers = useRef<{
     cart: AbortController | null;
@@ -657,10 +647,12 @@ export const EscolaLMSContextProvider: FunctionComponent<IMock> = ({
     }));
     return token
       ? getProgress(token).then((res) => {
-          setProgress({
-            loading: false,
-            value: res,
-          });
+          if (res.success) {
+            setProgress({
+              loading: false,
+              value: res.data,
+            });
+          }
         })
       : Promise.reject();
   }, [token]);
@@ -838,7 +830,6 @@ export const EscolaLMSContextProvider: FunctionComponent<IMock> = ({
             status: 1,
           },
         ]);
-        setIsDisabledNextTopicButton(false);
       }
 
       if (blackList.includes(statementId)) {
@@ -858,7 +849,6 @@ export const EscolaLMSContextProvider: FunctionComponent<IMock> = ({
               status: 1,
             },
           ]);
-          setIsDisabledNextTopicButton(false);
         }
       }
 
@@ -1087,8 +1077,6 @@ export const EscolaLMSContextProvider: FunctionComponent<IMock> = ({
         fontSize,
         fontSizeToggle,
         h5pProgress,
-        isDisabledNextTopicButton,
-        setIsDisabledNextTopicButton,
       }}
     >
       <EditorContextProvider url={`${apiUrl}/api/hh5p`}>

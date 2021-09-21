@@ -14,6 +14,16 @@ export enum TopicType {
   Pdf = "EscolaLms\\Courses\\Models\\TopicContent\\PDF",
 }
 
+export const completed: API.IEvent[] = [
+  "http://adlnet.gov/expapi/verbs/completed",
+  "http://adlnet.gov/expapi/verbs/answered",
+  "http://activitystrea.ms/schema/1.0/consume",
+];
+
+export const noCompletedEventsIds: string[] = [
+  "http://h5p.org/libraries/H5P.ImageJuxtaposition-1.4",
+];
+
 /**  GET /api/courses */
 export async function course(
   params: API.CourseParams,
@@ -61,14 +71,17 @@ export async function progress(
   token: string,
   options?: { [key: string]: any }
 ) {
-  return request<API.CourseProgress>(`/api/courses/progress`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    ...(options || {}),
-  });
+  return request<API.DefaultResponse<API.CourseProgress>>(
+    `/api/courses/progress`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      ...(options || {}),
+    }
+  );
 }
 
 export async function sendProgress(
@@ -77,17 +90,20 @@ export async function sendProgress(
   token: string,
   options?: { [key: string]: any }
 ) {
-  return request<API.CourseProgress>(`/api/courses/progress/${courseId}`, {
-    method: "PATCH",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    data: {
-      progress: data,
-    },
-    ...(options || {}),
-  });
+  return request<API.DefaultResponse<API.CourseProgress>>(
+    `/api/courses/progress/${courseId}`,
+    {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      data: {
+        progress: data,
+      },
+      ...(options || {}),
+    }
+  );
 }
 
 export async function tutors(options?: { [key: string]: any }) {
