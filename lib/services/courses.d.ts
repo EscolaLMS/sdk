@@ -9,6 +9,8 @@ export declare enum TopicType {
     Image = "EscolaLms\\Courses\\Models\\TopicContent\\Image",
     Pdf = "EscolaLms\\Courses\\Models\\TopicContent\\PDF"
 }
+export declare const completed: API.IEvent[];
+export declare const noCompletedEventsIds: string[];
 /**  GET /api/courses */
 export declare function course(params: API.CourseParams, options?: {
     [key: string]: any;
@@ -23,10 +25,10 @@ export declare function getCourseProgram(id: number, token?: string, options?: {
 }): Promise<API.DefaultResponse<API.CourseProgram>>;
 export declare function progress(token: string, options?: {
     [key: string]: any;
-}): Promise<API.CourseProgress>;
+}): Promise<API.DefaultResponse<API.CourseProgress>>;
 export declare function sendProgress(courseId: number, data: API.CourseProgressItemElement[], token: string, options?: {
     [key: string]: any;
-}): Promise<API.CourseProgress>;
+}): Promise<API.DefaultResponse<API.CourseProgress>>;
 export declare function tutors(options?: {
     [key: string]: any;
 }): Promise<API.TutorList>;

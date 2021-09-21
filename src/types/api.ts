@@ -127,12 +127,6 @@ export type PaginatedList<Model> = {
 };
 
 export type PaginatedMetaList<Model> = {
-  links: {
-    first: string;
-    last: string;
-    next: string;
-    prev: string;
-  };
   data: Model[];
   meta: {
     current_page: number;
@@ -142,6 +136,12 @@ export type PaginatedMetaList<Model> = {
     prev_page_url: string;
     to: number;
     total: number;
+    links: {
+      first: string;
+      last: string;
+      next: string;
+      prev: string;
+    };
   };
 };
 
@@ -178,11 +178,18 @@ export type DataResponse<Model> =
   | DataResponseSuccess<Model>
   | DefaultResponseError;
 
+type DefaultMetaResponse<Model> =
+  | (PaginatedMetaList<Model> & {
+      message: string;
+      success: true;
+    })
+  | DefaultResponseError;
+
 export type RawResponse<Model> = Model | DefaultResponseError;
 
 export type SuccessResponse = { success: true } | DefaultResponseError;
 
-export type CourseList = DefaultResponse<PaginatedList<Course>>;
+export type CourseList = DefaultMetaResponse<Course>;
 
 export type TutorList = DefaultResponse<UserItem[]>;
 
