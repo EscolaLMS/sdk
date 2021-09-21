@@ -75,7 +75,7 @@ export async function payments(
   token: string,
   options?: { [key: string]: any }
 ) {
-  return request<any>(`/api/payments`, {
+  return request<API.PaymentList>(`/api/payments`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",

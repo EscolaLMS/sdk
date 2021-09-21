@@ -209,7 +209,7 @@ export type UserListItem = UserItem;
 
 export type OrderListItem = Order;
 
-export type PaymentList = PaginatedMetaList<Payment>;
+export type PaymentList = DefaultMetaResponse<Payment>;
 
 export type PaymentListItem = Payment;
 
