@@ -16,4 +16,4 @@ export declare function orders(token: string, options?: {
 }): Promise<API.OrderList>;
 export declare function payments(token: string, options?: {
     [key: string]: any;
-}): Promise<any>;
+}): Promise<API.PaymentList>;
