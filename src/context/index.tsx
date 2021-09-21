@@ -793,15 +793,8 @@ export const EscolaLMSContextProvider: FunctionComponent<IMock> = ({
             if (res.success) {
               setPayments({
                 loading: false,
-                list: (res as any).data,
+                list: res,
               });
-            } else if (res.success === false) {
-              {
-                setPayments({
-                  loading: false,
-                  error: res,
-                });
-              }
             }
           })
           .catch((error) => {
