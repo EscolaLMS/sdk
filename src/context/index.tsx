@@ -31,6 +31,7 @@ import {
   forgot,
   reset,
 } from "./../services/auth";
+import { pages as getPages, page as getPage } from "./../services/pages";
 import {
   cart as getCart,
   addToCart as postAddToCart,
@@ -52,6 +53,12 @@ interface ContextState<T> {
   loading: boolean;
   filter?: API.CourseParams;
   list: T[];
+}
+
+interface ContextPaginatedMetaState<T> {
+  loading: boolean;
+  list?: API.PaginatedMetaList<T>;
+  error?: API.DefaultResponseError;
 }
 
 interface ContextPaginatedState<T> {
@@ -103,7 +110,7 @@ const questionSet: API.IEventException = "QuestionSet";
 
 interface EscolaLMSContextConfig {
   apiUrl: string;
-  courses: ContextPaginatedState<API.CourseListItem>;
+  courses: ContextPaginatedMetaState<API.CourseListItem>;
   fetchCourses: (filter: API.CourseParams) => Promise<void>;
   course: ContextStateValue<API.CourseListItem>;
   fetchCourse: (id: number) => Promise<void>;
@@ -143,7 +150,11 @@ interface EscolaLMSContextConfig {
   orders: ContextListState<API.Order>;
   fetchOrders: () => Promise<void>;
   fetchPayments: () => Promise<void>;
-  payments: ContextListState<API.Payment>;
+  payments: ContextPaginatedMetaState<API.Payment>;
+  pages: ContextPaginatedMetaState<API.PageListItem>;
+  fetchPages: () => Promise<void>;
+  page: ContextStateValue<API.Page>;
+  fetchPage: (slug: string) => Promise<void>;
   updateProfile: (data: API.UserItem) => Promise<void>;
   updateAvatar: (avatar: File) => Promise<void>;
   topicPing: (topicId: number) => Promise<Boolean>;
@@ -233,8 +244,15 @@ const defaultConfig: EscolaLMSContextConfig = {
   fetchOrders: () => Promise.reject(),
   payments: {
     loading: false,
-    list: [],
   },
+  pages: {
+    loading: false,
+  },
+  fetchPages: () => Promise.reject(),
+  page: {
+    loading: false,
+  },
+  fetchPage: (slug: string) => Promise.reject(),
   fetchPayments: () => Promise.reject(),
   updateProfile: (data: API.UserItem) => Promise.reject(data),
   updateAvatar: (avatar: File) => Promise.reject(avatar),
@@ -306,7 +324,7 @@ export const EscolaLMSContextProvider: FunctionComponent<IMock> = ({
   shouldFire.current = false;
 
   const [courses, setCourses] = useLocalStorage<
-    ContextPaginatedState<API.CourseListItem>
+    ContextPaginatedMetaState<API.CourseListItem>
   >("lms", "courses", defaultConfig.courses);
 
   const [course, setCourse] = useLocalStorage<
@@ -366,11 +384,21 @@ export const EscolaLMSContextProvider: FunctionComponent<IMock> = ({
   );
 
   const [payments, setPayments] = useLocalStorage<
-    ContextListState<API.Payment>
+    ContextPaginatedMetaState<API.Payment>
   >("lms", "payments", defaultConfig.payments);
 
   const [tutor, setTutor] = useState<ContextStateValue<API.UserItem>>(
     defaultConfig.tutor
+  );
+
+  const [pages, setPages] = useLocalStorage<
+    ContextPaginatedMetaState<API.PageListItem>
+  >("lms", "pages", defaultConfig.pages);
+
+  const [page, setPage] = useLocalStorage<ContextStateValue<API.Page>>(
+    "lms",
+    "page",
+    defaultConfig.page
   );
 
   const [fontSize, setFontSize] = useLocalStorage<FontSize>(
@@ -402,22 +430,30 @@ export const EscolaLMSContextProvider: FunctionComponent<IMock> = ({
   const fetchCourses = useCallback(
     (filter: API.CourseParams) => {
       setCourses((prevState) => ({ ...prevState, loading: true }));
-      return getCourses(filter).then((response) => {
-        if (response.success) {
-          setCourses({
-            loading: false,
-            list: response.data,
-            error: undefined,
-          });
-        }
-        if (response.success === false) {
+      return getCourses(filter)
+        .then((response) => {
+          if (response.success) {
+            setCourses({
+              loading: false,
+              list: response,
+              error: undefined,
+            });
+          }
+          if (response.success === false) {
+            setCourses((prevState) => ({
+              ...prevState,
+              loading: false,
+              error: response,
+            }));
+          }
+        })
+        .catch((error) => {
           setCourses((prevState) => ({
             ...prevState,
             loading: false,
-            error: response,
+            error: error,
           }));
-        }
-      });
+        });
     },
     [courses]
   );
@@ -777,6 +813,62 @@ export const EscolaLMSContextProvider: FunctionComponent<IMock> = ({
       : Promise.reject();
   }, [token]);
 
+  const fetchPages = useCallback(
+    (filter?: API.CourseParams) => {
+      setPages((prevState) => ({ ...prevState, loading: true }));
+      return getPages(filter)
+        .then((response) => {
+          if (response.success) {
+            setPages({
+              loading: false,
+              list: response,
+              error: undefined,
+            });
+          }
+        })
+        .catch((error) => {
+          setPages((prevState) => ({
+            ...prevState,
+            loading: false,
+            error: error,
+          }));
+        });
+    },
+    [pages]
+  );
+
+  const fetchPage = useCallback(
+    (slug: string) => {
+      setPage((prevState) => ({
+        ...prevState,
+        loading: true,
+      }));
+      return getPage(slug)
+        .then((res) => {
+          if (res.success) {
+            setPage({
+              loading: false,
+              value: res.data,
+            });
+          } else if (res.success === false) {
+            {
+              setPage({
+                loading: false,
+                error: res,
+              });
+            }
+          }
+        })
+        .catch((error) => {
+          setPage({
+            loading: false,
+            error: error.data,
+          });
+        });
+    },
+    [token]
+  );
+
   const sendProgress = useCallback(
     (courseId: number, data: API.CourseProgressItemElement[]) => {
       return token
@@ -1068,6 +1160,10 @@ export const EscolaLMSContextProvider: FunctionComponent<IMock> = ({
         orders,
         fetchPayments,
         payments,
+        pages,
+        fetchPages,
+        page,
+        fetchPage,
         updateProfile,
         updateAvatar,
         topicPing,
