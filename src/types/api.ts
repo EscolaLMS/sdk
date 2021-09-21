@@ -213,7 +213,7 @@ export type PaymentList = PaginatedMetaList<Payment>;
 
 export type PaymentListItem = Payment;
 
-export type PageList = PaginatedMetaList<Page>;
+export type PageList = DefaultMetaResponse<Page>;
 
 export type PageListItem = Page;
 
