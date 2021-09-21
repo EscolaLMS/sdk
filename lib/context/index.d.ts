@@ -4,9 +4,9 @@ interface IMock {
     children?: React.ReactElement[] | React.ReactElement;
     apiUrl: string;
 }
-interface ContextPaginatedState<T> {
+interface ContextPaginatedMetaState<T> {
     loading: boolean;
-    list?: API.PaginatedList<T>;
+    list?: API.PaginatedMetaList<T>;
     error?: API.DefaultResponseError;
 }
 interface ContextListState<T> {
@@ -27,7 +27,7 @@ declare enum FontSize {
 }
 interface EscolaLMSContextConfig {
     apiUrl: string;
-    courses: ContextPaginatedState<API.CourseListItem>;
+    courses: ContextPaginatedMetaState<API.CourseListItem>;
     fetchCourses: (filter: API.CourseParams) => Promise<void>;
     course: ContextStateValue<API.CourseListItem>;
     fetchCourse: (id: number) => Promise<void>;
@@ -58,7 +58,11 @@ interface EscolaLMSContextConfig {
     orders: ContextListState<API.Order>;
     fetchOrders: () => Promise<void>;
     fetchPayments: () => Promise<void>;
-    payments: ContextListState<API.Payment>;
+    payments: ContextPaginatedMetaState<API.Payment>;
+    pages: ContextPaginatedMetaState<API.PageListItem>;
+    fetchPages: () => Promise<void>;
+    page: ContextStateValue<API.Page>;
+    fetchPage: (slug: string) => Promise<void>;
     updateProfile: (data: API.UserItem) => Promise<void>;
     updateAvatar: (avatar: File) => Promise<void>;
     topicPing: (topicId: number) => Promise<Boolean>;

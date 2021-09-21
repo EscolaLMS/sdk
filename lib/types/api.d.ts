@@ -102,12 +102,6 @@ export declare type PaginatedList<Model> = {
     total: number;
 };
 export declare type PaginatedMetaList<Model> = {
-    links: {
-        first: string;
-        last: string;
-        next: string;
-        prev: string;
-    };
     data: Model[];
     meta: {
         current_page: number;
@@ -117,6 +111,12 @@ export declare type PaginatedMetaList<Model> = {
         prev_page_url: string;
         to: number;
         total: number;
+        links: {
+            first: string;
+            last: string;
+            next: string;
+            prev: string;
+        };
     };
 };
 export declare type PaginatedListParams = {
@@ -142,11 +142,15 @@ export declare type DefaultResponseError = {
 };
 export declare type DefaultResponse<Model> = DefaultResponseSuccess<Model> | DefaultResponseError;
 export declare type DataResponse<Model> = DataResponseSuccess<Model> | DefaultResponseError;
+declare type DefaultMetaResponse<Model> = (PaginatedMetaList<Model> & {
+    message: string;
+    success: true;
+}) | DefaultResponseError;
 export declare type RawResponse<Model> = Model | DefaultResponseError;
 export declare type SuccessResponse = {
     success: true;
 } | DefaultResponseError;
-export declare type CourseList = DefaultResponse<PaginatedList<Course>>;
+export declare type CourseList = DefaultMetaResponse<Course>;
 export declare type TutorList = DefaultResponse<UserItem[]>;
 export declare type OrderList = DefaultResponse<Order[]>;
 export declare type TutorSingle = DefaultResponse<UserItem>;
@@ -158,7 +162,7 @@ export declare type UserListItem = UserItem;
 export declare type OrderListItem = Order;
 export declare type PaymentList = PaginatedMetaList<Payment>;
 export declare type PaymentListItem = Payment;
-export declare type PageList = PaginatedMetaList<Page>;
+export declare type PageList = DefaultMetaResponse<Page>;
 export declare type PageListItem = Page;
 export declare type PaginationParams = {
     order_by?: string;
@@ -469,3 +473,4 @@ export declare type Payment = {
     status: "new" | "paid";
     updated_at: string;
 };
+export {};
