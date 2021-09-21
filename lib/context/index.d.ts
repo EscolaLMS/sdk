@@ -67,8 +67,6 @@ interface EscolaLMSContextConfig {
     courseProgress: (courseId: number) => number;
     fontSizeToggle: (bigger: boolean) => void;
     fontSize: FontSize;
-    isDisabledNextTopicButton: boolean;
-    setIsDisabledNextTopicButton: (state: boolean) => void;
 }
 export declare const SCORMPlayer: React.FC<{
     uuid: string;
