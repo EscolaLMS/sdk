@@ -256,6 +256,7 @@ export declare type TopicBase = {
     preview?: boolean;
     summary?: string;
     resources?: TopicResource[];
+    can_skip?: boolean;
 };
 export declare type TopicableBase = {
     created_at?: string;
