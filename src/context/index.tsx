@@ -40,6 +40,10 @@ import {
   orders as getOrders,
   payments as getPayments,
 } from "./../services/cart";
+import {
+  userGroups as getUserGroups,
+  userGroup as getUserGroup,
+} from "./../services/user_groups";
 import { useLocalStorage } from "./../hooks/useLocalStorage";
 import { EditorContextProvider } from "h5p-headless-player";
 import * as API from "../types/api";
@@ -112,6 +116,10 @@ interface EscolaLMSContextConfig {
   apiUrl: string;
   courses: ContextPaginatedMetaState<API.CourseListItem>;
   fetchCourses: (filter: API.CourseParams) => Promise<void>;
+  userGroup: ContextStateValue<API.UserGroupRow>;
+  fetchUserGroup: (id: number) => Promise<void>;
+  userGroups: ContextListState<API.UserGroup>;
+  fetchUserGroups: (params: API.UserGroupsParams) => Promise<void>;
   course: ContextStateValue<API.CourseListItem>;
   fetchCourse: (id: number) => Promise<void>;
   program: ContextStateValue<API.CourseProgram>;
@@ -171,6 +179,14 @@ const defaultConfig: EscolaLMSContextConfig = {
     loading: false,
   },
   fetchCourses: () => Promise.reject(),
+  userGroup: {
+    loading: false,
+  },
+  fetchUserGroup: () => Promise.reject(),
+  userGroups: {
+    loading: false,
+  },
+  fetchUserGroups: () => Promise.reject(),
   course: {
     loading: false,
   },
@@ -327,6 +343,14 @@ export const EscolaLMSContextProvider: FunctionComponent<IMock> = ({
     ContextPaginatedMetaState<API.CourseListItem>
   >("lms", "courses", defaultConfig.courses);
 
+  const [userGroup, setUserGroup] = useLocalStorage<
+    ContextStateValue<API.UserGroupRow>
+  >("lms", "userGroup", defaultConfig.userGroup);
+
+  const [userGroups, setUserGroups] = useLocalStorage<
+    ContextListState<API.UserGroup>
+  >("lms", "userGroups", defaultConfig.userGroups);
+
   const [course, setCourse] = useLocalStorage<
     ContextStateValue<API.CourseListItem>
   >("lms", "course", defaultConfig.course);
@@ -456,6 +480,68 @@ export const EscolaLMSContextProvider: FunctionComponent<IMock> = ({
         });
     },
     [courses]
+  );
+
+  const fetchUserGroup = useCallback(
+    (id) => {
+      setUserGroup((prevState) => ({ ...prevState, loading: true }));
+      return getUserGroup(id)
+        .then((response) => {
+          if (response.success) {
+            setUserGroup({
+              loading: false,
+              value: response,
+              error: undefined,
+            });
+          }
+          if (response.success === false) {
+            setUserGroup((prevState) => ({
+              ...prevState,
+              loading: false,
+              error: response,
+            }));
+          }
+        })
+        .catch((error) => {
+          setUserGroup((prevState) => ({
+            ...prevState,
+            loading: false,
+            error: error,
+          }));
+        });
+    },
+    [userGroups]
+  );
+
+  const fetchUserGroups = useCallback(
+    ({ pageSize, current }) => {
+      setUserGroups((prevState) => ({ ...prevState, loading: true }));
+      return getUserGroups({ pageSize, current })
+        .then((response) => {
+          if (response.success) {
+            setUserGroups({
+              loading: false,
+              list: response.data,
+              error: undefined,
+            });
+          }
+          if (response.success === false) {
+            setUserGroups((prevState) => ({
+              ...prevState,
+              loading: false,
+              error: response,
+            }));
+          }
+        })
+        .catch((error) => {
+          setUserGroups((prevState) => ({
+            ...prevState,
+            loading: false,
+            error: error,
+          }));
+        });
+    },
+    [userGroups]
   );
 
   const fetchCourse = useCallback((id) => {
@@ -1166,6 +1252,10 @@ export const EscolaLMSContextProvider: FunctionComponent<IMock> = ({
         fontSize,
         fontSizeToggle,
         h5pProgress,
+        userGroups,
+        fetchUserGroups,
+        userGroup,
+        fetchUserGroup,
       }}
     >
       <EditorContextProvider url={`${apiUrl}/api/hh5p`}>
