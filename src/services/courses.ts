@@ -47,7 +47,7 @@ export async function getCourse(id: number, options?: { [key: string]: any }) {
 /**  GET /api/courses/:id */
 export async function getCourseProgram(
   id: number,
-  token?: string,
+  token?: string | null,
   options?: { [key: string]: any }
 ) {
   return request<API.DefaultResponse<API.CourseProgram>>(
