@@ -1,6 +1,6 @@
 {
   "name": "@escolalms/connector",
-  "version": "0.1.15",
+  "version": "0.1.16",
   "private": false,
   "dependencies": {
     "@testing-library/jest-dom": "^5.11.4",
