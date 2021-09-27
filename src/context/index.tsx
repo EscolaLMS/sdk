@@ -605,41 +605,6 @@ export const EscolaLMSContextProvider: FunctionComponent<IMock> = ({
     });
   }, []);
 
-  const fetchProgram = useCallback(
-    (id) => {
-      setProgram((prevState) => ({ ...prevState, loading: true }));
-      return id
-        ? getCourseProgram(id, token)
-            .then((response) => {
-              if (response.success) {
-                setProgram({
-                  loading: false,
-                  value: {
-                    ...response.data,
-                    lessons: sortProgram(response.data.lessons),
-                  },
-                });
-              }
-              if (response.success === false) {
-                setProgram((prevState) => ({
-                  ...prevState,
-                  loading: false,
-                  error: response,
-                }));
-              }
-            })
-            .catch((error) => {
-              setProgram((prevState) => ({
-                ...prevState,
-                loading: false,
-                error: error.data,
-              }));
-            })
-        : Promise.reject();
-    },
-    [token]
-  );
-
   const logout = useCallback(() => {
     // API Call here to destroy token
     setToken(null);
@@ -817,6 +782,41 @@ export const EscolaLMSContextProvider: FunctionComponent<IMock> = ({
         })
       : Promise.reject();
   }, [token]);
+
+  const fetchProgram = useCallback(
+    (id) => {
+      setProgram((prevState) => ({ ...prevState, loading: true }));
+      return id
+        ? getCourseProgram(id, token)
+            .then((response) => {
+              if (response.success) {
+                setProgram({
+                  loading: false,
+                  value: {
+                    ...response.data,
+                    lessons: sortProgram(response.data.lessons),
+                  },
+                });
+              }
+              if (response.success === false) {
+                setProgram((prevState) => ({
+                  ...prevState,
+                  loading: false,
+                  error: response,
+                }));
+              }
+            })
+            .catch((error) => {
+              setProgram((prevState) => ({
+                ...prevState,
+                loading: false,
+                error: error.data,
+              }));
+            })
+        : Promise.reject();
+    },
+    [token]
+  );
 
   const fetchTutors = useCallback(() => {
     setTutors((prevState) => ({
