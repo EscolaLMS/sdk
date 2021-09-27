@@ -747,33 +747,34 @@ export const EscolaLMSContextProvider: FunctionComponent<IMock> = ({
   const fetchProgram = useCallback(
     (id) => {
       setProgram((prevState) => ({ ...prevState, loading: true }));
-
-      getCourseProgram(id, token)
-        .then((response) => {
-          if (response.success) {
-            setProgram({
-              loading: false,
-              value: {
-                ...response.data,
-                lessons: sortProgram(response.data.lessons),
-              },
-            });
-          }
-          if (response.success === false) {
-            setProgram((prevState) => ({
-              ...prevState,
-              loading: false,
-              error: response,
-            }));
-          }
-        })
-        .catch((error) => {
-          setProgram((prevState) => ({
-            ...prevState,
-            loading: false,
-            error: error.data,
-          }));
-        });
+      return id
+        ? getCourseProgram(id, token)
+            .then((response) => {
+              if (response.success) {
+                setProgram({
+                  loading: false,
+                  value: {
+                    ...response.data,
+                    lessons: sortProgram(response.data.lessons),
+                  },
+                });
+              }
+              if (response.success === false) {
+                setProgram((prevState) => ({
+                  ...prevState,
+                  loading: false,
+                  error: response,
+                }));
+              }
+            })
+            .catch((error) => {
+              setProgram((prevState) => ({
+                ...prevState,
+                loading: false,
+                error: error.data,
+              }));
+            })
+        : Promise.reject();
     },
     [token]
   );
