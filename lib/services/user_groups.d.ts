@@ -1,4 +1,7 @@
 import * as API from "../types/api";
+export declare function registerableGroups(options?: {
+    [key: string]: any;
+}): Promise<API.UserGroupList>;
 export declare function userGroups(params: {
     current?: number;
     pageSize?: number;

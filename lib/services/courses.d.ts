@@ -20,7 +20,7 @@ export declare function getCourse(id: number, options?: {
     [key: string]: any;
 }): Promise<API.DefaultResponse<API.Course>>;
 /**  GET /api/courses/:id */
-export declare function getCourseProgram(id: number, token?: string, options?: {
+export declare function getCourseProgram(id: number, token?: string | null, options?: {
     [key: string]: any;
 }): Promise<API.DefaultResponse<API.CourseProgram>>;
 export declare function progress(token: string, options?: {
