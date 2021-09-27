@@ -43,6 +43,7 @@ import {
 import {
   userGroups as getUserGroups,
   userGroup as getUserGroup,
+  registerableGroups as getRegisterableGroups,
 } from "./../services/user_groups";
 import { useLocalStorage } from "./../hooks/useLocalStorage";
 import { EditorContextProvider } from "h5p-headless-player";
@@ -120,6 +121,8 @@ interface EscolaLMSContextConfig {
   fetchUserGroup: (id: number) => Promise<void>;
   userGroups: ContextListState<API.UserGroup>;
   fetchUserGroups: (params: API.UserGroupsParams) => Promise<void>;
+  registerableGroups: ContextListState<API.UserGroup>;
+  fetchRegisterableGroups: () => Promise<void>;
   course: ContextStateValue<API.CourseListItem>;
   fetchCourse: (id: number) => Promise<void>;
   program: ContextStateValue<API.CourseProgram>;
@@ -187,6 +190,10 @@ const defaultConfig: EscolaLMSContextConfig = {
     loading: false,
   },
   fetchUserGroups: () => Promise.reject(),
+  registerableGroups: {
+    loading: false,
+  },
+  fetchRegisterableGroups: () => Promise.reject(),
   course: {
     loading: false,
   },
@@ -351,6 +358,10 @@ export const EscolaLMSContextProvider: FunctionComponent<IMock> = ({
     ContextListState<API.UserGroup>
   >("lms", "userGroups", defaultConfig.userGroups);
 
+  const [registerableGroups, setRegisterableGroups] = useLocalStorage<
+    ContextListState<API.UserGroup>
+  >("lms", "registerableGroups", defaultConfig.registerableGroups);
+
   const [course, setCourse] = useLocalStorage<
     ContextStateValue<API.CourseListItem>
   >("lms", "course", defaultConfig.course);
@@ -513,6 +524,34 @@ export const EscolaLMSContextProvider: FunctionComponent<IMock> = ({
     [userGroups]
   );
 
+  const fetchRegisterableGroups = () => {
+    setRegisterableGroups((prevState) => ({ ...prevState, loading: true }));
+    return getRegisterableGroups()
+      .then((response) => {
+        if (response.success) {
+          setRegisterableGroups({
+            loading: false,
+            list: response.data,
+            error: undefined,
+          });
+        }
+        if (response.success === false) {
+          setRegisterableGroups((prevState) => ({
+            ...prevState,
+            loading: false,
+            error: response,
+          }));
+        }
+      })
+      .catch((error) => {
+        setRegisterableGroups((prevState) => ({
+          ...prevState,
+          loading: false,
+          error: error,
+        }));
+      });
+  };
+
   const fetchUserGroups = useCallback(
     ({ pageSize, current }) => {
       setUserGroups((prevState) => ({ ...prevState, loading: true }));
@@ -565,6 +604,41 @@ export const EscolaLMSContextProvider: FunctionComponent<IMock> = ({
       }
     });
   }, []);
+
+  const fetchProgram = useCallback(
+    (id) => {
+      setProgram((prevState) => ({ ...prevState, loading: true }));
+      return id
+        ? getCourseProgram(id, token)
+            .then((response) => {
+              if (response.success) {
+                setProgram({
+                  loading: false,
+                  value: {
+                    ...response.data,
+                    lessons: sortProgram(response.data.lessons),
+                  },
+                });
+              }
+              if (response.success === false) {
+                setProgram((prevState) => ({
+                  ...prevState,
+                  loading: false,
+                  error: response,
+                }));
+              }
+            })
+            .catch((error) => {
+              setProgram((prevState) => ({
+                ...prevState,
+                loading: false,
+                error: error.data,
+              }));
+            })
+        : Promise.reject();
+    },
+    [token]
+  );
 
   const logout = useCallback(() => {
     // API Call here to destroy token
@@ -743,41 +817,6 @@ export const EscolaLMSContextProvider: FunctionComponent<IMock> = ({
         })
       : Promise.reject();
   }, [token]);
-
-  const fetchProgram = useCallback(
-    (id) => {
-      setProgram((prevState) => ({ ...prevState, loading: true }));
-      return id
-        ? getCourseProgram(id, token)
-            .then((response) => {
-              if (response.success) {
-                setProgram({
-                  loading: false,
-                  value: {
-                    ...response.data,
-                    lessons: sortProgram(response.data.lessons),
-                  },
-                });
-              }
-              if (response.success === false) {
-                setProgram((prevState) => ({
-                  ...prevState,
-                  loading: false,
-                  error: response,
-                }));
-              }
-            })
-            .catch((error) => {
-              setProgram((prevState) => ({
-                ...prevState,
-                loading: false,
-                error: error.data,
-              }));
-            })
-        : Promise.reject();
-    },
-    [token]
-  );
 
   const fetchTutors = useCallback(() => {
     setTutors((prevState) => ({
@@ -1256,6 +1295,8 @@ export const EscolaLMSContextProvider: FunctionComponent<IMock> = ({
         fetchUserGroups,
         userGroup,
         fetchUserGroup,
+        registerableGroups,
+        fetchRegisterableGroups,
       }}
     >
       <EditorContextProvider url={`${apiUrl}/api/hh5p`}>
