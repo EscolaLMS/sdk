@@ -1,21 +1,29 @@
 import request from "umi-request";
 import * as API from "../types/api";
 
+export async function registerableGroups(options?: { [key: string]: any }) {
+  return request<API.UserGroupList>("/api/auth/registerable-groups", {
+    method: "GET",
+    useCache: true,
+    ...(options || {}),
+  });
+}
+
 export async function userGroups(
   params: {
     current?: number;
     pageSize?: number;
     search?: string;
   },
-  options?: { [key: string]: any },
+  options?: { [key: string]: any }
 ) {
-  return request<API.UserGroupList>('/api/admin/user-groups', {
+  return request<API.UserGroupList>("/api/admin/user-groups", {
     params: {
       ...params,
       per_page: params.pageSize,
       page: params.current,
     },
-    method: 'GET',
+    method: "GET",
     useCache: true,
     ...(options || {}),
   });
@@ -23,7 +31,7 @@ export async function userGroups(
 
 export async function userGroup(id: number, options?: { [key: string]: any }) {
   return request<API.UserGroupRow>(`/api/admin/user-groups/${id}`, {
-    method: 'GET',
+    method: "GET",
     useCache: true,
     ...(options || {}),
   });
@@ -32,29 +40,32 @@ export async function userGroup(id: number, options?: { [key: string]: any }) {
 export async function updateUserGroup(
   id: number,
   data: Partial<API.UserGroup>,
-  options?: { [key: string]: any },
+  options?: { [key: string]: any }
 ) {
   return request<API.UserGroupRow>(`/api/admin/user-groups/${id}`, {
     data,
-    method: 'PUT',
+    method: "PUT",
     ...(options || {}),
   });
 }
 
 export async function createUserGroup(
   data: Partial<API.UserGroup>,
-  options?: { [key: string]: any },
+  options?: { [key: string]: any }
 ) {
   return request<API.UserGroupRow>(`/api/admin/user-groups`, {
     data,
-    method: 'POST',
+    method: "POST",
     ...(options || {}),
   });
 }
 
-export async function deleteUserGroup(id: number, options?: { [key: string]: any }) {
+export async function deleteUserGroup(
+  id: number,
+  options?: { [key: string]: any }
+) {
   return request<API.UserGroupRow>(`/api/admin/user-groups/${id}`, {
-    method: 'DELETE',
+    method: "DELETE",
     ...(options || {}),
   });
 }
@@ -62,24 +73,30 @@ export async function deleteUserGroup(id: number, options?: { [key: string]: any
 export async function addUserToGroup(
   group_id: number,
   user_id: number,
-  options?: { [key: string]: any },
+  options?: { [key: string]: any }
 ) {
-  return request<API.UserGroupAddRow>(`/api/admin/user-groups/${group_id}/members`, {
-    data: {
-      user_id,
-    },
-    method: 'POST',
-    ...(options || {}),
-  });
+  return request<API.UserGroupAddRow>(
+    `/api/admin/user-groups/${group_id}/members`,
+    {
+      data: {
+        user_id,
+      },
+      method: "POST",
+      ...(options || {}),
+    }
+  );
 }
 
 export async function removeUserFromGroup(
   group_id: number,
   user_id: number,
-  options?: { [key: string]: any },
+  options?: { [key: string]: any }
 ) {
-  return request<API.UserGroupAddRow>(`/api/admin/user-groups/${group_id}/members/${user_id}`, {
-    method: 'DELETE',
-    ...(options || {}),
-  });
+  return request<API.UserGroupAddRow>(
+    `/api/admin/user-groups/${group_id}/members/${user_id}`,
+    {
+      method: "DELETE",
+      ...(options || {}),
+    }
+  );
 }
