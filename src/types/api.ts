@@ -596,3 +596,25 @@ export type Payment = {
   status: "new" | "paid"; // TODO: what are possible statuses ?
   updated_at: string;
 };
+
+export type UserGroup = {
+  id: number;
+  name: string;
+  users: UserItem[];
+};
+
+export type UserGroups = UserGroup[];
+
+export type UserGroupRow = DefaultResponse<UserGroup>;
+
+export type UserGroupAddRow = DefaultResponse<UserItem[]>;
+
+export type UserGroupList = DefaultMetaResponse<UserGroup>;
+
+export type UserGroupsParams = {
+  params: {
+    current?: number;
+    pageSize?: number;
+    search?: string;
+  };
+};

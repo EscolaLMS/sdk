@@ -29,6 +29,10 @@ interface EscolaLMSContextConfig {
     apiUrl: string;
     courses: ContextPaginatedMetaState<API.CourseListItem>;
     fetchCourses: (filter: API.CourseParams) => Promise<void>;
+    userGroup: ContextStateValue<API.UserGroupRow>;
+    fetchUserGroup: (id: number) => Promise<void>;
+    userGroups: ContextListState<API.UserGroup>;
+    fetchUserGroups: (params: API.UserGroupsParams) => Promise<void>;
     course: ContextStateValue<API.CourseListItem>;
     fetchCourse: (id: number) => Promise<void>;
     program: ContextStateValue<API.CourseProgram>;

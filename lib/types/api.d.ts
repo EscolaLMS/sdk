@@ -474,4 +474,20 @@ export declare type Payment = {
     status: "new" | "paid";
     updated_at: string;
 };
+export declare type UserGroup = {
+    id: number;
+    name: string;
+    users: UserItem[];
+};
+export declare type UserGroups = UserGroup[];
+export declare type UserGroupRow = DefaultResponse<UserGroup>;
+export declare type UserGroupAddRow = DefaultResponse<UserItem[]>;
+export declare type UserGroupList = DefaultMetaResponse<UserGroup>;
+export declare type UserGroupsParams = {
+    params: {
+        current?: number;
+        pageSize?: number;
+        search?: string;
+    };
+};
 export {};
