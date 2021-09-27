@@ -375,6 +375,18 @@ export declare type Page = {
 };
 export declare type AppSettings = {
     currencies?: AppCurrency;
+    consents?: {
+        [key: string]: string;
+    };
+    faq?: {
+        [key: string]: string;
+    };
+    homepage?: {
+        [key: string]: string;
+    };
+    register?: {
+        [key: string]: string;
+    };
     env?: string;
     stripe?: {
         publishable_key: string;
