@@ -490,6 +490,9 @@ export declare type UserGroup = {
     id: number;
     name: string;
     users: UserItem[];
+    name_with_breadcrumbs?: string;
+    parent_id?: null | number;
+    registerable?: boolean;
 };
 export declare type UserGroups = UserGroup[];
 export declare type UserGroupRow = DefaultResponse<UserGroup>;
