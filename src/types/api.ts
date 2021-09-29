@@ -22,7 +22,8 @@ export type IEvent =
   | "http://adlnet.gov/expapi/verbs/created"
   | "http://adlnet.gov/expapi/verbs/shared"
   | "http://adlnet.gov/expapi/verbs/voided"
-  | "http://activitystrea.ms/schema/1.0/consume";
+  | "http://activitystrea.ms/schema/1.0/consume"
+  | "http://adlnet.gov/expapi/verbs/mastered";
 
 export type IStatementCategory = {
   id: string;

@@ -8,7 +8,7 @@ export declare enum TopicType {
     Image = "EscolaLms\\Courses\\Models\\TopicContent\\Image",
     Pdf = "EscolaLms\\Courses\\Models\\TopicContent\\PDF"
 }
-export declare type IEvent = "http://adlnet.gov/expapi/verbs/experienced" | "http://adlnet.gov/expapi/verbs/attended" | "http://adlnet.gov/expapi/verbs/attempted" | "http://adlnet.gov/expapi/verbs/completed" | "http://adlnet.gov/expapi/verbs/passed" | "http://adlnet.gov/expapi/verbs/failed" | "http://adlnet.gov/expapi/verbs/answered" | "http://adlnet.gov/expapi/verbs/interacted" | "http://adlnet.gov/expapi/verbs/imported" | "http://adlnet.gov/expapi/verbs/created" | "http://adlnet.gov/expapi/verbs/shared" | "http://adlnet.gov/expapi/verbs/voided" | "http://activitystrea.ms/schema/1.0/consume";
+export declare type IEvent = "http://adlnet.gov/expapi/verbs/experienced" | "http://adlnet.gov/expapi/verbs/attended" | "http://adlnet.gov/expapi/verbs/attempted" | "http://adlnet.gov/expapi/verbs/completed" | "http://adlnet.gov/expapi/verbs/passed" | "http://adlnet.gov/expapi/verbs/failed" | "http://adlnet.gov/expapi/verbs/answered" | "http://adlnet.gov/expapi/verbs/interacted" | "http://adlnet.gov/expapi/verbs/imported" | "http://adlnet.gov/expapi/verbs/created" | "http://adlnet.gov/expapi/verbs/shared" | "http://adlnet.gov/expapi/verbs/voided" | "http://activitystrea.ms/schema/1.0/consume" | "http://adlnet.gov/expapi/verbs/mastered";
 export declare type IStatementCategory = {
     id: string;
     objectType: "string";
