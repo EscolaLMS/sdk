@@ -570,6 +570,7 @@ export type CourseProgressItem = {
   course: Course;
   finish_date?: Date;
   progress: CourseProgressItemElement[];
+  total_spent_time?: number;
 };
 
 export type Order = {
