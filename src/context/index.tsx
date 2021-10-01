@@ -1050,8 +1050,11 @@ export const EscolaLMSContextProvider: FunctionComponent<IMock> = ({
 
       if (completed.includes(statementId)) {
         if (
-          (!hasParent && !statementCategory[0].id.includes(questionSet)) ||
-          (statementCategory[0].id.includes(questionSet) &&
+          (!hasParent &&
+            statementCategory &&
+            !statementCategory[0]?.id.includes(questionSet)) ||
+          (statementCategory &&
+            statementCategory[0]?.id.includes(questionSet) &&
             result &&
             result?.score?.max === result?.score?.raw)
         ) {
