@@ -23,9 +23,6 @@ jobs:
       - name: Generate typedoc
         run: yarn typedoc src/index.ts --out build        
 
-      - name: Install git
-        run: apt-get install git -y
-
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
