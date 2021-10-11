@@ -4,10 +4,6 @@ on:
   push:
     branches:
       - main
-      - docs
-  pull_request:
-    branches:
-      - main
 
 jobs:
   swagger-gh-pages:
