@@ -1,5 +1,5 @@
 {
-    "name": "@escolalms/connector",
+    "name": "@escolalms/sdk",
     "version": "0.1.26",
     "private": false,
     "dependencies": {
