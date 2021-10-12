@@ -18,10 +18,10 @@ import {
   tutor as getTutor,
   topicPing as putTopicPing,
   h5pProgress as postSendh5pProgress,
-} from "./../services/courses";
-import { settings as getSettings } from "./../services/settings";
-import { uniqueTags as getUniqueTags } from "./../services/tags";
-import { categoryTree as getCategoryTree } from "./../services/categories";
+} from "./../../services/courses";
+import { settings as getSettings } from "./../../services/settings";
+import { uniqueTags as getUniqueTags } from "./../../services/tags";
+import { categoryTree as getCategoryTree } from "./../../services/categories";
 import {
   login as postLogin,
   profile as getProfile,
@@ -30,8 +30,8 @@ import {
   updateAvatar as postUpdateAvatar,
   forgot,
   reset,
-} from "./../services/auth";
-import { pages as getPages, page as getPage } from "./../services/pages";
+} from "./../../services/auth";
+import { pages as getPages, page as getPage } from "./../../services/pages";
 import {
   cart as getCart,
   addToCart as postAddToCart,
@@ -39,15 +39,15 @@ import {
   payWithStripe as postPayWithStripe,
   orders as getOrders,
   payments as getPayments,
-} from "./../services/cart";
+} from "./../../services/cart";
 import {
   userGroups as getUserGroups,
   userGroup as getUserGroup,
   registerableGroups as getRegisterableGroups,
-} from "./../services/user_groups";
-import { useLocalStorage } from "./../hooks/useLocalStorage";
+} from "./../../services/user_groups";
+import { useLocalStorage } from "../hooks/useLocalStorage";
 import { EditorContextProvider } from "@escolalms/h5p-react";
-import * as API from "../types/api";
+import * as API from "./../../types/api";
 
 interface IMock {
   children?: React.ReactElement[] | React.ReactElement;
