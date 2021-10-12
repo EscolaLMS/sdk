@@ -53,7 +53,7 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/EscolaLMS/api-connector.git"
+        "url": "git+https://github.com/EscolaLMS/sdk.git"
     },
     "keywords": [
         "escola",
@@ -65,7 +65,7 @@
     "author": "Mateusz Wojczal <mateusz@wojczal.com>",
     "license": "ISC",
     "bugs": {
-        "url": "https://github.com/EscolaLMS/api-connector/issues"
+        "url": "https://github.com/EscolaLMS/sdk/issues"
     },
-    "homepage": "https://github.com/EscolaLMS/api-connector#readme"
+    "homepage": "https://github.com/EscolaLMS/sdk#readme"
 }
