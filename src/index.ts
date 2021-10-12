@@ -1,13 +1,5 @@
-export { default as Image } from "./components/Image";
 import * as API from "./types/api";
+import * as react from "./react";
 
-export {
-  EscolaLMSContextProvider,
-  SCORMPlayer,
-  EscolaLMSContext,
-  sortProgram,
-} from "./context/index";
-
-export { useLocalStorage } from "./hooks/useLocalStorage";
 export { API }
-
+export { react }

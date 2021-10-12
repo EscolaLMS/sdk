@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { EscolaLMSContext } from "./../context";
+import { EscolaLMSContext } from "../context";
 
 interface ImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
   path: string;
