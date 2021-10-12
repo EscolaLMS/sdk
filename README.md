@@ -7,7 +7,7 @@ The following project contains:
 
 ## Types 
 
-* [Types of all API Responses](https://escolalms.github.io/sdk/src/types/api.ts)
+* [Types of all API Responses](https://github.com/EscolaLMS/sdk/src/types/api.ts)
 
 ## React 
 
