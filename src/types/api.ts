@@ -326,6 +326,7 @@ export type TopicBase = {
   summary?: string;
   resources?: TopicResource[];
   can_skip?: boolean;
+  json?: Record<string, unknown>;
   /*
       topicable_type?:
         | TopicType.RichText
