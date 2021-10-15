@@ -1,71 +1,71 @@
 {
-    "name": "@escolalms/sdk",
-    "version": "0.1.29",
-    "private": false,
-    "dependencies": {
-        "@escolalms/h5p-react": "^0",
-        "@testing-library/jest-dom": "^5.11.4",
-        "@testing-library/react": "^11.1.0",
-        "@testing-library/user-event": "^12.1.10",
-        "@types/html-escaper": "^3.0.0",
-        "@types/jest": "^26.0.15",
-        "@types/node": "^12.0.0",
-        "@types/react": "^17.0.0",
-        "@types/react-dom": "^17.0.0",
-        "react": "^17.0.2",
-        "react-dom": "^17.0.2",
-        "typescript": "^4.1.2",
-        "umi-request": "^1.4.0"
-    },
-    "scripts": {
-        "lib": "tsc --noEmit false --outDir lib --module commonjs"
-    },
-    "eslintConfig": {
-        "extends": [
-            "react-app",
-            "react-app/jest"
-        ]
-    },
-    "browserslist": {
-        "production": [
-            ">0.2%",
-            "not dead",
-            "not op_mini all"
-        ],
-        "development": [
-            "last 1 chrome version",
-            "last 1 firefox version",
-            "last 1 safari version"
-        ]
-    },
-    "files": [
-        "lib/**/*",
-        "index.d.ts"
+  "name": "@escolalms/sdk",
+  "version": "0.1.29",
+  "private": false,
+  "dependencies": {
+    "@escolalms/h5p-react": "^0",
+    "@testing-library/jest-dom": "^5.11.4",
+    "@testing-library/react": "^11.1.0",
+    "@testing-library/user-event": "^12.1.10",
+    "@types/html-escaper": "^3.0.0",
+    "@types/jest": "^26.0.15",
+    "@types/node": "^12.0.0",
+    "@types/react": "^17.0.0",
+    "@types/react-dom": "^17.0.0",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "typescript": "^4.1.2",
+    "umi-request": "^1.4.0"
+  },
+  "scripts": {
+    "lib": "tsc --noEmit false --outDir lib --module commonjs"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
     ],
-    "main": "./lib/index.js",
-    "types": "./index.d.ts",
-    "description": "Frontend TS/JS connection to API.",
-    "directories": {
-        "lib": "lib"
-    },
-    "devDependencies": {
-        "typedoc": "^0.22.5"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/EscolaLMS/sdk.git"
-    },
-    "keywords": [
-        "escola",
-        "lms",
-        "lms",
-        "rest",
-        "api"
-    ],
-    "author": "Mateusz Wojczal <mateusz@wojczal.com>",
-    "license": "ISC",
-    "bugs": {
-        "url": "https://github.com/EscolaLMS/sdk/issues"
-    },
-    "homepage": "https://github.com/EscolaLMS/sdk#readme"
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "files": [
+    "lib/**/*",
+    "index.d.ts"
+  ],
+  "main": "./lib/index.js",
+  "types": "./index.d.ts",
+  "description": "Frontend TS/JS connection to API.",
+  "directories": {
+    "lib": "lib"
+  },
+  "devDependencies": {
+    "typedoc": "^0.22.5"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EscolaLMS/sdk.git"
+  },
+  "keywords": [
+    "escola",
+    "lms",
+    "lms",
+    "rest",
+    "api"
+  ],
+  "author": "Mateusz Wojczal <mateusz@wojczal.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/EscolaLMS/sdk/issues"
+  },
+  "homepage": "https://github.com/EscolaLMS/sdk#readme"
 }
