@@ -323,6 +323,7 @@ export type TopicBase = {
   topicable_id?: number;
   isNew?: boolean;
   preview?: boolean;
+  introduction?: string;
   summary?: string;
   resources?: TopicResource[];
   can_skip?: boolean;
