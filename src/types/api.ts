@@ -324,6 +324,7 @@ export type TopicBase = {
   isNew?: boolean;
   preview?: boolean;
   introduction?: string;
+  description?: string;
   summary?: string;
   resources?: TopicResource[];
   can_skip?: boolean;
