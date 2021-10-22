@@ -1302,6 +1302,7 @@ export const EscolaLMSContextProvider: FunctionComponent<IMock> = ({
         fetchUserGroup,
         registerableGroups,
         fetchRegisterableGroups,
+        setToken,
       }}
     >
       <EditorContextProvider url={`${apiUrl}/api/hh5p`}>
