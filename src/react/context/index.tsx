@@ -176,6 +176,7 @@ interface EscolaLMSContextConfig {
   courseProgress: (courseId: number) => number;
   fontSizeToggle: (bigger: boolean) => void;
   fontSize: FontSize;
+  socialAuthorize: (token: string) => void;
 }
 
 const defaultConfig: EscolaLMSContextConfig = {
@@ -287,6 +288,7 @@ const defaultConfig: EscolaLMSContextConfig = {
   getNextPrevTopic: (topicId: number, next?: boolean) => null,
   fontSizeToggle: (bigger: boolean) => 0,
   fontSize: FontSize.regular,
+  socialAuthorize: (token: string) => Promise.reject(),
 };
 
 export const SCORMPlayer: React.FC<{
@@ -605,6 +607,10 @@ export const EscolaLMSContextProvider: FunctionComponent<IMock> = ({
         }));
       }
     });
+  }, []);
+
+  const socialAuthorize = useCallback((token: string) => {
+    setToken(token);
   }, []);
 
   const logout = useCallback(() => {
@@ -1302,7 +1308,7 @@ export const EscolaLMSContextProvider: FunctionComponent<IMock> = ({
         fetchUserGroup,
         registerableGroups,
         fetchRegisterableGroups,
-        setToken,
+        socialAuthorize,
       }}
     >
       <EditorContextProvider url={`${apiUrl}/api/hh5p`}>
