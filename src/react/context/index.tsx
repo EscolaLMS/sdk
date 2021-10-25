@@ -54,45 +54,6 @@ interface IMock {
   apiUrl: string;
 }
 
-interface ContextState<T> {
-  loading: boolean;
-  filter?: API.CourseParams;
-  list: T[];
-}
-
-interface ContextPaginatedMetaState<T> {
-  loading: boolean;
-  list?: API.PaginatedMetaList<T>;
-  error?: API.DefaultResponseError;
-}
-
-interface ContextPaginatedState<T> {
-  loading: boolean;
-  list?: API.PaginatedList<T>;
-  error?: API.DefaultResponseError;
-}
-
-interface ContextListState<T> {
-  loading: boolean;
-  list?: T[];
-  error?: API.DefaultResponseError;
-}
-
-interface ContextStateValue<T> {
-  loading: boolean;
-  value?: T;
-  error?: API.DefaultResponseError;
-}
-
-enum FontSize {
-  small = 0,
-  regular = 1,
-  bigger = 2,
-  big = 3,
-}
-
-// npm test
-
 const blackList: API.IEvent[] = [
   "http://adlnet.gov/expapi/verbs/attended",
   "http://adlnet.gov/expapi/verbs/attempted",
@@ -110,28 +71,27 @@ const completed: API.IEvent[] = [
 ];
 
 const attempted: API.IEvent = "http://adlnet.gov/expapi/verbs/attempted";
-const consume: API.IEvent = "http://activitystrea.ms/schema/1.0/consume";
 
 const guessTheAnswer: API.IEventException = "GuessTheAnswer";
 const questionSet: API.IEventException = "QuestionSet";
 
 interface EscolaLMSContextConfig {
   apiUrl: string;
-  courses: ContextPaginatedMetaState<API.CourseListItem>;
+  courses: API.ContextPaginatedMetaState<API.CourseListItem>;
   fetchCourses: (filter: API.CourseParams) => Promise<void>;
-  userGroup: ContextStateValue<API.UserGroupRow>;
+  userGroup: API.ContextStateValue<API.UserGroupRow>;
   fetchUserGroup: (id: number) => Promise<void>;
-  userGroups: ContextListState<API.UserGroup>;
+  userGroups: API.ContextListState<API.UserGroup>;
   fetchUserGroups: (params: API.UserGroupsParams) => Promise<void>;
-  registerableGroups: ContextListState<API.UserGroup>;
+  registerableGroups: API.ContextListState<API.UserGroup>;
   fetchRegisterableGroups: () => Promise<void>;
-  course: ContextStateValue<API.CourseListItem>;
+  course: API.ContextStateValue<API.CourseListItem>;
   fetchCourse: (id: number) => Promise<void>;
-  program: ContextStateValue<API.CourseProgram>;
+  program: API.ContextStateValue<API.CourseProgram>;
   fetchProgram: (id: number) => Promise<void>;
   settings: API.AppSettings;
-  uniqueTags: ContextListState<API.Tag>;
-  categoryTree: ContextListState<API.Category>;
+  uniqueTags: API.ContextListState<API.Tag>;
+  categoryTree: API.ContextListState<API.Category>;
   login: (body: API.LoginRequest) => Promise<void>;
   logout: () => Promise<void>;
   register: (
@@ -139,14 +99,14 @@ interface EscolaLMSContextConfig {
   ) => Promise<API.DefaultResponse<API.RegisterResponse>>;
   forgot: (body: API.ForgotRequest) => Promise<API.ForgotResponse>;
   reset: (body: API.ResetPasswordRequest) => Promise<API.ResetPasswordResponse>;
-  user: ContextStateValue<API.UserItem>;
+  user: API.ContextStateValue<API.UserItem>;
   addToCart: (courseId: number) => Promise<void>;
   removeFromCart: (courseId: number) => Promise<void>;
   fetchCart: () => Promise<void>;
-  cart: ContextStateValue<API.Cart>;
+  cart: API.ContextStateValue<API.Cart>;
   payWithStripe: (paymentMethodId: string) => Promise<void>;
   fetchProgress: () => Promise<void>;
-  progress: ContextStateValue<API.CourseProgress>;
+  progress: API.ContextStateValue<API.CourseProgress>;
   sendProgress: (
     courseId: number,
     data: API.CourseProgressItemElement[]
@@ -156,17 +116,17 @@ interface EscolaLMSContextConfig {
     topicId: number,
     statement: API.IStatement
   ) => Promise<API.SuccessResponse> | null;
-  tutors: ContextListState<API.UserItem>;
+  tutors: API.ContextListState<API.UserItem>;
   fetchTutors: () => Promise<void>;
-  tutor: ContextStateValue<API.UserItem>;
+  tutor: API.ContextStateValue<API.UserItem>;
   fetchTutor: (id: number) => Promise<void>;
-  orders: ContextListState<API.Order>;
+  orders: API.ContextListState<API.Order>;
   fetchOrders: () => Promise<void>;
   fetchPayments: () => Promise<void>;
-  payments: ContextPaginatedMetaState<API.Payment>;
-  pages: ContextPaginatedMetaState<API.PageListItem>;
+  payments: API.ContextPaginatedMetaState<API.Payment>;
+  pages: API.ContextPaginatedMetaState<API.PageListItem>;
   fetchPages: () => Promise<void>;
-  page: ContextStateValue<API.Page>;
+  page: API.ContextStateValue<API.Page>;
   fetchPage: (slug: string) => Promise<void>;
   updateProfile: (data: API.UserItem) => Promise<void>;
   updateAvatar: (avatar: File) => Promise<void>;
@@ -175,7 +135,7 @@ interface EscolaLMSContextConfig {
   getNextPrevTopic: (topicId: number, next?: boolean) => API.Topic | null;
   courseProgress: (courseId: number) => number;
   fontSizeToggle: (bigger: boolean) => void;
-  fontSize: FontSize;
+  fontSize: API.FontSize;
   socialAuthorize: (token: string) => void;
 }
 
@@ -287,7 +247,7 @@ const defaultConfig: EscolaLMSContextConfig = {
   courseProgress: (courseId: number) => 0,
   getNextPrevTopic: (topicId: number, next?: boolean) => null,
   fontSizeToggle: (bigger: boolean) => 0,
-  fontSize: FontSize.regular,
+  fontSize: API.FontSize.regular,
   socialAuthorize: (token: string) => Promise.reject(),
 };
 
@@ -351,23 +311,23 @@ export const EscolaLMSContextProvider: FunctionComponent<IMock> = ({
   shouldFire.current = false;
 
   const [courses, setCourses] = useLocalStorage<
-    ContextPaginatedMetaState<API.CourseListItem>
+    API.ContextPaginatedMetaState<API.CourseListItem>
   >("lms", "courses", defaultConfig.courses);
 
   const [userGroup, setUserGroup] = useLocalStorage<
-    ContextStateValue<API.UserGroupRow>
+    API.ContextStateValue<API.UserGroupRow>
   >("lms", "userGroup", defaultConfig.userGroup);
 
   const [userGroups, setUserGroups] = useLocalStorage<
-    ContextListState<API.UserGroup>
+    API.ContextListState<API.UserGroup>
   >("lms", "userGroups", defaultConfig.userGroups);
 
   const [registerableGroups, setRegisterableGroups] = useLocalStorage<
-    ContextListState<API.UserGroup>
+    API.ContextListState<API.UserGroup>
   >("lms", "registerableGroups", defaultConfig.registerableGroups);
 
   const [course, setCourse] = useLocalStorage<
-    ContextStateValue<API.CourseListItem>
+    API.ContextStateValue<API.CourseListItem>
   >("lms", "course", defaultConfig.course);
 
   const [settings, setSettings] = useLocalStorage<API.AppSettings>(
@@ -377,18 +337,18 @@ export const EscolaLMSContextProvider: FunctionComponent<IMock> = ({
   );
 
   const [uniqueTags, setUniqueTags] = useLocalStorage<
-    ContextListState<API.Tag>
+    API.ContextListState<API.Tag>
   >("lms", "tags", defaultConfig.uniqueTags);
 
   const [categoryTree, setCategoryTree] = useLocalStorage<
-    ContextListState<API.Category>
+    API.ContextListState<API.Category>
   >("lms", "categories", defaultConfig.categoryTree);
 
   const [program, setProgram] = useLocalStorage<
-    ContextStateValue<API.CourseProgram>
+    API.ContextStateValue<API.CourseProgram>
   >("lms", "tags", defaultConfig.program);
 
-  const [cart, setCart] = useLocalStorage<ContextStateValue<API.Cart>>(
+  const [cart, setCart] = useLocalStorage<API.ContextStateValue<API.Cart>>(
     "lms",
     "cart",
     defaultConfig.cart
@@ -400,47 +360,45 @@ export const EscolaLMSContextProvider: FunctionComponent<IMock> = ({
     null
   );
 
-  const [user, setUser] = useLocalStorage<ContextStateValue<API.UserItem>>(
+  const [user, setUser] = useLocalStorage<API.ContextStateValue<API.UserItem>>(
     "lms",
     "user",
     defaultConfig.user
   );
 
   const [progress, setProgress] = useState<
-    ContextStateValue<API.CourseProgress>
+    API.ContextStateValue<API.CourseProgress>
   >(defaultConfig.progress);
 
-  const [tutors, setTutors] = useLocalStorage<ContextListState<API.UserItem>>(
-    "lms",
-    "tutors",
-    defaultConfig.tutors
-  );
+  const [tutors, setTutors] = useLocalStorage<
+    API.ContextListState<API.UserItem>
+  >("lms", "tutors", defaultConfig.tutors);
 
-  const [orders, setOrders] = useLocalStorage<ContextListState<API.Order>>(
+  const [orders, setOrders] = useLocalStorage<API.ContextListState<API.Order>>(
     "lms",
     "orders",
     defaultConfig.orders
   );
 
   const [payments, setPayments] = useLocalStorage<
-    ContextPaginatedMetaState<API.Payment>
+    API.ContextPaginatedMetaState<API.Payment>
   >("lms", "payments", defaultConfig.payments);
 
-  const [tutor, setTutor] = useState<ContextStateValue<API.UserItem>>(
+  const [tutor, setTutor] = useState<API.ContextStateValue<API.UserItem>>(
     defaultConfig.tutor
   );
 
   const [pages, setPages] = useLocalStorage<
-    ContextPaginatedMetaState<API.PageListItem>
+    API.ContextPaginatedMetaState<API.PageListItem>
   >("lms", "pages", defaultConfig.pages);
 
-  const [page, setPage] = useLocalStorage<ContextStateValue<API.Page>>(
+  const [page, setPage] = useLocalStorage<API.ContextStateValue<API.Page>>(
     "lms",
     "page",
     defaultConfig.page
   );
 
-  const [fontSize, setFontSize] = useLocalStorage<FontSize>(
+  const [fontSize, setFontSize] = useLocalStorage<API.FontSize>(
     "lms",
     "fontSize",
     defaultConfig.fontSize

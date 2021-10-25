@@ -25,6 +25,43 @@ export type IEvent =
   | "http://activitystrea.ms/schema/1.0/consume"
   | "http://adlnet.gov/expapi/verbs/mastered";
 
+export interface ContextState<T> {
+  loading: boolean;
+  filter?: CourseParams;
+  list: T[];
+}
+
+export interface ContextPaginatedMetaState<T> {
+  loading: boolean;
+  list?: PaginatedMetaList<T>;
+  error?: DefaultResponseError;
+}
+
+export interface ContextPaginatedState<T> {
+  loading: boolean;
+  list?: PaginatedList<T>;
+  error?: DefaultResponseError;
+}
+
+export interface ContextListState<T> {
+  loading: boolean;
+  list?: T[];
+  error?: DefaultResponseError;
+}
+
+export interface ContextStateValue<T> {
+  loading: boolean;
+  value?: T;
+  error?: DefaultResponseError;
+}
+
+export enum FontSize {
+  small = 0,
+  regular = 1,
+  bigger = 2,
+  big = 3,
+}
+
 export type IStatementCategory = {
   id: string;
   objectType: "string";
@@ -236,6 +273,7 @@ export type CourseParams = PageParams &
     category_id?: number;
     author_id?: number;
     tag?: string;
+    free?: boolean;
   };
 
 export type LoginRequest = {
