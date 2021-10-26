@@ -236,6 +236,7 @@ export type CourseParams = PageParams &
     category_id?: number;
     author_id?: number;
     tag?: string;
+    free?: boolean;
   };
 
 export type LoginRequest = {
