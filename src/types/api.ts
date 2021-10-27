@@ -9,6 +9,11 @@ export enum TopicType {
   Pdf = "EscolaLms\\Courses\\Models\\TopicContent\\PDF",
 }
 
+export enum PaymentStatusType {
+  NEW = "new",
+  PAID = "paid",
+}
+
 export type IEvent =
   | "http://adlnet.gov/expapi/verbs/experienced"
   | "http://adlnet.gov/expapi/verbs/attended"
@@ -89,28 +94,28 @@ export type Tag = {
 };
 
 export type Course = {
+  id: number;
+  description: string;
+  created_at: string;
+  updated_at: string;
+  title: string;
+  topic_count: number;
+  base_price: number;
+  author_id: number;
+  image_url: string;
+  author: UserItem;
+  lessons_count: number;
+  lessons: Lesson[];
   language?: string;
   subtitle?: string;
-  description?: string;
-  id?: number;
-  created_at?: string;
-  updated_at?: string;
-  title?: string;
   summary?: string;
-  image_path?: string;
+  image_path: string;
   video_path?: string;
-  base_price?: number;
   duration?: string;
-  author_id?: number;
-  image_url?: string;
   video_url?: string;
   categories?: Category[] | (number | string)[];
   tags?: Tag[] | string[];
-  author?: UserItem;
-  lessons_count?: number;
-  lessons?: Lesson[];
   users_count?: number;
-  topic_count?: number;
   level?: string;
   scorm_id?: number;
   scorm?: SCORM;
@@ -301,27 +306,27 @@ export type UserItem = {
 };
 
 export type Lesson = {
-  id?: number;
-  created_at?: string;
+  id: number;
+  created_at: string;
+  title: string;
+  course_id: number;
   updated_at?: string;
-  title?: string;
   order?: number;
-  course_id?: number;
-  duration?: string;
+  duration: string;
   summary?: string;
   topics?: Topic[];
   isNew?: boolean;
 };
 
 export type TopicBase = {
-  lesson_id?: number;
-  created_at?: string;
+  id: number;
+  lesson_id: number;
+  title: string;
+  topicable_id: number;
+  created_at: string;
   updated_at?: string;
-  id?: number;
   order?: number;
-  title?: string;
   value?: any;
-  topicable_id?: number;
   isNew?: boolean;
   preview?: boolean;
   introduction?: string;
@@ -553,10 +558,10 @@ export type SCORM_SCO = {
 };
 
 export type Cart = {
+  items: Course[];
   total?: string | number;
   subtotal?: string | number;
   tax?: string | number;
-  items: Course[];
 };
 
 export type CourseProgressItemElement = {
@@ -579,7 +584,7 @@ export type CourseProgressItem = {
 
 export type Order = {
   id: number;
-  status: string; // this should be enum
+  status: PaymentStatusType;
   items: [
     {
       id: number;
@@ -611,7 +616,7 @@ export type Payment = {
   order_id: number;
   payable_id: null;
   payable_type: null;
-  status: "new" | "paid"; // TODO: what are possible statuses ?
+  status: PaymentStatusType;
   updated_at: string;
 };
 
