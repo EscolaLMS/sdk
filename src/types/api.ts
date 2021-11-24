@@ -576,6 +576,7 @@ export enum CourseProgressItemElementStatus {
 }
 
 export type CourseProgressItem = {
+  categories: CategoryListItem[];
   course: Course;
   finish_date?: Date;
   progress: CourseProgressItemElement[];
