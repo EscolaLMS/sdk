@@ -620,7 +620,6 @@ export const EscolaLMSContextProvider: FunctionComponent<IMock> = ({
       loading: false,
     });
     setCart(defaultConfig.cart);
-    // setProgress([]);
     return Promise.resolve();
   }, []);
 
