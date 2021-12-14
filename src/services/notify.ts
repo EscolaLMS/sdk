@@ -24,7 +24,7 @@ export async function readNotification(
   token: string,
   options?: Record<string, any>
 ) {
-  return request<API.DefaultResponse<API.Notification>>(
+  return request<API.DefaultResponse<API.Notification[]>>(
     `/api/notifications/${id}/read`,
     {
       method: "POST",
