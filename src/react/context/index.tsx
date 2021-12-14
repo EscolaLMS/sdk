@@ -179,6 +179,8 @@ interface EscolaLMSContextConfig {
   fontSize: FontSize;
   socialAuthorize: (token: string) => void;
   notifications: ContextPaginatedMetaState<API.Notification>;
+  fetchNotifications: (token: string) => Promise<void>;
+  readNotify: (id: string, token: string) => Promise<void>;
 }
 
 const defaultConfig: EscolaLMSContextConfig = {
@@ -294,6 +296,8 @@ const defaultConfig: EscolaLMSContextConfig = {
   notifications: {
     loading: false,
   },
+  fetchNotifications: (token: string) => Promise.reject(),
+  readNotify: (id: string, token: string) => Promise.reject(),
 };
 
 export const SCORMPlayer: React.FC<{
@@ -477,41 +481,45 @@ export const EscolaLMSContextProvider: FunctionComponent<IMock> = ({
 
   const fetchNotifications = useCallback(() => {
     setNotifications((prevState) => ({ ...prevState, loading: true }));
-    return getNotifications(token)
-      .then((response) => {
-        if (response.success) {
-          setNotifications({ list: response.data, loading: false });
-        }
-      })
-      .catch((error) => {
-        setNotifications((prevState) => ({
-          ...prevState,
-          loading: false,
-          error: error,
-        }));
-      });
+    return token
+      ? getNotifications(token)
+          .then((response) => {
+            if (response.success) {
+              setNotifications({ list: response.data, loading: false });
+            }
+          })
+          .catch((error) => {
+            setNotifications((prevState) => ({
+              ...prevState,
+              loading: false,
+              error: error,
+            }));
+          })
+      : Promise.reject();
   }, [token]);
 
   const readNotify = useCallback(
     (id: string) => {
-      return readNotification(id, token)
-        .then((response) => {
-          if (response.success) {
-            setNotifications({
-              list: notifications.list.filter(
-                (notify: API.Notification) => notify.id !== id
-              ),
-              loading: false,
-            });
-          }
-        })
-        .catch((error) => {
-          setNotifications((prevState) => ({
-            ...prevState,
-            loading: false,
-            error: error,
-          }));
-        });
+      return token
+        ? readNotification(id, token)
+            .then((response) => {
+              if (response.success) {
+                setNotifications({
+                  list: notifications.list.filter(
+                    (notify: API.Notification) => notify.id !== id
+                  ),
+                  loading: false,
+                });
+              }
+            })
+            .catch((error) => {
+              setNotifications((prevState) => ({
+                ...prevState,
+                loading: false,
+                error: error,
+              }));
+            })
+        : Promise.reject();
     },
     [token]
   );
