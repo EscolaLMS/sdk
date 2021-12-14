@@ -645,3 +645,20 @@ export type UserGroupsParams = {
     search?: string;
   };
 };
+
+export enum EventTypes {
+  OrderPaid = "EscolaLms\\Cart\\Events\\OrderPaid",
+  UserLogged = "EscolaLms\\Auth\\Events\\UserLogged",
+}
+
+export type Notification = {
+  id: string;
+  type: string;
+  notifiable_type: string;
+  notifiable_id: number;
+  data: [];
+  read_at: null | Date;
+  created_at: Date;
+  updated_at: Date;
+  event: EventTypes;
+};
