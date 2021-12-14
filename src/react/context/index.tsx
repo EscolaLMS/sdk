@@ -506,9 +506,12 @@ export const EscolaLMSContextProvider: FunctionComponent<IMock> = ({
             .then((response) => {
               if (response.success) {
                 setNotifications({
-                  list: notifications.list.filter(
-                    (notify: API.Notification) => notify.id !== id
-                  ),
+                  list:
+                    notifications &&
+                    notifications.list &&
+                    notifications?.list.filter(
+                      (notify: API.Notification) => notify.id !== id
+                    ),
                   loading: false,
                 });
               }
