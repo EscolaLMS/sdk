@@ -178,7 +178,7 @@ interface EscolaLMSContextConfig {
   fontSizeToggle: (bigger: boolean) => void;
   fontSize: FontSize;
   socialAuthorize: (token: string) => void;
-  notifications: ContextPaginatedMetaState<API.Notification>;
+  notifications: ContextListState<API.Notification>;
   fetchNotifications: (token: string) => Promise<void>;
   readNotify: (id: string, token: string) => Promise<void>;
 }
@@ -295,6 +295,7 @@ const defaultConfig: EscolaLMSContextConfig = {
   socialAuthorize: (token: string) => Promise.reject(),
   notifications: {
     loading: false,
+    list: [],
   },
   fetchNotifications: (token: string) => Promise.reject(),
   readNotify: (id: string, token: string) => Promise.reject(),
@@ -456,7 +457,7 @@ export const EscolaLMSContextProvider: FunctionComponent<IMock> = ({
   );
 
   const [notifications, setNotifications] = useLocalStorage<
-    ContextPaginatedMetaState<API.Notification>
+    ContextListState<API.Notification>
   >("lms", "notifications", defaultConfig.notifications);
 
   const abortControllers = useRef<{
@@ -503,7 +504,7 @@ export const EscolaLMSContextProvider: FunctionComponent<IMock> = ({
       return token
         ? readNotification(id, token)
             .then((response) => {
-              if (response.success) {
+              if (response.success && notifications.list) {
                 setNotifications({
                   list: notifications.list.filter(
                     (notify: API.Notification) => notify.id !== id
