@@ -179,8 +179,8 @@ interface EscolaLMSContextConfig {
   fontSize: FontSize;
   socialAuthorize: (token: string) => void;
   notifications: ContextListState<API.Notification>;
-  fetchNotifications: (token: string) => Promise<void>;
-  readNotify: (id: string, token: string) => Promise<void>;
+  fetchNotifications: () => Promise<void>;
+  readNotify: (id: string) => Promise<void>;
 }
 
 const defaultConfig: EscolaLMSContextConfig = {
@@ -297,8 +297,8 @@ const defaultConfig: EscolaLMSContextConfig = {
     loading: false,
     list: [],
   },
-  fetchNotifications: (token: string) => Promise.reject(),
-  readNotify: (id: string, token: string) => Promise.reject(),
+  fetchNotifications: () => Promise.reject(),
+  readNotify: (id: string) => Promise.reject(),
 };
 
 export const SCORMPlayer: React.FC<{
