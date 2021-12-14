@@ -22,6 +22,7 @@ import {
 import { settings as getSettings } from "./../../services/settings";
 import { uniqueTags as getUniqueTags } from "./../../services/tags";
 import { categoryTree as getCategoryTree } from "./../../services/categories";
+import { getNotifications, readNotification } from "../../services/notify";
 import {
   login as postLogin,
   profile as getProfile,
@@ -177,6 +178,7 @@ interface EscolaLMSContextConfig {
   fontSizeToggle: (bigger: boolean) => void;
   fontSize: FontSize;
   socialAuthorize: (token: string) => void;
+  notifications: ContextPaginatedMetaState<API.Notification>;
 }
 
 const defaultConfig: EscolaLMSContextConfig = {
@@ -289,6 +291,9 @@ const defaultConfig: EscolaLMSContextConfig = {
   fontSizeToggle: (bigger: boolean) => 0,
   fontSize: FontSize.regular,
   socialAuthorize: (token: string) => Promise.reject(),
+  notifications: {
+    loading: false,
+  },
 };
 
 export const SCORMPlayer: React.FC<{
@@ -446,6 +451,10 @@ export const EscolaLMSContextProvider: FunctionComponent<IMock> = ({
     defaultConfig.fontSize
   );
 
+  const [notifications, setNotifications] = useLocalStorage<
+    ContextPaginatedMetaState<API.Notification>
+  >("lms", "notifications", defaultConfig.notifications);
+
   const abortControllers = useRef<{
     cart: AbortController | null;
   }>({
@@ -465,6 +474,47 @@ export const EscolaLMSContextProvider: FunctionComponent<IMock> = ({
       setCategoryTree({ list: response.data, loading: false });
     });
   }, []);
+
+  const fetchNotifications = useCallback(() => {
+    setNotifications((prevState) => ({ ...prevState, loading: true }));
+    return getNotifications(token)
+      .then((response) => {
+        if (response.success) {
+          setNotifications({ list: response.data, loading: false });
+        }
+      })
+      .catch((error) => {
+        setNotifications((prevState) => ({
+          ...prevState,
+          loading: false,
+          error: error,
+        }));
+      });
+  }, [token]);
+
+  const readNotify = useCallback(
+    (id: string) => {
+      return readNotification(id, token)
+        .then((response) => {
+          if (response.success) {
+            setNotifications({
+              list: notifications.list.filter(
+                (notify: API.Notification) => notify.id !== id
+              ),
+              loading: false,
+            });
+          }
+        })
+        .catch((error) => {
+          setNotifications((prevState) => ({
+            ...prevState,
+            loading: false,
+            error: error,
+          }));
+        });
+    },
+    [token]
+  );
 
   const fetchCourses = useCallback(
     (filter: API.CourseParams) => {
@@ -1309,6 +1359,9 @@ export const EscolaLMSContextProvider: FunctionComponent<IMock> = ({
         registerableGroups,
         fetchRegisterableGroups,
         socialAuthorize,
+        notifications,
+        fetchNotifications,
+        readNotify,
       }}
     >
       <EditorContextProvider url={`${apiUrl}/api/hh5p`}>
