@@ -504,7 +504,7 @@ export const EscolaLMSContextProvider: FunctionComponent<IMock> = ({
       return token
         ? readNotification(id, token)
             .then((response) => {
-              if (response.success && notifications.list) {
+              if (response.success) {
                 setNotifications({
                   list: notifications.list.filter(
                     (notify: API.Notification) => notify.id !== id
