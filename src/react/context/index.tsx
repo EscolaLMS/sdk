@@ -19,7 +19,10 @@ import {
   topicPing as putTopicPing,
   h5pProgress as postSendh5pProgress,
 } from "./../../services/courses";
-import { settings as getSettings } from "./../../services/settings";
+import {
+  settings as getSettings,
+  config as getConfig,
+} from "./../../services/settings";
 import { uniqueTags as getUniqueTags } from "./../../services/tags";
 import { categoryTree as getCategoryTree } from "./../../services/categories";
 import { getNotifications, readNotification } from "../../services/notify";
@@ -131,6 +134,8 @@ interface EscolaLMSContextConfig {
   program: ContextStateValue<API.CourseProgram>;
   fetchProgram: (id: number) => Promise<void>;
   settings: API.AppSettings;
+  config: API.AppConfig;
+  fetchConfig: () => Promise<void>;
   uniqueTags: ContextListState<API.Tag>;
   categoryTree: ContextListState<API.Category>;
   login: (body: API.LoginRequest) => Promise<void>;
@@ -222,6 +227,14 @@ const defaultConfig: EscolaLMSContextConfig = {
         "pk_test_51Ig8icJ9tg9t712TnCR6sKY9OXwWoFGWH4ERZXoxUVIemnZR0B6Ei0MzjjeuWgOzLYKjPNbT8NbG1ku1T2pGCP4B00GnY0uusI",
     },
   },
+  config: {
+    escola_auth: {
+      additional_fields: [],
+      additional_fields_required: [],
+    },
+    escolalms_courses: {},
+  },
+  fetchConfig: () => Promise.reject(),
   uniqueTags: {
     loading: false,
     list: [],
@@ -386,6 +399,12 @@ export const EscolaLMSContextProvider: FunctionComponent<IMock> = ({
     defaultConfig.settings
   );
 
+  const [config, setConfig] = useLocalStorage<API.AppConfig>(
+    "lms",
+    "config",
+    defaultConfig.config
+  );
+
   const [uniqueTags, setUniqueTags] = useLocalStorage<
     ContextListState<API.Tag>
   >("lms", "tags", defaultConfig.uniqueTags);
@@ -477,6 +496,12 @@ export const EscolaLMSContextProvider: FunctionComponent<IMock> = ({
     setCategoryTree((prevState) => ({ ...prevState, loading: true }));
     getCategoryTree().then((response) => {
       setCategoryTree({ list: response.data, loading: false });
+    });
+  }, []);
+
+  const fetchConfig = useCallback(() => {
+    return getConfig().then((resposne) => {
+      setConfig(resposne.data);
     });
   }, []);
 
@@ -1327,6 +1352,8 @@ export const EscolaLMSContextProvider: FunctionComponent<IMock> = ({
         fetchCourse,
         fetchProgram,
         settings,
+        config,
+        fetchConfig,
         uniqueTags,
         categoryTree,
         login,

@@ -12,3 +12,10 @@ export async function settings() {
     method: "GET",
   });
 }
+
+/**  GET /api/config */
+export async function config() {
+  return request<API.DataResponseSuccess<API.AppConfig>>(`/api/config`, {
+    method: "GET",
+  });
+}
