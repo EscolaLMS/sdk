@@ -513,6 +513,9 @@ export type AppSettings = {
   stripe?: {
     publishable_key: string;
   };
+  global?: {
+    [key: string]: string;
+  }
 };
 
 export type AppFields = {
