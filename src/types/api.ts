@@ -680,6 +680,8 @@ export type Notification = {
   event: EventTypes;
 };
 
+// TODO:update fields with nulls
+
 export type Certificate = {
   id: number;
   template: Template;

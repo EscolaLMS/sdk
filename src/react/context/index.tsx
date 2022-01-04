@@ -567,7 +567,7 @@ export const EscolaLMSContextProvider: FunctionComponent<IMock> = ({
             }));
           })
       : Promise.reject();
-  }, [token]);
+  }, [token, notifications]);
 
   const readNotify = useCallback(
     (id: string) => {
@@ -596,7 +596,7 @@ export const EscolaLMSContextProvider: FunctionComponent<IMock> = ({
             })
         : Promise.reject();
     },
-    [token]
+    [token, notifications]
   );
 
   const fetchCourses = useCallback(
