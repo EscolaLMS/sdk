@@ -197,6 +197,8 @@ export type SuccessResponse = { success: true } | DefaultResponseError;
 
 export type CourseList = DefaultMetaResponse<Course>;
 
+export type CertificateList = DefaultMetaResponse<Certificate>;
+
 export type TutorList = DefaultResponse<UserItem[]>;
 
 export type OrderList = DefaultResponse<Order[]>;
@@ -515,7 +517,7 @@ export type AppSettings = {
   };
   global?: {
     [key: string]: string;
-  }
+  };
 };
 
 export type AppFields = {
@@ -676,4 +678,29 @@ export type Notification = {
   created_at: Date;
   updated_at: Date;
   event: EventTypes;
+};
+
+export type Certificate = {
+  id: number;
+  template: Template;
+  created_at: Date;
+  updated_at: Date;
+  path?: null;
+  content?: any;
+};
+
+export type Template = {
+  id: number;
+  name: string;
+  event: string;
+  channel: string;
+  created_at: Date;
+  updated_at: Date;
+  title: string | null;
+  mail_theme: null;
+  mail_markdown: null;
+  is_default: boolean;
+  assignable_type: null;
+  assignable_id: null;
+  default: boolean;
 };

@@ -26,6 +26,7 @@ import {
 import { uniqueTags as getUniqueTags } from "./../../services/tags";
 import { categoryTree as getCategoryTree } from "./../../services/categories";
 import { getNotifications, readNotification } from "../../services/notify";
+import { getCertificates, getCertificate } from "../../services/certificates";
 import {
   login as postLogin,
   profile as getProfile,
@@ -114,7 +115,6 @@ const completed: API.IEvent[] = [
 ];
 
 const attempted: API.IEvent = "http://adlnet.gov/expapi/verbs/attempted";
-const consume: API.IEvent = "http://activitystrea.ms/schema/1.0/consume";
 
 const guessTheAnswer: API.IEventException = "GuessTheAnswer";
 const questionSet: API.IEventException = "QuestionSet";
@@ -170,6 +170,11 @@ interface EscolaLMSContextConfig {
   fetchOrders: () => Promise<void>;
   fetchPayments: () => Promise<void>;
   payments: ContextPaginatedMetaState<API.Payment>;
+  certificates: ContextPaginatedMetaState<API.Certificate>;
+  fetchCertificates: () => Promise<void>;
+  fetchCertificate: (
+    id: number
+  ) => Promise<API.DefaultResponse<API.Certificate>>;
   pages: ContextPaginatedMetaState<API.PageListItem>;
   fetchPages: () => Promise<void>;
   page: ContextStateValue<API.Page>;
@@ -288,6 +293,11 @@ const defaultConfig: EscolaLMSContextConfig = {
   payments: {
     loading: false,
   },
+  certificates: {
+    loading: false,
+  },
+  fetchCertificates: () => Promise.reject(),
+  fetchCertificate: (id) => Promise.reject(id),
   pages: {
     loading: false,
   },
@@ -455,6 +465,10 @@ export const EscolaLMSContextProvider: FunctionComponent<IMock> = ({
     ContextPaginatedMetaState<API.Payment>
   >("lms", "payments", defaultConfig.payments);
 
+  const [certificates, setCertificates] = useLocalStorage<
+    ContextPaginatedMetaState<API.Certificate>
+  >("lms", "certificates", defaultConfig.certificates);
+
   const [tutor, setTutor] = useState<ContextStateValue<API.UserItem>>(
     defaultConfig.tutor
   );
@@ -505,6 +519,37 @@ export const EscolaLMSContextProvider: FunctionComponent<IMock> = ({
     });
   }, []);
 
+  const fetchCertificates = useCallback(() => {
+    setCertificates((prevState) => ({ ...prevState, loading: true }));
+
+    return token
+      ? getCertificates(token)
+          .then((response) => {
+            if (response.success) {
+              setCertificates({
+                loading: false,
+                list: response,
+                error: undefined,
+              });
+            }
+          })
+          .catch((error) => {
+            setCertificates((prevState) => ({
+              ...prevState,
+              loading: false,
+              error: error,
+            }));
+          })
+      : Promise.reject();
+  }, [token]);
+
+  const fetchCertificate = useCallback(
+    (id: number) => {
+      return token ? getCertificate(token, id) : Promise.reject();
+    },
+    [token]
+  );
+
   const fetchNotifications = useCallback(() => {
     setNotifications((prevState) => ({ ...prevState, loading: true }));
     return token
@@ -530,15 +575,16 @@ export const EscolaLMSContextProvider: FunctionComponent<IMock> = ({
         ? readNotification(id, token)
             .then((response) => {
               if (response.success) {
-                setNotifications({
+                setNotifications((prevState) => ({
+                  ...prevState,
                   list:
-                    notifications &&
-                    notifications.list &&
-                    notifications?.list.filter(
-                      (notify: API.Notification) => notify.id !== id
-                    ),
+                    prevState && prevState.list
+                      ? prevState.list.filter(
+                          (item: API.Notification) => item.id !== id
+                        )
+                      : [],
                   loading: false,
-                });
+                }));
               }
             })
             .catch((error) => {
@@ -687,7 +733,7 @@ export const EscolaLMSContextProvider: FunctionComponent<IMock> = ({
         });
       }
       if (response.success === false) {
-        setCourses((prevState) => ({
+        setCourse((prevState) => ({
           ...prevState,
           loading: false,
           error: response,
@@ -785,9 +831,6 @@ export const EscolaLMSContextProvider: FunctionComponent<IMock> = ({
         });
     } catch (err: any) {
       return Promise.reject(err);
-      if (typeof err === "object" && err && err.name !== "AbortError") {
-        console.log(err);
-      }
     }
   }, [token, abortControllers]);
 
@@ -801,7 +844,7 @@ export const EscolaLMSContextProvider: FunctionComponent<IMock> = ({
         loading: true,
       }));
       return postAddToCart(courseId, token)
-        .then((response) => {
+        .then(() => {
           fetchCart();
         })
         .catch((error) => {
@@ -1401,6 +1444,9 @@ export const EscolaLMSContextProvider: FunctionComponent<IMock> = ({
         notifications,
         fetchNotifications,
         readNotify,
+        certificates,
+        fetchCertificates,
+        fetchCertificate,
       }}
     >
       <EditorContextProvider url={`${apiUrl}/api/hh5p`}>
