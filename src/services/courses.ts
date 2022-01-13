@@ -12,6 +12,7 @@ export enum TopicType {
   H5P = "EscolaLms\\TopicTypes\\Models\\TopicContent\\H5P",
   Image = "EscolaLms\\TopicTypes\\Models\\TopicContent\\Image",
   Pdf = "EscolaLms\\TopicTypes\\Models\\TopicContent\\PDF",
+  Scorm = "EscolaLms\\TopicTypes\\Models\\TopicContent\\ScormSco",
 }
 
 export const completed: API.IEvent[] = [

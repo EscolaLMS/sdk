@@ -7,6 +7,7 @@ export enum TopicType {
   H5P = "EscolaLms\\TopicTypes\\Models\\TopicContent\\H5P",
   Image = "EscolaLms\\TopicTypes\\Models\\TopicContent\\Image",
   Pdf = "EscolaLms\\TopicTypes\\Models\\TopicContent\\PDF",
+  Scorm = "EscolaLms\\TopicTypes\\Models\\TopicContent\\ScormSco",
 }
 
 export enum PaymentStatusType {
@@ -117,7 +118,9 @@ export type Course = {
   tags?: Tag[] | string[];
   users_count?: number;
   level?: string;
+  scorm_sco?: SCORM_SCO;
   scorm_id?: number;
+  scorm_sco_id?: number;
   scorm?: SCORM;
 };
 
@@ -413,6 +416,13 @@ export type TopicPdf = TopicBase & {
   };
 };
 
+type TopicScorm = TopicBase & {
+  topicable_type: TopicType.Scorm;
+  topicable: TopicableBase & {
+    uuid: string;
+  };
+};
+
 export type TopicUnselected = TopicBase & {
   topicable_type?: TopicType.Unselected;
   topicable?: never;
@@ -426,7 +436,8 @@ export type Topic =
   | TopicVideo
   | TopicH5P
   | TopicImage
-  | TopicPdf;
+  | TopicPdf
+  | TopicScorm;
 
 export type TopicNotEmpty =
   | TopicRichText
@@ -435,7 +446,8 @@ export type TopicNotEmpty =
   | TopicVideo
   | TopicH5P
   | TopicImage
-  | TopicPdf;
+  | TopicPdf
+  | TopicScorm;
 
 export type CourseProgram = Course & {
   lessons: Lesson[];
@@ -560,18 +572,18 @@ export type SCORM_SCO = {
   entry_url: string;
   identifier: string;
   title: string;
-  visible: 1 | 0;
+  visible?: 1 | 0;
   sco_parameters: any;
-  launch_data: any;
-  max_time_allowed: number;
-  time_limit_action: number;
-  block: number;
-  score_int: number;
-  score_decimal: number;
-  completion_threshold: number;
-  prerequisites: any;
-  created_at: string;
-  updated_at: string;
+  launch_data?: any;
+  max_time_allowed?: number;
+  time_limit_action?: number;
+  block?: number;
+  score_int?: number;
+  score_decimal?: number;
+  completion_threshold?: number;
+  prerequisites?: any;
+  created_at?: string;
+  updated_at?: string;
 };
 
 export type Cart = {
