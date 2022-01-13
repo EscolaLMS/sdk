@@ -328,7 +328,7 @@ export const SCORMPlayer: React.FC<{
   uuid: string;
 }> = ({ uuid }) => {
   const { apiUrl } = useContext(EscolaLMSContext);
-  return <iframe frameBorder="0" src={`${apiUrl}/api/scorm/play/${uuid}`} />;
+  return <iframe src={`${apiUrl}/api/scorm/play/${uuid}`} />;
 };
 
 export const EscolaLMSContext: React.Context<EscolaLMSContextConfig> =
@@ -1447,7 +1447,6 @@ export const EscolaLMSContextProvider: FunctionComponent<IMock> = ({
         certificates,
         fetchCertificates,
         fetchCertificate,
-        SCORMPlayer,
       }}
     >
       <EditorContextProvider url={`${apiUrl}/api/hh5p`}>
