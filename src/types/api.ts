@@ -597,6 +597,9 @@ export type Cart = {
 export type CourseProgressItemElement = {
   topic_id: number;
   status: CourseProgressItemElementStatus;
+  started_at: string;
+  finished_at: string;
+  seconds: number;
 };
 
 export enum CourseProgressItemElementStatus {
