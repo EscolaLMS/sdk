@@ -123,6 +123,9 @@ export type Course = {
   scorm_sco_id?: number;
   scorm?: SCORM;
   target_group?: string;
+  active_to?: string;
+  active_from?: string;
+  hours_to_complete?: number;
 };
 
 export type PaginatedList<Model> = {
