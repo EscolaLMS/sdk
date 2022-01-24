@@ -53,6 +53,7 @@ import {
 import { useLocalStorage } from "../hooks/useLocalStorage";
 import { EditorContextProvider } from "@escolalms/h5p-react";
 import * as API from "./../../types/api";
+import { getH5p } from "../../services/h5p";
 
 interface IMock {
   children?: React.ReactElement[] | React.ReactElement;
@@ -191,6 +192,8 @@ interface EscolaLMSContextConfig {
   notifications: ContextListState<API.Notification>;
   fetchNotifications: () => Promise<void>;
   readNotify: (id: string) => Promise<void>;
+  h5p: ContextStateValue<API.H5PObject>;
+  fetchH5P: (id: string) => void;
 }
 
 const defaultConfig: EscolaLMSContextConfig = {
@@ -322,6 +325,10 @@ const defaultConfig: EscolaLMSContextConfig = {
   },
   fetchNotifications: () => Promise.reject(),
   readNotify: (id: string) => Promise.reject(),
+  h5p: {
+    loading: false,
+  },
+  fetchH5P: (id: string) => Promise.reject(),
 };
 
 export const SCORMPlayer: React.FC<{
@@ -487,6 +494,12 @@ export const EscolaLMSContextProvider: FunctionComponent<IMock> = ({
     "lms",
     "fontSize",
     defaultConfig.fontSize
+  );
+
+  const [h5p, setH5P] = useLocalStorage<ContextStateValue<API.H5PObject>>(
+    "lms",
+    "h5p",
+    defaultConfig.h5p
   );
 
   const [notifications, setNotifications] = useLocalStorage<
@@ -920,6 +933,28 @@ export const EscolaLMSContextProvider: FunctionComponent<IMock> = ({
         })
       : Promise.reject();
   }, [token]);
+
+  const fetchH5P = useCallback(
+    (id: string) => {
+      setH5P({ loading: true });
+      token
+        ? getH5p(Number(id))
+            .then((response) => {
+              if (response.success) {
+                setH5P({ loading: false, value: response.data });
+              }
+            })
+            .catch((error) => {
+              setH5P((prevState) => ({
+                ...prevState,
+                loading: false,
+                error: error,
+              }));
+            })
+        : Promise.reject();
+    },
+    [token]
+  );
 
   const fetchProgram = useCallback(
     (id) => {
@@ -1447,6 +1482,8 @@ export const EscolaLMSContextProvider: FunctionComponent<IMock> = ({
         certificates,
         fetchCertificates,
         fetchCertificate,
+        h5p,
+        fetchH5P,
       }}
     >
       <EditorContextProvider url={`${apiUrl}/api/hh5p`}>
