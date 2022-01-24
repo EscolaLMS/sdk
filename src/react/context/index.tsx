@@ -193,7 +193,7 @@ interface EscolaLMSContextConfig {
   fetchNotifications: () => Promise<void>;
   readNotify: (id: string) => Promise<void>;
   h5p: ContextStateValue<API.H5PObject>;
-  fetchH5P: (id: number) => Promise<void>;
+  fetchH5P: (id: string) => void;
 }
 
 const defaultConfig: EscolaLMSContextConfig = {
@@ -328,7 +328,7 @@ const defaultConfig: EscolaLMSContextConfig = {
   h5p: {
     loading: false,
   },
-  fetchH5P: (id: number) => Promise.reject(),
+  fetchH5P: (id: string) => Promise.reject(),
 };
 
 export const SCORMPlayer: React.FC<{
@@ -935,14 +935,22 @@ export const EscolaLMSContextProvider: FunctionComponent<IMock> = ({
   }, [token]);
 
   const fetchH5P = useCallback(
-    (id: number) => {
+    (id: string) => {
       setH5P({ loading: true });
       token
-        ? getH5p(id).then((response) => {
-            if (response.success) {
-              setH5P({ loading: false, value: response.data });
-            }
-          })
+        ? getH5p(Number(id))
+            .then((response) => {
+              if (response.success) {
+                setH5P({ loading: false, value: response.data });
+              }
+            })
+            .catch((error) => {
+              setH5P((prevState) => ({
+                ...prevState,
+                loading: false,
+                error: error,
+              }));
+            })
         : Promise.reject();
     },
     [token]
