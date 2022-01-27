@@ -536,17 +536,7 @@ export type AppSettings = {
   };
 };
 
-export type AppFields = {
-  additional_fields: string[];
-  additional_fields_required: string[];
-};
-
-export type AppConfig = {
-  escola_auth: AppFields;
-  escolalms_courses: {
-    [key: string]: string;
-  };
-};
+export type AppConfig = Record<string, Record<string, string[] | string>>;
 
 export type AppCurrency = {
   default: string;
