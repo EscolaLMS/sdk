@@ -536,14 +536,7 @@ export type AppSettings = {
   };
 };
 
-export type AppConfig = {
-  escola_auth: {
-    [key: string]: string[] | string;
-  };
-  escolalms_courses: {
-    [key: string]: string;
-  };
-};
+export type AppConfig = Record<string, Record<string, string[] | string>>;
 
 export type AppCurrency = {
   default: string;
