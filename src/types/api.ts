@@ -536,13 +536,10 @@ export type AppSettings = {
   };
 };
 
-export type AppFields = {
-  additional_fields: string[];
-  additional_fields_required: string[];
-};
-
 export type AppConfig = {
-  escola_auth: AppFields;
+  escola_auth: {
+    [key: string]: string[] | string;
+  };
   escolalms_courses: {
     [key: string]: string;
   };
