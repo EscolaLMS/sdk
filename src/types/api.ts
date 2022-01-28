@@ -105,6 +105,7 @@ export type Course = {
   author_id: number;
   image_url: string;
   author: UserItem;
+  authors: UserItem[];
   lessons_count: number;
   lessons: Lesson[];
   language?: string;
