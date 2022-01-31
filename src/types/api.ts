@@ -207,6 +207,8 @@ export type CourseList = DefaultMetaResponse<Course>;
 
 export type CertificateList = DefaultMetaResponse<Certificate>;
 
+export type MattermostChannelList = DefaultMetaResponse<MattermostChannels>;
+
 export type TutorList = DefaultResponse<UserItem[]>;
 
 export type OrderList = DefaultResponse<Order[]>;
@@ -699,6 +701,50 @@ export type Certificate = {
   updated_at: Date;
   path?: null;
   content?: any;
+};
+
+export type MattermostChannels = {
+  id: number;
+  create_at: number,
+  update_at: number,
+  delete_at: number,
+  display_name: string,
+  name: string,
+  description: string,
+  email: string,
+  type: string,
+  company_name: string,
+  allowed_domains: string,
+  invite_id: string,
+  allow_open_invite: false,
+  scheme_id: null,
+  group_constrained: null,
+  channels: Channel[],
+};
+
+export type Channel = {
+  id: string,
+                        create_at: number,
+                        update_at: number,
+                        delete_at: number,
+                        team_id: string,
+                        type: string,
+                        display_name: string,
+                        name: string,
+                        header: string,
+                        purpose: string,
+                        last_post_at: number,
+                        total_msg_count: number,
+                        extra_update_at: number,
+                        creator_id: string,
+                        scheme_id: null,
+                        props: null,
+                        group_constrained: null,
+                        shared: null,
+                        total_msg_count_root: number,
+                        policy_id: null,
+                        last_root_post_at: number,
+                        url: string,
 };
 
 export type Template = {

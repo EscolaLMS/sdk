@@ -27,6 +27,7 @@ import { uniqueTags as getUniqueTags } from "./../../services/tags";
 import { categoryTree as getCategoryTree } from "./../../services/categories";
 import { getNotifications, readNotification } from "../../services/notify";
 import { getCertificates, getCertificate } from "../../services/certificates";
+import { getMattermostChannels } from "../../services/mattermost";
 import {
   login as postLogin,
   profile as getProfile,
@@ -176,6 +177,8 @@ interface EscolaLMSContextConfig {
   fetchCertificate: (
     id: number
   ) => Promise<API.DefaultResponse<API.Certificate>>;
+  mattermostChannels: ContextPaginatedMetaState<API.MattermostChannels>;
+  fetchMattermostChannels: () => Promise<void>;
   pages: ContextPaginatedMetaState<API.PageListItem>;
   fetchPages: () => Promise<void>;
   page: ContextStateValue<API.Page>;
@@ -304,6 +307,7 @@ const defaultConfig: EscolaLMSContextConfig = {
   pages: {
     loading: false,
   },
+  fetchMattermostChannels: () => Promise.reject(),
   fetchPages: () => Promise.reject(),
   page: {
     loading: false,
@@ -476,6 +480,10 @@ export const EscolaLMSContextProvider: FunctionComponent<IMock> = ({
     ContextPaginatedMetaState<API.Certificate>
   >("lms", "certificates", defaultConfig.certificates);
 
+  const [mattermostChannels, setMattermostChannels] = useLocalStorage<
+  ContextPaginatedMetaState<API.MattermostChannels>
+>("lms", "mattermostChannels", defaultConfig.mattermostChannels);
+
   const [tutor, setTutor] = useState<ContextStateValue<API.UserItem>>(
     defaultConfig.tutor
   );
@@ -562,6 +570,30 @@ export const EscolaLMSContextProvider: FunctionComponent<IMock> = ({
     },
     [token]
   );
+
+  const fetchMattermostChannels = useCallback(() => {
+    setMattermostChannels((prevState) => ({ ...prevState, loading: true }));
+
+    return token
+      ? getMattermostChannels(token)
+          .then((response) => {
+            if (response.success) {
+              setMattermostChannels({
+                loading: false,
+                list: response,
+                error: undefined,
+              });
+            }
+          })
+          .catch((error) => {
+            setMattermostChannels((prevState) => ({
+              ...prevState,
+              loading: false,
+              error: error,
+            }));
+          })
+      : Promise.reject();
+  }, [token]);
 
   const fetchNotifications = useCallback(() => {
     setNotifications((prevState) => ({ ...prevState, loading: true }));
@@ -1482,6 +1514,8 @@ export const EscolaLMSContextProvider: FunctionComponent<IMock> = ({
         certificates,
         fetchCertificates,
         fetchCertificate,
+        mattermostChannels,
+        fetchMattermostChannels,
         h5p,
         fetchH5P,
       }}
