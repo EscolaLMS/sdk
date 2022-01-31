@@ -17,7 +17,7 @@ export enum TopicType {
 
 export const completed: API.IEvent[] = [
   "http://adlnet.gov/expapi/verbs/completed",
-  "http://adlnet.gov/expapi/verbs/answered",
+  // "http://adlnet.gov/expapi/verbs/answered",
   "http://activitystrea.ms/schema/1.0/consume",
   "http://adlnet.gov/expapi/verbs/passed",
   "http://adlnet.gov/expapi/verbs/mastered",
