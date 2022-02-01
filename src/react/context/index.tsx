@@ -177,7 +177,7 @@ interface EscolaLMSContextConfig {
   fetchCertificate: (
     id: number
   ) => Promise<API.DefaultResponse<API.Certificate>>;
-  mattermostChannels: ContextPaginatedMetaState<API.MattermostChannels>;
+  mattermostChannels: ContextStateValue<API.MattermostChannels>;
   fetchMattermostChannels: () => Promise<void>;
   pages: ContextPaginatedMetaState<API.PageListItem>;
   fetchPages: () => Promise<void>;
@@ -484,7 +484,7 @@ export const EscolaLMSContextProvider: FunctionComponent<IMock> = ({
   >("lms", "certificates", defaultConfig.certificates);
 
   const [mattermostChannels, setMattermostChannels] = useLocalStorage<
-  ContextPaginatedMetaState<API.MattermostChannels>
+  ContextStateValue<API.MattermostChannels>
 >("lms", "mattermostChannels", defaultConfig.mattermostChannels);
 
   const [tutor, setTutor] = useState<ContextStateValue<API.UserItem>>(
