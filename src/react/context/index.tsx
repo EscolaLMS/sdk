@@ -307,6 +307,9 @@ const defaultConfig: EscolaLMSContextConfig = {
   pages: {
     loading: false,
   },
+  mattermostChannels: {
+    loading: false,
+  },
   fetchMattermostChannels: () => Promise.reject(),
   fetchPages: () => Promise.reject(),
   page: {
