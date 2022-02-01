@@ -583,7 +583,7 @@ export const EscolaLMSContextProvider: FunctionComponent<IMock> = ({
             if (response.success) {
               setMattermostChannels({
                 loading: false,
-                list: response,
+                value: response.data,
                 error: undefined,
               });
             }
