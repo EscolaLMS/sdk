@@ -207,7 +207,7 @@ export type CourseList = DefaultMetaResponse<Course>;
 
 export type CertificateList = DefaultMetaResponse<Certificate>;
 
-export type MattermostChannelList = DefaultMetaResponse<MattermostChannels>;
+export type MattermostChannelList = DefaultResponse<MattermostChannels>;
 
 export type TutorList = DefaultResponse<UserItem[]>;
 
