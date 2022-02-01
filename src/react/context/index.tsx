@@ -177,7 +177,11 @@ interface EscolaLMSContextConfig {
   fetchCertificate: (
     id: number
   ) => Promise<API.DefaultResponse<API.Certificate>>;
+<<<<<<< HEAD
   mattermostChannels: ContextStateValue<API.MattermostChannels>;
+=======
+  mattermostChannels: ContextPaginatedMetaState<API.MattermostChannels>;
+>>>>>>> 7495cbf4636705dea7bf1ae0c381a43db88661c4
   fetchMattermostChannels: () => Promise<void>;
   pages: ContextPaginatedMetaState<API.PageListItem>;
   fetchPages: () => Promise<void>;
