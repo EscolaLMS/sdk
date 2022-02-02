@@ -36,6 +36,7 @@ import {
   updateAvatar as postUpdateAvatar,
   forgot,
   reset,
+  emailVerify,
 } from "./../../services/auth";
 import { pages as getPages, page as getPage } from "./../../services/pages";
 import {
@@ -147,6 +148,7 @@ interface EscolaLMSContextConfig {
   ) => Promise<API.DefaultResponse<API.RegisterResponse>>;
   forgot: (body: API.ForgotRequest) => Promise<API.ForgotResponse>;
   reset: (body: API.ResetPasswordRequest) => Promise<API.ResetPasswordResponse>;
+  emailVerify: (id: string, hash: string) => Promise<API.EmailVerifyResponse>;
   user: ContextStateValue<API.UserItem>;
   addToCart: (courseId: number) => Promise<void>;
   removeFromCart: (courseId: number) => Promise<void>;
@@ -264,6 +266,7 @@ const defaultConfig: EscolaLMSContextConfig = {
     }),
   forgot: (body: API.ForgotRequest) => Promise.reject(),
   reset: (body: API.ResetPasswordRequest) => Promise.reject(),
+  emailVerify: (id: string, hash: string) => Promise.reject(),
   addToCart: (id) => Promise.reject(id),
   removeFromCart: (id) => Promise.reject(id),
   fetchCart: () => Promise.reject(),
@@ -1474,6 +1477,7 @@ export const EscolaLMSContextProvider: FunctionComponent<IMock> = ({
         logout,
         forgot,
         reset,
+        emailVerify,
         user,
         register,
         fetchCart,

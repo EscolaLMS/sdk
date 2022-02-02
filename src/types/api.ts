@@ -269,6 +269,7 @@ export type RegisterRequest = {
   password_confirmation: string;
   first_name: string;
   last_name: string;
+  return_url: string;
 };
 
 export type RegisterResponse =
@@ -297,6 +298,10 @@ export type ResetPasswordResponse =
   | DefaultResponse<{ todo: "// TODO" }>
   | DefaultResponseError;
 
+export type EmailVerifyResponse =
+  | DefaultResponse<{ todo: "// TODO " }>
+  | DefaultResponseError;
+  
 export type User = {
   data: UserItem;
 };
