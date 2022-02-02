@@ -102,14 +102,12 @@ export async function reset(
 export async function emailVerify(
   id: number,
   hash: string,
-  options?: { [key: string]: any }
 ) {
-  return request<API.DefaultResponse<API.Certificate>>(`/api/auth/email/verify/${id}/${hash}`, {
+  return request<API.EmailVerifyResponse>(`/api/auth/email/verify/${id}/${hash}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
     },
-    ...(options || {}),
   });
 }
 
