@@ -100,7 +100,7 @@ export async function reset(
 }
 
 export async function emailVerify(
-  id: number,
+  id: string,
   hash: string,
 ) {
   return request<API.EmailVerifyResponse>(`/api/auth/email/verify/${id}/${hash}`, {
