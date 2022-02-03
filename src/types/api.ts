@@ -285,7 +285,10 @@ export type ForgotRequest = {
 };
 
 export type ForgotResponse =
-  | DefaultResponse<{ todo: "// TODO " }>
+  | {
+      message: string;
+      success: true;
+    }
   | DefaultResponseError;
 
 export type ResetPasswordRequest = {
@@ -295,13 +298,19 @@ export type ResetPasswordRequest = {
 };
 
 export type ResetPasswordResponse =
-  | DefaultResponse<{ todo: "// TODO" }>
+  | {
+      message: string;
+      success: true;
+    }
   | DefaultResponseError;
 
 export type EmailVerifyResponse =
-  | DefaultResponse<{ todo: "// TODO " }>
+  | {
+      message: string;
+      success: true;
+    }
   | DefaultResponseError;
-  
+
 export type User = {
   data: UserItem;
 };
