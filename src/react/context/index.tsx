@@ -146,9 +146,9 @@ interface EscolaLMSContextConfig {
   register: (
     body: API.RegisterRequest
   ) => Promise<API.DefaultResponse<API.RegisterResponse>>;
-  forgot: (body: API.ForgotRequest) => Promise<API.ForgotResponse>;
-  reset: (body: API.ResetPasswordRequest) => Promise<API.ResetPasswordResponse>;
-  emailVerify: (id: string, hash: string) => Promise<API.EmailVerifyResponse>;
+  forgot: (body: API.ForgotRequest) => Promise<API.AuthSuccessResponse>;
+  reset: (body: API.ResetPasswordRequest) => Promise<API.AuthSuccessResponse>;
+  emailVerify: (id: string, hash: string) => Promise<API.AuthSuccessResponse>;
   user: ContextStateValue<API.UserItem>;
   addToCart: (courseId: number) => Promise<void>;
   removeFromCart: (courseId: number) => Promise<void>;

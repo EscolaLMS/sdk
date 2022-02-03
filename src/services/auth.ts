@@ -75,7 +75,7 @@ export async function forgot(
   body: API.ForgotRequest,
   options?: { [key: string]: any }
 ) {
-  return request<API.ForgotResponse>("/api/auth/password/forgot", {
+  return request<API.AuthSuccessResponse>("/api/auth/password/forgot", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -89,7 +89,7 @@ export async function reset(
   body: API.ResetPasswordRequest,
   options?: { [key: string]: any }
 ) {
-  return request<API.ResetPasswordResponse>("/api/auth/password/reset", {
+  return request<API.AuthSuccessResponse>("/api/auth/password/reset", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -99,15 +99,14 @@ export async function reset(
   });
 }
 
-export async function emailVerify(
-  id: string,
-  hash: string,
-) {
-  return request<API.EmailVerifyResponse>(`/api/auth/email/verify/${id}/${hash}`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+export async function emailVerify(id: string, hash: string) {
+  return request<API.AuthSuccessResponse>(
+    `/api/auth/email/verify/${id}/${hash}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
 }
-

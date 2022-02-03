@@ -203,6 +203,13 @@ export type RawResponse<Model> = Model | DefaultResponseError;
 
 export type SuccessResponse = { success: true } | DefaultResponseError;
 
+export type AuthSuccessResponse =
+  | {
+      message: string;
+      success: true;
+    }
+  | DefaultResponseError;
+
 export type CourseList = DefaultMetaResponse<Course>;
 
 export type CertificateList = DefaultMetaResponse<Certificate>;
@@ -284,32 +291,11 @@ export type ForgotRequest = {
   return_url: string;
 };
 
-export type ForgotResponse =
-  | {
-      message: string;
-      success: true;
-    }
-  | DefaultResponseError;
-
 export type ResetPasswordRequest = {
   token: string;
   password: string;
   email: string;
 };
-
-export type ResetPasswordResponse =
-  | {
-      message: string;
-      success: true;
-    }
-  | DefaultResponseError;
-
-export type EmailVerifyResponse =
-  | {
-      message: string;
-      success: true;
-    }
-  | DefaultResponseError;
 
 export type User = {
   data: UserItem;
