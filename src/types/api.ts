@@ -206,7 +206,7 @@ export type SuccessResponse = { success: true } | DefaultResponseError;
 export type AuthSuccessResponse =
   | {
       message: string;
-      success: true;
+      success: boolean;
     }
   | DefaultResponseError;
 
