@@ -8,6 +8,7 @@ import React, {
   useMemo,
 } from "react";
 import request from "umi-request";
+import { interceptors } from "./../../services/request";
 import {
   course as getCourses,
   getCourse,
@@ -55,289 +56,27 @@ import { useLocalStorage } from "../hooks/useLocalStorage";
 import { EditorContextProvider } from "@escolalms/h5p-react";
 import * as API from "./../../types/api";
 import { getH5p } from "../../services/h5p";
+import {
+  ContextState,
+  ContextPaginatedMetaState,
+  ContextPaginatedState,
+  ContextListState,
+  ContextStateValue,
+  FontSize,
+  EscolaLMSContextReadConfig,
+  EscolaLMSContextAPIConfig,
+  EscolaLMSContextConfig,
+  SortProgram,
+} from "./types";
 
-interface IMock {
-  children?: React.ReactElement[] | React.ReactElement;
-  apiUrl: string;
-}
-
-interface ContextState<T> {
-  loading: boolean;
-  filter?: API.CourseParams;
-  list: T[];
-}
-
-interface ContextPaginatedMetaState<T> {
-  loading: boolean;
-  list?: API.PaginatedMetaList<T>;
-  error?: API.DefaultResponseError;
-}
-
-interface ContextPaginatedState<T> {
-  loading: boolean;
-  list?: API.PaginatedList<T>;
-  error?: API.DefaultResponseError;
-}
-
-interface ContextListState<T> {
-  loading: boolean;
-  list?: T[];
-  error?: API.DefaultResponseError;
-}
-
-interface ContextStateValue<T> {
-  loading: boolean;
-  value?: T;
-  error?: API.DefaultResponseError;
-}
-
-enum FontSize {
-  small = 0,
-  regular = 1,
-  bigger = 2,
-  big = 3,
-}
-
-// npm test
-
-const blackList: API.IEvent[] = [
-  "http://adlnet.gov/expapi/verbs/attended",
-  "http://adlnet.gov/expapi/verbs/attempted",
-  "http://adlnet.gov/expapi/verbs/interacted",
-  "http://adlnet.gov/expapi/verbs/imported",
-  "http://adlnet.gov/expapi/verbs/created",
-];
-
-const completed: API.IEvent[] = [
-  "http://adlnet.gov/expapi/verbs/completed",
-  // "http://adlnet.gov/expapi/verbs/answered",
-  "http://activitystrea.ms/schema/1.0/consume",
-  "http://adlnet.gov/expapi/verbs/passed",
-  "http://adlnet.gov/expapi/verbs/mastered",
-];
-
-const attempted: API.IEvent = "http://adlnet.gov/expapi/verbs/attempted";
-
-const guessTheAnswer: API.IEventException = "GuessTheAnswer";
-const questionSet: API.IEventException = "QuestionSet";
-
-interface EscolaLMSContextConfig {
-  apiUrl: string;
-  courses: ContextPaginatedMetaState<API.CourseListItem>;
-  fetchCourses: (filter: API.CourseParams) => Promise<void>;
-  userGroup: ContextStateValue<API.UserGroupRow>;
-  fetchUserGroup: (id: number) => Promise<void>;
-  userGroups: ContextListState<API.UserGroup>;
-  fetchUserGroups: (params: API.UserGroupsParams) => Promise<void>;
-  registerableGroups: ContextListState<API.UserGroup>;
-  fetchRegisterableGroups: () => Promise<void>;
-  course: ContextStateValue<API.CourseListItem>;
-  fetchCourse: (id: number) => Promise<void>;
-  program: ContextStateValue<API.CourseProgram>;
-  fetchProgram: (id: number) => Promise<void>;
-  settings: API.AppSettings;
-  config: API.AppConfig;
-  fetchConfig: () => Promise<void>;
-  uniqueTags: ContextListState<API.Tag>;
-  categoryTree: ContextListState<API.Category>;
-  login: (body: API.LoginRequest) => Promise<void>;
-  logout: () => Promise<void>;
-  register: (
-    body: API.RegisterRequest
-  ) => Promise<API.DefaultResponse<API.RegisterResponse>>;
-  forgot: (body: API.ForgotRequest) => Promise<API.ForgotResponse>;
-  reset: (body: API.ResetPasswordRequest) => Promise<API.ResetPasswordResponse>;
-  user: ContextStateValue<API.UserItem>;
-  addToCart: (courseId: number) => Promise<void>;
-  removeFromCart: (courseId: number) => Promise<void>;
-  fetchCart: () => Promise<void>;
-  cart: ContextStateValue<API.Cart>;
-  payWithStripe: (paymentMethodId: string) => Promise<void>;
-  fetchProgress: () => Promise<void>;
-  progress: ContextStateValue<API.CourseProgress>;
-  sendProgress: (
-    courseId: number,
-    data: API.CourseProgressItemElement[]
-  ) => Promise<void>;
-  h5pProgress: (
-    courseId: string,
-    topicId: number,
-    statement: API.IStatement
-  ) => Promise<API.SuccessResponse> | null;
-  tutors: ContextListState<API.UserItem>;
-  fetchTutors: () => Promise<void>;
-  tutor: ContextStateValue<API.UserItem>;
-  fetchTutor: (id: number) => Promise<void>;
-  orders: ContextListState<API.Order>;
-  fetchOrders: () => Promise<void>;
-  fetchPayments: () => Promise<void>;
-  payments: ContextPaginatedMetaState<API.Payment>;
-  certificates: ContextPaginatedMetaState<API.Certificate>;
-  fetchCertificates: () => Promise<void>;
-  fetchCertificate: (
-    id: number
-  ) => Promise<API.DefaultResponse<API.Certificate>>;
-  mattermostChannels: ContextStateValue<API.MattermostData>;
-  fetchMattermostChannels: () => Promise<void>;
-  pages: ContextPaginatedMetaState<API.PageListItem>;
-  fetchPages: () => Promise<void>;
-  page: ContextStateValue<API.Page>;
-  fetchPage: (slug: string) => Promise<void>;
-  updateProfile: (data: API.UserItem) => Promise<void>;
-  updateAvatar: (avatar: File) => Promise<void>;
-  topicPing: (topicId: number) => Promise<Boolean>;
-  topicIsFinished: (topicId: number) => Boolean;
-  getNextPrevTopic: (topicId: number, next?: boolean) => API.Topic | null;
-  courseProgress: (courseId: number) => number;
-  fontSizeToggle: (bigger: boolean) => void;
-  fontSize: FontSize;
-  socialAuthorize: (token: string) => void;
-  notifications: ContextListState<API.Notification>;
-  fetchNotifications: () => Promise<void>;
-  readNotify: (id: string) => Promise<void>;
-  h5p: ContextStateValue<API.H5PObject>;
-  fetchH5P: (id: string) => void;
-}
-
-const defaultConfig: EscolaLMSContextConfig = {
-  apiUrl: "",
-  courses: {
-    loading: false,
-  },
-  fetchCourses: () => Promise.reject(),
-  userGroup: {
-    loading: false,
-  },
-  fetchUserGroup: () => Promise.reject(),
-  userGroups: {
-    loading: false,
-  },
-  fetchUserGroups: () => Promise.reject(),
-  registerableGroups: {
-    loading: false,
-  },
-  fetchRegisterableGroups: () => Promise.reject(),
-  course: {
-    loading: false,
-  },
-  fetchCourse: (id: number) => Promise.reject(),
-  program: {
-    loading: false,
-  },
-  fetchProgram: (id: number) => Promise.reject(),
-  login: (body: API.LoginRequest) => Promise.reject(),
-  logout: () => Promise.reject(),
-  settings: {
-    currencies: {
-      default: "EUR",
-      enum: ["EUR", "USD"],
-    },
-    env: "local",
-    stripe: {
-      publishable_key:
-        "pk_test_51Ig8icJ9tg9t712TnCR6sKY9OXwWoFGWH4ERZXoxUVIemnZR0B6Ei0MzjjeuWgOzLYKjPNbT8NbG1ku1T2pGCP4B00GnY0uusI",
-    },
-  },
-  config: {
-    escola_auth: {
-      additional_fields: [],
-      additional_fields_required: [],
-    },
-    escolalms_courses: {},
-  },
-  fetchConfig: () => Promise.reject(),
-  uniqueTags: {
-    loading: false,
-    list: [],
-  },
-  categoryTree: {
-    loading: false,
-    list: [],
-  },
-  user: {
-    loading: false,
-  },
-  register: () =>
-    Promise.reject({
-      success: false,
-      message: "register method not implemented",
-    }),
-  forgot: (body: API.ForgotRequest) => Promise.reject(),
-  reset: (body: API.ResetPasswordRequest) => Promise.reject(),
-  addToCart: (id) => Promise.reject(id),
-  removeFromCart: (id) => Promise.reject(id),
-  fetchCart: () => Promise.reject(),
-  cart: {
-    loading: false,
-    value: { total: 0, subtotal: 0, tax: 0, items: [] },
-  },
-  payWithStripe: (paymentMethodId: string) => Promise.reject(paymentMethodId),
-  fetchProgress: () => Promise.reject(),
-  progress: {
-    loading: false,
-    value: [],
-  },
-  sendProgress: (courseId: number, data: API.CourseProgressItemElement[]) =>
-    Promise.reject(),
-  h5pProgress: (courseId: string, topicId: number, statement: API.IStatement) =>
-    Promise.reject(),
-
-  tutors: {
-    loading: false,
-    list: [],
-  },
-  fetchTutors: () => Promise.reject(),
-  tutor: {
-    loading: false,
-  },
-  fetchTutor: (id: number) => Promise.reject(id),
-  orders: {
-    loading: false,
-    list: [],
-  },
-  fetchOrders: () => Promise.reject(),
-  payments: {
-    loading: false,
-  },
-  certificates: {
-    loading: false,
-  },
-  fetchCertificates: () => Promise.reject(),
-  fetchCertificate: (id) => Promise.reject(id),
-  pages: {
-    loading: false,
-  },
-  mattermostChannels: {
-    loading: false,
-    value: { server: "", teams: [] },
-  },
-  fetchMattermostChannels: () => Promise.reject(),
-  fetchPages: () => Promise.reject(),
-  page: {
-    loading: false,
-  },
-  fetchPage: (slug: string) => Promise.reject(),
-  fetchPayments: () => Promise.reject(),
-  updateProfile: (data: API.UserItem) => Promise.reject(data),
-  updateAvatar: (avatar: File) => Promise.reject(avatar),
-  topicPing: (topicId: number) => Promise.reject(topicId),
-  topicIsFinished: (topicId: number) => false,
-  courseProgress: (courseId: number) => 0,
-  getNextPrevTopic: (topicId: number, next?: boolean) => null,
-  fontSizeToggle: (bigger: boolean) => 0,
-  fontSize: FontSize.regular,
-  socialAuthorize: (token: string) => Promise.reject(),
-  notifications: {
-    loading: false,
-    list: [],
-  },
-  fetchNotifications: () => Promise.reject(),
-  readNotify: (id: string) => Promise.reject(),
-  h5p: {
-    loading: false,
-  },
-  fetchH5P: (id: string) => Promise.reject(),
-};
+import {
+  defaultConfig,
+  attempted,
+  guessTheAnswer,
+  blackList,
+  completed,
+  questionSet,
+} from "./defaults";
 
 export const SCORMPlayer: React.FC<{
   uuid: string;
@@ -348,8 +87,6 @@ export const SCORMPlayer: React.FC<{
 
 export const EscolaLMSContext: React.Context<EscolaLMSContextConfig> =
   React.createContext(defaultConfig);
-
-type SortProgram = (lessons: API.Lesson[]) => API.Lesson[];
 
 export const sortProgram: SortProgram = (lessons) => {
   return [...lessons]
@@ -368,84 +105,76 @@ export const sortProgram: SortProgram = (lessons) => {
     }));
 };
 
-const interceptors = (apiUrl: string, fire: boolean = false) => {
-  if (!fire) {
-    return;
-  }
-  request.interceptors.request.use((url, options) => {
-    if (url.includes(apiUrl)) {
-      return {
-        url: `${url}`,
-        options: options,
-      };
-    }
-    return {
-      url: `${apiUrl}${url}`,
-      options: { ...options, interceptors: true },
-    };
-  });
-};
+interface EscolaLMSContextProviderType {
+  children?: React.ReactElement[] | React.ReactElement;
+  apiUrl: string;
+  defaults?: Partial<EscolaLMSContextReadConfig>;
+}
 
-/**
- *
- *
- */
-export const EscolaLMSContextProvider: FunctionComponent<IMock> = ({
-  children,
-  apiUrl,
-}) => {
-  const shouldFire = useRef(true);
-  interceptors(apiUrl, shouldFire.current);
-  shouldFire.current = false;
+export const EscolaLMSContextProvider: FunctionComponent<
+  EscolaLMSContextProviderType
+> = ({ children, apiUrl, defaults }) => {
+  interceptors(apiUrl);
+
+  const initialValues = {
+    ...defaultConfig,
+    ...defaults,
+  };
+
+  const getDefaultData = <K extends keyof EscolaLMSContextReadConfig>(
+    key: K
+  ): EscolaLMSContextReadConfig[K] => {
+    return initialValues[key];
+  };
 
   const [courses, setCourses] = useLocalStorage<
     ContextPaginatedMetaState<API.CourseListItem>
-  >("lms", "courses", defaultConfig.courses);
+  >("lms", "courses", getDefaultData("courses"));
 
   const [userGroup, setUserGroup] = useLocalStorage<
     ContextStateValue<API.UserGroupRow>
-  >("lms", "userGroup", defaultConfig.userGroup);
+  >("lms", "userGroup", getDefaultData("userGroup"));
 
   const [userGroups, setUserGroups] = useLocalStorage<
     ContextListState<API.UserGroup>
-  >("lms", "userGroups", defaultConfig.userGroups);
+  >("lms", "userGroups", getDefaultData("userGroups"));
 
   const [registerableGroups, setRegisterableGroups] = useLocalStorage<
     ContextListState<API.UserGroup>
-  >("lms", "registerableGroups", defaultConfig.registerableGroups);
+  >("lms", "registerableGroups", getDefaultData("registerableGroups"));
 
   const [course, setCourse] = useLocalStorage<
     ContextStateValue<API.CourseListItem>
-  >("lms", "course", defaultConfig.course);
+  >("lms", "course", getDefaultData("course"));
 
   const [settings, setSettings] = useLocalStorage<API.AppSettings>(
     "lms",
     "settings",
-    defaultConfig.settings
+    getDefaultData("settings")
   );
 
   const [config, setConfig] = useLocalStorage<API.AppConfig>(
     "lms",
     "config",
-    defaultConfig.config
+    getDefaultData("config")
   );
 
   const [uniqueTags, setUniqueTags] = useLocalStorage<
     ContextListState<API.Tag>
-  >("lms", "tags", defaultConfig.uniqueTags);
+  >("lms", "tags", getDefaultData("uniqueTags"));
 
   const [categoryTree, setCategoryTree] = useLocalStorage<
     ContextListState<API.Category>
-  >("lms", "categories", defaultConfig.categoryTree);
+  >("lms", "categories", getDefaultData("categoryTree"));
 
   const [program, setProgram] = useLocalStorage<
     ContextStateValue<API.CourseProgram>
-  >("lms", "tags", defaultConfig.program);
+  >("lms", "tags", getDefaultData("program"));
 
   const [cart, setCart] = useLocalStorage<ContextStateValue<API.Cart>>(
     "lms",
     "cart",
-    defaultConfig.cart
+    getDefaultData("cart")
   );
 
   const [token, setToken] = useLocalStorage<string | null>(
@@ -457,66 +186,66 @@ export const EscolaLMSContextProvider: FunctionComponent<IMock> = ({
   const [user, setUser] = useLocalStorage<ContextStateValue<API.UserItem>>(
     "lms",
     "user",
-    defaultConfig.user
+    getDefaultData("user")
   );
 
   const [progress, setProgress] = useState<
     ContextStateValue<API.CourseProgress>
-  >(defaultConfig.progress);
+  >(getDefaultData("progress"));
 
   const [tutors, setTutors] = useLocalStorage<ContextListState<API.UserItem>>(
     "lms",
     "tutors",
-    defaultConfig.tutors
+    getDefaultData("tutors")
   );
 
   const [orders, setOrders] = useLocalStorage<ContextListState<API.Order>>(
     "lms",
     "orders",
-    defaultConfig.orders
+    getDefaultData("orders")
   );
 
   const [payments, setPayments] = useLocalStorage<
     ContextPaginatedMetaState<API.Payment>
-  >("lms", "payments", defaultConfig.payments);
+  >("lms", "payments", getDefaultData("payments"));
 
   const [certificates, setCertificates] = useLocalStorage<
     ContextPaginatedMetaState<API.Certificate>
-  >("lms", "certificates", defaultConfig.certificates);
+  >("lms", "certificates", getDefaultData("certificates"));
 
   const [mattermostChannels, setMattermostChannels] = useLocalStorage<
     ContextStateValue<API.MattermostData>
-  >("lms", "mattermostChannels", defaultConfig.mattermostChannels);
+  >("lms", "mattermostChannels", getDefaultData("mattermostChannels"));
 
   const [tutor, setTutor] = useState<ContextStateValue<API.UserItem>>(
-    defaultConfig.tutor
+    getDefaultData("tutor")
   );
 
   const [pages, setPages] = useLocalStorage<
     ContextPaginatedMetaState<API.PageListItem>
-  >("lms", "pages", defaultConfig.pages);
+  >("lms", "pages", getDefaultData("pages"));
 
   const [page, setPage] = useLocalStorage<ContextStateValue<API.Page>>(
     "lms",
     "page",
-    defaultConfig.page
+    getDefaultData("page")
   );
 
   const [fontSize, setFontSize] = useLocalStorage<FontSize>(
     "lms",
     "fontSize",
-    defaultConfig.fontSize
+    getDefaultData("fontSize")
   );
 
   const [h5p, setH5P] = useLocalStorage<ContextStateValue<API.H5PObject>>(
     "lms",
     "h5p",
-    defaultConfig.h5p
+    getDefaultData("h5p")
   );
 
   const [notifications, setNotifications] = useLocalStorage<
     ContextListState<API.Notification>
-  >("lms", "notifications", defaultConfig.notifications);
+  >("lms", "notifications", getDefaultData("notifications"));
 
   const abortControllers = useRef<{
     cart: AbortController | null;
