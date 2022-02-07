@@ -7,7 +7,7 @@ import React, {
   useContext,
   useMemo,
 } from "react";
-import request from "umi-request";
+
 import { interceptors } from "./../../services/request";
 import {
   course as getCourses,
@@ -37,6 +37,7 @@ import {
   updateAvatar as postUpdateAvatar,
   forgot,
   reset,
+  emailVerify,
 } from "./../../services/auth";
 import { pages as getPages, page as getPage } from "./../../services/pages";
 import {
@@ -57,14 +58,11 @@ import { EditorContextProvider } from "@escolalms/h5p-react";
 import * as API from "./../../types/api";
 import { getH5p } from "../../services/h5p";
 import {
-  ContextState,
   ContextPaginatedMetaState,
-  ContextPaginatedState,
   ContextListState,
   ContextStateValue,
   FontSize,
   EscolaLMSContextReadConfig,
-  EscolaLMSContextAPIConfig,
   EscolaLMSContextConfig,
   SortProgram,
 } from "./types";
@@ -1251,6 +1249,7 @@ export const EscolaLMSContextProvider: FunctionComponent<
         fetchMattermostChannels,
         h5p,
         fetchH5P,
+        emailVerify,
       }}
     >
       <EditorContextProvider url={`${apiUrl}/api/hh5p`}>

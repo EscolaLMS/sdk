@@ -83,6 +83,8 @@ export type Category = {
     category_id: number;
   };
   subcategories?: Category[];
+  count?: number;
+  count_free?: number;
 };
 
 export type Tag = {
@@ -269,6 +271,7 @@ export type RegisterRequest = {
   password_confirmation: string;
   first_name: string;
   last_name: string;
+  return_url: string;
 };
 
 export type RegisterResponse =
@@ -283,8 +286,11 @@ export type ForgotRequest = {
   return_url: string;
 };
 
-export type ForgotResponse =
-  | DefaultResponse<{ todo: "// TODO " }>
+export type AuthResponse =
+  | {
+      message: string;
+      success: boolean;
+    }
   | DefaultResponseError;
 
 export type ResetPasswordRequest = {
@@ -292,10 +298,6 @@ export type ResetPasswordRequest = {
   password: string;
   email: string;
 };
-
-export type ResetPasswordResponse =
-  | DefaultResponse<{ todo: "// TODO" }>
-  | DefaultResponseError;
 
 export type User = {
   data: UserItem;
