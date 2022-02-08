@@ -522,13 +522,21 @@ export const EscolaLMSContextProvider: FunctionComponent<
     setToken(token);
   }, []);
 
+  const resetState = useCallback(() => {
+    setToken(null);
+
+    setUser(defaultConfig.user);
+    setProgram(defaultConfig.program);
+    setCart(defaultConfig.cart);
+    setCertificates(defaultConfig.certificates);
+    setNotifications(defaultConfig.notifications);
+    setMattermostChannels(defaultConfig.mattermostChannels);
+  }, []);
+
   const logout = useCallback(() => {
     // API Call here to destroy token
-    setToken(null);
-    setUser({
-      loading: false,
-    });
-    setCart(defaultConfig.cart);
+    resetState();
+
     return Promise.resolve();
   }, []);
 
