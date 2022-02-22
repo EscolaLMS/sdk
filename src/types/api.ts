@@ -526,9 +526,7 @@ export type AppSettings = {
   faq?: {
     [key: string]: string;
   };
-  homepage?: {
-    [key: string]: string;
-  };
+  homepage?: Record<string, Record<string, string>>;
   register?: {
     [key: string]: string;
   };
