@@ -251,10 +251,17 @@ export const EscolaLMSContextProvider: FunctionComponent<
     cart: null,
   });
 
+  const fetchConfig = useCallback(() => {
+    return getConfig().then((resposne) => {
+      setConfig(resposne.data);
+    });
+  }, []);
+
   useEffect(() => {
     getSettings().then((response) => {
       setSettings(response.data);
     });
+    fetchConfig();
     setUniqueTags((prevState) => ({ ...prevState, loading: true }));
     getUniqueTags().then((response) => {
       setUniqueTags({ list: response.data, loading: false });
@@ -262,12 +269,6 @@ export const EscolaLMSContextProvider: FunctionComponent<
     setCategoryTree((prevState) => ({ ...prevState, loading: true }));
     getCategoryTree().then((response) => {
       setCategoryTree({ list: response.data, loading: false });
-    });
-  }, []);
-
-  const fetchConfig = useCallback(() => {
-    return getConfig().then((resposne) => {
-      setConfig(resposne.data);
     });
   }, []);
 
