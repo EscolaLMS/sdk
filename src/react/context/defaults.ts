@@ -162,6 +162,7 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
     loading: false,
   },
   fetchH5P: (id: string) => Promise.reject(),
+  getRefreshedToken: () => Promise.reject(),
 };
 
 export const defaultApiConfig: EscolaLMSContextConfig = {
@@ -292,6 +293,7 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
     loading: false,
   },
   fetchH5P: (id: string) => Promise.reject(),
+  getRefreshedToken: () => Promise.reject(),
 };
 
 export const defaultConfig = Object.assign(

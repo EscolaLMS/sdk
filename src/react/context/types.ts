@@ -62,6 +62,7 @@ export interface EscolaLMSContextReadConfig {
   fontSize: FontSize;
   notifications: ContextListState<API.Notification>;
   h5p: ContextStateValue<API.H5PObject>;
+  tokenExpireDate?: string | null;
 }
 
 export interface EscolaLMSContextAPIConfig {
@@ -117,6 +118,7 @@ export interface EscolaLMSContextAPIConfig {
   fetchNotifications: () => Promise<void>;
   readNotify: (id: string) => Promise<void>;
   fetchH5P: (id: string) => void;
+  getRefreshedToken: () => Promise<void>;
 }
 
 export type EscolaLMSContextConfig = EscolaLMSContextReadConfig &
