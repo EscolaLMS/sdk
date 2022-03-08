@@ -117,6 +117,8 @@ export interface EscolaLMSContextAPIConfig {
   fetchNotifications: () => Promise<void>;
   readNotify: (id: string) => Promise<void>;
   fetchH5P: (id: string) => void;
+  getRefreshedToken: () => Promise<void>;
+  getTokenExpireDate: () => void;
 }
 
 export type EscolaLMSContextConfig = EscolaLMSContextReadConfig &
