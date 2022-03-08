@@ -263,7 +263,10 @@ export type LoginRequest = {
   password: string;
 };
 
-export type LoginResponse = DefaultResponse<{ token: string }>;
+export type LoginResponse = DefaultResponse<{
+  token: string;
+  expires_at: string;
+}>;
 
 export type RegisterRequest = {
   email: string;
