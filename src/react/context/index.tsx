@@ -6,9 +6,9 @@ import React, {
   useRef,
   useContext,
   useMemo,
-} from "react";
+} from 'react';
 
-import { interceptors } from "./../../services/request";
+import { interceptors } from './../../services/request';
 import {
   course as getCourses,
   getCourse,
@@ -19,16 +19,13 @@ import {
   tutor as getTutor,
   topicPing as putTopicPing,
   h5pProgress as postSendh5pProgress,
-} from "./../../services/courses";
-import {
-  settings as getSettings,
-  config as getConfig,
-} from "./../../services/settings";
-import { uniqueTags as getUniqueTags } from "./../../services/tags";
-import { categoryTree as getCategoryTree } from "./../../services/categories";
-import { getNotifications, readNotification } from "../../services/notify";
-import { getCertificates, getCertificate } from "../../services/certificates";
-import { getMattermostChannels } from "../../services/mattermost";
+} from './../../services/courses';
+import { settings as getSettings, config as getConfig } from './../../services/settings';
+import { uniqueTags as getUniqueTags } from './../../services/tags';
+import { categoryTree as getCategoryTree } from './../../services/categories';
+import { getNotifications, readNotification } from '../../services/notify';
+import { getCertificates, getCertificate } from '../../services/certificates';
+import { getMattermostChannels } from '../../services/mattermost';
 import {
   login as postLogin,
   profile as getProfile,
@@ -39,8 +36,8 @@ import {
   reset,
   emailVerify,
   refreshToken,
-} from "./../../services/auth";
-import { pages as getPages, page as getPage } from "./../../services/pages";
+} from './../../services/auth';
+import { pages as getPages, page as getPage } from './../../services/pages';
 import {
   cart as getCart,
   addToCart as postAddToCart,
@@ -48,16 +45,16 @@ import {
   payWithStripe as postPayWithStripe,
   orders as getOrders,
   payments as getPayments,
-} from "./../../services/cart";
+} from './../../services/cart';
 import {
   userGroups as getUserGroups,
   userGroup as getUserGroup,
   registerableGroups as getRegisterableGroups,
-} from "./../../services/user_groups";
-import { useLocalStorage } from "../hooks/useLocalStorage";
-import { EditorContextProvider } from "@escolalms/h5p-react";
-import * as API from "./../../types/api";
-import { getH5p } from "../../services/h5p";
+} from './../../services/user_groups';
+import { useLocalStorage } from '../hooks/useLocalStorage';
+import { EditorContextProvider } from '@escolalms/h5p-react';
+import * as API from './../../types/api';
+import { getH5p } from '../../services/h5p';
 import {
   ContextPaginatedMetaState,
   ContextListState,
@@ -66,7 +63,7 @@ import {
   EscolaLMSContextReadConfig,
   EscolaLMSContextConfig,
   SortProgram,
-} from "./types";
+} from './types';
 
 import {
   defaultConfig,
@@ -75,7 +72,7 @@ import {
   blackList,
   completed,
   questionSet,
-} from "./defaults";
+} from './defaults';
 
 export const SCORMPlayer: React.FC<{
   uuid: string;
@@ -90,16 +87,16 @@ export const EscolaLMSContext: React.Context<EscolaLMSContextConfig> =
 export const sortProgram: SortProgram = (lessons) => {
   return [...lessons]
     .sort((lessonA, lessonB) =>
-      typeof lessonA.order === "number" && typeof lessonB.order === "number"
+      typeof lessonA.order === 'number' && typeof lessonB.order === 'number'
         ? lessonA.order - lessonB.order
-        : 0
+        : 0,
     )
     .map((lesson) => ({
       ...lesson,
       topics: [...(lesson.topics || [])].sort((topicA, topicB) =>
-        typeof topicA.order === "number" && typeof topicB.order === "number"
+        typeof topicA.order === 'number' && typeof topicB.order === 'number'
           ? topicA.order - topicB.order
-          : 0
+          : 0,
       ),
     }));
 };
@@ -110,9 +107,11 @@ interface EscolaLMSContextProviderType {
   defaults?: Partial<EscolaLMSContextReadConfig>;
 }
 
-export const EscolaLMSContextProvider: FunctionComponent<
-  EscolaLMSContextProviderType
-> = ({ children, apiUrl, defaults }) => {
+export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProviderType> = ({
+  children,
+  apiUrl,
+  defaults,
+}) => {
   interceptors(apiUrl);
 
   const initialValues = {
@@ -121,136 +120,150 @@ export const EscolaLMSContextProvider: FunctionComponent<
   };
 
   const getDefaultData = <K extends keyof EscolaLMSContextReadConfig>(
-    key: K
+    key: K,
   ): EscolaLMSContextReadConfig[K] => {
     return initialValues[key];
   };
 
-  const [courses, setCourses] = useLocalStorage<
-    ContextPaginatedMetaState<API.CourseListItem>
-  >("lms", "courses", getDefaultData("courses"));
+  const [courses, setCourses] = useLocalStorage<ContextPaginatedMetaState<API.CourseListItem>>(
+    'lms',
+    'courses',
+    getDefaultData('courses'),
+  );
 
-  const [userGroup, setUserGroup] = useLocalStorage<
-    ContextStateValue<API.UserGroupRow>
-  >("lms", "userGroup", getDefaultData("userGroup"));
+  const [userGroup, setUserGroup] = useLocalStorage<ContextStateValue<API.UserGroupRow>>(
+    'lms',
+    'userGroup',
+    getDefaultData('userGroup'),
+  );
 
-  const [userGroups, setUserGroups] = useLocalStorage<
-    ContextListState<API.UserGroup>
-  >("lms", "userGroups", getDefaultData("userGroups"));
+  const [userGroups, setUserGroups] = useLocalStorage<ContextListState<API.UserGroup>>(
+    'lms',
+    'userGroups',
+    getDefaultData('userGroups'),
+  );
 
   const [registerableGroups, setRegisterableGroups] = useLocalStorage<
     ContextListState<API.UserGroup>
-  >("lms", "registerableGroups", getDefaultData("registerableGroups"));
+  >('lms', 'registerableGroups', getDefaultData('registerableGroups'));
 
-  const [course, setCourse] = useLocalStorage<
-    ContextStateValue<API.CourseListItem>
-  >("lms", "course", getDefaultData("course"));
+  const [course, setCourse] = useLocalStorage<ContextStateValue<API.CourseListItem>>(
+    'lms',
+    'course',
+    getDefaultData('course'),
+  );
 
   const [settings, setSettings] = useLocalStorage<API.AppSettings>(
-    "lms",
-    "settings",
-    getDefaultData("settings")
+    'lms',
+    'settings',
+    getDefaultData('settings'),
   );
 
   const [config, setConfig] = useLocalStorage<API.AppConfig>(
-    "lms",
-    "config",
-    getDefaultData("config")
+    'lms',
+    'config',
+    getDefaultData('config'),
   );
 
-  const [uniqueTags, setUniqueTags] = useLocalStorage<
-    ContextListState<API.Tag>
-  >("lms", "tags", getDefaultData("uniqueTags"));
+  const [uniqueTags, setUniqueTags] = useLocalStorage<ContextListState<API.Tag>>(
+    'lms',
+    'tags',
+    getDefaultData('uniqueTags'),
+  );
 
-  const [categoryTree, setCategoryTree] = useLocalStorage<
-    ContextListState<API.Category>
-  >("lms", "categories", getDefaultData("categoryTree"));
+  const [categoryTree, setCategoryTree] = useLocalStorage<ContextListState<API.Category>>(
+    'lms',
+    'categories',
+    getDefaultData('categoryTree'),
+  );
 
-  const [program, setProgram] = useLocalStorage<
-    ContextStateValue<API.CourseProgram>
-  >("lms", "tags", getDefaultData("program"));
+  const [program, setProgram] = useLocalStorage<ContextStateValue<API.CourseProgram>>(
+    'lms',
+    'tags',
+    getDefaultData('program'),
+  );
 
   const [cart, setCart] = useLocalStorage<ContextStateValue<API.Cart>>(
-    "lms",
-    "cart",
-    getDefaultData("cart")
+    'lms',
+    'cart',
+    getDefaultData('cart'),
   );
 
-  const [token, setToken] = useLocalStorage<string | null>(
-    "lms",
-    "token",
-    null
-  );
+  const [token, setToken] = useLocalStorage<string | null>('lms', 'token', null);
 
   const [tokenExpireDate, setTokenExpireDate] = useLocalStorage<string | null>(
-    "lms",
-    "tokenExpireDate",
-    null
+    'lms',
+    'tokenExpireDate',
+    null,
   );
 
   const [user, setUser] = useLocalStorage<ContextStateValue<API.UserItem>>(
-    "lms",
-    "user",
-    getDefaultData("user")
+    'lms',
+    'user',
+    getDefaultData('user'),
   );
 
-  const [progress, setProgress] = useState<
-    ContextStateValue<API.CourseProgress>
-  >(getDefaultData("progress"));
+  const [progress, setProgress] = useState<ContextStateValue<API.CourseProgress>>(
+    getDefaultData('progress'),
+  );
 
   const [tutors, setTutors] = useLocalStorage<ContextListState<API.UserItem>>(
-    "lms",
-    "tutors",
-    getDefaultData("tutors")
+    'lms',
+    'tutors',
+    getDefaultData('tutors'),
   );
 
   const [orders, setOrders] = useLocalStorage<ContextListState<API.Order>>(
-    "lms",
-    "orders",
-    getDefaultData("orders")
+    'lms',
+    'orders',
+    getDefaultData('orders'),
   );
 
-  const [payments, setPayments] = useLocalStorage<
-    ContextPaginatedMetaState<API.Payment>
-  >("lms", "payments", getDefaultData("payments"));
+  const [payments, setPayments] = useLocalStorage<ContextPaginatedMetaState<API.Payment>>(
+    'lms',
+    'payments',
+    getDefaultData('payments'),
+  );
 
   const [certificates, setCertificates] = useLocalStorage<
     ContextPaginatedMetaState<API.Certificate>
-  >("lms", "certificates", getDefaultData("certificates"));
+  >('lms', 'certificates', getDefaultData('certificates'));
 
   const [mattermostChannels, setMattermostChannels] = useLocalStorage<
     ContextStateValue<API.MattermostData>
-  >("lms", "mattermostChannels", getDefaultData("mattermostChannels"));
+  >('lms', 'mattermostChannels', getDefaultData('mattermostChannels'));
 
-  const [tutor, setTutor] = useState<ContextStateValue<API.UserItem>>(
-    getDefaultData("tutor")
+  const [tutor, setTutor] = useState<ContextStateValue<API.UserItem>>(getDefaultData('tutor'));
+
+  const [pages, setPages] = useLocalStorage<ContextPaginatedMetaState<API.PageListItem>>(
+    'lms',
+    'pages',
+    getDefaultData('pages'),
   );
 
-  const [pages, setPages] = useLocalStorage<
-    ContextPaginatedMetaState<API.PageListItem>
-  >("lms", "pages", getDefaultData("pages"));
-
   const [page, setPage] = useLocalStorage<ContextStateValue<API.Page>>(
-    "lms",
-    "page",
-    getDefaultData("page")
+    'lms',
+    'page',
+    getDefaultData('page'),
   );
 
   const [fontSize, setFontSize] = useLocalStorage<FontSize>(
-    "lms",
-    "fontSize",
-    getDefaultData("fontSize")
+    'lms',
+    'fontSize',
+    getDefaultData('fontSize'),
   );
 
   const [h5p, setH5P] = useLocalStorage<ContextStateValue<API.H5PObject>>(
-    "lms",
-    "h5p",
-    getDefaultData("h5p")
+    'lms',
+    'h5p',
+    getDefaultData('h5p'),
   );
 
-  const [notifications, setNotifications] = useLocalStorage<
-    ContextListState<API.Notification>
-  >("lms", "notifications", getDefaultData("notifications"));
+  const [notifications, setNotifications] = useLocalStorage<ContextListState<API.Notification>>(
+    'lms',
+    'notifications',
+    getDefaultData('notifications'),
+  );
 
   const abortControllers = useRef<{
     cart: AbortController | null;
@@ -307,7 +320,7 @@ export const EscolaLMSContextProvider: FunctionComponent<
     (id: number) => {
       return token ? getCertificate(token, id) : Promise.reject();
     },
-    [token]
+    [token],
   );
 
   const fetchMattermostChannels = useCallback(() => {
@@ -363,9 +376,7 @@ export const EscolaLMSContextProvider: FunctionComponent<
                   ...prevState,
                   list:
                     prevState && prevState.list
-                      ? prevState.list.filter(
-                          (item: API.Notification) => item.id !== id
-                        )
+                      ? prevState.list.filter((item: API.Notification) => item.id !== id)
                       : [],
                   loading: false,
                 }));
@@ -380,7 +391,7 @@ export const EscolaLMSContextProvider: FunctionComponent<
             })
         : Promise.reject();
     },
-    [token, notifications]
+    [token, notifications],
   );
 
   const fetchCourses = useCallback(
@@ -411,7 +422,7 @@ export const EscolaLMSContextProvider: FunctionComponent<
           }));
         });
     },
-    [courses]
+    [courses],
   );
 
   const fetchUserGroup = useCallback(
@@ -442,7 +453,7 @@ export const EscolaLMSContextProvider: FunctionComponent<
           }));
         });
     },
-    [userGroups]
+    [userGroups],
   );
 
   const fetchRegisterableGroups = () => {
@@ -501,7 +512,7 @@ export const EscolaLMSContextProvider: FunctionComponent<
           }));
         });
     },
-    [userGroups]
+    [userGroups],
   );
 
   const fetchCourse = useCallback((id) => {
@@ -587,7 +598,7 @@ export const EscolaLMSContextProvider: FunctionComponent<
 
   const fetchCart = useCallback(() => {
     if (!token) {
-      return Promise.reject("No token provided");
+      return Promise.reject('No token provided');
     }
     setCart((prevState) => ({
       ...prevState,
@@ -604,7 +615,7 @@ export const EscolaLMSContextProvider: FunctionComponent<
     try {
       return getCart(token, { signal: controller.signal })
         .then((response) => {
-          if (response.data.hasOwnProperty("items")) {
+          if (response.data.hasOwnProperty('items')) {
             setCart({
               loading: false,
               value: response.data as API.Cart,
@@ -617,7 +628,7 @@ export const EscolaLMSContextProvider: FunctionComponent<
           }
         })
         .catch((err) => {
-          if (err.name !== "AbortError") {
+          if (err.name !== 'AbortError') {
             console.log(err);
           }
         });
@@ -629,7 +640,7 @@ export const EscolaLMSContextProvider: FunctionComponent<
   const addToCart = useCallback(
     (courseId: number) => {
       if (!token) {
-        return Promise.reject("No token provided");
+        return Promise.reject('No token provided');
       }
       setCart((prevState) => ({
         ...prevState,
@@ -647,13 +658,13 @@ export const EscolaLMSContextProvider: FunctionComponent<
           }));
         });
     },
-    [fetchCart]
+    [fetchCart],
   );
 
   const removeFromCart = useCallback(
     (courseId: number) => {
       if (!token) {
-        return Promise.reject("No token provided");
+        return Promise.reject('No token provided');
       }
       setCart((prevState) => ({
         ...prevState,
@@ -682,7 +693,7 @@ export const EscolaLMSContextProvider: FunctionComponent<
           }));
         });
     },
-    [fetchCart]
+    [fetchCart],
   );
 
   const payWithStripe = useCallback(
@@ -693,7 +704,7 @@ export const EscolaLMSContextProvider: FunctionComponent<
           })
         : Promise.reject();
     },
-    [token]
+    [token],
   );
 
   const fetchProgress = useCallback(() => {
@@ -732,7 +743,7 @@ export const EscolaLMSContextProvider: FunctionComponent<
             })
         : Promise.reject();
     },
-    [token]
+    [token],
   );
 
   const fetchProgram = useCallback(
@@ -767,7 +778,7 @@ export const EscolaLMSContextProvider: FunctionComponent<
             })
         : Promise.reject();
     },
-    [token]
+    [token],
   );
 
   const fetchTutors = useCallback(() => {
@@ -904,7 +915,7 @@ export const EscolaLMSContextProvider: FunctionComponent<
           }));
         });
     },
-    [pages]
+    [pages],
   );
 
   const fetchPage = useCallback(
@@ -936,7 +947,7 @@ export const EscolaLMSContextProvider: FunctionComponent<
           });
         });
     },
-    [token]
+    [token],
   );
 
   const sendProgress = useCallback(
@@ -952,9 +963,7 @@ export const EscolaLMSContextProvider: FunctionComponent<
                         return {
                           ...courseProgress,
                           progress: courseProgress.progress.map((progress) => {
-                            const el = data.find(
-                              (item) => item.topic_id === progress.topic_id
-                            );
+                            const el = data.find((item) => item.topic_id === progress.topic_id);
                             if (el) {
                               return el;
                             }
@@ -969,7 +978,7 @@ export const EscolaLMSContextProvider: FunctionComponent<
           })
         : Promise.reject();
     },
-    [token]
+    [token],
   );
 
   const h5pProgress = useCallback(
@@ -1000,9 +1009,7 @@ export const EscolaLMSContextProvider: FunctionComponent<
 
       if (completed.includes(statementId)) {
         if (
-          (!hasParent &&
-            statementCategory &&
-            !statementCategory[0]?.id.includes(questionSet)) ||
+          (!hasParent && statementCategory && !statementCategory[0]?.id.includes(questionSet)) ||
           (statementCategory &&
             statementCategory[0]?.id.includes(questionSet) &&
             result &&
@@ -1017,11 +1024,9 @@ export const EscolaLMSContextProvider: FunctionComponent<
         }
       }
 
-      return token
-        ? postSendh5pProgress(topicId, statementId, statement, token)
-        : null;
+      return token ? postSendh5pProgress(topicId, statementId, statement, token) : null;
     },
-    [token]
+    [token],
   );
 
   const updateProfile = useCallback(
@@ -1050,7 +1055,7 @@ export const EscolaLMSContextProvider: FunctionComponent<
           })
         : Promise.reject();
     },
-    [token]
+    [token],
   );
 
   const updateAvatar = useCallback(
@@ -1077,16 +1082,14 @@ export const EscolaLMSContextProvider: FunctionComponent<
           })
         : Promise.reject();
     },
-    [token]
+    [token],
   );
 
   const topicPing = useCallback(
     (topicId: number) => {
-      return token
-        ? putTopicPing(topicId, token).catch((err) => err)
-        : Promise.reject();
+      return token ? putTopicPing(topicId, token).catch((err) => err) : Promise.reject();
     },
-    [token]
+    [token],
   );
 
   const progressMap = useMemo(() => {
@@ -1099,15 +1102,10 @@ export const EscolaLMSContextProvider: FunctionComponent<
     };
     if (progress.value) {
       progress.value.reduce((acc, course) => {
-        acc.coursesProcProgress[
-          typeof course.course.id === "number" ? course.course.id : 0
-        ] =
-          course.progress.reduce((sum, item) => sum + item.status, 0) /
-          course.progress.length;
+        acc.coursesProcProgress[typeof course.course.id === 'number' ? course.course.id : 0] =
+          course.progress.reduce((sum, item) => sum + item.status, 0) / course.progress.length;
         acc.finishedTopics = acc.finishedTopics.concat(
-          course.progress
-            .filter((item) => item.status !== 0)
-            .map((item) => item.topic_id)
+          course.progress.filter((item) => item.status !== 0).map((item) => item.topic_id),
         );
         return acc;
       }, defaultMap);
@@ -1117,7 +1115,7 @@ export const EscolaLMSContextProvider: FunctionComponent<
 
   const topicIsFinished = useCallback(
     (topicId) => progressMap && progressMap.finishedTopics.includes(topicId),
-    [progressMap]
+    [progressMap],
   );
 
   const courseProgress = useCallback(
@@ -1125,13 +1123,13 @@ export const EscolaLMSContextProvider: FunctionComponent<
       progressMap && progressMap.coursesProcProgress[courseId]
         ? progressMap.coursesProcProgress[courseId]
         : 0,
-    [progressMap]
+    [progressMap],
   );
 
   const getNextPrevTopic = useCallback(
     (topicId: number, next: boolean = true) => {
       const lesson: API.Lesson | undefined = program.value?.lessons.find(
-        (lesson) => !!lesson.topics?.find((topic) => topicId === topic.id)
+        (lesson) => !!lesson.topics?.find((topic) => topicId === topic.id),
       );
 
       if (program.value === undefined) {
@@ -1143,7 +1141,7 @@ export const EscolaLMSContextProvider: FunctionComponent<
       }
 
       const currentLessonIndex = program.value.lessons.findIndex(
-        (fLesson) => lesson.id === fLesson.id
+        (fLesson) => lesson.id === fLesson.id,
       );
       if (currentLessonIndex === undefined) {
         return null;
@@ -1151,9 +1149,7 @@ export const EscolaLMSContextProvider: FunctionComponent<
 
       const currentTopicIndex = (
         program.value && program.value.lessons ? program.value.lessons : []
-      )[currentLessonIndex].topics?.findIndex(
-        (topic) => Number(topic.id) === Number(topicId)
-      );
+      )[currentLessonIndex].topics?.findIndex((topic) => Number(topic.id) === Number(topicId));
 
       if (currentTopicIndex === undefined) {
         return null;
@@ -1176,18 +1172,14 @@ export const EscolaLMSContextProvider: FunctionComponent<
         } else {
           if (program.value.lessons[currentLessonIndex - 1]) {
             const newLesson = program.value.lessons[currentLessonIndex - 1];
-            return (
-              (newLesson.topics &&
-                newLesson.topics[newLesson.topics.length - 1]) ||
-              null
-            );
+            return (newLesson.topics && newLesson.topics[newLesson.topics.length - 1]) || null;
           }
         }
       }
 
       return null;
     },
-    [program]
+    [program],
   );
 
   const fontSizeToggle = useCallback(
@@ -1195,12 +1187,8 @@ export const EscolaLMSContextProvider: FunctionComponent<
       const newFontSize = (fontSize + (bigger ? 1 : -1)) % 4;
       return setFontSize(newFontSize);
     },
-    [fontSize]
+    [fontSize],
   );
-
-  const getTokenExpireDate = useCallback(() => {
-    return tokenExpireDate;
-  }, []);
 
   const getRefreshedToken = useCallback(() => {
     return token
@@ -1286,12 +1274,10 @@ export const EscolaLMSContextProvider: FunctionComponent<
         fetchH5P,
         emailVerify,
         getRefreshedToken,
-        getTokenExpireDate,
+        tokenExpireDate,
       }}
     >
-      <EditorContextProvider url={`${apiUrl}/api/hh5p`}>
-        {children}
-      </EditorContextProvider>
+      <EditorContextProvider url={`${apiUrl}/api/hh5p`}>{children}</EditorContextProvider>
     </EscolaLMSContext.Provider>
   );
 };
