@@ -518,7 +518,9 @@ export type Page = {
   content: string;
 };
 
-export type AppSettings = {
+export type Json = string | number | Json[] | { [key: string]: Json };
+// TODO: create proper type
+export type AppSettings = any & {
   currencies?: AppCurrency;
   consents?: {
     [key: string]: string;
