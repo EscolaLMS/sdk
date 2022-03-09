@@ -18,5 +18,5 @@
     "declaration": true,
     "typeRoots": ["./src/typings.d.ts"]
   },
-  "include": ["index.d.ts", "src"]
+  "include": ["index.d.ts", "src", "node_modules/@escolalms/ts-types"]
 }

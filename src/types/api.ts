@@ -1,3 +1,5 @@
+import "@escolalms/ts-models";
+
 export enum TopicType {
   Unselected = "",
   RichText = "EscolaLms\\TopicTypes\\Models\\TopicContent\\RichText",
