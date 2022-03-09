@@ -23,6 +23,9 @@ yarn-debug.log*
 yarn-error.log*
 yarn.lock
 
+package.lock
+package-lock.json
+
 # lib goes only for npm tar upload
 lib 
 .idea

@@ -107,3 +107,16 @@ export async function emailVerify(id: string, hash: string) {
     },
   });
 }
+
+export async function refreshToken(token: string) {
+  return request<API.DefaultResponse<{ token: string; expires_at: string }>>(
+    "/api/auth/refresh",
+    {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+}

@@ -38,6 +38,7 @@ import {
   forgot,
   reset,
   emailVerify,
+  refreshToken,
 } from "./../../services/auth";
 import { pages as getPages, page as getPage } from "./../../services/pages";
 import {
@@ -178,6 +179,12 @@ export const EscolaLMSContextProvider: FunctionComponent<
   const [token, setToken] = useLocalStorage<string | null>(
     "lms",
     "token",
+    null
+  );
+
+  const [tokenExpireDate, setTokenExpireDate] = useLocalStorage<string | null>(
+    "lms",
+    "tokenExpireDate",
     null
   );
 
@@ -1191,6 +1198,21 @@ export const EscolaLMSContextProvider: FunctionComponent<
     [fontSize]
   );
 
+  const getRefreshedToken = useCallback(() => {
+    return token
+      ? refreshToken(token)
+          .then((res) => {
+            if (res.success) {
+              setTokenExpireDate(res.data.expires_at);
+              setToken(res.data.token);
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          })
+      : Promise.reject();
+  }, [token]);
+
   return (
     <EscolaLMSContext.Provider
       value={{
@@ -1259,6 +1281,8 @@ export const EscolaLMSContextProvider: FunctionComponent<
         h5p,
         fetchH5P,
         emailVerify,
+        getRefreshedToken,
+        tokenExpireDate,
       }}
     >
       <EditorContextProvider url={`${apiUrl}/api/hh5p`}>
