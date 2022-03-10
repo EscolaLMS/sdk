@@ -28,7 +28,10 @@ export const noCompletedEventsIds: string[] = [
 ];
 
 /**  GET /api/courses */
-export async function course(params: API.CourseParams, options?: { [key: string]: any }) {
+export async function course(
+  params: API.CourseParams,
+  options?: { [key: string]: any }
+) {
   return request<API.CourseList>(`/api/courses`, {
     method: "GET",
     params,
@@ -48,50 +51,62 @@ export async function getCourse(id: number, options?: { [key: string]: any }) {
 export async function getCourseProgram(
   id: number,
   token?: string | null,
-  options?: { [key: string]: any },
+  options?: { [key: string]: any }
 ) {
-  return request<API.DefaultResponse<API.CourseProgram>>(`/api/courses/${id}/program`, {
-    method: "GET",
-    headers: token
-      ? {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        }
-      : {
-          "Content-Type": "application/json",
-        },
-    ...(options || {}),
-  });
+  return request<API.DefaultResponse<API.CourseProgram>>(
+    `/api/courses/${id}/program`,
+    {
+      method: "GET",
+      headers: token
+        ? {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          }
+        : {
+            "Content-Type": "application/json",
+          },
+      ...(options || {}),
+    }
+  );
 }
 
-export async function progress(token: string, options?: { [key: string]: any }) {
-  return request<API.DefaultResponse<API.CourseProgress>>(`/api/courses/progress`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    ...(options || {}),
-  });
+export async function progress(
+  token: string,
+  options?: { [key: string]: any }
+) {
+  return request<API.DefaultResponse<API.CourseProgress>>(
+    `/api/courses/progress`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      ...(options || {}),
+    }
+  );
 }
 
 export async function sendProgress(
   courseId: number,
   data: API.CourseProgressItemElement[],
   token: string,
-  options?: { [key: string]: any },
+  options?: { [key: string]: any }
 ) {
-  return request<API.DefaultResponse<API.CourseProgress>>(`/api/courses/progress/${courseId}`, {
-    method: "PATCH",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    data: {
-      progress: data,
-    },
-    ...(options || {}),
-  });
+  return request<API.DefaultResponse<API.CourseProgress>>(
+    `/api/courses/progress/${courseId}`,
+    {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      data: {
+        progress: data,
+      },
+      ...(options || {}),
+    }
+  );
 }
 
 export async function tutors(options?: { [key: string]: any }) {
@@ -108,7 +123,11 @@ export async function tutor(id: number, options?: { [key: string]: any }) {
   });
 }
 
-export async function topicPing(topicId: number, token: string, options?: { [key: string]: any }) {
+export async function topicPing(
+  topicId: number,
+  token: string,
+  options?: { [key: string]: any }
+) {
   return request<Boolean>(`/api/courses/progress/${topicId}/ping`, {
     method: "PUT",
     headers: {
@@ -124,7 +143,7 @@ export async function h5pProgress(
   topicId: number,
   statementId: string,
   statement: API.IStatement,
-  token: string,
+  token: string
 ) {
   return request<API.SuccessResponse>(`/api/courses/progress/${topicId}/h5p`, {
     method: "POST",
