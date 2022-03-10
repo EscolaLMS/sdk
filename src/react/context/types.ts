@@ -9,7 +9,7 @@ export interface ContextState<T> {
 export interface ContextPaginatedMetaState<T> {
   loading: boolean;
   list?: API.PaginatedMetaList<T>;
-  value?: API.PaginatedMetaList<T>;
+  value?: T;
   error?: API.DefaultResponseError;
 }
 
