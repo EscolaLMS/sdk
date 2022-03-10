@@ -63,6 +63,8 @@ export interface EscolaLMSContextReadConfig {
   notifications: ContextListState<API.Notification>;
   h5p: ContextStateValue<API.H5PObject>;
   tokenExpireDate?: string | null;
+  consultations: ContextPaginatedMetaState<API.Consultation>;
+  consultation: ContextStateValue<API.Consultation>;
 }
 
 export interface EscolaLMSContextAPIConfig {
@@ -119,6 +121,8 @@ export interface EscolaLMSContextAPIConfig {
   readNotify: (id: string) => Promise<void>;
   fetchH5P: (id: string) => void;
   getRefreshedToken: () => Promise<void>;
+  fetchConsultations: (filter: API.ConsultationParams) => Promise<void>;
+  fetchConsultation: (id: number) => Promise<void>;
 }
 
 export type EscolaLMSContextConfig = EscolaLMSContextReadConfig &

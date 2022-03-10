@@ -21,6 +21,10 @@ import {
   h5pProgress as postSendh5pProgress,
 } from "./../../services/courses";
 import {
+  consultations as getConsultations,
+  getConsultation,
+} from "./../../services/consultations";
+import {
   settings as getSettings,
   config as getConfig,
 } from "./../../services/settings";
@@ -129,6 +133,14 @@ export const EscolaLMSContextProvider: FunctionComponent<
   const [courses, setCourses] = useLocalStorage<
     ContextPaginatedMetaState<API.CourseListItem>
   >("lms", "courses", getDefaultData("courses"));
+
+  const [consultations, setConsultations] = useLocalStorage<
+    ContextPaginatedMetaState<API.Consultation>
+  >("lms", "consultations", getDefaultData("consultations"));
+
+  const [consultation, setConsultation] = useLocalStorage<
+    ContextStateValue<API.Consultation>
+  >("lms", "consultation", getDefaultData("consultation"));
 
   const [userGroup, setUserGroup] = useLocalStorage<
     ContextStateValue<API.UserGroupRow>
@@ -413,6 +425,58 @@ export const EscolaLMSContextProvider: FunctionComponent<
     },
     [courses]
   );
+
+  const fetchConsultations = useCallback(
+    (filter: API.ConsultationParams) => {
+      setConsultations((prevState) => ({ ...prevState, loading: true }));
+      return getConsultations(filter)
+        .then((response) => {
+          if (response.success) {
+            setConsultations({
+              loading: false,
+              list: response,
+              error: undefined,
+            });
+          }
+          if (response.success === false) {
+            setConsultations((prevState) => ({
+              ...prevState,
+              loading: false,
+              error: response,
+            }));
+          }
+        })
+        .catch((error) => {
+          setConsultations((prevState) => ({
+            ...prevState,
+            loading: false,
+            error: error,
+          }));
+        });
+    },
+    [consultations]
+  );
+
+  const fetchConsultation = useCallback((id) => {
+    setConsultation((prevState) => ({ ...prevState, loading: true }));
+    return getConsultation(id).then((response) => {
+      if (response.success) {
+        setConsultation({
+          loading: false,
+          value: {
+            ...response.data,
+          },
+        });
+      }
+      if (response.success === false) {
+        setConsultation((prevState) => ({
+          ...prevState,
+          loading: false,
+          error: response,
+        }));
+      }
+    });
+  }, []);
 
   const fetchUserGroup = useCallback(
     (id) => {
@@ -1283,6 +1347,10 @@ export const EscolaLMSContextProvider: FunctionComponent<
         emailVerify,
         getRefreshedToken,
         tokenExpireDate,
+        fetchConsultations,
+        consultations,
+        consultation,
+        fetchConsultation,
       }}
     >
       <EditorContextProvider url={`${apiUrl}/api/hh5p`}>

@@ -239,6 +239,10 @@ export type PageList = DefaultMetaResponse<Page>;
 
 export type PageListItem = Page;
 
+export type Consultation = EscolaLms.Consultations.Models.Consultation;
+
+export type ConsultationsList = DefaultMetaResponse<Consultation>;
+
 export type PaginationParams = {
   order_by?: string;
   order?: "ASC" | "DESC";
@@ -258,6 +262,13 @@ export type CourseParams = PageParams &
     author_id?: number;
     tag?: string;
     free?: boolean;
+  };
+
+export type ConsultationParams = PageParams &
+  PaginationParams & {
+    name?: string;
+    status?: string;
+    base_price?: number;
   };
 
 export type LoginRequest = {
