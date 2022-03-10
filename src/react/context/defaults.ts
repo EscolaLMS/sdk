@@ -165,6 +165,12 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
   getRefreshedToken: () => Promise.reject(),
   fetchConsultations: () => Promise.reject(),
   fetchConsultation: (id: number) => Promise.reject(),
+  consultation: {
+    loading: false,
+  },
+  consultations: {
+    loading: false,
+  },
 };
 
 export const defaultApiConfig: EscolaLMSContextConfig = {
@@ -298,6 +304,12 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
   getRefreshedToken: () => Promise.reject(),
   fetchConsultations: () => Promise.reject(),
   fetchConsultation: (id: number) => Promise.reject(),
+  consultation: {
+    loading: false,
+  },
+  consultations: {
+    loading: false,
+  },
 };
 
 export const defaultConfig = Object.assign(
