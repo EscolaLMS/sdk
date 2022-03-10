@@ -9,6 +9,7 @@ export interface ContextState<T> {
 export interface ContextPaginatedMetaState<T> {
   loading: boolean;
   list?: API.PaginatedMetaList<T>;
+  value?: API.PaginatedMetaList<T>;
   error?: API.DefaultResponseError;
 }
 
@@ -63,6 +64,8 @@ export interface EscolaLMSContextReadConfig {
   notifications: ContextListState<API.Notification>;
   h5p: ContextStateValue<API.H5PObject>;
   tokenExpireDate?: string | null;
+  consultations: ContextPaginatedMetaState<API.Consultation>;
+  consultation: ContextStateValue<API.Consultation>;
 }
 
 export interface EscolaLMSContextAPIConfig {
@@ -76,9 +79,7 @@ export interface EscolaLMSContextAPIConfig {
   fetchConfig: () => Promise<void>;
   login: (body: API.LoginRequest) => Promise<void>;
   logout: () => Promise<void>;
-  register: (
-    body: API.RegisterRequest
-  ) => Promise<API.DefaultResponse<API.RegisterResponse>>;
+  register: (body: API.RegisterRequest) => Promise<API.DefaultResponse<API.RegisterResponse>>;
   forgot: (body: API.ForgotRequest) => Promise<API.AuthResponse>;
   reset: (body: API.ResetPasswordRequest) => Promise<API.AuthResponse>;
   emailVerify: (id: string, hash: string) => Promise<API.AuthResponse>;
@@ -87,23 +88,18 @@ export interface EscolaLMSContextAPIConfig {
   fetchCart: () => Promise<void>;
   payWithStripe: (paymentMethodId: string) => Promise<void>;
   fetchProgress: () => Promise<void>;
-  sendProgress: (
-    courseId: number,
-    data: API.CourseProgressItemElement[]
-  ) => Promise<void>;
+  sendProgress: (courseId: number, data: API.CourseProgressItemElement[]) => Promise<void>;
   h5pProgress: (
     courseId: string,
     topicId: number,
-    statement: API.IStatement
+    statement: API.IStatement,
   ) => Promise<API.SuccessResponse> | null;
   fetchTutors: () => Promise<void>;
   fetchTutor: (id: number) => Promise<void>;
   fetchOrders: () => Promise<void>;
   fetchPayments: () => Promise<void>;
   fetchCertificates: () => Promise<void>;
-  fetchCertificate: (
-    id: number
-  ) => Promise<API.DefaultResponse<API.Certificate>>;
+  fetchCertificate: (id: number) => Promise<API.DefaultResponse<API.Certificate>>;
   fetchMattermostChannels: () => Promise<void>;
   fetchPages: () => Promise<void>;
   fetchPage: (slug: string) => Promise<void>;
@@ -119,9 +115,10 @@ export interface EscolaLMSContextAPIConfig {
   readNotify: (id: string) => Promise<void>;
   fetchH5P: (id: string) => void;
   getRefreshedToken: () => Promise<void>;
+  fetchConsultations: (filter: API.ConsultationParams) => Promise<void>;
+  fetchConsultation: (id: number) => Promise<void>;
 }
 
-export type EscolaLMSContextConfig = EscolaLMSContextReadConfig &
-  EscolaLMSContextAPIConfig;
+export type EscolaLMSContextConfig = EscolaLMSContextReadConfig & EscolaLMSContextAPIConfig;
 
 export type SortProgram = (lessons: API.Lesson[]) => API.Lesson[];

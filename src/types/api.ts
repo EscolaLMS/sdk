@@ -65,10 +65,7 @@ export type IStatement = {
   verb: { id: IEvent };
 };
 
-export type IEventException =
-  | "GuessTheAnswer"
-  | "Questionnaire"
-  | "QuestionSet";
+export type IEventException = "GuessTheAnswer" | "Questionnaire" | "QuestionSet";
 
 export type Category = {
   id: number;
@@ -188,13 +185,9 @@ export type DefaultResponseError = {
   };
 };
 
-export type DefaultResponse<Model> =
-  | DefaultResponseSuccess<Model>
-  | DefaultResponseError;
+export type DefaultResponse<Model> = DefaultResponseSuccess<Model> | DefaultResponseError;
 
-export type DataResponse<Model> =
-  | DataResponseSuccess<Model>
-  | DefaultResponseError;
+export type DataResponse<Model> = DataResponseSuccess<Model> | DefaultResponseError;
 
 type DefaultMetaResponse<Model> =
   | (PaginatedMetaList<Model> & {
@@ -239,6 +232,10 @@ export type PageList = DefaultMetaResponse<Page>;
 
 export type PageListItem = Page;
 
+export type Consultation = EscolaLms.Consultations.Models.Consultation;
+
+export type ConsultationsList = DefaultMetaResponse<Consultation>;
+
 export type PaginationParams = {
   order_by?: string;
   order?: "ASC" | "DESC";
@@ -258,6 +255,13 @@ export type CourseParams = PageParams &
     author_id?: number;
     tag?: string;
     free?: boolean;
+  };
+
+export type ConsultationParams = PageParams &
+  PaginationParams & {
+    name?: string;
+    status?: string;
+    base_price?: number;
   };
 
 export type LoginRequest = {
@@ -632,7 +636,7 @@ export type Order = {
       options: string;
       created_at: string;
       updated_at: string;
-    }
+    },
   ];
   total: string;
   subtotal: string;
@@ -829,7 +833,7 @@ export type H5PObject = {
       contentUserData: [
         {
           state: object;
-        }
+        },
       ];
     }
   >;

@@ -102,10 +102,8 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
     loading: false,
     value: [],
   },
-  sendProgress: (courseId: number, data: API.CourseProgressItemElement[]) =>
-    Promise.reject(),
-  h5pProgress: (courseId: string, topicId: number, statement: API.IStatement) =>
-    Promise.reject(),
+  sendProgress: (courseId: number, data: API.CourseProgressItemElement[]) => Promise.reject(),
+  h5pProgress: (courseId: string, topicId: number, statement: API.IStatement) => Promise.reject(),
 
   tutors: {
     loading: false,
@@ -163,6 +161,8 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
   },
   fetchH5P: (id: string) => Promise.reject(),
   getRefreshedToken: () => Promise.reject(),
+  fetchConsultations: () => Promise.reject(),
+  fetchConsultation: (id: number) => Promise.reject(),
 };
 
 export const defaultApiConfig: EscolaLMSContextConfig = {
@@ -233,10 +233,8 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
     loading: false,
     value: [],
   },
-  sendProgress: (courseId: number, data: API.CourseProgressItemElement[]) =>
-    Promise.reject(),
-  h5pProgress: (courseId: string, topicId: number, statement: API.IStatement) =>
-    Promise.reject(),
+  sendProgress: (courseId: number, data: API.CourseProgressItemElement[]) => Promise.reject(),
+  h5pProgress: (courseId: string, topicId: number, statement: API.IStatement) => Promise.reject(),
 
   tutors: {
     loading: false,
@@ -294,10 +292,8 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
   },
   fetchH5P: (id: string) => Promise.reject(),
   getRefreshedToken: () => Promise.reject(),
+  fetchConsultations: () => Promise.reject(),
+  fetchConsultation: (id: number) => Promise.reject(),
 };
 
-export const defaultConfig = Object.assign(
-  {},
-  defaultReadConfig,
-  defaultApiConfig
-);
+export const defaultConfig = Object.assign({}, defaultReadConfig, defaultApiConfig);
