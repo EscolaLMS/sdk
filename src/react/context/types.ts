@@ -65,6 +65,7 @@ export interface EscolaLMSContextReadConfig {
   tokenExpireDate?: string | null;
   consultations: ContextPaginatedMetaState<API.Consultation>;
   consultation: ContextStateValue<API.Consultation>;
+  fields: ContextListState<EscolaLms.ModelFields.Models.Metadata>;
 }
 
 export interface EscolaLMSContextAPIConfig {
@@ -116,6 +117,7 @@ export interface EscolaLMSContextAPIConfig {
   getRefreshedToken: () => Promise<void>;
   fetchConsultations: (filter: API.ConsultationParams) => Promise<void>;
   fetchConsultation: (id: number) => Promise<void>;
+  fetchFields: (filter: API.FieldsParams) => Promise<void>;
 }
 
 export type EscolaLMSContextConfig = EscolaLMSContextReadConfig & EscolaLMSContextAPIConfig;

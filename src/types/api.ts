@@ -270,6 +270,10 @@ export type ConsultationParams = PageParams &
     base_price?: number;
   };
 
+export type FieldsParams = {
+  class_type: string;
+};
+
 export type LoginRequest = {
   email: string;
   password: string;
@@ -715,6 +719,7 @@ export type Certificate = {
   updated_at: Date;
   path?: null;
   content?: any;
+  title?: string;
 };
 
 export type MattermostData = {
