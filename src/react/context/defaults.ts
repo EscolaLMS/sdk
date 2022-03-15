@@ -174,7 +174,7 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
     list: [],
   },
 
-  fetchFields: (filter: object) => Promise.reject(),
+  fetchFields: (filter: API.FieldsParams) => Promise.reject(),
 };
 
 export const defaultApiConfig: EscolaLMSContextConfig = {
@@ -316,7 +316,7 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
     loading: false,
     list: [],
   },
-  fetchFields: (filter: object) => Promise.reject(),
+  fetchFields: (filter: API.FieldsParams) => Promise.reject(),
 };
 
 export const defaultConfig = Object.assign({}, defaultReadConfig, defaultApiConfig);

@@ -117,7 +117,7 @@ export interface EscolaLMSContextAPIConfig {
   getRefreshedToken: () => Promise<void>;
   fetchConsultations: (filter: API.ConsultationParams) => Promise<void>;
   fetchConsultation: (id: number) => Promise<void>;
-  fetchFields: (filter: object) => Promise<void>;
+  fetchFields: (filter: API.FieldsParams) => Promise<void>;
 }
 
 export type EscolaLMSContextConfig = EscolaLMSContextReadConfig & EscolaLMSContextAPIConfig;
