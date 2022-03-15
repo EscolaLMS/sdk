@@ -1,30 +1,33 @@
-import request from "umi-request";
-import * as API from "../types/api";
+import request from 'umi-request';
+import * as API from '../types/api';
 
 export async function addToCart(
-  courseId: number,
+  productId: number,
   token: string,
-  options?: { [key: string]: any }
+  options?: { [key: string]: any },
 ) {
-  return request<API.SuccessResponse>(`/api/cart/course/${courseId}`, {
-    method: "POST",
+  return request<API.SuccessResponse>(`/api/cart/products`, {
+    method: 'POST',
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
+    },
+    data: {
+      id: productId,
     },
     ...(options || {}),
   });
 }
 
 export async function removeFromCart(
-  courseId: number,
+  itemId: number,
   token: string,
-  options?: { [key: string]: any }
+  options?: { [key: string]: any },
 ) {
-  return request<API.SuccessResponse>(`/api/cart/course/${courseId}`, {
-    method: "DELETE",
+  return request<API.SuccessResponse>(`/api/cart/items/${itemId}`, {
+    method: 'DELETE',
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     },
     ...(options || {}),
@@ -33,9 +36,9 @@ export async function removeFromCart(
 
 export async function cart(token: string, options?: { [key: string]: any }) {
   return request<API.DefaultResponseSuccess<API.Cart>>(`/api/cart`, {
-    method: "GET",
+    method: 'GET',
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     },
     ...(options || {}),
@@ -45,12 +48,12 @@ export async function cart(token: string, options?: { [key: string]: any }) {
 export async function payWithStripe(
   paymentMethodId: string,
   token: string,
-  options?: { [key: string]: any }
+  options?: { [key: string]: any },
 ) {
   return request<API.SuccessResponse>(`/api/cart/pay`, {
-    method: "POST",
+    method: 'POST',
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     },
     data: {
@@ -62,23 +65,20 @@ export async function payWithStripe(
 
 export async function orders(token: string, options?: { [key: string]: any }) {
   return request<API.OrderList>(`/api/orders`, {
-    method: "GET",
+    method: 'GET',
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     },
     ...(options || {}),
   });
 }
 
-export async function payments(
-  token: string,
-  options?: { [key: string]: any }
-) {
+export async function payments(token: string, options?: { [key: string]: any }) {
   return request<API.PaymentList>(`/api/payments`, {
-    method: "GET",
+    method: 'GET',
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     },
     ...(options || {}),
