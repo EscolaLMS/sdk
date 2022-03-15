@@ -20,7 +20,10 @@ import {
   topicPing as putTopicPing,
   h5pProgress as postSendh5pProgress,
 } from './../../services/courses';
+<<<<<<< HEAD
 import { consultations as getConsultations, getConsultation } from './../../services/consultations';
+=======
+>>>>>>> main
 import { settings as getSettings, config as getConfig } from './../../services/settings';
 import { uniqueTags as getUniqueTags } from './../../services/tags';
 import { categoryTree as getCategoryTree } from './../../services/categories';
@@ -655,6 +658,7 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
     return postLogin(body).then((response) => {
       if (response.success) {
         setToken(response.data.token);
+        setTokenExpireDate(response.data.expires_at);
       }
     });
   }, []);

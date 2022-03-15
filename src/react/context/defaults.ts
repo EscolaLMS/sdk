@@ -285,6 +285,7 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
   courseProgress: (courseId: number) => 0,
   getNextPrevTopic: (topicId: number, next?: boolean) => null,
   fontSizeToggle: (bigger: boolean) => 0,
+  getRefreshedToken: () => Promise.reject(),
   fontSize: FontSize.regular,
   socialAuthorize: (token: string) => Promise.reject(),
   notifications: {
@@ -297,7 +298,6 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
     loading: false,
   },
   fetchH5P: (id: string) => Promise.reject(),
-  getRefreshedToken: () => Promise.reject(),
   fetchConsultations: () => Promise.reject(),
   fetchConsultation: (id: number) => Promise.reject(),
   consultation: {
