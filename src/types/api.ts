@@ -1,41 +1,41 @@
-import "@escolalms/ts-models";
+import '@escolalms/ts-models';
 
 export enum TopicType {
-  Unselected = "",
-  RichText = "EscolaLms\\TopicTypes\\Models\\TopicContent\\RichText",
-  OEmbed = "EscolaLms\\TopicTypes\\Models\\TopicContent\\OEmbed",
-  Audio = "EscolaLms\\TopicTypes\\Models\\TopicContent\\Audio",
-  Video = "EscolaLms\\TopicTypes\\Models\\TopicContent\\Video",
-  H5P = "EscolaLms\\TopicTypes\\Models\\TopicContent\\H5P",
-  Image = "EscolaLms\\TopicTypes\\Models\\TopicContent\\Image",
-  Pdf = "EscolaLms\\TopicTypes\\Models\\TopicContent\\PDF",
-  Scorm = "EscolaLms\\TopicTypes\\Models\\TopicContent\\ScormSco",
+  Unselected = '',
+  RichText = 'EscolaLms\\TopicTypes\\Models\\TopicContent\\RichText',
+  OEmbed = 'EscolaLms\\TopicTypes\\Models\\TopicContent\\OEmbed',
+  Audio = 'EscolaLms\\TopicTypes\\Models\\TopicContent\\Audio',
+  Video = 'EscolaLms\\TopicTypes\\Models\\TopicContent\\Video',
+  H5P = 'EscolaLms\\TopicTypes\\Models\\TopicContent\\H5P',
+  Image = 'EscolaLms\\TopicTypes\\Models\\TopicContent\\Image',
+  Pdf = 'EscolaLms\\TopicTypes\\Models\\TopicContent\\PDF',
+  Scorm = 'EscolaLms\\TopicTypes\\Models\\TopicContent\\ScormSco',
 }
 
 export enum PaymentStatusType {
-  NEW = "new",
-  PAID = "paid",
+  NEW = 'new',
+  PAID = 'paid',
 }
 
 export type IEvent =
-  | "http://adlnet.gov/expapi/verbs/experienced"
-  | "http://adlnet.gov/expapi/verbs/attended"
-  | "http://adlnet.gov/expapi/verbs/attempted"
-  | "http://adlnet.gov/expapi/verbs/completed"
-  | "http://adlnet.gov/expapi/verbs/passed"
-  | "http://adlnet.gov/expapi/verbs/failed"
-  | "http://adlnet.gov/expapi/verbs/answered"
-  | "http://adlnet.gov/expapi/verbs/interacted"
-  | "http://adlnet.gov/expapi/verbs/imported"
-  | "http://adlnet.gov/expapi/verbs/created"
-  | "http://adlnet.gov/expapi/verbs/shared"
-  | "http://adlnet.gov/expapi/verbs/voided"
-  | "http://activitystrea.ms/schema/1.0/consume"
-  | "http://adlnet.gov/expapi/verbs/mastered";
+  | 'http://adlnet.gov/expapi/verbs/experienced'
+  | 'http://adlnet.gov/expapi/verbs/attended'
+  | 'http://adlnet.gov/expapi/verbs/attempted'
+  | 'http://adlnet.gov/expapi/verbs/completed'
+  | 'http://adlnet.gov/expapi/verbs/passed'
+  | 'http://adlnet.gov/expapi/verbs/failed'
+  | 'http://adlnet.gov/expapi/verbs/answered'
+  | 'http://adlnet.gov/expapi/verbs/interacted'
+  | 'http://adlnet.gov/expapi/verbs/imported'
+  | 'http://adlnet.gov/expapi/verbs/created'
+  | 'http://adlnet.gov/expapi/verbs/shared'
+  | 'http://adlnet.gov/expapi/verbs/voided'
+  | 'http://activitystrea.ms/schema/1.0/consume'
+  | 'http://adlnet.gov/expapi/verbs/mastered';
 
 export type IStatementCategory = {
   id: string;
-  objectType: "string";
+  objectType: 'string';
 };
 
 export type IScore = {
@@ -65,10 +65,7 @@ export type IStatement = {
   verb: { id: IEvent };
 };
 
-export type IEventException =
-  | "GuessTheAnswer"
-  | "Questionnaire"
-  | "QuestionSet";
+export type IEventException = 'GuessTheAnswer' | 'Questionnaire' | 'QuestionSet';
 
 export type Category = {
   id: number;
@@ -188,13 +185,9 @@ export type DefaultResponseError = {
   };
 };
 
-export type DefaultResponse<Model> =
-  | DefaultResponseSuccess<Model>
-  | DefaultResponseError;
+export type DefaultResponse<Model> = DefaultResponseSuccess<Model> | DefaultResponseError;
 
-export type DataResponse<Model> =
-  | DataResponseSuccess<Model>
-  | DefaultResponseError;
+export type DataResponse<Model> = DataResponseSuccess<Model> | DefaultResponseError;
 
 type DefaultMetaResponse<Model> =
   | (PaginatedMetaList<Model> & {
@@ -245,7 +238,7 @@ export type ConsultationsList = DefaultMetaResponse<Consultation>;
 
 export type PaginationParams = {
   order_by?: string;
-  order?: "ASC" | "DESC";
+  order?: 'ASC' | 'DESC';
   page?: number;
   per_page?: number;
 };
@@ -270,6 +263,10 @@ export type ConsultationParams = PageParams &
     status?: string;
     base_price?: number;
   };
+
+export type FieldsParams = {
+  class_type: string;
+};
 
 export type LoginRequest = {
   email: string;
@@ -568,7 +565,7 @@ export type SCORM = {
   id: number;
   resource_type: null;
   resource_id: number;
-  version: "scorm_12" | "scorm_2004";
+  version: 'scorm_12' | 'scorm_2004';
   hash_name: string;
   origin_file: string;
   origin_file_mime: string;
@@ -643,7 +640,7 @@ export type Order = {
       options: string;
       created_at: string;
       updated_at: string;
-    }
+    },
   ];
   total: string;
   subtotal: string;
@@ -694,8 +691,8 @@ export type UserGroupsParams = {
 };
 
 export enum EventTypes {
-  OrderPaid = "EscolaLms\\Cart\\Events\\OrderPaid",
-  UserLogged = "EscolaLms\\Auth\\Events\\UserLogged",
+  OrderPaid = 'EscolaLms\\Cart\\Events\\OrderPaid',
+  UserLogged = 'EscolaLms\\Auth\\Events\\UserLogged',
 }
 
 export type Notification = {
@@ -719,6 +716,7 @@ export type Certificate = {
   updated_at: Date;
   path?: null;
   content?: any;
+  title?: string;
 };
 
 export type MattermostData = {
@@ -840,7 +838,7 @@ export type H5PObject = {
       contentUserData: [
         {
           state: object;
-        }
+        },
       ];
     }
   >;
