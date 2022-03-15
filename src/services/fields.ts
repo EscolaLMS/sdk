@@ -9,9 +9,12 @@ export async function fields(
   },
   options?: RequestOptionsInit,
 ) {
-  return request<API.DefaultResponse<EscolaLms.ModelFields.Models.Field[]>>(`/api/model-fields`, {
-    method: 'GET',
-    params,
-    ...(options || {}),
-  });
+  return request<API.DefaultResponse<EscolaLms.ModelFields.Models.Metadata[]>>(
+    `/api/model-fields`,
+    {
+      method: 'GET',
+      params,
+      ...(options || {}),
+    },
+  );
 }

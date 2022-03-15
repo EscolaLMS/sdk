@@ -278,11 +278,9 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
     getDefaultData('notifications'),
   );
 
-  const [fields, setFields] = useLocalStorage<ContextListState<EscolaLms.ModelFields.Models.Field>>(
-    'lms',
-    'fields',
-    getDefaultData('fields'),
-  );
+  const [fields, setFields] = useLocalStorage<
+    ContextListState<EscolaLms.ModelFields.Models.Metadata>
+  >('lms', 'fields', getDefaultData('fields'));
 
   const abortControllers = useRef<{
     cart: AbortController | null;
