@@ -65,7 +65,7 @@ export interface EscolaLMSContextReadConfig {
   tokenExpireDate?: string | null;
   consultations: ContextPaginatedMetaState<API.Consultation>;
   consultation: ContextStateValue<API.Consultation>;
-  fields: ContextListState<EscolaLms.ModelFields.Models.Metadata>;
+  fields: ContextListState<EscolaLms.ModelFields.Models.Field>;
 }
 
 export interface EscolaLMSContextAPIConfig {

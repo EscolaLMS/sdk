@@ -309,7 +309,7 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
     });
   }, []);
 
-  const fetchFields = useCallback((filter: object) => {
+  const fetchFields = useCallback((filter: API.FieldsParams) => {
     setFields((prevState) => ({ ...prevState, loading: true }));
 
     return getFields(filter)
