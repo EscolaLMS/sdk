@@ -76,6 +76,7 @@ import {
 } from './defaults';
 
 import { fields as getFields } from '../../services/fields';
+import { stationaryEvents as getEvents } from '../../services/stationary_events';
 
 export const SCORMPlayer: React.FC<{
   uuid: string;
@@ -282,6 +283,10 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
     ContextListState<EscolaLms.ModelFields.Models.Metadata>
   >('lms', 'fields', getDefaultData('fields'));
 
+  const [stationaryEvents, setStationaryEvents] = useLocalStorage<
+    ContextListState<EscolaLms.StationaryEvents.Models.StationaryEvent>
+  >('lms', 'stationaryEvents', getDefaultData('stationaryEvents'));
+
   const abortControllers = useRef<{
     cart: AbortController | null;
   }>({
@@ -324,6 +329,28 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
       })
       .catch((error) => {
         setFields((prevState) => ({
+          ...prevState,
+          loading: false,
+          error: error,
+        }));
+      });
+  }, []);
+
+  const fetchStationaryEvents = useCallback((filter: any) => {
+    setStationaryEvents((prevState) => ({ ...prevState, loading: true }));
+
+    return getEvents(filter)
+      .then((response) => {
+        if (response.success) {
+          setStationaryEvents({
+            loading: false,
+            list: response.data,
+            error: undefined,
+          });
+        }
+      })
+      .catch((error) => {
+        setStationaryEvents((prevState) => ({
           ...prevState,
           loading: false,
           error: error,
@@ -1372,6 +1399,8 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
         fetchConsultation,
         fields,
         fetchFields,
+        stationaryEvents,
+        fetchStationaryEvents,
       }}
     >
       <EditorContextProvider url={`${apiUrl}/api/hh5p`}>{children}</EditorContextProvider>

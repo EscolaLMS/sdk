@@ -1,4 +1,5 @@
 import '@escolalms/ts-models';
+import { API } from '..';
 
 export enum TopicType {
   Unselected = '',
@@ -235,6 +236,8 @@ export type PageListItem = Page;
 export type Consultation = EscolaLms.Consultations.Models.Consultation;
 
 export type ConsultationsList = DefaultMetaResponse<Consultation>;
+
+export type StationaryEventsList = DefaultMetaResponse<StationaryEvent>;
 
 export type PaginationParams = {
   order_by?: string;
@@ -559,6 +562,11 @@ export type AppConfig = Record<string, Record<string, string[] | string>>;
 export type AppCurrency = {
   default: string;
   enum: string[];
+};
+
+export type StationaryEvent = EscolaLms.StationaryEvents.Models.StationaryEvent & {
+  date?: string;
+  title?: string;
 };
 
 export type SCORM = {
