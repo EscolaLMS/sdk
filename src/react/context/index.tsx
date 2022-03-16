@@ -710,6 +710,7 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
     return postLogin(body).then((response) => {
       if (response.success) {
         setToken(response.data.token);
+        setTokenExpireDate(response.data.expires_at);
       }
     });
   }, []);
@@ -756,7 +757,7 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
   }, [token, abortControllers]);
 
   const addToCart = useCallback(
-    (courseId: number) => {
+    (productId: number) => {
       if (!token) {
         return Promise.reject('No token provided');
       }
@@ -764,7 +765,7 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
         ...prevState,
         loading: true,
       }));
-      return postAddToCart(courseId, token)
+      return postAddToCart(productId, token)
         .then(() => {
           fetchCart();
         })
@@ -780,7 +781,7 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
   );
 
   const removeFromCart = useCallback(
-    (courseId: number) => {
+    (itemId: number) => {
       if (!token) {
         return Promise.reject('No token provided');
       }
@@ -788,7 +789,7 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
         ...prevState,
         loading: true,
       }));
-      return deleteRemoveFromCart(courseId, token)
+      return deleteRemoveFromCart(itemId, token)
         .then((response) => {
           setCart((prevState) => ({
             ...prevState,
@@ -797,7 +798,7 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
               ...prevState.value,
               items:
                 prevState && prevState.value
-                  ? prevState.value.items.filter((item) => item.id !== courseId)
+                  ? prevState.value.items.filter((item) => item.id !== itemId)
                   : [],
             },
           }));

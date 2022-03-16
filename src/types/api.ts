@@ -235,6 +235,23 @@ export type PageListItem = Page;
 
 export type Consultation = EscolaLms.Consultations.Models.Consultation;
 
+export type Product = EscolaLms.Cart.Models.Product;
+
+export type CartProductParameters = {
+  description: string;
+  id: number;
+  morph_class: string;
+  name: string;
+  productable_id: number;
+  productable_type: string;
+};
+
+export type CartItem = EscolaLms.Cart.Models.CartItem & {
+  product?: Product & {
+    productables: CartProductParameters[];
+  };
+};
+
 export type ConsultationsList = DefaultMetaResponse<Consultation>;
 
 export type StationaryEventsList = DefaultMetaResponse<StationaryEvent>;
@@ -276,10 +293,7 @@ export type LoginRequest = {
   password: string;
 };
 
-export type LoginResponse = DefaultResponse<{
-  token: string;
-  expires_at: string;
-}>;
+export type LoginResponse = DefaultResponse<{ token: string; expires_at: string }>;
 
 export type RegisterRequest = {
   email: string;
@@ -607,7 +621,7 @@ export type SCORM_SCO = {
 };
 
 export type Cart = {
-  items: Course[];
+  items: EscolaLms.Cart.Models.CartItem[];
   total?: string | number;
   subtotal?: string | number;
   tax?: string | number;
