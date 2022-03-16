@@ -284,6 +284,11 @@ export type ConsultationParams = PageParams &
     base_price?: number;
   };
 
+export type StationaryEventsParams = PageParams &
+  PaginationParams & {
+    name?: string;
+  };
+
 export type FieldsParams = {
   class_type: string;
 };

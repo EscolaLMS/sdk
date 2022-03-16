@@ -119,7 +119,7 @@ export interface EscolaLMSContextAPIConfig {
   fetchConsultations: (filter: API.ConsultationParams) => Promise<void>;
   fetchConsultation: (id: number) => Promise<void>;
   fetchFields: (filter: API.FieldsParams) => Promise<void>;
-  fetchStationaryEvents: (filter: any) => Promise<void>;
+  fetchStationaryEvents: (filter: API.StationaryEventsParams) => Promise<void>;
 }
 
 export type EscolaLMSContextConfig = EscolaLMSContextReadConfig & EscolaLMSContextAPIConfig;

@@ -180,7 +180,7 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
     loading: false,
   },
 
-  fetchStationaryEvents: (filter: any) => Promise.reject(),
+  fetchStationaryEvents: (filter: API.StationaryEventsParams) => Promise.reject(),
 };
 
 export const defaultApiConfig: EscolaLMSContextConfig = {
@@ -326,7 +326,7 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
   stationaryEvents: {
     loading: false,
   },
-  fetchStationaryEvents: (filter: any) => Promise.reject(),
+  fetchStationaryEvents: (filter: API.StationaryEventsParams) => Promise.reject(),
 };
 
 export const defaultConfig = Object.assign({}, defaultReadConfig, defaultApiConfig);

@@ -336,7 +336,7 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
       });
   }, []);
 
-  const fetchStationaryEvents = useCallback((filter: any) => {
+  const fetchStationaryEvents = useCallback((filter: API.StationaryEventsParams) => {
     setStationaryEvents((prevState) => ({ ...prevState, loading: true }));
 
     return getEvents(filter)
