@@ -236,8 +236,19 @@ export type Consultation = EscolaLms.Consultations.Models.Consultation;
 
 export type Product = EscolaLms.Cart.Models.Product;
 
+export type CartProductParameters = {
+  description: string;
+  id: number;
+  morph_class: string;
+  name: string;
+  productable_id: number;
+  productable_type: string;
+};
+
 export type CartItem = EscolaLms.Cart.Models.CartItem & {
-  product?: Product;
+  product?: Product & {
+    productables: CartProductParameters[];
+  };
 };
 
 export type ConsultationsList = DefaultMetaResponse<Consultation>;
