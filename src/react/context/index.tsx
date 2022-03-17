@@ -21,6 +21,7 @@ import {
   h5pProgress as postSendh5pProgress,
 } from './../../services/courses';
 import { consultations as getConsultations, getConsultation } from './../../services/consultations';
+import { webinars as getWebinars, getWebinar } from '../../services/webinars';
 import { settings as getSettings, config as getConfig } from './../../services/settings';
 import { uniqueTags as getUniqueTags } from './../../services/tags';
 import { categoryTree as getCategoryTree } from './../../services/categories';
@@ -143,6 +144,18 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
     'lms',
     'consultation',
     getDefaultData('consultation'),
+  );
+
+  const [webinars, setWebinars] = useLocalStorage<ContextPaginatedMetaState<API.Consultation>>(
+    'lms',
+    'webinars',
+    getDefaultData('webinars'),
+  );
+
+  const [webinar, setWebinar] = useLocalStorage<ContextStateValue<API.Consultation>>(
+    'lms',
+    'webinar',
+    getDefaultData('webinar'),
   );
 
   const [userGroup, setUserGroup] = useLocalStorage<ContextStateValue<API.UserGroupRow>>(
@@ -535,6 +548,58 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
       }
       if (response.success === false) {
         setConsultation((prevState) => ({
+          ...prevState,
+          loading: false,
+          error: response,
+        }));
+      }
+    });
+  }, []);
+
+  const fetchWebinars = useCallback(
+    (filter: any) => {
+      setWebinars((prevState) => ({ ...prevState, loading: true }));
+      return getWebinars(filter)
+        .then((response) => {
+          if (response.success) {
+            setWebinars({
+              loading: false,
+              list: response.data,
+              error: undefined,
+            });
+          }
+          if (response.success === false) {
+            setWebinars((prevState) => ({
+              ...prevState,
+              loading: false,
+              error: response,
+            }));
+          }
+        })
+        .catch((error) => {
+          setWebinars((prevState) => ({
+            ...prevState,
+            loading: false,
+            error: error,
+          }));
+        });
+    },
+    [setWebinars],
+  );
+
+  const fetchWebinar = useCallback((id) => {
+    setWebinar((prevState) => ({ ...prevState, loading: true }));
+    return getWebinar(id).then((response) => {
+      if (response.success) {
+        setWebinar({
+          loading: false,
+          value: {
+            ...response.data,
+          },
+        });
+      }
+      if (response.success === false) {
+        setWebinar((prevState) => ({
           ...prevState,
           loading: false,
           error: response,
@@ -1402,6 +1467,8 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
         fetchFields,
         stationaryEvents,
         fetchStationaryEvents,
+        fetchWebinars,
+        webinars,
       }}
     >
       <EditorContextProvider url={`${apiUrl}/api/hh5p`}>{children}</EditorContextProvider>
