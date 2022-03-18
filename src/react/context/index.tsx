@@ -20,7 +20,11 @@ import {
   topicPing as putTopicPing,
   h5pProgress as postSendh5pProgress,
 } from './../../services/courses';
-import { consultations as getConsultations, getConsultation } from './../../services/consultations';
+import {
+  consultations as getConsultations,
+  getConsultation,
+  getUserConsultations,
+} from './../../services/consultations';
 import { settings as getSettings, config as getConfig } from './../../services/settings';
 import { uniqueTags as getUniqueTags } from './../../services/tags';
 import { categoryTree as getCategoryTree } from './../../services/categories';
@@ -144,6 +148,10 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
     'consultation',
     getDefaultData('consultation'),
   );
+
+  const [userConsultations, setUserConsultations] = useLocalStorage<
+    ContextPaginatedMetaState<API.Consultation>
+  >('lms', 'userConsultations', getDefaultData('userConsultations'));
 
   const [userGroup, setUserGroup] = useLocalStorage<ContextStateValue<API.UserGroupRow>>(
     'lms',
@@ -518,6 +526,40 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
             error: error,
           }));
         });
+    },
+    [consultations],
+  );
+
+  const fetchUserConsultations = useCallback(
+    (filter: API.ConsultationParams) => {
+      setUserConsultations((prevState) => ({ ...prevState, loading: true }));
+      return token
+        ? getUserConsultations(token, filter)
+            .then((response) => {
+              console.log(response);
+              if (response.success) {
+                setConsultations({
+                  loading: false,
+                  list: response,
+                  error: undefined,
+                });
+              }
+              if (response.success === false) {
+                setUserConsultations((prevState) => ({
+                  ...prevState,
+                  loading: false,
+                  error: response,
+                }));
+              }
+            })
+            .catch((error) => {
+              setUserConsultations((prevState) => ({
+                ...prevState,
+                loading: false,
+                error: error,
+              }));
+            })
+        : Promise.reject();
     },
     [consultations],
   );
@@ -1402,6 +1444,8 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
         fetchFields,
         stationaryEvents,
         fetchStationaryEvents,
+        fetchUserConsultations,
+        userConsultations,
       }}
     >
       <EditorContextProvider url={`${apiUrl}/api/hh5p`}>{children}</EditorContextProvider>

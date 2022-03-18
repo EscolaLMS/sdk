@@ -163,10 +163,14 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
   getRefreshedToken: () => Promise.reject(),
   fetchConsultations: () => Promise.reject(),
   fetchConsultation: (id: number) => Promise.reject(),
+  fetchUserConsultations: (filter: API.ConsultationParams) => Promise.reject(),
   consultation: {
     loading: false,
   },
   consultations: {
+    loading: false,
+  },
+  userConsultations: {
     loading: false,
   },
   fields: {
@@ -312,6 +316,7 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
   fetchH5P: (id: string) => Promise.reject(),
   fetchConsultations: () => Promise.reject(),
   fetchConsultation: (id: number) => Promise.reject(),
+  fetchUserConsultations: (filter: API.ConsultationParams) => Promise.reject(),
   consultation: {
     loading: false,
   },
@@ -321,6 +326,9 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
   fields: {
     loading: false,
     list: [],
+  },
+  userConsultations: {
+    loading: false,
   },
   fetchFields: (filter: API.FieldsParams) => Promise.reject(),
   stationaryEvents: {
