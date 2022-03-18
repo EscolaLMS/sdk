@@ -240,7 +240,7 @@ export type Consultation = EscolaLms.Consultations.Models.Consultation & {
 
 export type Product = EscolaLms.Cart.Models.Product;
 
-export type Webinar = EscolaLms.Webinar.Models.Webinar;
+export type Webinar = EscolaLms.Webinar.Models.Webinar & { product?: Product };
 
 export type CartProductParameters = {
   description: string;
