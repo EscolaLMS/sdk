@@ -129,6 +129,7 @@ export type Course = {
   active_to?: string;
   active_from?: string;
   hours_to_complete?: number;
+  product: EscolaLms.Cart.Models.Product;
 };
 
 export type PaginatedList<Model> = {
@@ -233,7 +234,9 @@ export type PageList = DefaultMetaResponse<Page>;
 
 export type PageListItem = Page;
 
-export type Consultation = EscolaLms.Consultations.Models.Consultation;
+export type Consultation = EscolaLms.Consultations.Models.Consultation & {
+  product?: EscolaLms.Cart.Models.Product;
+};
 
 export type Product = EscolaLms.Cart.Models.Product;
 
@@ -250,6 +253,7 @@ export type CartItem = EscolaLms.Cart.Models.CartItem & {
   product?: Product & {
     productables: CartProductParameters[];
   };
+  product_id?: number;
 };
 
 export type ConsultationsList = DefaultMetaResponse<Consultation>;
