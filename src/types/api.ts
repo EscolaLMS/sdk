@@ -237,6 +237,8 @@ export type Consultation = EscolaLms.Consultations.Models.Consultation;
 
 export type Product = EscolaLms.Cart.Models.Product;
 
+export type Webinar = EscolaLms.Webinar.Models.Webinar;
+
 export type CartProductParameters = {
   description: string;
   id: number;
@@ -253,6 +255,8 @@ export type CartItem = EscolaLms.Cart.Models.CartItem & {
 };
 
 export type ConsultationsList = DefaultMetaResponse<Consultation>;
+
+export type WebinarsList = DefaultMetaResponse<Webinar>;
 
 export type StationaryEventsList = DefaultMetaResponse<StationaryEvent>;
 
@@ -283,6 +287,8 @@ export type ConsultationParams = PageParams &
     status?: string;
     base_price?: number;
   };
+
+export type WebinarParams = PageParams & PaginationParams & { name?: string; product?: Product };
 
 export type StationaryEventsParams = PageParams &
   PaginationParams & {

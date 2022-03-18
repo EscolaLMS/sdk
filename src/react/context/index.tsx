@@ -21,7 +21,7 @@ import {
   h5pProgress as postSendh5pProgress,
 } from './../../services/courses';
 import { consultations as getConsultations, getConsultation } from './../../services/consultations';
-import { webinars as getWebinars, getWebinar } from '../../services/webinars';
+import { webinars as getWebinars } from '../../services/webinars';
 import { settings as getSettings, config as getConfig } from './../../services/settings';
 import { uniqueTags as getUniqueTags } from './../../services/tags';
 import { categoryTree as getCategoryTree } from './../../services/categories';
@@ -146,17 +146,9 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
     getDefaultData('consultation'),
   );
 
-  const [webinars, setWebinars] = useLocalStorage<ContextPaginatedMetaState<API.Consultation>>(
-    'lms',
-    'webinars',
-    getDefaultData('webinars'),
-  );
-
-  const [webinar, setWebinar] = useLocalStorage<ContextStateValue<API.Consultation>>(
-    'lms',
-    'webinar',
-    getDefaultData('webinar'),
-  );
+  const [webinars, setWebinars] = useLocalStorage<
+    ContextListState<EscolaLms.Webinar.Models.Webinar>
+  >('lms', 'webinars', getDefaultData('webinars'));
 
   const [userGroup, setUserGroup] = useLocalStorage<ContextStateValue<API.UserGroupRow>>(
     'lms',
@@ -557,7 +549,7 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
   }, []);
 
   const fetchWebinars = useCallback(
-    (filter: any) => {
+    (filter: API.WebinarParams) => {
       setWebinars((prevState) => ({ ...prevState, loading: true }));
       return getWebinars(filter)
         .then((response) => {
@@ -586,27 +578,6 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
     },
     [setWebinars],
   );
-
-  const fetchWebinar = useCallback((id) => {
-    setWebinar((prevState) => ({ ...prevState, loading: true }));
-    return getWebinar(id).then((response) => {
-      if (response.success) {
-        setWebinar({
-          loading: false,
-          value: {
-            ...response.data,
-          },
-        });
-      }
-      if (response.success === false) {
-        setWebinar((prevState) => ({
-          ...prevState,
-          loading: false,
-          error: response,
-        }));
-      }
-    });
-  }, []);
 
   const fetchUserGroup = useCallback(
     (id) => {
