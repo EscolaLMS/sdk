@@ -67,6 +67,7 @@ export interface EscolaLMSContextReadConfig {
   consultation: ContextStateValue<API.Consultation>;
   fields: ContextListState<EscolaLms.ModelFields.Models.Metadata>;
   stationaryEvents: ContextListState<EscolaLms.StationaryEvents.Models.StationaryEvent>;
+  webinars: ContextListState<API.Webinar>;
 }
 
 export interface EscolaLMSContextAPIConfig {
@@ -120,6 +121,7 @@ export interface EscolaLMSContextAPIConfig {
   fetchConsultation: (id: number) => Promise<void>;
   fetchFields: (filter: API.FieldsParams) => Promise<void>;
   fetchStationaryEvents: (filter: API.StationaryEventsParams) => Promise<void>;
+  fetchWebinars: (filter: API.WebinarParams) => Promise<void>;
 }
 
 export type EscolaLMSContextConfig = EscolaLMSContextReadConfig & EscolaLMSContextAPIConfig;

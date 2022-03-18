@@ -129,7 +129,7 @@ export type Course = {
   active_to?: string;
   active_from?: string;
   hours_to_complete?: number;
-  product: EscolaLms.Cart.Models.Product;
+  product?: Product;
 };
 
 export type PaginatedList<Model> = {
@@ -235,10 +235,12 @@ export type PageList = DefaultMetaResponse<Page>;
 export type PageListItem = Page;
 
 export type Consultation = EscolaLms.Consultations.Models.Consultation & {
-  product?: EscolaLms.Cart.Models.Product;
+  product?: Product;
 };
 
 export type Product = EscolaLms.Cart.Models.Product;
+
+export type Webinar = EscolaLms.Webinar.Models.Webinar & { product?: Product };
 
 export type CartProductParameters = {
   description: string;
@@ -257,6 +259,8 @@ export type CartItem = EscolaLms.Cart.Models.CartItem & {
 };
 
 export type ConsultationsList = DefaultMetaResponse<Consultation>;
+
+export type WebinarsList = DefaultMetaResponse<Webinar>;
 
 export type StationaryEventsList = DefaultMetaResponse<StationaryEvent>;
 
@@ -287,6 +291,8 @@ export type ConsultationParams = PageParams &
     status?: string;
     base_price?: number;
   };
+
+export type WebinarParams = PageParams & PaginationParams & { name?: string; product?: Product };
 
 export type StationaryEventsParams = PageParams &
   PaginationParams & {
