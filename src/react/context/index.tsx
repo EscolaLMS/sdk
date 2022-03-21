@@ -21,6 +21,7 @@ import {
   h5pProgress as postSendh5pProgress,
 } from './../../services/courses';
 import {
+  bookConsultationDate,
   consultations as getConsultations,
   getConsultation,
   getUserConsultations,
@@ -530,39 +531,56 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
     [consultations],
   );
 
-  const fetchUserConsultations = useCallback(
-    (filter: API.ConsultationParams) => {
-      setUserConsultations((prevState) => ({ ...prevState, loading: true }));
-      return token
-        ? getUserConsultations(token, filter)
-            .then((response) => {
-              console.log(response);
-              if (response.success) {
-                setConsultations({
-                  loading: false,
-                  list: response,
-                  error: undefined,
-                });
-              }
-              if (response.success === false) {
-                setUserConsultations((prevState) => ({
-                  ...prevState,
-                  loading: false,
-                  error: response,
-                }));
-              }
-            })
-            .catch((error) => {
+  const fetchUserConsultations = useCallback(() => {
+    setUserConsultations((prevState) => ({ ...prevState, loading: true }));
+    return token
+      ? getUserConsultations(token)
+          .then((response) => {
+            console.log(response);
+            if (response.success) {
+              setUserConsultations({
+                loading: false,
+                list: response,
+                error: undefined,
+              });
+            }
+            if (response.success === false) {
               setUserConsultations((prevState) => ({
                 ...prevState,
                 loading: false,
-                error: error,
+                error: response,
               }));
-            })
-        : Promise.reject();
-    },
-    [consultations],
-  );
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+            setUserConsultations((prevState) => ({
+              ...prevState,
+              loading: false,
+              error: error,
+            }));
+          })
+      : Promise.reject();
+  }, [consultations]);
+
+  const bookConsultationTerm = useCallback((id: number | undefined, term: string) => {
+    return token
+      ? bookConsultationDate(token, id, term)
+          .then((response) => {
+            console.log(response);
+            if (response.success) {
+              console.log('succes');
+              console.log(response);
+            }
+            if (response.success === false) {
+              console.log('fail');
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          })
+      : Promise.reject();
+  }, []);
 
   const fetchConsultation = useCallback((id) => {
     setConsultation((prevState) => ({ ...prevState, loading: true }));
@@ -1446,6 +1464,7 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
         fetchStationaryEvents,
         fetchUserConsultations,
         userConsultations,
+        bookConsultationTerm,
       }}
     >
       <EditorContextProvider url={`${apiUrl}/api/hh5p`}>{children}</EditorContextProvider>

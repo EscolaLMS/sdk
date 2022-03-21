@@ -22,11 +22,7 @@ export async function getConsultation(id: number, options?: { [key: string]: any
 }
 
 /**  GET /api/consultations/me */
-export async function getUserConsultations(
-  token: string,
-  params: API.ConsultationParams,
-  options?: { [key: string]: any },
-) {
+export async function getUserConsultations(token: string) {
   return request<API.ConsultationsList>(`/api/consultations/me`, {
     method: 'GET',
     headers: {
@@ -34,7 +30,20 @@ export async function getUserConsultations(
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     },
-    params,
-    ...(options || {}),
+  });
+}
+
+/**  GET /api/consultations/me */
+export async function bookConsultationDate(token: string, id: number | undefined, term: string) {
+  return request<API.ConsultationsList>(`/api/consultations/report-term/${id}`, {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    data: {
+      term: term,
+    },
   });
 }

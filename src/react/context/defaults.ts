@@ -185,6 +185,7 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
   },
 
   fetchStationaryEvents: (filter: API.StationaryEventsParams) => Promise.reject(),
+  bookConsultationTerm: (id: number | undefined, term: 'string') => Promise.reject(),
 };
 
 export const defaultApiConfig: EscolaLMSContextConfig = {
@@ -335,6 +336,7 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
     loading: false,
   },
   fetchStationaryEvents: (filter: API.StationaryEventsParams) => Promise.reject(),
+  bookConsultationTerm: (id: number | undefined, term: 'string') => Promise.reject(),
 };
 
 export const defaultConfig = Object.assign({}, defaultReadConfig, defaultApiConfig);
