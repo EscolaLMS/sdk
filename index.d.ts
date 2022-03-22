@@ -1,5 +1,3 @@
+import "@escolalms/ts-models";
 
-declare module "@escolalms/sdk" {
-
-    
-}
+declare module "@escolalms/sdk" {}

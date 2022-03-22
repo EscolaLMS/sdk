@@ -68,6 +68,7 @@ export interface EscolaLMSContextReadConfig {
   fields: ContextListState<EscolaLms.ModelFields.Models.Metadata>;
   stationaryEvents: ContextListState<EscolaLms.StationaryEvents.Models.StationaryEvent>;
   userConsultations: ContextPaginatedMetaState<API.Consultation>;
+  webinars: ContextListState<API.Webinar>;
 }
 
 export interface EscolaLMSContextAPIConfig {
@@ -123,6 +124,7 @@ export interface EscolaLMSContextAPIConfig {
   fetchFields: (filter: API.FieldsParams) => Promise<void>;
   fetchStationaryEvents: (filter: API.StationaryEventsParams) => Promise<void>;
   bookConsultationTerm: (id: number | undefined, term: 'string') => Promise<void>;
+  fetchWebinars: (filter: API.WebinarParams) => Promise<void>;
 }
 
 export type EscolaLMSContextConfig = EscolaLMSContextReadConfig & EscolaLMSContextAPIConfig;

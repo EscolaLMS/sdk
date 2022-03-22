@@ -1,42 +1,41 @@
-import '@escolalms/ts-models';
-import { API } from '..';
+import { API } from "..";
 
 export enum TopicType {
-  Unselected = '',
-  RichText = 'EscolaLms\\TopicTypes\\Models\\TopicContent\\RichText',
-  OEmbed = 'EscolaLms\\TopicTypes\\Models\\TopicContent\\OEmbed',
-  Audio = 'EscolaLms\\TopicTypes\\Models\\TopicContent\\Audio',
-  Video = 'EscolaLms\\TopicTypes\\Models\\TopicContent\\Video',
-  H5P = 'EscolaLms\\TopicTypes\\Models\\TopicContent\\H5P',
-  Image = 'EscolaLms\\TopicTypes\\Models\\TopicContent\\Image',
-  Pdf = 'EscolaLms\\TopicTypes\\Models\\TopicContent\\PDF',
-  Scorm = 'EscolaLms\\TopicTypes\\Models\\TopicContent\\ScormSco',
+  Unselected = "",
+  RichText = "EscolaLms\\TopicTypes\\Models\\TopicContent\\RichText",
+  OEmbed = "EscolaLms\\TopicTypes\\Models\\TopicContent\\OEmbed",
+  Audio = "EscolaLms\\TopicTypes\\Models\\TopicContent\\Audio",
+  Video = "EscolaLms\\TopicTypes\\Models\\TopicContent\\Video",
+  H5P = "EscolaLms\\TopicTypes\\Models\\TopicContent\\H5P",
+  Image = "EscolaLms\\TopicTypes\\Models\\TopicContent\\Image",
+  Pdf = "EscolaLms\\TopicTypes\\Models\\TopicContent\\PDF",
+  Scorm = "EscolaLms\\TopicTypes\\Models\\TopicContent\\ScormSco",
 }
 
 export enum PaymentStatusType {
-  NEW = 'new',
-  PAID = 'paid',
+  NEW = "new",
+  PAID = "paid",
 }
 
 export type IEvent =
-  | 'http://adlnet.gov/expapi/verbs/experienced'
-  | 'http://adlnet.gov/expapi/verbs/attended'
-  | 'http://adlnet.gov/expapi/verbs/attempted'
-  | 'http://adlnet.gov/expapi/verbs/completed'
-  | 'http://adlnet.gov/expapi/verbs/passed'
-  | 'http://adlnet.gov/expapi/verbs/failed'
-  | 'http://adlnet.gov/expapi/verbs/answered'
-  | 'http://adlnet.gov/expapi/verbs/interacted'
-  | 'http://adlnet.gov/expapi/verbs/imported'
-  | 'http://adlnet.gov/expapi/verbs/created'
-  | 'http://adlnet.gov/expapi/verbs/shared'
-  | 'http://adlnet.gov/expapi/verbs/voided'
-  | 'http://activitystrea.ms/schema/1.0/consume'
-  | 'http://adlnet.gov/expapi/verbs/mastered';
+  | "http://adlnet.gov/expapi/verbs/experienced"
+  | "http://adlnet.gov/expapi/verbs/attended"
+  | "http://adlnet.gov/expapi/verbs/attempted"
+  | "http://adlnet.gov/expapi/verbs/completed"
+  | "http://adlnet.gov/expapi/verbs/passed"
+  | "http://adlnet.gov/expapi/verbs/failed"
+  | "http://adlnet.gov/expapi/verbs/answered"
+  | "http://adlnet.gov/expapi/verbs/interacted"
+  | "http://adlnet.gov/expapi/verbs/imported"
+  | "http://adlnet.gov/expapi/verbs/created"
+  | "http://adlnet.gov/expapi/verbs/shared"
+  | "http://adlnet.gov/expapi/verbs/voided"
+  | "http://activitystrea.ms/schema/1.0/consume"
+  | "http://adlnet.gov/expapi/verbs/mastered";
 
 export type IStatementCategory = {
   id: string;
-  objectType: 'string';
+  objectType: "string";
 };
 
 export type IScore = {
@@ -66,7 +65,10 @@ export type IStatement = {
   verb: { id: IEvent };
 };
 
-export type IEventException = 'GuessTheAnswer' | 'Questionnaire' | 'QuestionSet';
+export type IEventException =
+  | "GuessTheAnswer"
+  | "Questionnaire"
+  | "QuestionSet";
 
 export type Category = {
   id: number;
@@ -129,7 +131,7 @@ export type Course = {
   active_to?: string;
   active_from?: string;
   hours_to_complete?: number;
-  product: EscolaLms.Cart.Models.Product;
+  product?: Product;
 };
 
 export type PaginatedList<Model> = {
@@ -187,9 +189,13 @@ export type DefaultResponseError = {
   };
 };
 
-export type DefaultResponse<Model> = DefaultResponseSuccess<Model> | DefaultResponseError;
+export type DefaultResponse<Model> =
+  | DefaultResponseSuccess<Model>
+  | DefaultResponseError;
 
-export type DataResponse<Model> = DataResponseSuccess<Model> | DefaultResponseError;
+export type DataResponse<Model> =
+  | DataResponseSuccess<Model>
+  | DefaultResponseError;
 
 type DefaultMetaResponse<Model> =
   | (PaginatedMetaList<Model> & {
@@ -235,10 +241,12 @@ export type PageList = DefaultMetaResponse<Page>;
 export type PageListItem = Page;
 
 export type Consultation = EscolaLms.Consultations.Models.Consultation & {
-  product?: EscolaLms.Cart.Models.Product;
+  product?: Product;
 };
 
 export type Product = EscolaLms.Cart.Models.Product;
+
+export type Webinar = EscolaLms.Webinar.Models.Webinar & { product?: Product };
 
 export type CartProductParameters = {
   description: string;
@@ -258,11 +266,13 @@ export type CartItem = EscolaLms.Cart.Models.CartItem & {
 
 export type ConsultationsList = DefaultMetaResponse<Consultation>;
 
+export type WebinarsList = DefaultMetaResponse<Webinar>;
+
 export type StationaryEventsList = DefaultMetaResponse<StationaryEvent>;
 
 export type PaginationParams = {
   order_by?: string;
-  order?: 'ASC' | 'DESC';
+  order?: "ASC" | "DESC";
   page?: number;
   per_page?: number;
 };
@@ -288,6 +298,9 @@ export type ConsultationParams = PageParams &
     base_price?: number;
   };
 
+export type WebinarParams = PageParams &
+  PaginationParams & { name?: string; product?: Product };
+
 export type StationaryEventsParams = PageParams &
   PaginationParams & {
     name?: string;
@@ -302,7 +315,10 @@ export type LoginRequest = {
   password: string;
 };
 
-export type LoginResponse = DefaultResponse<{ token: string; expires_at: string }>;
+export type LoginResponse = DefaultResponse<{
+  token: string;
+  expires_at: string;
+}>;
 
 export type RegisterRequest = {
   email: string;
@@ -587,16 +603,17 @@ export type AppCurrency = {
   enum: string[];
 };
 
-export type StationaryEvent = EscolaLms.StationaryEvents.Models.StationaryEvent & {
-  date?: string;
-  title?: string;
-};
+export type StationaryEvent =
+  EscolaLms.StationaryEvents.Models.StationaryEvent & {
+    date?: string;
+    title?: string;
+  };
 
 export type SCORM = {
   id: number;
   resource_type: null;
   resource_id: number;
-  version: 'scorm_12' | 'scorm_2004';
+  version: "scorm_12" | "scorm_2004";
   hash_name: string;
   origin_file: string;
   origin_file_mime: string;
@@ -671,7 +688,7 @@ export type Order = {
       options: string;
       created_at: string;
       updated_at: string;
-    },
+    }
   ];
   total: string;
   subtotal: string;
@@ -722,8 +739,8 @@ export type UserGroupsParams = {
 };
 
 export enum EventTypes {
-  OrderPaid = 'EscolaLms\\Cart\\Events\\OrderPaid',
-  UserLogged = 'EscolaLms\\Auth\\Events\\UserLogged',
+  OrderPaid = "EscolaLms\\Cart\\Events\\OrderPaid",
+  UserLogged = "EscolaLms\\Auth\\Events\\UserLogged",
 }
 
 export type Notification = {
@@ -869,7 +886,7 @@ export type H5PObject = {
       contentUserData: [
         {
           state: object;
-        },
+        }
       ];
     }
   >;

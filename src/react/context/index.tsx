@@ -26,6 +26,7 @@ import {
   getConsultation,
   getUserConsultations,
 } from './../../services/consultations';
+import { webinars as getWebinars } from '../../services/webinars';
 import { settings as getSettings, config as getConfig } from './../../services/settings';
 import { uniqueTags as getUniqueTags } from './../../services/tags';
 import { categoryTree as getCategoryTree } from './../../services/categories';
@@ -153,6 +154,9 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
   const [userConsultations, setUserConsultations] = useLocalStorage<
     ContextPaginatedMetaState<API.Consultation>
   >('lms', 'userConsultations', getDefaultData('userConsultations'));
+  const [webinars, setWebinars] = useLocalStorage<
+    ContextListState<EscolaLms.Webinar.Models.Webinar>
+  >('lms', 'webinars', getDefaultData('webinars'));
 
   const [userGroup, setUserGroup] = useLocalStorage<ContextStateValue<API.UserGroupRow>>(
     'lms',
@@ -602,6 +606,37 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
       }
     });
   }, []);
+
+  const fetchWebinars = useCallback(
+    (filter: API.WebinarParams) => {
+      setWebinars((prevState) => ({ ...prevState, loading: true }));
+      return getWebinars(filter)
+        .then((response) => {
+          if (response.success) {
+            setWebinars({
+              loading: false,
+              list: response.data,
+              error: undefined,
+            });
+          }
+          if (response.success === false) {
+            setWebinars((prevState) => ({
+              ...prevState,
+              loading: false,
+              error: response,
+            }));
+          }
+        })
+        .catch((error) => {
+          setWebinars((prevState) => ({
+            ...prevState,
+            loading: false,
+            error: error,
+          }));
+        });
+    },
+    [setWebinars],
+  );
 
   const fetchUserGroup = useCallback(
     (id) => {
@@ -1465,6 +1500,8 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
         fetchUserConsultations,
         userConsultations,
         bookConsultationTerm,
+        fetchWebinars,
+        webinars,
       }}
     >
       <EditorContextProvider url={`${apiUrl}/api/hh5p`}>{children}</EditorContextProvider>
