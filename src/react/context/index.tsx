@@ -564,7 +564,7 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
             }));
           })
       : Promise.reject();
-  }, [consultations]);
+  }, [userConsultations]);
 
   const bookConsultationTerm = useCallback((id: number | undefined, term: string) => {
     return token
