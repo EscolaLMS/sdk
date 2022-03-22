@@ -35,7 +35,7 @@ export async function getUserConsultations(token: string) {
 
 /**  GET /api/consultations/reserve-term */
 export async function bookConsultationDate(token: string, id: number | undefined, term: string) {
-  return request<API.ConsultationsList>(`/api/consultations/report-term/${id}`, {
+  return request<API.SuccessResponse>(`/api/consultations/report-term/${id}`, {
     method: 'POST',
     headers: {
       Accept: 'application/json',
