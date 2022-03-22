@@ -540,7 +540,6 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
     return token
       ? getUserConsultations(token)
           .then((response) => {
-            console.log(response);
             if (response.success) {
               setUserConsultations({
                 loading: false,
@@ -571,10 +570,8 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
     return token
       ? bookConsultationDate(token, id, term)
           .then((response) => {
-            console.log(response);
             if (response.success) {
               console.log('succes');
-              console.log(response);
             }
             if (response.success === false) {
               console.log('fail');
