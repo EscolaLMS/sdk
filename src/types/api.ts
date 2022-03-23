@@ -65,10 +65,7 @@ export type IStatement = {
   verb: { id: IEvent };
 };
 
-export type IEventException =
-  | "GuessTheAnswer"
-  | "Questionnaire"
-  | "QuestionSet";
+export type IEventException = "GuessTheAnswer" | "Questionnaire" | "QuestionSet";
 
 export type Category = {
   id: number;
@@ -189,13 +186,9 @@ export type DefaultResponseError = {
   };
 };
 
-export type DefaultResponse<Model> =
-  | DefaultResponseSuccess<Model>
-  | DefaultResponseError;
+export type DefaultResponse<Model> = DefaultResponseSuccess<Model> | DefaultResponseError;
 
-export type DataResponse<Model> =
-  | DataResponseSuccess<Model>
-  | DefaultResponseError;
+export type DataResponse<Model> = DataResponseSuccess<Model> | DefaultResponseError;
 
 type DefaultMetaResponse<Model> =
   | (PaginatedMetaList<Model> & {
@@ -242,6 +235,9 @@ export type PageListItem = Page;
 
 export type Consultation = EscolaLms.Consultations.Models.Consultation & {
   product?: Product;
+  executed_status?: null | "reported" | "not_reported" | "reject" | "approved";
+  executed_at?: string;
+  order_item_id?: number;
 };
 
 export type Product = EscolaLms.Cart.Models.Product;
@@ -298,8 +294,7 @@ export type ConsultationParams = PageParams &
     base_price?: number;
   };
 
-export type WebinarParams = PageParams &
-  PaginationParams & { name?: string; product?: Product };
+export type WebinarParams = PageParams & PaginationParams & { name?: string; product?: Product };
 
 export type StationaryEventsParams = PageParams &
   PaginationParams & {
@@ -603,11 +598,10 @@ export type AppCurrency = {
   enum: string[];
 };
 
-export type StationaryEvent =
-  EscolaLms.StationaryEvents.Models.StationaryEvent & {
-    date?: string;
-    title?: string;
-  };
+export type StationaryEvent = EscolaLms.StationaryEvents.Models.StationaryEvent & {
+  date?: string;
+  title?: string;
+};
 
 export type SCORM = {
   id: number;
@@ -688,7 +682,7 @@ export type Order = {
       options: string;
       created_at: string;
       updated_at: string;
-    }
+    },
   ];
   total: string;
   subtotal: string;
@@ -886,7 +880,7 @@ export type H5PObject = {
       contentUserData: [
         {
           state: object;
-        }
+        },
       ];
     }
   >;

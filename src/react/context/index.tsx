@@ -6,9 +6,9 @@ import React, {
   useRef,
   useContext,
   useMemo,
-} from 'react';
+} from "react";
 
-import { interceptors } from './../../services/request';
+import { interceptors } from "./../../services/request";
 import {
   course as getCourses,
   getCourse,
@@ -19,15 +19,20 @@ import {
   tutor as getTutor,
   topicPing as putTopicPing,
   h5pProgress as postSendh5pProgress,
-} from './../../services/courses';
-import { consultations as getConsultations, getConsultation } from './../../services/consultations';
-import { webinars as getWebinars } from '../../services/webinars';
-import { settings as getSettings, config as getConfig } from './../../services/settings';
-import { uniqueTags as getUniqueTags } from './../../services/tags';
-import { categoryTree as getCategoryTree } from './../../services/categories';
-import { getNotifications, readNotification } from '../../services/notify';
-import { getCertificates, getCertificate } from '../../services/certificates';
-import { getMattermostChannels } from '../../services/mattermost';
+} from "./../../services/courses";
+import {
+  bookConsultationDate,
+  consultations as getConsultations,
+  getConsultation,
+  getUserConsultations,
+} from "./../../services/consultations";
+import { webinars as getWebinars } from "../../services/webinars";
+import { settings as getSettings, config as getConfig } from "./../../services/settings";
+import { uniqueTags as getUniqueTags } from "./../../services/tags";
+import { categoryTree as getCategoryTree } from "./../../services/categories";
+import { getNotifications, readNotification } from "../../services/notify";
+import { getCertificates, getCertificate } from "../../services/certificates";
+import { getMattermostChannels } from "../../services/mattermost";
 import {
   login as postLogin,
   profile as getProfile,
@@ -38,8 +43,8 @@ import {
   reset,
   emailVerify,
   refreshToken,
-} from './../../services/auth';
-import { pages as getPages, page as getPage } from './../../services/pages';
+} from "./../../services/auth";
+import { pages as getPages, page as getPage } from "./../../services/pages";
 import {
   cart as getCart,
   addToCart as postAddToCart,
@@ -47,16 +52,16 @@ import {
   payWithStripe as postPayWithStripe,
   orders as getOrders,
   payments as getPayments,
-} from './../../services/cart';
+} from "./../../services/cart";
 import {
   userGroups as getUserGroups,
   userGroup as getUserGroup,
   registerableGroups as getRegisterableGroups,
-} from './../../services/user_groups';
-import { useLocalStorage } from '../hooks/useLocalStorage';
-import { EditorContextProvider } from '@escolalms/h5p-react';
-import * as API from './../../types/api';
-import { getH5p } from '../../services/h5p';
+} from "./../../services/user_groups";
+import { useLocalStorage } from "../hooks/useLocalStorage";
+import { EditorContextProvider } from "@escolalms/h5p-react";
+import * as API from "./../../types/api";
+import { getH5p } from "../../services/h5p";
 import {
   ContextPaginatedMetaState,
   ContextListState,
@@ -65,7 +70,7 @@ import {
   EscolaLMSContextReadConfig,
   EscolaLMSContextConfig,
   SortProgram,
-} from './types';
+} from "./types";
 
 import {
   defaultConfig,
@@ -74,10 +79,10 @@ import {
   blackList,
   completed,
   questionSet,
-} from './defaults';
+} from "./defaults";
 
-import { fields as getFields } from '../../services/fields';
-import { stationaryEvents as getEvents } from '../../services/stationary_events';
+import { fields as getFields } from "../../services/fields";
+import { stationaryEvents as getEvents } from "../../services/stationary_events";
 
 export const SCORMPlayer: React.FC<{
   uuid: string;
@@ -92,14 +97,14 @@ export const EscolaLMSContext: React.Context<EscolaLMSContextConfig> =
 export const sortProgram: SortProgram = (lessons) => {
   return [...lessons]
     .sort((lessonA, lessonB) =>
-      typeof lessonA.order === 'number' && typeof lessonB.order === 'number'
+      typeof lessonA.order === "number" && typeof lessonB.order === "number"
         ? lessonA.order - lessonB.order
         : 0,
     )
     .map((lesson) => ({
       ...lesson,
       topics: [...(lesson.topics || [])].sort((topicA, topicB) =>
-        typeof topicA.order === 'number' && typeof topicB.order === 'number'
+        typeof topicA.order === "number" && typeof topicB.order === "number"
           ? topicA.order - topicB.order
           : 0,
       ),
@@ -131,166 +136,169 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
   };
 
   const [courses, setCourses] = useLocalStorage<ContextPaginatedMetaState<API.CourseListItem>>(
-    'lms',
-    'courses',
-    getDefaultData('courses'),
+    "lms",
+    "courses",
+    getDefaultData("courses"),
   );
 
   const [consultations, setConsultations] = useLocalStorage<
     ContextPaginatedMetaState<API.Consultation>
-  >('lms', 'consultations', getDefaultData('consultations'));
+  >("lms", "consultations", getDefaultData("consultations"));
 
   const [consultation, setConsultation] = useLocalStorage<ContextStateValue<API.Consultation>>(
-    'lms',
-    'consultation',
-    getDefaultData('consultation'),
+    "lms",
+    "consultation",
+    getDefaultData("consultation"),
   );
 
+  const [userConsultations, setUserConsultations] = useLocalStorage<
+    ContextPaginatedMetaState<API.Consultation>
+  >("lms", "userConsultations", getDefaultData("userConsultations"));
   const [webinars, setWebinars] = useLocalStorage<
     ContextListState<EscolaLms.Webinar.Models.Webinar>
-  >('lms', 'webinars', getDefaultData('webinars'));
+  >("lms", "webinars", getDefaultData("webinars"));
 
   const [userGroup, setUserGroup] = useLocalStorage<ContextStateValue<API.UserGroupRow>>(
-    'lms',
-    'userGroup',
-    getDefaultData('userGroup'),
+    "lms",
+    "userGroup",
+    getDefaultData("userGroup"),
   );
 
   const [userGroups, setUserGroups] = useLocalStorage<ContextListState<API.UserGroup>>(
-    'lms',
-    'userGroups',
-    getDefaultData('userGroups'),
+    "lms",
+    "userGroups",
+    getDefaultData("userGroups"),
   );
 
   const [registerableGroups, setRegisterableGroups] = useLocalStorage<
     ContextListState<API.UserGroup>
-  >('lms', 'registerableGroups', getDefaultData('registerableGroups'));
+  >("lms", "registerableGroups", getDefaultData("registerableGroups"));
 
   const [course, setCourse] = useLocalStorage<ContextStateValue<API.CourseListItem>>(
-    'lms',
-    'course',
-    getDefaultData('course'),
+    "lms",
+    "course",
+    getDefaultData("course"),
   );
 
   const [settings, setSettings] = useLocalStorage<API.AppSettings>(
-    'lms',
-    'settings',
-    getDefaultData('settings'),
+    "lms",
+    "settings",
+    getDefaultData("settings"),
   );
 
   const [config, setConfig] = useLocalStorage<API.AppConfig>(
-    'lms',
-    'config',
-    getDefaultData('config'),
+    "lms",
+    "config",
+    getDefaultData("config"),
   );
 
   const [uniqueTags, setUniqueTags] = useLocalStorage<ContextListState<API.Tag>>(
-    'lms',
-    'tags',
-    getDefaultData('uniqueTags'),
+    "lms",
+    "tags",
+    getDefaultData("uniqueTags"),
   );
 
   const [categoryTree, setCategoryTree] = useLocalStorage<ContextListState<API.Category>>(
-    'lms',
-    'categories',
-    getDefaultData('categoryTree'),
+    "lms",
+    "categories",
+    getDefaultData("categoryTree"),
   );
 
   const [program, setProgram] = useLocalStorage<ContextStateValue<API.CourseProgram>>(
-    'lms',
-    'tags',
-    getDefaultData('program'),
+    "lms",
+    "tags",
+    getDefaultData("program"),
   );
 
   const [cart, setCart] = useLocalStorage<ContextStateValue<API.Cart>>(
-    'lms',
-    'cart',
-    getDefaultData('cart'),
+    "lms",
+    "cart",
+    getDefaultData("cart"),
   );
 
-  const [token, setToken] = useLocalStorage<string | null>('lms', 'token', null);
+  const [token, setToken] = useLocalStorage<string | null>("lms", "token", null);
 
   const [tokenExpireDate, setTokenExpireDate] = useLocalStorage<string | null>(
-    'lms',
-    'tokenExpireDate',
+    "lms",
+    "tokenExpireDate",
     null,
   );
 
   const [user, setUser] = useLocalStorage<ContextStateValue<API.UserItem>>(
-    'lms',
-    'user',
-    getDefaultData('user'),
+    "lms",
+    "user",
+    getDefaultData("user"),
   );
 
   const [progress, setProgress] = useState<ContextStateValue<API.CourseProgress>>(
-    getDefaultData('progress'),
+    getDefaultData("progress"),
   );
 
   const [tutors, setTutors] = useLocalStorage<ContextListState<API.UserItem>>(
-    'lms',
-    'tutors',
-    getDefaultData('tutors'),
+    "lms",
+    "tutors",
+    getDefaultData("tutors"),
   );
 
   const [orders, setOrders] = useLocalStorage<ContextListState<API.Order>>(
-    'lms',
-    'orders',
-    getDefaultData('orders'),
+    "lms",
+    "orders",
+    getDefaultData("orders"),
   );
 
   const [payments, setPayments] = useLocalStorage<ContextPaginatedMetaState<API.Payment>>(
-    'lms',
-    'payments',
-    getDefaultData('payments'),
+    "lms",
+    "payments",
+    getDefaultData("payments"),
   );
 
   const [certificates, setCertificates] = useLocalStorage<
     ContextPaginatedMetaState<API.Certificate>
-  >('lms', 'certificates', getDefaultData('certificates'));
+  >("lms", "certificates", getDefaultData("certificates"));
 
   const [mattermostChannels, setMattermostChannels] = useLocalStorage<
     ContextStateValue<API.MattermostData>
-  >('lms', 'mattermostChannels', getDefaultData('mattermostChannels'));
+  >("lms", "mattermostChannels", getDefaultData("mattermostChannels"));
 
-  const [tutor, setTutor] = useState<ContextStateValue<API.UserItem>>(getDefaultData('tutor'));
+  const [tutor, setTutor] = useState<ContextStateValue<API.UserItem>>(getDefaultData("tutor"));
 
   const [pages, setPages] = useLocalStorage<ContextPaginatedMetaState<API.PageListItem>>(
-    'lms',
-    'pages',
-    getDefaultData('pages'),
+    "lms",
+    "pages",
+    getDefaultData("pages"),
   );
 
   const [page, setPage] = useLocalStorage<ContextStateValue<API.Page>>(
-    'lms',
-    'page',
-    getDefaultData('page'),
+    "lms",
+    "page",
+    getDefaultData("page"),
   );
 
   const [fontSize, setFontSize] = useLocalStorage<FontSize>(
-    'lms',
-    'fontSize',
-    getDefaultData('fontSize'),
+    "lms",
+    "fontSize",
+    getDefaultData("fontSize"),
   );
 
   const [h5p, setH5P] = useLocalStorage<ContextStateValue<API.H5PObject>>(
-    'lms',
-    'h5p',
-    getDefaultData('h5p'),
+    "lms",
+    "h5p",
+    getDefaultData("h5p"),
   );
 
   const [notifications, setNotifications] = useLocalStorage<ContextListState<API.Notification>>(
-    'lms',
-    'notifications',
-    getDefaultData('notifications'),
+    "lms",
+    "notifications",
+    getDefaultData("notifications"),
   );
 
   const [fields, setFields] = useLocalStorage<
     ContextListState<EscolaLms.ModelFields.Models.Metadata>
-  >('lms', 'fields', getDefaultData('fields'));
+  >("lms", "fields", getDefaultData("fields"));
 
   const [stationaryEvents, setStationaryEvents] = useLocalStorage<
     ContextListState<EscolaLms.StationaryEvents.Models.StationaryEvent>
-  >('lms', 'stationaryEvents', getDefaultData('stationaryEvents'));
+  >("lms", "stationaryEvents", getDefaultData("stationaryEvents"));
 
   const abortControllers = useRef<{
     cart: AbortController | null;
@@ -527,6 +535,50 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
     [consultations],
   );
 
+  const fetchUserConsultations = useCallback(() => {
+    setUserConsultations((prevState) => ({ ...prevState, loading: true }));
+    return token
+      ? getUserConsultations(token)
+          .then((response) => {
+            if (response.success) {
+              setUserConsultations({
+                loading: false,
+                list: response,
+                error: undefined,
+              });
+            }
+            if (response.success === false) {
+              setUserConsultations((prevState) => ({
+                ...prevState,
+                loading: false,
+                error: response,
+              }));
+            }
+          })
+          .catch((error) => {
+            setUserConsultations((prevState) => ({
+              ...prevState,
+              loading: false,
+              error: error,
+            }));
+          })
+      : Promise.reject();
+  }, [userConsultations]);
+
+  const bookConsultationTerm = useCallback((id: number, term: string) => {
+    return token
+      ? bookConsultationDate(token, id, term)
+          .then((response) => {
+            if (response.success) {
+              fetchUserConsultations();
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          })
+      : Promise.reject();
+  }, []);
+
   const fetchConsultation = useCallback((id) => {
     setConsultation((prevState) => ({ ...prevState, loading: true }));
     return getConsultation(id).then((response) => {
@@ -753,7 +805,7 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
 
   const fetchCart = useCallback(() => {
     if (!token) {
-      return Promise.reject('No token provided');
+      return Promise.reject("No token provided");
     }
     setCart((prevState) => ({
       ...prevState,
@@ -770,7 +822,7 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
     try {
       return getCart(token, { signal: controller.signal })
         .then((response) => {
-          if (response.data.hasOwnProperty('items')) {
+          if (response.data.hasOwnProperty("items")) {
             setCart({
               loading: false,
               value: response.data as API.Cart,
@@ -783,7 +835,7 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
           }
         })
         .catch((err) => {
-          if (err.name !== 'AbortError') {
+          if (err.name !== "AbortError") {
             console.log(err);
           }
         });
@@ -795,7 +847,7 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
   const addToCart = useCallback(
     (productId: number) => {
       if (!token) {
-        return Promise.reject('No token provided');
+        return Promise.reject("No token provided");
       }
       setCart((prevState) => ({
         ...prevState,
@@ -819,7 +871,7 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
   const removeFromCart = useCallback(
     (itemId: number) => {
       if (!token) {
-        return Promise.reject('No token provided');
+        return Promise.reject("No token provided");
       }
       setCart((prevState) => ({
         ...prevState,
@@ -1257,7 +1309,7 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
     };
     if (progress.value) {
       progress.value.reduce((acc, course) => {
-        acc.coursesProcProgress[typeof course.course.id === 'number' ? course.course.id : 0] =
+        acc.coursesProcProgress[typeof course.course.id === "number" ? course.course.id : 0] =
           course.progress.reduce((sum, item) => sum + item.status, 0) / course.progress.length;
         acc.finishedTopics = acc.finishedTopics.concat(
           course.progress.filter((item) => item.status !== 0).map((item) => item.topic_id),
@@ -1438,6 +1490,9 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
         fetchFields,
         stationaryEvents,
         fetchStationaryEvents,
+        fetchUserConsultations,
+        userConsultations,
+        bookConsultationTerm,
         fetchWebinars,
         webinars,
       }}
