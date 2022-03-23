@@ -182,7 +182,7 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
     loading: false,
   },
   fetchStationaryEvents: (filter: API.StationaryEventsParams) => Promise.reject(),
-  bookConsultationTerm: (id: number | undefined, term: string) => Promise.reject(),
+  bookConsultationTerm: (id: number, term: string) => Promise.reject(),
   fetchWebinars: (filter: API.WebinarParams) => Promise.reject(),
   webinars: { loading: false },
 };
@@ -335,7 +335,7 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
     loading: false,
   },
   fetchStationaryEvents: (filter: API.StationaryEventsParams) => Promise.reject(),
-  bookConsultationTerm: (id: number | undefined, term: string) => Promise.reject(),
+  bookConsultationTerm: (id: number, term: string) => Promise.reject(),
   fetchWebinars: (filter: API.WebinarParams) => Promise.reject(),
   webinars: { loading: false },
 };

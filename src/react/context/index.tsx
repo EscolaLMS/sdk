@@ -566,7 +566,7 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
       : Promise.reject();
   }, [userConsultations]);
 
-  const bookConsultationTerm = useCallback((id: number | undefined, term: string) => {
+  const bookConsultationTerm = useCallback((id: number, term: string) => {
     return token
       ? bookConsultationDate(token, id, term)
           .then((response) => {
