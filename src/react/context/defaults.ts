@@ -1,4 +1,4 @@
-import * as API from './../../types/api';
+import * as API from "./../../types/api";
 
 import {
   ContextState,
@@ -11,31 +11,31 @@ import {
   EscolaLMSContextAPIConfig,
   EscolaLMSContextConfig,
   SortProgram,
-} from './types';
+} from "./types";
 
 export const blackList: API.IEvent[] = [
-  'http://adlnet.gov/expapi/verbs/attended',
-  'http://adlnet.gov/expapi/verbs/attempted',
-  'http://adlnet.gov/expapi/verbs/interacted',
-  'http://adlnet.gov/expapi/verbs/imported',
-  'http://adlnet.gov/expapi/verbs/created',
+  "http://adlnet.gov/expapi/verbs/attended",
+  "http://adlnet.gov/expapi/verbs/attempted",
+  "http://adlnet.gov/expapi/verbs/interacted",
+  "http://adlnet.gov/expapi/verbs/imported",
+  "http://adlnet.gov/expapi/verbs/created",
 ];
 
 export const completed: API.IEvent[] = [
-  'http://adlnet.gov/expapi/verbs/completed',
+  "http://adlnet.gov/expapi/verbs/completed",
   // "http://adlnet.gov/expapi/verbs/answered",
-  'http://activitystrea.ms/schema/1.0/consume',
-  'http://adlnet.gov/expapi/verbs/passed',
-  'http://adlnet.gov/expapi/verbs/mastered',
+  "http://activitystrea.ms/schema/1.0/consume",
+  "http://adlnet.gov/expapi/verbs/passed",
+  "http://adlnet.gov/expapi/verbs/mastered",
 ];
 
-export const attempted: API.IEvent = 'http://adlnet.gov/expapi/verbs/attempted';
+export const attempted: API.IEvent = "http://adlnet.gov/expapi/verbs/attempted";
 
-export const guessTheAnswer: API.IEventException = 'GuessTheAnswer';
-export const questionSet: API.IEventException = 'QuestionSet';
+export const guessTheAnswer: API.IEventException = "GuessTheAnswer";
+export const questionSet: API.IEventException = "QuestionSet";
 
 export const defaultReadConfig: EscolaLMSContextConfig = {
-  apiUrl: '',
+  apiUrl: "",
   courses: {
     loading: false,
   },
@@ -84,7 +84,7 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
   register: () =>
     Promise.reject({
       success: false,
-      message: 'register method not implemented',
+      message: "register method not implemented",
     }),
   forgot: (body: API.ForgotRequest) => Promise.reject(),
   reset: (body: API.ResetPasswordRequest) => Promise.reject(),
@@ -132,7 +132,7 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
   },
   mattermostChannels: {
     loading: false,
-    value: { server: '', teams: [] },
+    value: { server: "", teams: [] },
   },
   fetchMattermostChannels: () => Promise.reject(),
   fetchPages: () => Promise.reject(),
@@ -163,7 +163,7 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
   getRefreshedToken: () => Promise.reject(),
   fetchConsultations: () => Promise.reject(),
   fetchConsultation: (id: number) => Promise.reject(),
-  fetchUserConsultations: (filter: API.ConsultationParams) => Promise.reject(),
+  fetchUserConsultations: () => Promise.reject(),
   consultation: {
     loading: false,
   },
@@ -188,7 +188,7 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
 };
 
 export const defaultApiConfig: EscolaLMSContextConfig = {
-  apiUrl: '',
+  apiUrl: "",
   courses: {
     loading: false,
   },
@@ -237,7 +237,7 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
   register: () =>
     Promise.reject({
       success: false,
-      message: 'register method not implemented',
+      message: "register method not implemented",
     }),
   forgot: (body: API.ForgotRequest) => Promise.reject(),
   reset: (body: API.ResetPasswordRequest) => Promise.reject(),
@@ -285,7 +285,7 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
   },
   mattermostChannels: {
     loading: false,
-    value: { server: '', teams: [] },
+    value: { server: "", teams: [] },
   },
   fetchMattermostChannels: () => Promise.reject(),
   fetchPages: () => Promise.reject(),
@@ -316,7 +316,7 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
   fetchH5P: (id: string) => Promise.reject(),
   fetchConsultations: () => Promise.reject(),
   fetchConsultation: (id: number) => Promise.reject(),
-  fetchUserConsultations: (filter: API.ConsultationParams) => Promise.reject(),
+  fetchUserConsultations: () => Promise.reject(),
   consultation: {
     loading: false,
   },
