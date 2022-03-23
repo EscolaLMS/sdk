@@ -571,10 +571,7 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
       ? bookConsultationDate(token, id, term)
           .then((response) => {
             if (response.success) {
-              console.log('succes');
-            }
-            if (response.success === false) {
-              console.log('fail');
+              console.log('Success');
             }
           })
           .catch((error) => {
