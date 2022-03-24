@@ -237,7 +237,8 @@ export type Consultation = EscolaLms.Consultations.Models.Consultation & {
   product?: Product;
   executed_status?: null | "reported" | "not_reported" | "reject" | "approved";
   executed_at?: string;
-  order_item_id?: number;
+  consultation_user_id?: number;
+  is_ended?: boolean;
 };
 
 export type Product = EscolaLms.Cart.Models.Product;

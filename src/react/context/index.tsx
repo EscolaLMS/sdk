@@ -566,15 +566,18 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
   }, [userConsultations]);
 
   const bookConsultationTerm = useCallback((id: number, term: string) => {
+    let isSent = false;
     return token
       ? bookConsultationDate(token, id, term)
           .then((response) => {
             if (response.success) {
               fetchUserConsultations();
+              return (isSent = true);
             }
           })
           .catch((error) => {
             console.log(error);
+            return (isSent = false);
           })
       : Promise.reject();
   }, []);
