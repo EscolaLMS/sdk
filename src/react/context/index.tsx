@@ -567,16 +567,13 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
 
   const bookConsultationTerm = useCallback((id: number, term: string) => {
     return token
-      ? bookConsultationDate(token, id, term)
-          .then((response) => {
-            if (response.success) {
-              fetchUserConsultations();
-              return response;
-            }
-          })
-          .catch((error) => {
-            throw error;
-          })
+      ? bookConsultationDate(token, id, term).then((response) => {
+          if (response.success) {
+            fetchUserConsultations();
+            return response;
+          }
+          throw Error("Error occured");
+        })
       : Promise.reject();
   }, []);
 
