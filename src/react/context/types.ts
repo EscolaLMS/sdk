@@ -1,4 +1,4 @@
-import * as API from './../../types/api';
+import * as API from "./../../types/api";
 
 export interface ContextState<T> {
   loading: boolean;
@@ -123,7 +123,7 @@ export interface EscolaLMSContextAPIConfig {
   fetchUserConsultations: () => Promise<void>;
   fetchFields: (filter: API.FieldsParams) => Promise<void>;
   fetchStationaryEvents: (filter: API.StationaryEventsParams) => Promise<void>;
-  bookConsultationTerm: (id: number, term: string) => Promise<void>;
+  bookConsultationTerm: (id: number, term: string) => Promise<API.ScheduleConsultationResponse>;
   fetchWebinars: (filter: API.WebinarParams) => Promise<void>;
 }
 

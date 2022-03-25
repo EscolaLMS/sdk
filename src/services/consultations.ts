@@ -1,5 +1,5 @@
-import request from 'umi-request';
-import * as API from '../types/api';
+import request from "umi-request";
+import * as API from "../types/api";
 
 /**  GET /api/consultations */
 export async function consultations(
@@ -7,7 +7,7 @@ export async function consultations(
   options?: { [key: string]: any },
 ) {
   return request<API.ConsultationsList>(`/api/consultations`, {
-    method: 'GET',
+    method: "GET",
     params,
     ...(options || {}),
   });
@@ -16,7 +16,7 @@ export async function consultations(
 /**  GET /api/consultations/:id */
 export async function getConsultation(id: number, options?: { [key: string]: any }) {
   return request<API.DefaultResponse<API.Consultation>>(`/api/consultations/${id}`, {
-    method: 'GET',
+    method: "GET",
     ...(options || {}),
   });
 }
@@ -24,10 +24,10 @@ export async function getConsultation(id: number, options?: { [key: string]: any
 /**  GET /api/consultations/me */
 export async function getUserConsultations(token: string) {
   return request<API.ConsultationsList>(`/api/consultations/me`, {
-    method: 'GET',
+    method: "GET",
     headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
+      Accept: "application/json",
+      "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
     },
   });
@@ -35,11 +35,11 @@ export async function getUserConsultations(token: string) {
 
 /**  GET /api/consultations/reserve-term */
 export async function bookConsultationDate(token: string, id: number, term: string) {
-  return request<API.SuccessResponse>(`/api/consultations/report-term/${id}`, {
-    method: 'POST',
+  return request<API.ScheduleConsultationResponse>(`/api/consultations/report-term/${id}`, {
+    method: "POST",
     headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
+      Accept: "application/json",
+      "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
     },
     data: {
