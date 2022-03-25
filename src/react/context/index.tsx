@@ -572,12 +572,11 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
           .then((response) => {
             if (response.success) {
               fetchUserConsultations();
-              return (isSent = true);
+              return response;
             }
           })
           .catch((error) => {
-            console.log(error);
-            return (isSent = false);
+            throw error;
           })
       : Promise.reject();
   }, []);
