@@ -332,6 +332,13 @@ export type RegisterResponse =
     }
   | DefaultResponseError;
 
+export type ScheduleConsultationResponse =
+  | {
+      success: true;
+      message: string;
+    }
+  | DefaultResponseError;
+
 export type ForgotRequest = {
   email: string;
   return_url: string;
