@@ -620,6 +620,7 @@ export type StationaryEvent =
     date?: string;
     title?: string;
     isScheduled?: boolean;
+    appointmentDate?: string;
   };
 
 export type SCORM = {
