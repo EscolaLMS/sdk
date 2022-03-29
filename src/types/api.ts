@@ -207,6 +207,8 @@ export type CertificateList = DefaultMetaResponse<Certificate>;
 
 export type MattermostChannelList = DefaultResponseSuccess<MattermostData>;
 
+export type P24Response = DefaultResponseSuccess<EscolaLms.Payments.Models.Payment>;
+
 export type TutorList = DefaultResponse<UserItem[]>;
 
 export type OrderList = DefaultResponse<Order[]>;
