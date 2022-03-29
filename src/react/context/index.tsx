@@ -50,6 +50,7 @@ import {
   addToCart as postAddToCart,
   removeFromCart as deleteRemoveFromCart,
   payWithStripe as postPayWithStripe,
+  payWithP24 as postPayWithP24,
   orders as getOrders,
   payments as getPayments,
 } from "./../../services/cart";
@@ -912,6 +913,18 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
     [token],
   );
 
+  const payWithP24 = useCallback(
+    (email: string, return_url: string) => {
+      return token
+        ? postPayWithP24(email, token, return_url).then((res) => {
+            console.log(res);
+            return res;
+          })
+        : Promise.reject();
+    },
+    [token],
+  );
+
   const fetchProgress = useCallback(() => {
     setProgress((prevState) => ({
       ...prevState,
@@ -1493,6 +1506,7 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
         bookConsultationTerm,
         fetchWebinars,
         webinars,
+        payWithP24,
       }}
     >
       <EditorContextProvider url={`${apiUrl}/api/hh5p`}>{children}</EditorContextProvider>
