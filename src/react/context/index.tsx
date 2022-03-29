@@ -916,10 +916,14 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
   const payWithP24 = useCallback(
     (email: string, return_url: string) => {
       return token
-        ? postPayWithP24(email, token, return_url).then((res) => {
-            console.log(res);
-            return res;
-          })
+        ? postPayWithP24(email, token, return_url)
+            .then((res) => {
+              return res;
+            })
+            .catch((err) => {
+              console.log(err);
+              return err;
+            })
         : Promise.reject();
     },
     [token],

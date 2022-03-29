@@ -64,7 +64,7 @@ export async function payWithStripe(
 }
 
 export async function payWithP24(email: string, token: string, return_url: string) {
-  return request<any>(`/api/cart/pay`, {
+  return request<API.P24Response>(`/api/cart/pay`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
