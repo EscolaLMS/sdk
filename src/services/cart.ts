@@ -24,7 +24,7 @@ export async function removeFromCart(
   token: string,
   options?: { [key: string]: any },
 ) {
-  return request<API.SuccessResponse>(`/api/cart/items/${itemId}`, {
+  return request<API.SuccessResponse>(`/api/cart/products/${itemId}`, {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",
