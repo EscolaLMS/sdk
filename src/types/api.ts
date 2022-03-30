@@ -342,6 +342,14 @@ export type ScheduleConsultationResponse =
     }
   | DefaultResponseError;
 
+export type SingleProductInfoResponse =
+  | {
+      success: true;
+      message: string;
+      data: Product;
+    }
+  | DefaultResponseError;
+
 export type ForgotRequest = {
   email: string;
   return_url: string;
