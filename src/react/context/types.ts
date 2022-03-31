@@ -125,7 +125,7 @@ export interface EscolaLMSContextAPIConfig {
   fetchFields: (filter: API.FieldsParams) => Promise<void>;
   fetchStationaryEvents: (filter: API.StationaryEventsParams) => Promise<void>;
   bookConsultationTerm: (id: number, term: string) => Promise<API.ScheduleConsultationResponse>;
-  getProductInfo: (id: number) => Promise<API.DefaultResponse<API.Product>>;
+  getProductInfo: (id: number) => Promise<API.DefaultResponseSuccess<API.Product>>;
   fetchWebinars: (filter: API.WebinarParams) => Promise<void>;
 }
 

@@ -244,8 +244,7 @@ export type Consultation = EscolaLms.Consultations.Models.Consultation & {
   author: User & { categories: Category[] };
 };
 
-export type Product = EscolaLms.Cart.Models.Product;
-
+export type Product = EscolaLms.Cart.Models.Product & { buyable?: boolean };
 export type Webinar = EscolaLms.Webinar.Models.Webinar & { product?: Product };
 
 export type CartProductParameters = {
@@ -339,14 +338,6 @@ export type ScheduleConsultationResponse =
   | {
       success: true;
       message: string;
-    }
-  | DefaultResponseError;
-
-export type SingleProductInfoResponse =
-  | {
-      success: true;
-      message: string;
-      data: Product;
     }
   | DefaultResponseError;
 
