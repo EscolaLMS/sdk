@@ -26,6 +26,7 @@ import {
   getConsultation,
   getUserConsultations,
 } from "./../../services/consultations";
+import { getSingleProduct } from "../../services/products";
 import { webinars as getWebinars } from "../../services/webinars";
 import { settings as getSettings, config as getConfig } from "./../../services/settings";
 import { uniqueTags as getUniqueTags } from "./../../services/tags";
@@ -597,6 +598,10 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
         }));
       }
     });
+  }, []);
+
+  const getProductInfo = useCallback((id: number) => {
+    return token ? getSingleProduct(token, id) : Promise.reject();
   }, []);
 
   const fetchWebinars = useCallback(
@@ -1511,6 +1516,7 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
         fetchWebinars,
         webinars,
         payWithP24,
+        getProductInfo,
       }}
     >
       <EditorContextProvider url={`${apiUrl}/api/hh5p`}>{children}</EditorContextProvider>
