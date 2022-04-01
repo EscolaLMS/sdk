@@ -95,7 +95,7 @@ export type Tag = {
   updated_at: string;
 };
 
-export type Course = {
+export type Course = EscolaLms.Courses.Models.Course & {
   id: number;
   description: string;
   created_at: string;
