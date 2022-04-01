@@ -186,6 +186,10 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
   fetchStationaryEvents: (filter: API.StationaryEventsParams) => Promise.reject(),
   bookConsultationTerm: (id: number, term: string) => Promise.reject(),
   fetchWebinars: (filter: API.WebinarParams) => Promise.reject(),
+  fetchTutorConsultations: () => Promise.reject(),
+  approveConsultationTerm: (consultationTermId: number) => Promise.reject(),
+  // rejectConsultationTerm: (consultationTermId: number) => Promise.reject(),
+  generateJitsyMeeting: (consultationTermId: number) => Promise.reject(),
   webinars: { loading: false },
 };
 
@@ -341,6 +345,10 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
   fetchStationaryEvents: (filter: API.StationaryEventsParams) => Promise.reject(),
   bookConsultationTerm: (id: number, term: string) => Promise.reject(),
   fetchWebinars: (filter: API.WebinarParams) => Promise.reject(),
+  fetchTutorConsultations: () => Promise.reject(),
+  approveConsultationTerm: (consultationTermId: number) => Promise.reject(),
+  // rejectConsultationTerm: (consultationTermId: number) => Promise.reject(),
+  generateJitsyMeeting: (consultationTermId: number) => Promise.reject(),
   webinars: { loading: false },
 };
 

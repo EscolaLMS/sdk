@@ -24,7 +24,10 @@ import {
   bookConsultationDate,
   consultations as getConsultations,
   getConsultation,
+  getTutorConsultations,
   getUserConsultations,
+  approveConsultation,
+  genereteJitsy,
 } from "./../../services/consultations";
 import { getSingleProduct } from "../../services/products";
 import { webinars as getWebinars } from "../../services/webinars";
@@ -372,6 +375,79 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
         }));
       });
   }, []);
+
+  const fetchTutorConsultations = useCallback(() => {
+    setUserConsultations((prevState) => ({ ...prevState, loading: true }));
+    return token
+      ? getTutorConsultations(token)
+          .then((response) => {
+            if (response.success) {
+              setUserConsultations({
+                loading: false,
+                list: response,
+                error: undefined,
+              });
+            }
+            if (response.success === false) {
+              setUserConsultations((prevState) => ({
+                ...prevState,
+                loading: false,
+                error: response,
+              }));
+            }
+          })
+          .catch((error) => {
+            setUserConsultations((prevState) => ({
+              ...prevState,
+              loading: false,
+              error: error,
+            }));
+          })
+      : Promise.reject();
+  }, [token]);
+
+  const approveConsultationTerm = useCallback(
+    (id: number) => {
+      setUserConsultations((prevState) => ({ ...prevState, loading: true }));
+      return token
+        ? approveConsultation(token, id)
+            .then((response) => {
+              if (response.success) {
+                setUserConsultations({
+                  loading: false,
+                  list: response,
+                  error: undefined,
+                });
+              }
+            })
+            .catch((error) => {
+              setUserConsultations((prevState) => ({
+                ...prevState,
+                loading: false,
+                error: error,
+              }));
+            })
+        : Promise.reject();
+    },
+    [token],
+  );
+
+  const generateJitsyMeeting = useCallback(
+    (id: number) => {
+      return token
+        ? genereteJitsy(token, id)
+            .then((response) => {
+              if (response.success) {
+                return response;
+              }
+            })
+            .catch((error) => {
+              console.error(error);
+            })
+        : Promise.reject();
+    },
+    [token],
+  );
 
   const fetchCertificates = useCallback(() => {
     setCertificates((prevState) => ({ ...prevState, loading: true }));
@@ -1517,6 +1593,9 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
         webinars,
         payWithP24,
         getProductInfo,
+        fetchTutorConsultations,
+        approveConsultationTerm,
+        generateJitsyMeeting,
       }}
     >
       <EditorContextProvider url={`${apiUrl}/api/hh5p`}>{children}</EditorContextProvider>

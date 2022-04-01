@@ -47,3 +47,40 @@ export async function bookConsultationDate(token: string, id: number, term: stri
     },
   });
 }
+
+/**  GET /api/consultations/my-schedule*/
+export async function getTutorConsultations(token: string) {
+  return request<API.ConsultationsList>(`/api/consultations/my-schedule`, {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+}
+
+/**  GET /api/consultations/approve-term*/
+export async function approveConsultation(token: string, id: number) {
+  return request<API.ConsultationsList>(`/api/consultations/approve-term/${id}`, {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+}
+
+/**  GET /api/consultations/generate-jitsi*/
+export async function genereteJitsy(token: string, id: number) {
+  // TODO: jitsy object
+  return request<any>(`/api/consultations/generate-jitsi/${id}`, {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+}

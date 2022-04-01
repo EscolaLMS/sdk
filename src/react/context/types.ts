@@ -127,6 +127,10 @@ export interface EscolaLMSContextAPIConfig {
   bookConsultationTerm: (id: number, term: string) => Promise<API.ScheduleConsultationResponse>;
   getProductInfo: (id: number) => Promise<API.DefaultResponse<API.Product>>;
   fetchWebinars: (filter: API.WebinarParams) => Promise<void>;
+  fetchTutorConsultations: () => Promise<void>;
+  approveConsultationTerm: (consultation: number) => Promise<void>;
+  // rejectConsultationTerm: (consultation: number) => Promise<void>;
+  generateJitsyMeeting: (consultation: number) => Promise<void>;
 }
 
 export type EscolaLMSContextConfig = EscolaLMSContextReadConfig & EscolaLMSContextAPIConfig;
