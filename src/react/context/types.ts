@@ -129,7 +129,7 @@ export interface EscolaLMSContextAPIConfig {
   fetchWebinars: (filter: API.WebinarParams) => Promise<void>;
   fetchTutorConsultations: () => Promise<void>;
   approveConsultationTerm: (consultation: number) => Promise<void>;
-  // rejectConsultationTerm: (consultation: number) => Promise<void>;
+  rejectConsultationTerm: (consultation: number) => Promise<void>;
   generateJitsyMeeting: (consultation: number) => Promise<void>;
 }
 

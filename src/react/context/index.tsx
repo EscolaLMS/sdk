@@ -28,6 +28,7 @@ import {
   getUserConsultations,
   approveConsultation,
   genereteJitsy,
+  rejectConsultation,
 } from "./../../services/consultations";
 import { getSingleProduct } from "../../services/products";
 import { webinars as getWebinars } from "../../services/webinars";
@@ -411,6 +412,32 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
       setUserConsultations((prevState) => ({ ...prevState, loading: true }));
       return token
         ? approveConsultation(token, id)
+            .then((response) => {
+              if (response.success) {
+                setUserConsultations({
+                  loading: false,
+                  list: response,
+                  error: undefined,
+                });
+              }
+            })
+            .catch((error) => {
+              setUserConsultations((prevState) => ({
+                ...prevState,
+                loading: false,
+                error: error,
+              }));
+            })
+        : Promise.reject();
+    },
+    [token],
+  );
+
+  const rejectConsultationTerm = useCallback(
+    (id: number) => {
+      setUserConsultations((prevState) => ({ ...prevState, loading: true }));
+      return token
+        ? rejectConsultation(token, id)
             .then((response) => {
               if (response.success) {
                 setUserConsultations({
@@ -1596,6 +1623,7 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
         fetchTutorConsultations,
         approveConsultationTerm,
         generateJitsyMeeting,
+        rejectConsultationTerm,
       }}
     >
       <EditorContextProvider url={`${apiUrl}/api/hh5p`}>{children}</EditorContextProvider>

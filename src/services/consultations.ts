@@ -72,6 +72,18 @@ export async function approveConsultation(token: string, id: number) {
   });
 }
 
+/**  GET /api/consultations/reject-term*/
+export async function rejectConsultation(token: string, id: number) {
+  return request<API.ConsultationsList>(`/api/consultations/reject-term/${id}`, {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+}
+
 /**  GET /api/consultations/generate-jitsi*/
 export async function genereteJitsy(token: string, id: number) {
   // TODO: jitsy object
