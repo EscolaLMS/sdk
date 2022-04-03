@@ -86,8 +86,7 @@ export async function rejectConsultation(token: string, id: number) {
 
 /**  GET /api/consultations/generate-jitsi*/
 export async function genereteJitsy(token: string, id: number) {
-  // TODO: jitsy object
-  return request<any>(`/api/consultations/generate-jitsi/${id}`, {
+  return request<API.DefaultResponse<API.JitsyData>>(`/api/consultations/generate-jitsi/${id}`, {
     method: "GET",
     headers: {
       Accept: "application/json",

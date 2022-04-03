@@ -241,6 +241,7 @@ export type Consultation = EscolaLms.Consultations.Models.Consultation & {
   executed_at?: string;
   consultation_user_id?: number;
   is_ended?: boolean;
+  is_started?: boolean;
   author: User & { categories: Category[] };
 };
 
@@ -897,4 +898,36 @@ export type H5PObject = {
       ];
     }
   >;
+};
+
+export type JitsyConfig = {
+  domain: string;
+  roomName: string;
+  configOverwrite: Record<string, string>[];
+  interfaceConfigOverwrite: Record<string, string>[];
+  userInfo: {
+    displayName: string;
+    email: string;
+  };
+  jwt: string;
+};
+
+export type JitsyData = {
+  data: JitsyConfig;
+  domain: string;
+  url: string;
+  yt_url: string;
+  yt_stream_url: string;
+  yt_stream_key: string;
+};
+
+export type AppointmentTerm = {
+  consultation_term_id: number;
+  date: string;
+  duration: string;
+  // TODO: enum status
+  status: string;
+  user: UserItem & Record<string, string>;
+  is_started?: boolean;
+  is_ended?: boolean;
 };

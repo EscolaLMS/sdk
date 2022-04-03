@@ -189,7 +189,7 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
   fetchTutorConsultations: () => Promise.reject(),
   approveConsultationTerm: (consultationTermId: number) => Promise.reject(),
   rejectConsultationTerm: (consultationTermId: number) => Promise.reject(),
-  generateJitsyMeeting: (consultationTermId: number) => Promise.reject(),
+  generateJitsyMeeting: (consultationTermId: number) => Promise.reject(consultationTermId),
   webinars: { loading: false },
 };
 
@@ -345,11 +345,11 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
   fetchStationaryEvents: (filter: API.StationaryEventsParams) => Promise.reject(),
   bookConsultationTerm: (id: number, term: string) => Promise.reject(),
   fetchWebinars: (filter: API.WebinarParams) => Promise.reject(),
+  webinars: { loading: false },
   fetchTutorConsultations: () => Promise.reject(),
   approveConsultationTerm: (consultationTermId: number) => Promise.reject(),
   rejectConsultationTerm: (consultationTermId: number) => Promise.reject(),
-  generateJitsyMeeting: (consultationTermId: number) => Promise.reject(),
-  webinars: { loading: false },
+  generateJitsyMeeting: (consultationTermId: number) => Promise.reject(consultationTermId),
 };
 
 export const defaultConfig = Object.assign({}, defaultReadConfig, defaultApiConfig);

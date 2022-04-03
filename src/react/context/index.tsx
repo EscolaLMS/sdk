@@ -461,17 +461,7 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
 
   const generateJitsyMeeting = useCallback(
     (id: number) => {
-      return token
-        ? genereteJitsy(token, id)
-            .then((response) => {
-              if (response.success) {
-                return response;
-              }
-            })
-            .catch((error) => {
-              console.error(error);
-            })
-        : Promise.reject();
+      return token ? genereteJitsy(token, id) : Promise.reject();
     },
     [token],
   );
