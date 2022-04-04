@@ -4,6 +4,7 @@ import * as API from "../types/api";
 export async function addToCart(
   productId: number,
   token: string,
+  quantity?: number,
   options?: { [key: string]: any },
 ) {
   return request<API.SuccessResponse>(`/api/cart/products`, {
@@ -14,6 +15,7 @@ export async function addToCart(
     },
     data: {
       id: productId,
+      quantity: quantity || 1,
     },
     ...(options || {}),
   });
