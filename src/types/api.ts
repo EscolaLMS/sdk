@@ -95,7 +95,7 @@ export type Tag = {
   updated_at: string;
 };
 
-export type Course = EscolaLms.Courses.Models.Course & {
+export type Course = {
   id: number;
   description: string;
   created_at: string;
@@ -116,7 +116,7 @@ export type Course = EscolaLms.Courses.Models.Course & {
   video_path?: string;
   duration?: string;
   video_url?: string;
-  categories?: Category[] | (number | string)[];
+  categories?: Array<EscolaLms.Categories.Models.Category> | null;
   tags?: Tag[] | string[];
   users_count?: number;
   level?: string;
