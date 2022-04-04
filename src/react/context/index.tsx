@@ -947,7 +947,7 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
   }, [token, abortControllers]);
 
   const addToCart = useCallback(
-    (productId: number) => {
+    (productId: number, quantity?: number) => {
       if (!token) {
         return Promise.reject("No token provided");
       }
@@ -955,7 +955,7 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
         ...prevState,
         loading: true,
       }));
-      return postAddToCart(productId, token)
+      return postAddToCart(productId, token, quantity)
         .then(() => {
           fetchCart();
         })
