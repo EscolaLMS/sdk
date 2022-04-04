@@ -24,7 +24,11 @@ import {
   bookConsultationDate,
   consultations as getConsultations,
   getConsultation,
+  getTutorConsultations,
   getUserConsultations,
+  approveConsultation,
+  genereteJitsy,
+  rejectConsultation,
 } from "./../../services/consultations";
 import { getSingleProduct } from "../../services/products";
 import { webinars as getWebinars } from "../../services/webinars";
@@ -156,6 +160,11 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
   const [userConsultations, setUserConsultations] = useLocalStorage<
     ContextPaginatedMetaState<API.Consultation>
   >("lms", "userConsultations", getDefaultData("userConsultations"));
+
+  const [tutorConsultations, setTutorConsultations] = useLocalStorage<
+    ContextPaginatedMetaState<API.AppointmentTerm>
+  >("lms", "tutorConsultations", getDefaultData("tutorConsultations"));
+
   const [webinars, setWebinars] = useLocalStorage<
     ContextListState<EscolaLms.Webinar.Models.Webinar>
   >("lms", "webinars", getDefaultData("webinars"));
@@ -372,6 +381,95 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
         }));
       });
   }, []);
+
+  const fetchTutorConsultations = useCallback(() => {
+    setTutorConsultations((prevState) => ({ ...prevState, loading: true }));
+    return token
+      ? getTutorConsultations(token)
+          .then((response) => {
+            if (response.success) {
+              setTutorConsultations({
+                loading: false,
+                list: response,
+                error: undefined,
+              });
+            }
+            if (response.success === false) {
+              setTutorConsultations((prevState) => ({
+                ...prevState,
+                loading: false,
+                error: response,
+              }));
+            }
+          })
+          .catch((error) => {
+            setTutorConsultations((prevState) => ({
+              ...prevState,
+              loading: false,
+              error: error,
+            }));
+          })
+      : Promise.reject();
+  }, [token]);
+
+  const approveConsultationTerm = useCallback(
+    (id: number) => {
+      setTutorConsultations((prevState) => ({ ...prevState, loading: true }));
+      return token
+        ? approveConsultation(token, id)
+            .then((response) => {
+              if (response.success) {
+                setTutorConsultations({
+                  loading: false,
+                  list: response,
+                  error: undefined,
+                });
+              }
+            })
+            .catch((error) => {
+              setTutorConsultations((prevState) => ({
+                ...prevState,
+                loading: false,
+                error: error,
+              }));
+            })
+        : Promise.reject();
+    },
+    [token],
+  );
+
+  const rejectConsultationTerm = useCallback(
+    (id: number) => {
+      setTutorConsultations((prevState) => ({ ...prevState, loading: true }));
+      return token
+        ? rejectConsultation(token, id)
+            .then((response) => {
+              if (response.success) {
+                setTutorConsultations({
+                  loading: false,
+                  list: response,
+                  error: undefined,
+                });
+              }
+            })
+            .catch((error) => {
+              setTutorConsultations((prevState) => ({
+                ...prevState,
+                loading: false,
+                error: error,
+              }));
+            })
+        : Promise.reject();
+    },
+    [token],
+  );
+
+  const generateJitsyMeeting = useCallback(
+    (id: number) => {
+      return token ? genereteJitsy(token, id) : Promise.reject();
+    },
+    [token],
+  );
 
   const fetchCertificates = useCallback(() => {
     setCertificates((prevState) => ({ ...prevState, loading: true }));
@@ -1517,6 +1615,11 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
         webinars,
         payWithP24,
         getProductInfo,
+        fetchTutorConsultations,
+        approveConsultationTerm,
+        generateJitsyMeeting,
+        rejectConsultationTerm,
+        tutorConsultations,
       }}
     >
       <EditorContextProvider url={`${apiUrl}/api/hh5p`}>{children}</EditorContextProvider>
