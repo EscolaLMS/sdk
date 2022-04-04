@@ -50,7 +50,7 @@ export async function bookConsultationDate(token: string, id: number, term: stri
 
 /**  GET /api/consultations/my-schedule*/
 export async function getTutorConsultations(token: string) {
-  return request<API.ConsultationsList>(`/api/consultations/my-schedule`, {
+  return request<API.TutorConsultationList>(`/api/consultations/my-schedule`, {
     method: "GET",
     headers: {
       Accept: "application/json",

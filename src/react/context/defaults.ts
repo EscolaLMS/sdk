@@ -183,6 +183,9 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
   stationaryEvents: {
     loading: false,
   },
+  tutorConsultations: {
+    loading: false,
+  },
   fetchStationaryEvents: (filter: API.StationaryEventsParams) => Promise.reject(),
   bookConsultationTerm: (id: number, term: string) => Promise.reject(),
   fetchWebinars: (filter: API.WebinarParams) => Promise.reject(),
@@ -336,6 +339,10 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
     list: [],
   },
   userConsultations: {
+    loading: false,
+  },
+
+  tutorConsultations: {
     loading: false,
   },
   fetchFields: (filter: API.FieldsParams) => Promise.reject(),

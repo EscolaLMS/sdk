@@ -270,6 +270,8 @@ export type WebinarsList = DefaultMetaResponse<Webinar>;
 
 export type StationaryEventsList = DefaultMetaResponse<StationaryEvent>;
 
+export type TutorConsultationList = DefaultMetaResponse<AppointmentTerm>;
+
 export type PaginationParams = {
   order_by?: string;
   order?: "ASC" | "DESC";

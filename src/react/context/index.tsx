@@ -160,6 +160,11 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
   const [userConsultations, setUserConsultations] = useLocalStorage<
     ContextPaginatedMetaState<API.Consultation>
   >("lms", "userConsultations", getDefaultData("userConsultations"));
+
+  const [tutorConsultations, setTutorConsultations] = useLocalStorage<
+    ContextPaginatedMetaState<API.AppointmentTerm>
+  >("lms", "tutorConsultations", getDefaultData("tutorConsultations"));
+
   const [webinars, setWebinars] = useLocalStorage<
     ContextListState<EscolaLms.Webinar.Models.Webinar>
   >("lms", "webinars", getDefaultData("webinars"));
@@ -378,19 +383,19 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
   }, []);
 
   const fetchTutorConsultations = useCallback(() => {
-    setUserConsultations((prevState) => ({ ...prevState, loading: true }));
+    setTutorConsultations((prevState) => ({ ...prevState, loading: true }));
     return token
       ? getTutorConsultations(token)
           .then((response) => {
             if (response.success) {
-              setUserConsultations({
+              setTutorConsultations({
                 loading: false,
                 list: response,
                 error: undefined,
               });
             }
             if (response.success === false) {
-              setUserConsultations((prevState) => ({
+              setTutorConsultations((prevState) => ({
                 ...prevState,
                 loading: false,
                 error: response,
@@ -398,7 +403,7 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
             }
           })
           .catch((error) => {
-            setUserConsultations((prevState) => ({
+            setTutorConsultations((prevState) => ({
               ...prevState,
               loading: false,
               error: error,
@@ -1614,6 +1619,7 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
         approveConsultationTerm,
         generateJitsyMeeting,
         rejectConsultationTerm,
+        tutorConsultations,
       }}
     >
       <EditorContextProvider url={`${apiUrl}/api/hh5p`}>{children}</EditorContextProvider>
