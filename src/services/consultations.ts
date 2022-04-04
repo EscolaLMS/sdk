@@ -62,7 +62,7 @@ export async function getTutorConsultations(token: string) {
 
 /**  GET /api/consultations/approve-term*/
 export async function approveConsultation(token: string, id: number) {
-  return request<API.ConsultationsList>(`/api/consultations/approve-term/${id}`, {
+  return request<API.TutorConsultationList>(`/api/consultations/approve-term/${id}`, {
     method: "GET",
     headers: {
       Accept: "application/json",
@@ -74,7 +74,7 @@ export async function approveConsultation(token: string, id: number) {
 
 /**  GET /api/consultations/reject-term*/
 export async function rejectConsultation(token: string, id: number) {
-  return request<API.ConsultationsList>(`/api/consultations/reject-term/${id}`, {
+  return request<API.TutorConsultationList>(`/api/consultations/reject-term/${id}`, {
     method: "GET",
     headers: {
       Accept: "application/json",

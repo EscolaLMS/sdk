@@ -414,12 +414,12 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
 
   const approveConsultationTerm = useCallback(
     (id: number) => {
-      setUserConsultations((prevState) => ({ ...prevState, loading: true }));
+      setTutorConsultations((prevState) => ({ ...prevState, loading: true }));
       return token
         ? approveConsultation(token, id)
             .then((response) => {
               if (response.success) {
-                setUserConsultations({
+                setTutorConsultations({
                   loading: false,
                   list: response,
                   error: undefined,
@@ -427,7 +427,7 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
               }
             })
             .catch((error) => {
-              setUserConsultations((prevState) => ({
+              setTutorConsultations((prevState) => ({
                 ...prevState,
                 loading: false,
                 error: error,
@@ -440,12 +440,12 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
 
   const rejectConsultationTerm = useCallback(
     (id: number) => {
-      setUserConsultations((prevState) => ({ ...prevState, loading: true }));
+      setTutorConsultations((prevState) => ({ ...prevState, loading: true }));
       return token
         ? rejectConsultation(token, id)
             .then((response) => {
               if (response.success) {
-                setUserConsultations({
+                setTutorConsultations({
                   loading: false,
                   list: response,
                   error: undefined,
@@ -453,7 +453,7 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
               }
             })
             .catch((error) => {
-              setUserConsultations((prevState) => ({
+              setTutorConsultations((prevState) => ({
                 ...prevState,
                 loading: false,
                 error: error,
