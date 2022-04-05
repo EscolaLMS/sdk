@@ -71,6 +71,8 @@ export interface EscolaLMSContextReadConfig {
   webinars: ContextListState<API.Webinar>;
   tutorConsultations: ContextPaginatedMetaState<API.AppointmentTerm>;
   events: ContextPaginatedMetaState<API.Event>;
+  webinar: ContextStateValue<API.Webinar>;
+  stationaryEvent: ContextStateValue<API.StationaryEvent>;
 }
 
 export interface EscolaLMSContextAPIConfig {

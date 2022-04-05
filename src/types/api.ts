@@ -239,7 +239,7 @@ export type Consultation = EscolaLms.Consultations.Models.Consultation & {
   product?: Product;
   executed_status?: null | "reported" | "not_reported" | "reject" | "approved";
   executed_at?: string;
-  consultation_user_id?: number;
+  consultation_term_id?: number;
   is_ended?: boolean;
   is_started?: boolean;
   author: User & { categories: Category[] };

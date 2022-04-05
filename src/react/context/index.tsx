@@ -31,7 +31,7 @@ import {
   rejectConsultation,
 } from "./../../services/consultations";
 import { getSingleProduct } from "../../services/products";
-import { webinars as getWebinars } from "../../services/webinars";
+import { getWebinar, webinars as getWebinars } from "../../services/webinars";
 import { events as getEvents } from "../../services/events";
 import { settings as getSettings, config as getConfig } from "./../../services/settings";
 import { uniqueTags as getUniqueTags } from "./../../services/tags";
@@ -317,6 +317,14 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
   const [stationaryEvents, setStationaryEvents] = useLocalStorage<
     ContextListState<EscolaLms.StationaryEvents.Models.StationaryEvent>
   >("lms", "stationaryEvents", getDefaultData("stationaryEvents"));
+
+  const [stationaryEvent, setStationaryEvent] = useLocalStorage<
+    ContextStateValue<EscolaLms.StationaryEvents.Models.StationaryEvent>
+  >("lms", "stationaryEvent", getDefaultData("stationaryEvent"));
+
+  const [webinar, setWebinar] = useLocalStorage<
+    ContextStateValue<EscolaLms.Webinar.Models.Webinar>
+  >("lms", "webinar", getDefaultData("webinar"));
 
   const abortControllers = useRef<{
     cart: AbortController | null;
@@ -1660,6 +1668,8 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
         tutorConsultations,
         fetchEvents,
         events,
+        stationaryEvent,
+        webinar,
       }}
     >
       <EditorContextProvider url={`${apiUrl}/api/hh5p`}>{children}</EditorContextProvider>

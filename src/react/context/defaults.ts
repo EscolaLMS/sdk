@@ -183,6 +183,9 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
   stationaryEvents: {
     loading: false,
   },
+  stationaryEvent: {
+    loading: false,
+  },
   tutorConsultations: {
     loading: false,
   },
@@ -194,6 +197,9 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
   rejectConsultationTerm: (consultationTermId: number) => Promise.reject(),
   generateJitsyMeeting: (consultationTermId: number) => Promise.reject(consultationTermId),
   webinars: { loading: false },
+  webinar: {
+    loading: false,
+  },
   events: { loading: false },
   fetchEvents: (filter: API.EventsParams) => Promise.reject(),
 };
@@ -351,10 +357,16 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
   stationaryEvents: {
     loading: false,
   },
+  stationaryEvent: {
+    loading: false,
+  },
   fetchStationaryEvents: (filter: API.StationaryEventsParams) => Promise.reject(),
   bookConsultationTerm: (id: number, term: string) => Promise.reject(),
   fetchWebinars: (filter: API.WebinarParams) => Promise.reject(),
   webinars: { loading: false },
+  webinar: {
+    loading: false,
+  },
   fetchTutorConsultations: () => Promise.reject(),
   approveConsultationTerm: (consultationTermId: number) => Promise.reject(),
   rejectConsultationTerm: (consultationTermId: number) => Promise.reject(),
