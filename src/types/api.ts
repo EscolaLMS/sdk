@@ -626,7 +626,33 @@ export type StationaryEvent = EscolaLms.StationaryEvents.Models.StationaryEvent 
   appointmentDate?: string;
 };
 
-export type Event = StationaryEvent & Webinar;
+export type Event = {
+  id: number;
+  created_at: string;
+  updated_at: string | null;
+  name: string;
+  description?: string | null;
+  short_desc: string | null;
+  started_at?: string | null;
+  active_from?: string | null;
+  finished_at?: string | null;
+  active_to?: string;
+  max_participants?: number | null;
+  place?: string | null;
+  program?: string | null;
+  categories?: Array<EscolaLms.Categories.Models.Category> | null;
+  authors?: Array<EscolaLms.Auth.Models.User> | null;
+  agenda?: string | null;
+  duration?: string | null;
+  image_path: string | null;
+  image_url: string | null;
+  product?: Product | null;
+  base_price?: string | null;
+  status?: string;
+  trainers?: Array<EscolaLms.Auth.Models.User> | null;
+  tags?: Array<EscolaLms.Tags.Models.Tag> | null;
+  yt_url?: string | null;
+};
 
 export type SCORM = {
   id: number;
