@@ -640,8 +640,8 @@ export type Event = {
   max_participants?: number | null;
   place?: string | null;
   program?: string | null;
-  categories?: Array<EscolaLms.Categories.Models.Category> | null;
-  authors?: Array<EscolaLms.Auth.Models.User> | null;
+  categories?: EscolaLms.Categories.Models.Category[] | null;
+  authors?: EscolaLms.Auth.Models.User[] | null;
   agenda?: string | null;
   duration?: string | null;
   image_path: string | null;
@@ -649,8 +649,8 @@ export type Event = {
   product?: Product | null;
   base_price?: string | null;
   status?: string;
-  trainers?: Array<EscolaLms.Auth.Models.User> | null;
-  tags?: Array<EscolaLms.Tags.Models.Tag> | null;
+  trainers?: EscolaLms.Auth.Models.User[] | null;
+  tags?: EscolaLms.Tags.Models.Tag[] | null;
   yt_url?: string | null;
 };
 
