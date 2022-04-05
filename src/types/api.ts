@@ -270,6 +270,8 @@ export type WebinarsList = DefaultMetaResponse<Webinar>;
 
 export type StationaryEventsList = DefaultMetaResponse<StationaryEvent>;
 
+export type EventsList = DefaultMetaResponse<Event>;
+
 export type TutorConsultationList = DefaultMetaResponse<AppointmentTerm>;
 
 export type PaginationParams = {
@@ -303,6 +305,11 @@ export type ConsultationParams = PageParams &
 export type WebinarParams = PageParams & PaginationParams & { name?: string; product?: Product };
 
 export type StationaryEventsParams = PageParams &
+  PaginationParams & {
+    name?: string;
+  };
+
+export type EventsParams = PageParams &
   PaginationParams & {
     name?: string;
   };
@@ -617,6 +624,34 @@ export type StationaryEvent = EscolaLms.StationaryEvents.Models.StationaryEvent 
   title?: string;
   isScheduled?: boolean;
   appointmentDate?: string;
+};
+
+export type Event = {
+  id: number;
+  created_at: string;
+  updated_at: string | null;
+  name: string;
+  description?: string | null;
+  short_desc: string | null;
+  started_at?: string | null;
+  active_from?: string | null;
+  finished_at?: string | null;
+  active_to?: string;
+  max_participants?: number | null;
+  place?: string | null;
+  program?: string | null;
+  categories?: EscolaLms.Categories.Models.Category[] | null;
+  authors?: EscolaLms.Auth.Models.User[] | null;
+  agenda?: string | null;
+  duration?: string | null;
+  image_path: string | null;
+  image_url: string | null;
+  product?: Product | null;
+  base_price?: string | null;
+  status?: string;
+  trainers?: EscolaLms.Auth.Models.User[] | null;
+  tags?: EscolaLms.Tags.Models.Tag[] | null;
+  yt_url?: string | null;
 };
 
 export type SCORM = {
