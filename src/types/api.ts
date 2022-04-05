@@ -116,7 +116,7 @@ export type Course = {
   video_path?: string;
   duration?: string;
   video_url?: string;
-  categories?: Category[] | (number | string)[];
+  categories?: EscolaLms.Categories.Models.Category[] | null;
   tags?: Tag[] | string[];
   users_count?: number;
   level?: string;
@@ -652,6 +652,7 @@ export type Event = {
   trainers?: EscolaLms.Auth.Models.User[] | null;
   tags?: EscolaLms.Tags.Models.Tag[] | null;
   yt_url?: string | null;
+  model?: string;
 };
 
 export type SCORM = {
