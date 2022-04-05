@@ -270,6 +270,8 @@ export type WebinarsList = DefaultMetaResponse<Webinar>;
 
 export type StationaryEventsList = DefaultMetaResponse<StationaryEvent>;
 
+export type EventsList = DefaultMetaResponse<Event>;
+
 export type TutorConsultationList = DefaultMetaResponse<AppointmentTerm>;
 
 export type PaginationParams = {
@@ -303,6 +305,11 @@ export type ConsultationParams = PageParams &
 export type WebinarParams = PageParams & PaginationParams & { name?: string; product?: Product };
 
 export type StationaryEventsParams = PageParams &
+  PaginationParams & {
+    name?: string;
+  };
+
+export type EventsParams = PageParams &
   PaginationParams & {
     name?: string;
   };
@@ -618,6 +625,8 @@ export type StationaryEvent = EscolaLms.StationaryEvents.Models.StationaryEvent 
   isScheduled?: boolean;
   appointmentDate?: string;
 };
+
+export type Event = StationaryEvent & Webinar;
 
 export type SCORM = {
   id: number;
