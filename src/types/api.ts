@@ -242,6 +242,7 @@ export type Consultation = EscolaLms.Consultations.Models.Consultation & {
   consultation_term_id?: number;
   is_ended?: boolean;
   is_started?: boolean;
+  in_coming?: boolean;
   author: User & { categories: Category[] };
 };
 
@@ -654,6 +655,9 @@ export type Event = {
   tags?: EscolaLms.Tags.Models.Tag[] | null;
   yt_url?: string | null;
   model?: string;
+  in_coming?: boolean;
+  is_ended?: boolean;
+  is_started?: boolean;
 };
 
 export type SCORM = {
@@ -969,4 +973,5 @@ export type AppointmentTerm = {
   user: UserItem & Record<string, string>;
   is_started?: boolean;
   is_ended?: boolean;
+  in_coming?: boolean;
 };

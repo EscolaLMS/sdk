@@ -31,7 +31,12 @@ import {
   rejectConsultation,
 } from "./../../services/consultations";
 import { getSingleProduct } from "../../services/products";
-import { getMyWebinars, getWebinar, webinars as getWebinars } from "../../services/webinars";
+import {
+  getMyWebinars,
+  getWebinar,
+  webinars as getWebinars,
+  genereteJitsyWebinar,
+} from "../../services/webinars";
 import { events as getEvents } from "../../services/events";
 import { settings as getSettings, config as getConfig } from "./../../services/settings";
 import { uniqueTags as getUniqueTags } from "./../../services/tags";
@@ -514,9 +519,16 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
     [token],
   );
 
-  const generateJitsyMeeting = useCallback(
+  const generateConsultationJitsy = useCallback(
     (id: number) => {
       return token ? genereteJitsy(token, id) : Promise.reject();
+    },
+    [token],
+  );
+
+  const generateWebinarJitsy = useCallback(
+    (id: number) => {
+      return token ? genereteJitsyWebinar(token, id) : Promise.reject();
     },
     [token],
   );
@@ -1692,7 +1704,7 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
         getProductInfo,
         fetchTutorConsultations,
         approveConsultationTerm,
-        generateJitsyMeeting,
+        generateConsultationJitsy,
         rejectConsultationTerm,
         tutorConsultations,
         fetchEvents,
@@ -1701,6 +1713,7 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
         webinar,
         userWebinars,
         fetchUserWebinars,
+        generateWebinarJitsy,
       }}
     >
       <EditorContextProvider url={`${apiUrl}/api/hh5p`}>{children}</EditorContextProvider>
