@@ -134,6 +134,7 @@ export interface EscolaLMSContextAPIConfig {
   approveConsultationTerm: (consultation: number) => Promise<void>;
   rejectConsultationTerm: (consultation: number) => Promise<void>;
   generateJitsyMeeting: (consultation: number) => Promise<API.DefaultResponse<API.JitsyData>>;
+  changePassword: (body: API.ChangePasswordRequest) => Promise<API.AuthResponse>;
 }
 
 export type EscolaLMSContextConfig = EscolaLMSContextReadConfig & EscolaLMSContextAPIConfig;

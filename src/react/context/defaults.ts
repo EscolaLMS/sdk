@@ -196,6 +196,7 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
   webinars: { loading: false },
   events: { loading: false },
   fetchEvents: (filter: API.EventsParams) => Promise.reject(),
+  changePassword: () => Promise.reject(),
 };
 
 export const defaultApiConfig: EscolaLMSContextConfig = {
@@ -361,6 +362,7 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
   generateJitsyMeeting: (consultationTermId: number) => Promise.reject(consultationTermId),
   events: { loading: false },
   fetchEvents: (filter: API.EventsParams) => Promise.reject(),
+  changePassword: () => Promise.reject(),
 };
 
 export const defaultConfig = Object.assign({}, defaultReadConfig, defaultApiConfig);
