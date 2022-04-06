@@ -373,21 +373,21 @@ export type User = {
   data: UserItem;
 };
 
-export type UserItem = {
-  id: number;
-  name: string;
-  first_name: string;
-  last_name: string;
-  email: string;
-  is_active: boolean;
-  created_at: string;
-  onboarding_completed: boolean;
-  email_verified: boolean;
-  interests: string[];
-  avatar: string;
-  path_avatar: string | null;
-  bio: string | null;
-  roles?: string[];
+export type UserItem = EscolaLms.Auth.Models.User & {
+  // id: number;
+  // name: string;
+  // first_name: string;
+  // last_name: string;
+  // email: string;
+  // is_active: boolean;
+  // created_at: string;
+  // onboarding_completed: boolean;
+  // email_verified: boolean;
+  // interests: string[];
+  avatar?: string;
+  // path_avatar: string | null;
+  bio?: string | null;
+  // roles?: string[];
 };
 
 export type Lesson = {
@@ -624,6 +624,7 @@ export type StationaryEvent = EscolaLms.StationaryEvents.Models.StationaryEvent 
   title?: string;
   isScheduled?: boolean;
   appointmentDate?: string;
+  product?: Product | null;
 };
 
 export type Event = {

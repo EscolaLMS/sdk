@@ -73,6 +73,7 @@ export interface EscolaLMSContextReadConfig {
   events: ContextPaginatedMetaState<API.Event>;
   webinar: ContextStateValue<API.Webinar>;
   stationaryEvent: ContextStateValue<API.StationaryEvent>;
+  userWebinars: ContextListState<API.Webinar>;
 }
 
 export interface EscolaLMSContextAPIConfig {
@@ -136,8 +137,8 @@ export interface EscolaLMSContextAPIConfig {
   approveConsultationTerm: (consultation: number) => Promise<void>;
   rejectConsultationTerm: (consultation: number) => Promise<void>;
   generateJitsyMeeting: (consultation: number) => Promise<API.DefaultResponse<API.JitsyData>>;
+  fetchUserWebinars: () => Promise<void>;
 }
-
 export type EscolaLMSContextConfig = EscolaLMSContextReadConfig & EscolaLMSContextAPIConfig;
 
 export type SortProgram = (lessons: API.Lesson[]) => API.Lesson[];
