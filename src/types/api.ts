@@ -116,7 +116,7 @@ export type Course = {
   video_path?: string;
   duration?: string;
   video_url?: string;
-  categories?: Category[] | (number | string)[];
+  categories?: Array<EscolaLms.Categories.Models.Category>;
   tags?: Tag[] | string[];
   users_count?: number;
   level?: string;
