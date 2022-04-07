@@ -1,6 +1,6 @@
-import request from 'umi-request';
-import type { RequestOptionsInit } from 'umi-request';
-import * as API from '../types/api';
+import request from "umi-request";
+import type { RequestOptionsInit } from "umi-request";
+import * as API from "../types/api";
 
 /**  GET /api/stationary-events */
 export async function stationaryEvents(
@@ -8,8 +8,16 @@ export async function stationaryEvents(
   options?: RequestOptionsInit,
 ) {
   return request<API.StationaryEventsList>(`/api/stationary-events`, {
-    method: 'GET',
+    method: "GET",
     params,
+    ...(options || {}),
+  });
+}
+
+/**  GET /api/stationary-events/:id */
+export async function getStationaryEvent(id: number, options?: { [key: string]: any }) {
+  return request<API.DefaultResponse<API.StationaryEvent>>(`/api/stationary-events/${id}`, {
+    method: "GET",
     ...(options || {}),
   });
 }

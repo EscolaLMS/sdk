@@ -31,7 +31,12 @@ import {
   rejectConsultation,
 } from "./../../services/consultations";
 import { getSingleProduct } from "../../services/products";
-import { webinars as getWebinars } from "../../services/webinars";
+import {
+  getMyWebinars,
+  getWebinar,
+  webinars as getWebinars,
+  genereteJitsyWebinar,
+} from "../../services/webinars";
 import { events as getEvents } from "../../services/events";
 import { settings as getSettings, config as getConfig } from "./../../services/settings";
 import { uniqueTags as getUniqueTags } from "./../../services/tags";
@@ -318,6 +323,18 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
     ContextListState<EscolaLms.StationaryEvents.Models.StationaryEvent>
   >("lms", "stationaryEvents", getDefaultData("stationaryEvents"));
 
+  const [stationaryEvent, setStationaryEvent] = useLocalStorage<
+    ContextStateValue<EscolaLms.StationaryEvents.Models.StationaryEvent>
+  >("lms", "stationaryEvent", getDefaultData("stationaryEvent"));
+
+  const [webinar, setWebinar] = useLocalStorage<
+    ContextStateValue<EscolaLms.Webinar.Models.Webinar>
+  >("lms", "webinar", getDefaultData("webinar"));
+
+  const [userWebinars, setUserWebinars] = useLocalStorage<
+    ContextListState<EscolaLms.Webinar.Models.Webinar>
+  >("lms", "userWebinars", getDefaultData("userWebinars"));
+
   const abortControllers = useRef<{
     cart: AbortController | null;
   }>({
@@ -388,6 +405,37 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
         }));
       });
   }, []);
+
+  const fetchUserWebinars = useCallback(() => {
+    setUserWebinars((prevState) => ({ ...prevState, loading: true }));
+
+    return token
+      ? getMyWebinars(token)
+          .then((response) => {
+            if (response.success) {
+              setUserWebinars({
+                loading: false,
+                list: response.data,
+                error: undefined,
+              });
+            }
+            if (response.success === false) {
+              setUserWebinars((prevState) => ({
+                ...prevState,
+                loading: false,
+                error: response,
+              }));
+            }
+          })
+          .catch((error) => {
+            setUserWebinars((prevState) => ({
+              ...prevState,
+              loading: false,
+              error: error,
+            }));
+          })
+      : Promise.reject();
+  }, [token]);
 
   const fetchTutorConsultations = useCallback(() => {
     setTutorConsultations((prevState) => ({ ...prevState, loading: true }));
@@ -471,9 +519,16 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
     [token],
   );
 
-  const generateJitsyMeeting = useCallback(
+  const generateConsultationJitsy = useCallback(
     (id: number) => {
       return token ? genereteJitsy(token, id) : Promise.reject();
+    },
+    [token],
+  );
+
+  const generateWebinarJitsy = useCallback(
+    (id: number) => {
+      return token ? genereteJitsyWebinar(token, id) : Promise.reject();
     },
     [token],
   );
@@ -709,67 +764,61 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
     return token ? getSingleProduct(token, id) : Promise.reject();
   }, []);
 
-  const fetchWebinars = useCallback(
-    (filter: API.WebinarParams) => {
-      setWebinars((prevState) => ({ ...prevState, loading: true }));
-      return getWebinars(filter)
-        .then((response) => {
-          if (response.success) {
-            setWebinars({
-              loading: false,
-              list: response.data,
-              error: undefined,
-            });
-          }
-          if (response.success === false) {
-            setWebinars((prevState) => ({
-              ...prevState,
-              loading: false,
-              error: response,
-            }));
-          }
-        })
-        .catch((error) => {
+  const fetchWebinars = useCallback((filter: API.WebinarParams) => {
+    setWebinars((prevState) => ({ ...prevState, loading: true }));
+    return getWebinars(filter)
+      .then((response) => {
+        if (response.success) {
+          setWebinars({
+            loading: false,
+            list: response.data,
+            error: undefined,
+          });
+        }
+        if (response.success === false) {
           setWebinars((prevState) => ({
             ...prevState,
             loading: false,
-            error: error,
+            error: response,
           }));
-        });
-    },
-    [setWebinars],
-  );
+        }
+      })
+      .catch((error) => {
+        setWebinars((prevState) => ({
+          ...prevState,
+          loading: false,
+          error: error,
+        }));
+      });
+  }, []);
 
-  const fetchEvents = useCallback(
-    (filter: API.EventsParams) => {
-      setEvents((prevState) => ({ ...prevState, loading: true }));
-      return getEvents(filter)
-        .then((response) => {
-          if (response.success) {
-            setEvents({
-              loading: false,
-              list: response,
-              error: undefined,
-            });
-          }
-          if (response.success === false) {
-            setEvents((prevState) => ({
-              ...prevState,
-              loading: false,
-              error: response,
-            }));
-          }
-        })
-        .catch((error) => {
+  const fetchEvents = useCallback((filter: API.EventsParams) => {
+    setEvents((prevState) => ({ ...prevState, loading: true }));
+    return getEvents(filter)
+      .then((response) => {
+        if (response.success) {
+          setEvents({
+            loading: false,
+            list: response,
+            error: undefined,
+          });
+        }
+        if (response.success === false) {
           setEvents((prevState) => ({
             ...prevState,
             loading: false,
-            error: error,
+            error: response,
           }));
-        });
-    },
-    [setEvents],
-  );
+        }
+      })
+      .catch((error) => {
+        setEvents((prevState) => ({
+          ...prevState,
+          loading: false,
+          error: error,
+        }));
+      });
+  }, []);
 
   const fetchUserGroup = useCallback(
     (id) => {
@@ -1112,7 +1161,7 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
   const fetchProgram = useCallback(
     (id) => {
       setProgram((prevState) => ({ ...prevState, loading: true }));
-      return id
+      return id && token
         ? getCourseProgram(id, token)
             .then((response) => {
               if (response.success) {
@@ -1655,11 +1704,16 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
         getProductInfo,
         fetchTutorConsultations,
         approveConsultationTerm,
-        generateJitsyMeeting,
+        generateConsultationJitsy,
         rejectConsultationTerm,
         tutorConsultations,
         fetchEvents,
         events,
+        stationaryEvent,
+        webinar,
+        userWebinars,
+        fetchUserWebinars,
+        generateWebinarJitsy,
       }}
     >
       <EditorContextProvider url={`${apiUrl}/api/hh5p`}>{children}</EditorContextProvider>

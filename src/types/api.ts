@@ -239,14 +239,15 @@ export type Consultation = EscolaLms.Consultations.Models.Consultation & {
   product?: Product;
   executed_status?: null | "reported" | "not_reported" | "reject" | "approved";
   executed_at?: string;
-  consultation_user_id?: number;
+  consultation_term_id?: number;
   is_ended?: boolean;
   is_started?: boolean;
+  in_coming?: boolean;
   author: User & { categories: Category[] };
 };
 
 export type Product = EscolaLms.Cart.Models.Product & { buyable?: boolean };
-export type Webinar = EscolaLms.Webinar.Models.Webinar & { product?: Product };
+export type Webinar = EscolaLms.Webinar.Models.Webinar & { product?: Product; program?: string };
 
 export type CartProductParameters = {
   description: string;
@@ -373,21 +374,21 @@ export type User = {
   data: UserItem;
 };
 
-export type UserItem = {
-  id: number;
-  name: string;
-  first_name: string;
-  last_name: string;
-  email: string;
-  is_active: boolean;
-  created_at: string;
-  onboarding_completed: boolean;
-  email_verified: boolean;
-  interests: string[];
-  avatar: string;
-  path_avatar: string | null;
-  bio: string | null;
-  roles?: string[];
+export type UserItem = EscolaLms.Auth.Models.User & {
+  // id: number;
+  // name: string;
+  // first_name: string;
+  // last_name: string;
+  // email: string;
+  // is_active: boolean;
+  // created_at: string;
+  // onboarding_completed: boolean;
+  // email_verified: boolean;
+  // interests: string[];
+  avatar?: string;
+  // path_avatar: string | null;
+  bio?: string | null;
+  // roles?: string[];
 };
 
 export type Lesson = {
@@ -624,6 +625,7 @@ export type StationaryEvent = EscolaLms.StationaryEvents.Models.StationaryEvent 
   title?: string;
   isScheduled?: boolean;
   appointmentDate?: string;
+  product?: Product | null;
 };
 
 export type Event = {
@@ -652,6 +654,10 @@ export type Event = {
   trainers?: EscolaLms.Auth.Models.User[] | null;
   tags?: EscolaLms.Tags.Models.Tag[] | null;
   yt_url?: string | null;
+  model?: string;
+  in_coming?: boolean;
+  is_ended?: boolean;
+  is_started?: boolean;
 };
 
 export type SCORM = {
@@ -967,4 +973,5 @@ export type AppointmentTerm = {
   user: UserItem & Record<string, string>;
   is_started?: boolean;
   is_ended?: boolean;
+  in_coming?: boolean;
 };
