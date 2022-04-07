@@ -396,6 +396,18 @@ export type UserItem = {
   path_avatar: string | null;
   bio: string | null;
   roles?: string[];
+  phone: string;
+};
+
+export type UpdateUserDetails = {
+  first_name?: string;
+  last_name?: string;
+  age?: number;
+  gender?: number;
+  country?: string;
+  city?: string;
+  street?: string;
+  postcode?: string;
 };
 
 export type Lesson = {

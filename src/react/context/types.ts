@@ -109,7 +109,7 @@ export interface EscolaLMSContextAPIConfig {
   fetchMattermostChannels: () => Promise<void>;
   fetchPages: () => Promise<void>;
   fetchPage: (slug: string) => Promise<void>;
-  updateProfile: (data: API.UserItem) => Promise<void>;
+  updateProfile: (data: API.UpdateUserDetails) => Promise<void>;
   updateAvatar: (avatar: File) => Promise<void>;
   topicPing: (topicId: number) => Promise<Boolean>;
   topicIsFinished: (topicId: number) => Boolean;

@@ -1394,7 +1394,7 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
   );
 
   const updateProfile = useCallback(
-    (body: API.UserItem) => {
+    (body: API.UpdateUserDetails) => {
       setUser((prevState) => ({
         ...prevState,
         loading: true,
