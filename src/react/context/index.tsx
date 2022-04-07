@@ -20,6 +20,7 @@ import {
   topicPing as putTopicPing,
   h5pProgress as postSendh5pProgress,
 } from "./../../services/courses";
+import { changePassword as postNewPassword } from "../../services/profile";
 import {
   bookConsultationDate,
   consultations as getConsultations,
@@ -1442,7 +1443,7 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
   );
 
   const updateProfile = useCallback(
-    (body: API.UserItem) => {
+    (body: API.UpdateUserDetails) => {
       setUser((prevState) => ({
         ...prevState,
         loading: true,
@@ -1617,6 +1618,13 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
       : Promise.reject();
   }, [token]);
 
+  const changePassword = useCallback(
+    (body: API.ChangePasswordRequest) => {
+      return token ? postNewPassword(token, body) : Promise.reject();
+    },
+    [token],
+  );
+
   return (
     <EscolaLMSContext.Provider
       value={{
@@ -1709,6 +1717,7 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
         tutorConsultations,
         fetchEvents,
         events,
+        changePassword,
         stationaryEvent,
         webinar,
         userWebinars,

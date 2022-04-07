@@ -112,7 +112,7 @@ export interface EscolaLMSContextAPIConfig {
   fetchMattermostChannels: () => Promise<void>;
   fetchPages: () => Promise<void>;
   fetchPage: (slug: string) => Promise<void>;
-  updateProfile: (data: API.UserItem) => Promise<void>;
+  updateProfile: (data: API.UpdateUserDetails) => Promise<void>;
   updateAvatar: (avatar: File) => Promise<void>;
   topicPing: (topicId: number) => Promise<Boolean>;
   topicIsFinished: (topicId: number) => Boolean;
@@ -136,6 +136,7 @@ export interface EscolaLMSContextAPIConfig {
   fetchTutorConsultations: () => Promise<void>;
   approveConsultationTerm: (consultation: number) => Promise<void>;
   rejectConsultationTerm: (consultation: number) => Promise<void>;
+  changePassword: (body: API.ChangePasswordRequest) => Promise<API.AuthResponse>;
   generateConsultationJitsy: (consultation: number) => Promise<API.DefaultResponse<API.JitsyData>>;
   generateWebinarJitsy: (webinarId: number) => Promise<API.DefaultResponse<API.JitsyData>>;
   fetchUserWebinars: () => Promise<void>;

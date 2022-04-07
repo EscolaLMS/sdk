@@ -143,7 +143,7 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
   },
   fetchPage: (slug: string) => Promise.reject(),
   fetchPayments: () => Promise.reject(),
-  updateProfile: (data: API.UserItem) => Promise.reject(data),
+  updateProfile: (data: API.UpdateUserDetails) => Promise.reject(data),
   updateAvatar: (avatar: File) => Promise.reject(avatar),
   topicPing: (topicId: number) => Promise.reject(topicId),
   topicIsFinished: (topicId: number) => false,
@@ -205,6 +205,7 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
   },
   events: { loading: false },
   fetchEvents: (filter: API.EventsParams) => Promise.reject(),
+  changePassword: () => Promise.reject(),
 };
 
 export const defaultApiConfig: EscolaLMSContextConfig = {
@@ -316,7 +317,7 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
   },
   fetchPage: (slug: string) => Promise.reject(),
   fetchPayments: () => Promise.reject(),
-  updateProfile: (data: API.UserItem) => Promise.reject(data),
+  updateProfile: (data: API.UpdateUserDetails) => Promise.reject(data),
   updateAvatar: (avatar: File) => Promise.reject(avatar),
   topicPing: (topicId: number) => Promise.reject(topicId),
   topicIsFinished: (topicId: number) => false,
@@ -379,6 +380,7 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
   generateWebinarJitsy: (webinarId: number) => Promise.reject(webinarId),
   events: { loading: false },
   fetchEvents: (filter: API.EventsParams) => Promise.reject(),
+  changePassword: () => Promise.reject(),
 };
 
 export const defaultConfig = Object.assign({}, defaultReadConfig, defaultApiConfig);

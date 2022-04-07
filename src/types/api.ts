@@ -15,6 +15,7 @@ export enum TopicType {
 export enum PaymentStatusType {
   NEW = "new",
   PAID = "paid",
+  CANCELLED = "cancelled",
 }
 
 export type IEvent =
@@ -211,7 +212,7 @@ export type P24Response = DefaultResponseSuccess<EscolaLms.Payments.Models.Payme
 
 export type TutorList = DefaultResponse<UserItem[]>;
 
-export type OrderList = DefaultResponse<Order[]>;
+export type OrderList = DefaultMetaResponse<Order>;
 
 export type TutorSingle = DefaultResponse<UserItem>;
 
@@ -263,6 +264,7 @@ export type CartItem = EscolaLms.Cart.Models.CartItem & {
     productables: CartProductParameters[];
   };
   product_id?: number;
+  total_with_tax?: number;
 };
 
 export type ConsultationsList = DefaultMetaResponse<Consultation>;
@@ -370,6 +372,12 @@ export type ResetPasswordRequest = {
   email: string;
 };
 
+export type ChangePasswordRequest = {
+  current_password: string;
+  new_password: string;
+  new_confirm_password: string;
+};
+
 export type User = {
   data: UserItem;
 };
@@ -389,6 +397,17 @@ export type UserItem = EscolaLms.Auth.Models.User & {
   // path_avatar: string | null;
   bio?: string | null;
   // roles?: string[];
+};
+
+export type UpdateUserDetails = {
+  first_name?: string;
+  last_name?: string;
+  age?: number;
+  gender?: number;
+  country?: string;
+  city?: string;
+  street?: string;
+  postcode?: string;
 };
 
 export type Lesson = {
@@ -729,22 +748,22 @@ export type CourseProgressItem = {
 export type Order = {
   id: number;
   status: PaymentStatusType;
-  items: [
-    {
-      id: number;
-      order_id: number;
-      buyable_type: string;
-      buyable_id: number;
-      quantity: number;
-      options: string;
-      created_at: string;
-      updated_at: string;
-    },
-  ];
-  total: string;
-  subtotal: string;
-  tax: string;
-  created_at: string;
+  items?: EscolaLms.Cart.Models.CartItem[] | null;
+  updated_at: string | null;
+  total: number;
+  subtotal: number;
+  tax: number;
+  created_at: string | null;
+  user_id: number | null;
+  client_name: string | null;
+  client_street: string | null;
+  client_postal: string | null;
+  client_city: string | null;
+  client_country: string | null;
+  client_company: string | null;
+  client_taxid: string | null;
+  client_email: string | null;
+  client_street_number: string | null;
 };
 
 export type CourseProgress = CourseProgressItem[];
