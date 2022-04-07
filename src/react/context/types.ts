@@ -69,6 +69,8 @@ export interface EscolaLMSContextReadConfig {
   stationaryEvents: ContextListState<EscolaLms.StationaryEvents.Models.StationaryEvent>;
   userConsultations: ContextPaginatedMetaState<API.Consultation>;
   webinars: ContextListState<API.Webinar>;
+  tutorConsultations: ContextPaginatedMetaState<API.AppointmentTerm>;
+  events: ContextPaginatedMetaState<API.Event>;
 }
 
 export interface EscolaLMSContextAPIConfig {
@@ -86,7 +88,7 @@ export interface EscolaLMSContextAPIConfig {
   forgot: (body: API.ForgotRequest) => Promise<API.AuthResponse>;
   reset: (body: API.ResetPasswordRequest) => Promise<API.AuthResponse>;
   emailVerify: (id: string, hash: string) => Promise<API.AuthResponse>;
-  addToCart: (courseId: number) => Promise<void>;
+  addToCart: (id: number, quantity?: number) => Promise<void>;
   removeFromCart: (courseId: number) => Promise<void>;
   fetchCart: () => Promise<void>;
   payWithStripe: (paymentMethodId: string) => Promise<void>;
@@ -127,6 +129,11 @@ export interface EscolaLMSContextAPIConfig {
   bookConsultationTerm: (id: number, term: string) => Promise<API.ScheduleConsultationResponse>;
   getProductInfo: (id: number) => Promise<API.DefaultResponse<API.Product>>;
   fetchWebinars: (filter: API.WebinarParams) => Promise<void>;
+  fetchEvents: (filter: API.EventsParams) => Promise<void>;
+  fetchTutorConsultations: () => Promise<void>;
+  approveConsultationTerm: (consultation: number) => Promise<void>;
+  rejectConsultationTerm: (consultation: number) => Promise<void>;
+  generateJitsyMeeting: (consultation: number) => Promise<API.DefaultResponse<API.JitsyData>>;
 }
 
 export type EscolaLMSContextConfig = EscolaLMSContextReadConfig & EscolaLMSContextAPIConfig;

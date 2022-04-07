@@ -241,6 +241,7 @@ export type Consultation = EscolaLms.Consultations.Models.Consultation & {
   executed_at?: string;
   consultation_user_id?: number;
   is_ended?: boolean;
+  is_started?: boolean;
   author: User & { categories: Category[] };
 };
 
@@ -268,6 +269,10 @@ export type ConsultationsList = DefaultMetaResponse<Consultation>;
 export type WebinarsList = DefaultMetaResponse<Webinar>;
 
 export type StationaryEventsList = DefaultMetaResponse<StationaryEvent>;
+
+export type EventsList = DefaultMetaResponse<Event>;
+
+export type TutorConsultationList = DefaultMetaResponse<AppointmentTerm>;
 
 export type PaginationParams = {
   order_by?: string;
@@ -300,6 +305,11 @@ export type ConsultationParams = PageParams &
 export type WebinarParams = PageParams & PaginationParams & { name?: string; product?: Product };
 
 export type StationaryEventsParams = PageParams &
+  PaginationParams & {
+    name?: string;
+  };
+
+export type EventsParams = PageParams &
   PaginationParams & {
     name?: string;
   };
@@ -616,6 +626,34 @@ export type StationaryEvent = EscolaLms.StationaryEvents.Models.StationaryEvent 
   appointmentDate?: string;
 };
 
+export type Event = {
+  id: number;
+  created_at: string;
+  updated_at: string | null;
+  name: string;
+  description?: string | null;
+  short_desc: string | null;
+  started_at?: string | null;
+  active_from?: string | null;
+  finished_at?: string | null;
+  active_to?: string;
+  max_participants?: number | null;
+  place?: string | null;
+  program?: string | null;
+  categories?: EscolaLms.Categories.Models.Category[] | null;
+  authors?: EscolaLms.Auth.Models.User[] | null;
+  agenda?: string | null;
+  duration?: string | null;
+  image_path: string | null;
+  image_url: string | null;
+  product?: Product | null;
+  base_price?: string | null;
+  status?: string;
+  trainers?: EscolaLms.Auth.Models.User[] | null;
+  tags?: EscolaLms.Tags.Models.Tag[] | null;
+  yt_url?: string | null;
+};
+
 export type SCORM = {
   id: number;
   resource_type: null;
@@ -897,4 +935,36 @@ export type H5PObject = {
       ];
     }
   >;
+};
+
+export type JitsyConfig = {
+  domain: string;
+  roomName: string;
+  configOverwrite: Record<string, string>[];
+  interfaceConfigOverwrite: Record<string, string>[];
+  userInfo: {
+    displayName: string;
+    email: string;
+  };
+  jwt: string;
+};
+
+export type JitsyData = {
+  data: JitsyConfig;
+  domain: string;
+  url: string;
+  yt_url: string;
+  yt_stream_url: string;
+  yt_stream_key: string;
+};
+
+export type AppointmentTerm = {
+  consultation_term_id: number;
+  date: string;
+  duration: string;
+  // TODO: enum status
+  status: string;
+  user: UserItem & Record<string, string>;
+  is_started?: boolean;
+  is_ended?: boolean;
 };

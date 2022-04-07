@@ -24,10 +24,15 @@ import {
   bookConsultationDate,
   consultations as getConsultations,
   getConsultation,
+  getTutorConsultations,
   getUserConsultations,
+  approveConsultation,
+  genereteJitsy,
+  rejectConsultation,
 } from "./../../services/consultations";
 import { getSingleProduct } from "../../services/products";
 import { webinars as getWebinars } from "../../services/webinars";
+import { events as getEvents } from "../../services/events";
 import { settings as getSettings, config as getConfig } from "./../../services/settings";
 import { uniqueTags as getUniqueTags } from "./../../services/tags";
 import { categoryTree as getCategoryTree } from "./../../services/categories";
@@ -84,7 +89,7 @@ import {
 } from "./defaults";
 
 import { fields as getFields } from "../../services/fields";
-import { stationaryEvents as getEvents } from "../../services/stationary_events";
+import { stationaryEvents as getStationaryEvents } from "../../services/stationary_events";
 
 export const SCORMPlayer: React.FC<{
   uuid: string;
@@ -156,9 +161,20 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
   const [userConsultations, setUserConsultations] = useLocalStorage<
     ContextPaginatedMetaState<API.Consultation>
   >("lms", "userConsultations", getDefaultData("userConsultations"));
+
+  const [tutorConsultations, setTutorConsultations] = useLocalStorage<
+    ContextPaginatedMetaState<API.AppointmentTerm>
+  >("lms", "tutorConsultations", getDefaultData("tutorConsultations"));
+
   const [webinars, setWebinars] = useLocalStorage<
     ContextListState<EscolaLms.Webinar.Models.Webinar>
   >("lms", "webinars", getDefaultData("webinars"));
+
+  const [events, setEvents] = useLocalStorage<ContextPaginatedMetaState<API.Event>>(
+    "lms",
+    "events",
+    getDefaultData("events"),
+  );
 
   const [userGroup, setUserGroup] = useLocalStorage<ContextStateValue<API.UserGroupRow>>(
     "lms",
@@ -354,7 +370,7 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
   const fetchStationaryEvents = useCallback((filter: API.StationaryEventsParams) => {
     setStationaryEvents((prevState) => ({ ...prevState, loading: true }));
 
-    return getEvents(filter)
+    return getStationaryEvents(filter)
       .then((response) => {
         if (response.success) {
           setStationaryEvents({
@@ -372,6 +388,95 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
         }));
       });
   }, []);
+
+  const fetchTutorConsultations = useCallback(() => {
+    setTutorConsultations((prevState) => ({ ...prevState, loading: true }));
+    return token
+      ? getTutorConsultations(token)
+          .then((response) => {
+            if (response.success) {
+              setTutorConsultations({
+                loading: false,
+                list: response,
+                error: undefined,
+              });
+            }
+            if (response.success === false) {
+              setTutorConsultations((prevState) => ({
+                ...prevState,
+                loading: false,
+                error: response,
+              }));
+            }
+          })
+          .catch((error) => {
+            setTutorConsultations((prevState) => ({
+              ...prevState,
+              loading: false,
+              error: error,
+            }));
+          })
+      : Promise.reject();
+  }, [token]);
+
+  const approveConsultationTerm = useCallback(
+    (id: number) => {
+      setTutorConsultations((prevState) => ({ ...prevState, loading: true }));
+      return token
+        ? approveConsultation(token, id)
+            .then((response) => {
+              if (response.success) {
+                setTutorConsultations({
+                  loading: false,
+                  list: response,
+                  error: undefined,
+                });
+              }
+            })
+            .catch((error) => {
+              setTutorConsultations((prevState) => ({
+                ...prevState,
+                loading: false,
+                error: error,
+              }));
+            })
+        : Promise.reject();
+    },
+    [token],
+  );
+
+  const rejectConsultationTerm = useCallback(
+    (id: number) => {
+      setTutorConsultations((prevState) => ({ ...prevState, loading: true }));
+      return token
+        ? rejectConsultation(token, id)
+            .then((response) => {
+              if (response.success) {
+                setTutorConsultations({
+                  loading: false,
+                  list: response,
+                  error: undefined,
+                });
+              }
+            })
+            .catch((error) => {
+              setTutorConsultations((prevState) => ({
+                ...prevState,
+                loading: false,
+                error: error,
+              }));
+            })
+        : Promise.reject();
+    },
+    [token],
+  );
+
+  const generateJitsyMeeting = useCallback(
+    (id: number) => {
+      return token ? genereteJitsy(token, id) : Promise.reject();
+    },
+    [token],
+  );
 
   const fetchCertificates = useCallback(() => {
     setCertificates((prevState) => ({ ...prevState, loading: true }));
@@ -635,6 +740,37 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
     [setWebinars],
   );
 
+  const fetchEvents = useCallback(
+    (filter: API.EventsParams) => {
+      setEvents((prevState) => ({ ...prevState, loading: true }));
+      return getEvents(filter)
+        .then((response) => {
+          if (response.success) {
+            setEvents({
+              loading: false,
+              list: response,
+              error: undefined,
+            });
+          }
+          if (response.success === false) {
+            setEvents((prevState) => ({
+              ...prevState,
+              loading: false,
+              error: response,
+            }));
+          }
+        })
+        .catch((error) => {
+          setEvents((prevState) => ({
+            ...prevState,
+            loading: false,
+            error: error,
+          }));
+        });
+    },
+    [setEvents],
+  );
+
   const fetchUserGroup = useCallback(
     (id) => {
       setUserGroup((prevState) => ({ ...prevState, loading: true }));
@@ -849,7 +985,7 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
   }, [token, abortControllers]);
 
   const addToCart = useCallback(
-    (productId: number) => {
+    (productId: number, quantity?: number) => {
       if (!token) {
         return Promise.reject("No token provided");
       }
@@ -857,7 +993,7 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
         ...prevState,
         loading: true,
       }));
-      return postAddToCart(productId, token)
+      return postAddToCart(productId, token, quantity)
         .then(() => {
           fetchCart();
         })
@@ -1517,6 +1653,13 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
         webinars,
         payWithP24,
         getProductInfo,
+        fetchTutorConsultations,
+        approveConsultationTerm,
+        generateJitsyMeeting,
+        rejectConsultationTerm,
+        tutorConsultations,
+        fetchEvents,
+        events,
       }}
     >
       <EditorContextProvider url={`${apiUrl}/api/hh5p`}>{children}</EditorContextProvider>

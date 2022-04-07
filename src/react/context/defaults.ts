@@ -89,7 +89,7 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
   forgot: (body: API.ForgotRequest) => Promise.reject(),
   reset: (body: API.ResetPasswordRequest) => Promise.reject(),
   emailVerify: (id: string, hash: string) => Promise.reject(),
-  addToCart: (id) => Promise.reject(id),
+  addToCart: (id: number, quantity?: number) => Promise.reject(),
   removeFromCart: (id) => Promise.reject(id),
   fetchCart: () => Promise.reject(),
   cart: {
@@ -183,10 +183,19 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
   stationaryEvents: {
     loading: false,
   },
+  tutorConsultations: {
+    loading: false,
+  },
   fetchStationaryEvents: (filter: API.StationaryEventsParams) => Promise.reject(),
   bookConsultationTerm: (id: number, term: string) => Promise.reject(),
   fetchWebinars: (filter: API.WebinarParams) => Promise.reject(),
+  fetchTutorConsultations: () => Promise.reject(),
+  approveConsultationTerm: (consultationTermId: number) => Promise.reject(),
+  rejectConsultationTerm: (consultationTermId: number) => Promise.reject(),
+  generateJitsyMeeting: (consultationTermId: number) => Promise.reject(consultationTermId),
   webinars: { loading: false },
+  events: { loading: false },
+  fetchEvents: (filter: API.EventsParams) => Promise.reject(),
 };
 
 export const defaultApiConfig: EscolaLMSContextConfig = {
@@ -244,7 +253,7 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
   forgot: (body: API.ForgotRequest) => Promise.reject(),
   reset: (body: API.ResetPasswordRequest) => Promise.reject(),
   emailVerify: (id: string, hash: string) => Promise.reject(),
-  addToCart: (id) => Promise.reject(id),
+  addToCart: (id: number, quantity?: number) => Promise.reject(),
   removeFromCart: (id) => Promise.reject(id),
   fetchCart: () => Promise.reject(),
   cart: {
@@ -334,6 +343,10 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
   userConsultations: {
     loading: false,
   },
+
+  tutorConsultations: {
+    loading: false,
+  },
   fetchFields: (filter: API.FieldsParams) => Promise.reject(),
   stationaryEvents: {
     loading: false,
@@ -342,6 +355,12 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
   bookConsultationTerm: (id: number, term: string) => Promise.reject(),
   fetchWebinars: (filter: API.WebinarParams) => Promise.reject(),
   webinars: { loading: false },
+  fetchTutorConsultations: () => Promise.reject(),
+  approveConsultationTerm: (consultationTermId: number) => Promise.reject(),
+  rejectConsultationTerm: (consultationTermId: number) => Promise.reject(),
+  generateJitsyMeeting: (consultationTermId: number) => Promise.reject(consultationTermId),
+  events: { loading: false },
+  fetchEvents: (filter: API.EventsParams) => Promise.reject(),
 };
 
 export const defaultConfig = Object.assign({}, defaultReadConfig, defaultApiConfig);
