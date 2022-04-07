@@ -175,12 +175,17 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
   userConsultations: {
     loading: false,
   },
+  userWebinars: { loading: false },
+  fetchUserWebinars: () => Promise.reject(),
   fields: {
     loading: false,
     list: [],
   },
   fetchFields: (filter: API.FieldsParams) => Promise.reject(),
   stationaryEvents: {
+    loading: false,
+  },
+  stationaryEvent: {
     loading: false,
   },
   tutorConsultations: {
@@ -192,8 +197,12 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
   fetchTutorConsultations: () => Promise.reject(),
   approveConsultationTerm: (consultationTermId: number) => Promise.reject(),
   rejectConsultationTerm: (consultationTermId: number) => Promise.reject(),
-  generateJitsyMeeting: (consultationTermId: number) => Promise.reject(consultationTermId),
+  generateConsultationJitsy: (consultationTermId: number) => Promise.reject(consultationTermId),
+  generateWebinarJitsy: (webinarId: number) => Promise.reject(webinarId),
   webinars: { loading: false },
+  webinar: {
+    loading: false,
+  },
   events: { loading: false },
   fetchEvents: (filter: API.EventsParams) => Promise.reject(),
   changePassword: () => Promise.reject(),
@@ -348,18 +357,27 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
   tutorConsultations: {
     loading: false,
   },
+  userWebinars: { loading: false },
+  fetchUserWebinars: () => Promise.reject(),
   fetchFields: (filter: API.FieldsParams) => Promise.reject(),
   stationaryEvents: {
+    loading: false,
+  },
+  stationaryEvent: {
     loading: false,
   },
   fetchStationaryEvents: (filter: API.StationaryEventsParams) => Promise.reject(),
   bookConsultationTerm: (id: number, term: string) => Promise.reject(),
   fetchWebinars: (filter: API.WebinarParams) => Promise.reject(),
   webinars: { loading: false },
+  webinar: {
+    loading: false,
+  },
   fetchTutorConsultations: () => Promise.reject(),
   approveConsultationTerm: (consultationTermId: number) => Promise.reject(),
   rejectConsultationTerm: (consultationTermId: number) => Promise.reject(),
-  generateJitsyMeeting: (consultationTermId: number) => Promise.reject(consultationTermId),
+  generateConsultationJitsy: (consultationTermId: number) => Promise.reject(consultationTermId),
+  generateWebinarJitsy: (webinarId: number) => Promise.reject(webinarId),
   events: { loading: false },
   fetchEvents: (filter: API.EventsParams) => Promise.reject(),
   changePassword: () => Promise.reject(),
