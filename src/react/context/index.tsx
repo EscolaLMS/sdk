@@ -408,7 +408,7 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
 
   const fetchUserWebinars = useCallback(() => {
     setUserWebinars((prevState) => ({ ...prevState, loading: true }));
-    console.log("dwadaw");
+
     return token
       ? getMyWebinars(token)
           .then((response) => {
@@ -1161,7 +1161,7 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
   const fetchProgram = useCallback(
     (id) => {
       setProgram((prevState) => ({ ...prevState, loading: true }));
-      return id
+      return id && token
         ? getCourseProgram(id, token)
             .then((response) => {
               if (response.success) {
