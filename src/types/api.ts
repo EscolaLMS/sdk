@@ -408,6 +408,7 @@ export type UpdateUserDetails = {
   city?: string;
   street?: string;
   postcode?: string;
+  phone?: string;
 };
 
 export type Lesson = {
