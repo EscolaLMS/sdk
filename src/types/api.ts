@@ -66,7 +66,10 @@ export type IStatement = {
   verb: { id: IEvent };
 };
 
-export type IEventException = "GuessTheAnswer" | "Questionnaire" | "QuestionSet";
+export type IEventException =
+  | "GuessTheAnswer"
+  | "Questionnaire"
+  | "QuestionSet";
 
 export type Category = {
   id: number;
@@ -187,9 +190,13 @@ export type DefaultResponseError = {
   };
 };
 
-export type DefaultResponse<Model> = DefaultResponseSuccess<Model> | DefaultResponseError;
+export type DefaultResponse<Model> =
+  | DefaultResponseSuccess<Model>
+  | DefaultResponseError;
 
-export type DataResponse<Model> = DataResponseSuccess<Model> | DefaultResponseError;
+export type DataResponse<Model> =
+  | DataResponseSuccess<Model>
+  | DefaultResponseError;
 
 type DefaultMetaResponse<Model> =
   | (PaginatedMetaList<Model> & {
@@ -208,7 +215,8 @@ export type CertificateList = DefaultMetaResponse<Certificate>;
 
 export type MattermostChannelList = DefaultResponseSuccess<MattermostData>;
 
-export type P24Response = DefaultResponseSuccess<EscolaLms.Payments.Models.Payment>;
+export type P24Response =
+  DefaultResponseSuccess<EscolaLms.Payments.Models.Payment>;
 
 export type TutorList = DefaultResponse<UserItem[]>;
 
@@ -248,7 +256,10 @@ export type Consultation = EscolaLms.Consultations.Models.Consultation & {
 };
 
 export type Product = EscolaLms.Cart.Models.Product & { buyable?: boolean };
-export type Webinar = EscolaLms.Webinar.Models.Webinar & { product?: Product; program?: string };
+export type Webinar = EscolaLms.Webinar.Models.Webinar & {
+  product?: Product;
+  program?: string;
+};
 
 export type CartProductParameters = {
   description: string;
@@ -305,7 +316,8 @@ export type ConsultationParams = PageParams &
     base_price?: number;
   };
 
-export type WebinarParams = PageParams & PaginationParams & { name?: string; product?: Product };
+export type WebinarParams = PageParams &
+  PaginationParams & { name?: string; product?: Product };
 
 export type StationaryEventsParams = PageParams &
   PaginationParams & {
@@ -640,13 +652,14 @@ export type AppCurrency = {
   enum: string[];
 };
 
-export type StationaryEvent = EscolaLms.StationaryEvents.Models.StationaryEvent & {
-  date?: string;
-  title?: string;
-  isScheduled?: boolean;
-  appointmentDate?: string;
-  product?: Product | null;
-};
+export type StationaryEvent =
+  EscolaLms.StationaryEvents.Models.StationaryEvent & {
+    date?: string;
+    title?: string;
+    isScheduled?: boolean;
+    appointmentDate?: string;
+    product?: Product | null;
+  };
 
 export type Event = {
   id: number;
@@ -802,11 +815,9 @@ export type UserGroupAddRow = DefaultResponse<UserItem[]>;
 export type UserGroupList = DefaultMetaResponse<UserGroup>;
 
 export type UserGroupsParams = {
-  params: {
-    current?: number;
-    pageSize?: number;
-    search?: string;
-  };
+  current?: number;
+  pageSize?: number;
+  search?: string;
 };
 
 export enum EventTypes {
@@ -957,7 +968,7 @@ export type H5PObject = {
       contentUserData: [
         {
           state: object;
-        },
+        }
       ];
     }
   >;
