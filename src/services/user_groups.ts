@@ -10,11 +10,7 @@ export async function registerableGroups(options?: { [key: string]: any }) {
 }
 
 export async function userGroups(
-  params: {
-    current?: number;
-    pageSize?: number;
-    search?: string;
-  },
+  params: API.UserGroupsParams,
   options?: { [key: string]: any }
 ) {
   return request<API.UserGroupList>("/api/admin/user-groups", {
