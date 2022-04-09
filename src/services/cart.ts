@@ -100,3 +100,17 @@ export async function payments(token: string, options?: { [key: string]: any }) 
     ...(options || {}),
   });
 }
+
+export async function useVoucher(voucher: string, token: string) {
+  return request<API.AuthResponse>("/api/cart/voucher", {
+    method: "POST",
+    data: {
+      code: voucher,
+    },
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+}

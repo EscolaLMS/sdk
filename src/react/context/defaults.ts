@@ -206,6 +206,7 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
   events: { loading: false },
   fetchEvents: (filter: API.EventsParams) => Promise.reject(),
   changePassword: () => Promise.reject(),
+  realizeVoucher: () => Promise.reject(),
 };
 
 export const defaultApiConfig: EscolaLMSContextConfig = {
@@ -381,6 +382,7 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
   events: { loading: false },
   fetchEvents: (filter: API.EventsParams) => Promise.reject(),
   changePassword: () => Promise.reject(),
+  realizeVoucher: () => Promise.reject(),
 };
 
 export const defaultConfig = Object.assign({}, defaultReadConfig, defaultApiConfig);
