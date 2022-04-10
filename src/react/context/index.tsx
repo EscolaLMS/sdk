@@ -39,10 +39,7 @@ import {
   genereteJitsyWebinar,
 } from "../../services/webinars";
 import { events as getEvents } from "../../services/events";
-import {
-  settings as getSettings,
-  config as getConfig,
-} from "./../../services/settings";
+import { settings as getSettings, config as getConfig } from "./../../services/settings";
 import { uniqueTags as getUniqueTags } from "./../../services/tags";
 import { categoryTree as getCategoryTree } from "./../../services/categories";
 import { getNotifications, readNotification } from "../../services/notify";
@@ -99,6 +96,7 @@ import {
 
 import { fields as getFields } from "../../services/fields";
 import { stationaryEvents as getStationaryEvents } from "../../services/stationary_events";
+import { fetchListStateData, fetchPaginatedStateData, fetchValueStateData } from "./setStates";
 
 export const SCORMPlayer: React.FC<{
   uuid: string;
@@ -115,14 +113,14 @@ export const sortProgram: SortProgram = (lessons) => {
     .sort((lessonA, lessonB) =>
       typeof lessonA.order === "number" && typeof lessonB.order === "number"
         ? lessonA.order - lessonB.order
-        : 0
+        : 0,
     )
     .map((lesson) => ({
       ...lesson,
       topics: [...(lesson.topics || [])].sort((topicA, topicB) =>
         typeof topicA.order === "number" && typeof topicB.order === "number"
           ? topicA.order - topicB.order
-          : 0
+          : 0,
       ),
     }));
 };
@@ -133,9 +131,11 @@ interface EscolaLMSContextProviderType {
   defaults?: Partial<EscolaLMSContextReadConfig>;
 }
 
-export const EscolaLMSContextProvider: FunctionComponent<
-  EscolaLMSContextProviderType
-> = ({ children, apiUrl, defaults }) => {
+export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProviderType> = ({
+  children,
+  apiUrl,
+  defaults,
+}) => {
   interceptors(apiUrl);
 
   const initialValues = {
@@ -144,22 +144,26 @@ export const EscolaLMSContextProvider: FunctionComponent<
   };
 
   const getDefaultData = <K extends keyof EscolaLMSContextReadConfig>(
-    key: K
+    key: K,
   ): EscolaLMSContextReadConfig[K] => {
     return initialValues[key];
   };
 
-  const [courses, setCourses] = useLocalStorage<
-    ContextPaginatedMetaState<API.CourseListItem>
-  >("lms", "courses", getDefaultData("courses"));
+  const [courses, setCourses] = useLocalStorage<ContextPaginatedMetaState<API.CourseListItem>>(
+    "lms",
+    "courses",
+    getDefaultData("courses"),
+  );
 
   const [consultations, setConsultations] = useLocalStorage<
     ContextPaginatedMetaState<API.Consultation>
   >("lms", "consultations", getDefaultData("consultations"));
 
-  const [consultation, setConsultation] = useLocalStorage<
-    ContextStateValue<API.Consultation>
-  >("lms", "consultation", getDefaultData("consultation"));
+  const [consultation, setConsultation] = useLocalStorage<ContextStateValue<API.Consultation>>(
+    "lms",
+    "consultation",
+    getDefaultData("consultation"),
+  );
 
   const [userConsultations, setUserConsultations] = useLocalStorage<
     ContextPaginatedMetaState<API.Consultation>
@@ -170,96 +174,108 @@ export const EscolaLMSContextProvider: FunctionComponent<
   >("lms", "tutorConsultations", getDefaultData("tutorConsultations"));
 
   const [webinars, setWebinars] = useLocalStorage<
-    ContextListState<EscolaLms.Webinar.Models.Webinar>
+    ContextPaginatedMetaState<EscolaLms.Webinar.Models.Webinar>
   >("lms", "webinars", getDefaultData("webinars"));
 
-  const [events, setEvents] = useLocalStorage<
-    ContextPaginatedMetaState<API.Event>
-  >("lms", "events", getDefaultData("events"));
+  const [events, setEvents] = useLocalStorage<ContextPaginatedMetaState<API.Event>>(
+    "lms",
+    "events",
+    getDefaultData("events"),
+  );
 
-  const [userGroup, setUserGroup] = useLocalStorage<
-    ContextStateValue<API.UserGroupRow>
-  >("lms", "userGroup", getDefaultData("userGroup"));
+  const [userGroup, setUserGroup] = useLocalStorage<ContextStateValue<API.UserGroupRow>>(
+    "lms",
+    "userGroup",
+    getDefaultData("userGroup"),
+  );
 
-  const [userGroups, setUserGroups] = useLocalStorage<
-    ContextListState<API.UserGroup>
-  >("lms", "userGroups", getDefaultData("userGroups"));
+  const [userGroups, setUserGroups] = useLocalStorage<ContextListState<API.UserGroup>>(
+    "lms",
+    "userGroups",
+    getDefaultData("userGroups"),
+  );
 
   const [registerableGroups, setRegisterableGroups] = useLocalStorage<
     ContextListState<API.UserGroup>
   >("lms", "registerableGroups", getDefaultData("registerableGroups"));
 
-  const [course, setCourse] = useLocalStorage<
-    ContextStateValue<API.CourseListItem>
-  >("lms", "course", getDefaultData("course"));
+  const [course, setCourse] = useLocalStorage<ContextStateValue<API.CourseListItem>>(
+    "lms",
+    "course",
+    getDefaultData("course"),
+  );
 
   const [settings, setSettings] = useLocalStorage<API.AppSettings>(
     "lms",
     "settings",
-    getDefaultData("settings")
+    getDefaultData("settings"),
   );
 
   const [config, setConfig] = useLocalStorage<API.AppConfig>(
     "lms",
     "config",
-    getDefaultData("config")
+    getDefaultData("config"),
   );
 
-  const [uniqueTags, setUniqueTags] = useLocalStorage<
-    ContextListState<API.Tag>
-  >("lms", "tags", getDefaultData("uniqueTags"));
+  const [uniqueTags, setUniqueTags] = useLocalStorage<ContextListState<API.Tag>>(
+    "lms",
+    "tags",
+    getDefaultData("uniqueTags"),
+  );
 
-  const [categoryTree, setCategoryTree] = useLocalStorage<
-    ContextListState<API.Category>
-  >("lms", "categories", getDefaultData("categoryTree"));
+  const [categoryTree, setCategoryTree] = useLocalStorage<ContextListState<API.Category>>(
+    "lms",
+    "categories",
+    getDefaultData("categoryTree"),
+  );
 
-  const [program, setProgram] = useLocalStorage<
-    ContextStateValue<API.CourseProgram>
-  >("lms", "tags", getDefaultData("program"));
+  const [program, setProgram] = useLocalStorage<ContextStateValue<API.CourseProgram>>(
+    "lms",
+    "tags",
+    getDefaultData("program"),
+  );
 
   const [cart, setCart] = useLocalStorage<ContextStateValue<API.Cart>>(
     "lms",
     "cart",
-    getDefaultData("cart")
+    getDefaultData("cart"),
   );
 
-  const [token, setToken] = useLocalStorage<string | null>(
-    "lms",
-    "token",
-    null
-  );
+  const [token, setToken] = useLocalStorage<string | null>("lms", "token", null);
 
   const [tokenExpireDate, setTokenExpireDate] = useLocalStorage<string | null>(
     "lms",
     "tokenExpireDate",
-    null
+    null,
   );
 
   const [user, setUser] = useLocalStorage<ContextStateValue<API.UserItem>>(
     "lms",
     "user",
-    getDefaultData("user")
+    getDefaultData("user"),
   );
 
-  const [progress, setProgress] = useState<
-    ContextStateValue<API.CourseProgress>
-  >(getDefaultData("progress"));
+  const [progress, setProgress] = useState<ContextStateValue<API.CourseProgress>>(
+    getDefaultData("progress"),
+  );
 
   const [tutors, setTutors] = useLocalStorage<ContextListState<API.UserItem>>(
     "lms",
     "tutors",
-    getDefaultData("tutors")
+    getDefaultData("tutors"),
   );
 
   const [orders, setOrders] = useLocalStorage<ContextListState<API.Order>>(
     "lms",
     "orders",
-    getDefaultData("orders")
+    getDefaultData("orders"),
   );
 
-  const [payments, setPayments] = useLocalStorage<
-    ContextPaginatedMetaState<API.Payment>
-  >("lms", "payments", getDefaultData("payments"));
+  const [payments, setPayments] = useLocalStorage<ContextPaginatedMetaState<API.Payment>>(
+    "lms",
+    "payments",
+    getDefaultData("payments"),
+  );
 
   const [certificates, setCertificates] = useLocalStorage<
     ContextPaginatedMetaState<API.Certificate>
@@ -269,42 +285,44 @@ export const EscolaLMSContextProvider: FunctionComponent<
     ContextStateValue<API.MattermostData>
   >("lms", "mattermostChannels", getDefaultData("mattermostChannels"));
 
-  const [tutor, setTutor] = useState<ContextStateValue<API.UserItem>>(
-    getDefaultData("tutor")
-  );
+  const [tutor, setTutor] = useState<ContextStateValue<API.UserItem>>(getDefaultData("tutor"));
 
-  const [pages, setPages] = useLocalStorage<
-    ContextPaginatedMetaState<API.PageListItem>
-  >("lms", "pages", getDefaultData("pages"));
+  const [pages, setPages] = useLocalStorage<ContextPaginatedMetaState<API.PageListItem>>(
+    "lms",
+    "pages",
+    getDefaultData("pages"),
+  );
 
   const [page, setPage] = useLocalStorage<ContextStateValue<API.Page>>(
     "lms",
     "page",
-    getDefaultData("page")
+    getDefaultData("page"),
   );
 
   const [fontSize, setFontSize] = useLocalStorage<FontSize>(
     "lms",
     "fontSize",
-    getDefaultData("fontSize")
+    getDefaultData("fontSize"),
   );
 
   const [h5p, setH5P] = useLocalStorage<ContextStateValue<API.H5PObject>>(
     "lms",
     "h5p",
-    getDefaultData("h5p")
+    getDefaultData("h5p"),
   );
 
-  const [notifications, setNotifications] = useLocalStorage<
-    ContextListState<API.Notification>
-  >("lms", "notifications", getDefaultData("notifications"));
+  const [notifications, setNotifications] = useLocalStorage<ContextListState<API.Notification>>(
+    "lms",
+    "notifications",
+    getDefaultData("notifications"),
+  );
 
   const [fields, setFields] = useLocalStorage<
     ContextListState<EscolaLms.ModelFields.Models.Metadata>
   >("lms", "fields", getDefaultData("fields"));
 
   const [stationaryEvents, setStationaryEvents] = useLocalStorage<
-    ContextListState<EscolaLms.StationaryEvents.Models.StationaryEvent>
+    ContextPaginatedMetaState<EscolaLms.StationaryEvents.Models.StationaryEvent>
   >("lms", "stationaryEvents", getDefaultData("stationaryEvents"));
 
   const [stationaryEvent, setStationaryEvent] = useLocalStorage<
@@ -325,44 +343,6 @@ export const EscolaLMSContextProvider: FunctionComponent<
     cart: null,
   });
 
-  const fetchPaginatedStateData = <T1,>(
-    fetchAction: Promise<API.DefaultMetaResponse<T1>>,
-    setState: React.Dispatch<React.SetStateAction<ContextPaginatedMetaState<T1>>>,
-  ): Promise<void> => {
-    setState((prevState) => ({ ...prevState, loading: true }));
-
-    return fetchAction
-      .then((response) => {
-        if (response.success) {
-          setState({
-            loading: false,
-            list: response,
-            error: undefined,
-          });
-        }
-        if (response.success === false) {
-          setState((prevState) => ({
-            ...prevState,
-            loading: false,
-            error: response,
-          }));
-        }
-      })
-      .catch((error) => {
-        setState((prevState) => ({
-          ...prevState,
-          loading: false,
-          error: error,
-        }));
-      });
-  };
-
-  const fetchConfig = useCallback(() => {
-    return getConfig().then((resposne) => {
-      setConfig(resposne.data);
-    });
-  }, []);
-
   useEffect(() => {
     getSettings().then((response) => {
       setSettings(response.data);
@@ -378,201 +358,89 @@ export const EscolaLMSContextProvider: FunctionComponent<
     });
   }, []);
 
-  const fetchFields = useCallback((filter: API.FieldsParams) => {
-    setFields((prevState) => ({ ...prevState, loading: true }));
-
-    return getFields(filter)
-      .then((response) => {
-        if (response.success) {
-          setFields({
-            loading: false,
-            list: response.data,
-            error: undefined,
-          });
-        }
-      })
-      .catch((error) => {
-        setFields((prevState) => ({
-          ...prevState,
-          loading: false,
-          error: error,
-        }));
-      });
+  const resetState = useCallback(() => {
+    setToken(null);
+    setUser(defaultConfig.user);
+    setProgram(defaultConfig.program);
+    setCart(defaultConfig.cart);
+    setCertificates(defaultConfig.certificates);
+    setNotifications(defaultConfig.notifications);
+    setMattermostChannels(defaultConfig.mattermostChannels);
   }, []);
 
-  const fetchStationaryEvents = useCallback(
-    (filter: API.StationaryEventsParams) => {
-      setStationaryEvents((prevState) => ({ ...prevState, loading: true }));
+  const fetchConfig = useCallback(() => {
+    return getConfig().then((resposne) => {
+      setConfig(resposne.data);
+    });
+  }, []);
 
-      return getStationaryEvents(filter)
-        .then((response) => {
-          if (response.success) {
-            setStationaryEvents({
-              loading: false,
-              list: response.data,
-              error: undefined,
-            });
-          }
-        })
-        .catch((error) => {
-          setStationaryEvents((prevState) => ({
-            ...prevState,
-            loading: false,
-            error: error,
-          }));
-        });
-    },
-    []
-  );
+  const fetchFields = useCallback((filter: API.FieldsParams) => {
+    return fetchListStateData<EscolaLms.ModelFields.Models.Metadata>(getFields(filter), setFields);
+  }, []);
+
+  const fetchStationaryEvents = useCallback((filter: API.StationaryEventsParams) => {
+    return fetchPaginatedStateData<EscolaLms.StationaryEvents.Models.StationaryEvent>(
+      getStationaryEvents(filter),
+      setStationaryEvents,
+    );
+  }, []);
 
   const fetchUserWebinars = useCallback(() => {
-    setUserWebinars((prevState) => ({ ...prevState, loading: true }));
-
     return token
-      ? getMyWebinars(token)
-          .then((response) => {
-            if (response.success) {
-              setUserWebinars({
-                loading: false,
-                list: response.data,
-                error: undefined,
-              });
-            }
-            if (response.success === false) {
-              setUserWebinars((prevState) => ({
-                ...prevState,
-                loading: false,
-                error: response,
-              }));
-            }
-          })
-          .catch((error) => {
-            setUserWebinars((prevState) => ({
-              ...prevState,
-              loading: false,
-              error: error,
-            }));
-          })
+      ? fetchListStateData<EscolaLms.Webinar.Models.Webinar>(getMyWebinars(token), setUserWebinars)
       : Promise.reject();
   }, [token]);
 
   const fetchTutorConsultations = useCallback(() => {
-    setTutorConsultations((prevState) => ({ ...prevState, loading: true }));
     return token
-      ? getTutorConsultations(token)
-          .then((response) => {
-            if (response.success) {
-              setTutorConsultations({
-                loading: false,
-                list: response,
-                error: undefined,
-              });
-            }
-            if (response.success === false) {
-              setTutorConsultations((prevState) => ({
-                ...prevState,
-                loading: false,
-                error: response,
-              }));
-            }
-          })
-          .catch((error) => {
-            setTutorConsultations((prevState) => ({
-              ...prevState,
-              loading: false,
-              error: error,
-            }));
-          })
+      ? fetchPaginatedStateData<API.AppointmentTerm>(
+          getTutorConsultations(token),
+          setTutorConsultations,
+        )
       : Promise.reject();
   }, [token]);
 
   const approveConsultationTerm = useCallback(
     (id: number) => {
-      setTutorConsultations((prevState) => ({ ...prevState, loading: true }));
       return token
-        ? approveConsultation(token, id)
-            .then((response) => {
-              if (response.success) {
-                setTutorConsultations({
-                  loading: false,
-                  list: response,
-                  error: undefined,
-                });
-              }
-            })
-            .catch((error) => {
-              setTutorConsultations((prevState) => ({
-                ...prevState,
-                loading: false,
-                error: error,
-              }));
-            })
+        ? fetchPaginatedStateData<API.AppointmentTerm>(
+            approveConsultation(token, id),
+            setTutorConsultations,
+          )
         : Promise.reject();
     },
-    [token]
+    [token],
   );
 
   const rejectConsultationTerm = useCallback(
     (id: number) => {
-      setTutorConsultations((prevState) => ({ ...prevState, loading: true }));
       return token
-        ? rejectConsultation(token, id)
-            .then((response) => {
-              if (response.success) {
-                setTutorConsultations({
-                  loading: false,
-                  list: response,
-                  error: undefined,
-                });
-              }
-            })
-            .catch((error) => {
-              setTutorConsultations((prevState) => ({
-                ...prevState,
-                loading: false,
-                error: error,
-              }));
-            })
+        ? fetchPaginatedStateData<API.AppointmentTerm>(
+            rejectConsultation(token, id),
+            setTutorConsultations,
+          )
         : Promise.reject();
     },
-    [token]
+    [token],
   );
 
   const generateConsultationJitsy = useCallback(
     (id: number) => {
       return token ? genereteJitsy(token, id) : Promise.reject();
     },
-    [token]
+    [token],
   );
 
   const generateWebinarJitsy = useCallback(
     (id: number) => {
       return token ? genereteJitsyWebinar(token, id) : Promise.reject();
     },
-    [token]
+    [token],
   );
 
   const fetchCertificates = useCallback(() => {
-    setCertificates((prevState) => ({ ...prevState, loading: true }));
-
     return token
-      ? getCertificates(token)
-          .then((response) => {
-            if (response.success) {
-              setCertificates({
-                loading: false,
-                list: response,
-                error: undefined,
-              });
-            }
-          })
-          .catch((error) => {
-            setCertificates((prevState) => ({
-              ...prevState,
-              loading: false,
-              error: error,
-            }));
-          })
+      ? fetchPaginatedStateData<API.Certificate>(getCertificates(token), setCertificates)
       : Promise.reject();
   }, [token]);
 
@@ -580,49 +448,18 @@ export const EscolaLMSContextProvider: FunctionComponent<
     (id: number) => {
       return token ? getCertificate(token, id) : Promise.reject();
     },
-    [token]
+    [token],
   );
 
   const fetchMattermostChannels = useCallback(() => {
-    setMattermostChannels((prevState) => ({ ...prevState, loading: true }));
-
     return token
-      ? getMattermostChannels(token)
-          .then((response) => {
-            if (response.success) {
-              setMattermostChannels({
-                loading: false,
-                value: response.data,
-                error: undefined,
-              });
-            }
-          })
-          .catch((error) => {
-            setMattermostChannels((prevState) => ({
-              ...prevState,
-              loading: false,
-              error: error,
-            }));
-          })
+      ? fetchValueStateData<API.MattermostData>(getMattermostChannels(token), setMattermostChannels)
       : Promise.reject();
   }, [token]);
 
   const fetchNotifications = useCallback(() => {
-    setNotifications((prevState) => ({ ...prevState, loading: true }));
     return token
-      ? getNotifications(token)
-          .then((response) => {
-            if (response.success) {
-              setNotifications({ list: response.data, loading: false });
-            }
-          })
-          .catch((error) => {
-            setNotifications((prevState) => ({
-              ...prevState,
-              loading: false,
-              error: error,
-            }));
-          })
+      ? fetchListStateData<API.Notification>(getNotifications(token), setNotifications)
       : Promise.reject();
   }, [token, notifications]);
 
@@ -636,9 +473,7 @@ export const EscolaLMSContextProvider: FunctionComponent<
                   ...prevState,
                   list:
                     prevState && prevState.list
-                      ? prevState.list.filter(
-                          (item: API.Notification) => item.id !== id
-                        )
+                      ? prevState.list.filter((item: API.Notification) => item.id !== id)
                       : [],
                   loading: false,
                 }));
@@ -653,74 +488,26 @@ export const EscolaLMSContextProvider: FunctionComponent<
             })
         : Promise.reject();
     },
-    [token, notifications]
+    [token, notifications],
   );
 
   const fetchCourses = useCallback(
-    (filter: API.CourseParams): void => {
-      fetchPaginatedStateData<API.Course>(getCourses(filter), setCourses);
+    (filter: API.CourseParams) => {
+      return fetchPaginatedStateData<API.Course>(getCourses(filter), setCourses);
     },
-    [courses]
+    [courses],
   );
 
   const fetchConsultations = useCallback(
     (filter: API.ConsultationParams) => {
-      setConsultations((prevState) => ({ ...prevState, loading: true }));
-      return getConsultations(filter)
-        .then((response) => {
-          if (response.success) {
-            setConsultations({
-              loading: false,
-              list: response,
-              error: undefined,
-            });
-          }
-          if (response.success === false) {
-            setConsultations((prevState) => ({
-              ...prevState,
-              loading: false,
-              error: response,
-            }));
-          }
-        })
-        .catch((error) => {
-          setConsultations((prevState) => ({
-            ...prevState,
-            loading: false,
-            error: error,
-          }));
-        });
+      return fetchPaginatedStateData<API.Consultation>(getConsultations(filter), setConsultations);
     },
-    [consultations]
+    [consultations],
   );
 
   const fetchUserConsultations = useCallback(() => {
-    setUserConsultations((prevState) => ({ ...prevState, loading: true }));
     return token
-      ? getUserConsultations(token)
-          .then((response) => {
-            if (response.success) {
-              setUserConsultations({
-                loading: false,
-                list: response,
-                error: undefined,
-              });
-            }
-            if (response.success === false) {
-              setUserConsultations((prevState) => ({
-                ...prevState,
-                loading: false,
-                error: response,
-              }));
-            }
-          })
-          .catch((error) => {
-            setUserConsultations((prevState) => ({
-              ...prevState,
-              loading: false,
-              error: error,
-            }));
-          })
+      ? fetchPaginatedStateData<API.Consultation>(getUserConsultations(token), setUserConsultations)
       : Promise.reject();
   }, [userConsultations]);
 
@@ -737,24 +524,7 @@ export const EscolaLMSContextProvider: FunctionComponent<
   }, []);
 
   const fetchConsultation = useCallback((id: number) => {
-    setConsultation((prevState) => ({ ...prevState, loading: true }));
-    return getConsultation(id).then((response) => {
-      if (response.success) {
-        setConsultation({
-          loading: false,
-          value: {
-            ...response.data,
-          },
-        });
-      }
-      if (response.success === false) {
-        setConsultation((prevState) => ({
-          ...prevState,
-          loading: false,
-          error: response,
-        }));
-      }
-    });
+    return fetchValueStateData<API.Consultation>(getConsultation(id), setConsultation);
   }, []);
 
   const getProductInfo = useCallback((id: number) => {
@@ -762,59 +532,11 @@ export const EscolaLMSContextProvider: FunctionComponent<
   }, []);
 
   const fetchWebinars = useCallback((filter: API.WebinarParams) => {
-    setWebinars((prevState) => ({ ...prevState, loading: true }));
-    return getWebinars(filter)
-      .then((response) => {
-        if (response.success) {
-          setWebinars({
-            loading: false,
-            list: response.data,
-            error: undefined,
-          });
-        }
-        if (response.success === false) {
-          setWebinars((prevState) => ({
-            ...prevState,
-            loading: false,
-            error: response,
-          }));
-        }
-      })
-      .catch((error) => {
-        setWebinars((prevState) => ({
-          ...prevState,
-          loading: false,
-          error: error,
-        }));
-      });
+    return fetchPaginatedStateData<API.Webinar>(getWebinars(filter), setWebinars);
   }, []);
 
   const fetchEvents = useCallback((filter: API.EventsParams) => {
-    setEvents((prevState) => ({ ...prevState, loading: true }));
-    return getEvents(filter)
-      .then((response) => {
-        if (response.success) {
-          setEvents({
-            loading: false,
-            list: response,
-            error: undefined,
-          });
-        }
-        if (response.success === false) {
-          setEvents((prevState) => ({
-            ...prevState,
-            loading: false,
-            error: response,
-          }));
-        }
-      })
-      .catch((error) => {
-        setEvents((prevState) => ({
-          ...prevState,
-          loading: false,
-          error: error,
-        }));
-      });
+    return fetchPaginatedStateData<API.Event>(getEvents(filter), setEvents);
   }, []);
 
   const fetchUserGroup = useCallback(
@@ -845,66 +567,18 @@ export const EscolaLMSContextProvider: FunctionComponent<
           }));
         });
     },
-    [userGroups]
+    [userGroups],
   );
 
   const fetchRegisterableGroups = () => {
-    setRegisterableGroups((prevState) => ({ ...prevState, loading: true }));
-    return getRegisterableGroups()
-      .then((response) => {
-        if (response.success) {
-          setRegisterableGroups({
-            loading: false,
-            list: response.data,
-            error: undefined,
-          });
-        }
-        if (response.success === false) {
-          setRegisterableGroups((prevState) => ({
-            ...prevState,
-            loading: false,
-            error: response,
-          }));
-        }
-      })
-      .catch((error) => {
-        setRegisterableGroups((prevState) => ({
-          ...prevState,
-          loading: false,
-          error: error,
-        }));
-      });
+    return fetchListStateData<API.UserGroup>(getRegisterableGroups(), setRegisterableGroups);
   };
 
   const fetchUserGroups = useCallback(
     ({ pageSize, current }: API.UserGroupsParams) => {
-      setUserGroups((prevState) => ({ ...prevState, loading: true }));
-      return getUserGroups({ pageSize, current })
-        .then((response) => {
-          if (response.success) {
-            setUserGroups({
-              loading: false,
-              list: response.data,
-              error: undefined,
-            });
-          }
-          if (response.success === false) {
-            setUserGroups((prevState) => ({
-              ...prevState,
-              loading: false,
-              error: response,
-            }));
-          }
-        })
-        .catch((error) => {
-          setUserGroups((prevState) => ({
-            ...prevState,
-            loading: false,
-            error: error,
-          }));
-        });
+      return fetchListStateData<API.UserGroup>(getUserGroups({ pageSize, current }), setUserGroups);
     },
-    [userGroups]
+    [userGroups],
   );
 
   const fetchCourse = useCallback((id: number) => {
@@ -931,17 +605,6 @@ export const EscolaLMSContextProvider: FunctionComponent<
 
   const socialAuthorize = useCallback((token: string) => {
     setToken(token);
-  }, []);
-
-  const resetState = useCallback(() => {
-    setToken(null);
-
-    setUser(defaultConfig.user);
-    setProgram(defaultConfig.program);
-    setCart(defaultConfig.cart);
-    setCertificates(defaultConfig.certificates);
-    setNotifications(defaultConfig.notifications);
-    setMattermostChannels(defaultConfig.mattermostChannels);
   }, []);
 
   const logout = useCallback(() => {
@@ -993,41 +656,16 @@ export const EscolaLMSContextProvider: FunctionComponent<
     if (!token) {
       return Promise.reject("No token provided");
     }
-    setCart((prevState) => ({
-      ...prevState,
-      loading: true,
-    }));
 
     if (abortControllers.current.cart) {
       abortControllers.current.cart.abort();
     }
 
     const controller = new AbortController();
+
     abortControllers.current.cart = controller;
 
-    try {
-      return getCart(token, { signal: controller.signal })
-        .then((response) => {
-          if (response.data.hasOwnProperty("items")) {
-            setCart({
-              loading: false,
-              value: response.data as API.Cart,
-            });
-          } else {
-            setCart((prevState) => ({
-              ...prevState,
-              loading: false,
-            }));
-          }
-        })
-        .catch((err) => {
-          if (err.name !== "AbortError") {
-            console.log(err);
-          }
-        });
-    } catch (err: any) {
-      return Promise.reject(err);
-    }
+    fetchValueStateData<API.Cart>(getCart(token, { signal: controller.signal }), setCart);
   }, [token, abortControllers]);
 
   const addToCart = useCallback(
@@ -1051,7 +689,7 @@ export const EscolaLMSContextProvider: FunctionComponent<
           }));
         });
     },
-    [fetchCart]
+    [fetchCart],
   );
 
   const removeFromCart = useCallback(
@@ -1086,18 +724,14 @@ export const EscolaLMSContextProvider: FunctionComponent<
           }));
         });
     },
-    [fetchCart]
+    [fetchCart],
   );
 
   const payWithStripe = useCallback(
     (paymentMethodId: string) => {
-      return token
-        ? postPayWithStripe(paymentMethodId, token).then((res) => {
-            console.log(res);
-          })
-        : Promise.reject();
+      return token ? postPayWithStripe(paymentMethodId, token) : Promise.reject();
     },
-    [token]
+    [token],
   );
 
   const payWithP24 = useCallback(
@@ -1113,46 +747,53 @@ export const EscolaLMSContextProvider: FunctionComponent<
             })
         : Promise.reject();
     },
-    [token]
+    [token],
   );
 
   const fetchProgress = useCallback(() => {
-    setProgress((prevState) => ({
-      ...prevState,
-      loading: true,
-    }));
-    return token
-      ? getProgress(token).then((res) => {
-          if (res.success) {
-            setProgress({
-              loading: false,
-              value: res.data,
-            });
-          }
-        })
+    token
+      ? fetchValueStateData<API.CourseProgress>(getProgress(token), setProgress)
       : Promise.reject();
   }, [token]);
 
   const fetchH5P = useCallback(
     (id: string) => {
+      token ? fetchValueStateData<API.H5PObject>(getH5p(Number(id)), setH5P) : Promise.reject();
       setH5P({ loading: true });
-      token
-        ? getH5p(Number(id))
-            .then((response) => {
-              if (response.success) {
-                setH5P({ loading: false, value: response.data });
-              }
-            })
-            .catch((error) => {
-              setH5P((prevState) => ({
-                ...prevState,
-                loading: false,
-                error: error,
-              }));
-            })
-        : Promise.reject();
     },
-    [token]
+    [token],
+  );
+
+  const fetchTutors = useCallback(() => {
+    return fetchListStateData<API.UserItem>(getTutors(), setTutors);
+  }, []);
+
+  const fetchTutor = useCallback((id: number) => {
+    fetchValueStateData<API.UserItem>(getTutor(Number(id)), setTutor);
+  }, []);
+
+  const fetchOrders = useCallback(() => {
+    return token ? fetchListStateData<API.Order>(getOrders(token), setOrders) : Promise.reject();
+  }, [token]);
+
+  const fetchPayments = useCallback(() => {
+    return token
+      ? fetchPaginatedStateData<API.Payment>(getPayments(token), setPayments)
+      : Promise.reject();
+  }, [token]);
+
+  const fetchPages = useCallback(
+    (filter?: API.CourseParams) => {
+      fetchPaginatedStateData<API.PageListItem>(getPages(filter), setPages);
+    },
+    [pages],
+  );
+
+  const fetchPage = useCallback(
+    (slug: string) => {
+      fetchValueStateData<API.Page>(getPage(slug), setPage);
+    },
+    [token],
   );
 
   const fetchProgram = useCallback(
@@ -1187,176 +828,7 @@ export const EscolaLMSContextProvider: FunctionComponent<
             })
         : Promise.reject();
     },
-    [token]
-  );
-
-  const fetchTutors = useCallback(() => {
-    setTutors((prevState) => ({
-      ...prevState,
-      loading: true,
-    }));
-    return getTutors()
-      .then((res) => {
-        if (res.success) {
-          setTutors({
-            loading: false,
-            list: res.data,
-          });
-        } else if (res.success === false) {
-          {
-            setTutors({
-              loading: false,
-              error: res,
-            });
-          }
-        }
-      })
-      .catch((error) => {
-        setTutors({
-          loading: false,
-          error: error.data,
-        });
-      });
-  }, []);
-
-  const fetchTutor = useCallback((id: number) => {
-    setTutor((prevState) => ({
-      ...prevState,
-      loading: true,
-    }));
-    return getTutor(id)
-      .then((res) => {
-        if (res.success) {
-          setTutor({
-            loading: false,
-            value: res.data,
-          });
-        } else if (res.success === false) {
-          {
-            setTutor({
-              loading: false,
-              error: res,
-            });
-          }
-        }
-      })
-      .catch((error) => {
-        setTutor({
-          loading: false,
-          error: error.data,
-        });
-      });
-  }, []);
-
-  const fetchOrders = useCallback(() => {
-    setOrders((prevState) => ({
-      ...prevState,
-      loading: true,
-    }));
-    return token
-      ? getOrders(token)
-          .then((res) => {
-            if (res.success) {
-              setOrders({
-                loading: false,
-                list: res.data,
-              });
-            } else if (res.success === false) {
-              {
-                setOrders({
-                  loading: false,
-                  error: res,
-                });
-              }
-            }
-          })
-          .catch((error) => {
-            setOrders({
-              loading: false,
-              error: error.data,
-            });
-          })
-      : Promise.reject();
-  }, [token]);
-
-  const fetchPayments = useCallback(() => {
-    setPayments((prevState) => ({
-      ...prevState,
-      loading: true,
-    }));
-    return token
-      ? getPayments(token)
-          .then((res) => {
-            if (res.success) {
-              setPayments({
-                loading: false,
-                list: res,
-              });
-            }
-          })
-          .catch((error) => {
-            setPayments({
-              loading: false,
-              error: error.data,
-            });
-          })
-      : Promise.reject();
-  }, [token]);
-
-  const fetchPages = useCallback(
-    (filter?: API.CourseParams) => {
-      setPages((prevState) => ({ ...prevState, loading: true }));
-      return getPages(filter)
-        .then((response) => {
-          if (response.success) {
-            setPages({
-              loading: false,
-              list: response,
-              error: undefined,
-            });
-          }
-        })
-        .catch((error) => {
-          setPages((prevState) => ({
-            ...prevState,
-            loading: false,
-            error: error,
-          }));
-        });
-    },
-    [pages]
-  );
-
-  const fetchPage = useCallback(
-    (slug: string) => {
-      setPage((prevState) => ({
-        ...prevState,
-        loading: true,
-      }));
-      return getPage(slug)
-        .then((res) => {
-          if (res.success) {
-            setPage({
-              loading: false,
-              value: res.data,
-            });
-          } else if (res.success === false) {
-            {
-              setPage({
-                loading: false,
-                error: res,
-              });
-            }
-          }
-        })
-        .catch((error) => {
-          setPage({
-            loading: false,
-            error: error.data,
-          });
-        });
-    },
-    [token]
+    [token],
   );
 
   const sendProgress = useCallback(
@@ -1372,9 +844,7 @@ export const EscolaLMSContextProvider: FunctionComponent<
                         return {
                           ...courseProgress,
                           progress: courseProgress.progress.map((progress) => {
-                            const el = data.find(
-                              (item) => item.topic_id === progress.topic_id
-                            );
+                            const el = data.find((item) => item.topic_id === progress.topic_id);
                             if (el) {
                               return el;
                             }
@@ -1389,7 +859,7 @@ export const EscolaLMSContextProvider: FunctionComponent<
           })
         : Promise.reject();
     },
-    [token]
+    [token],
   );
 
   const h5pProgress = useCallback(
@@ -1420,9 +890,7 @@ export const EscolaLMSContextProvider: FunctionComponent<
 
       if (completed.includes(statementId)) {
         if (
-          (!hasParent &&
-            statementCategory &&
-            !statementCategory[0]?.id.includes(questionSet)) ||
+          (!hasParent && statementCategory && !statementCategory[0]?.id.includes(questionSet)) ||
           (statementCategory &&
             statementCategory[0]?.id.includes(questionSet) &&
             result &&
@@ -1437,40 +905,18 @@ export const EscolaLMSContextProvider: FunctionComponent<
         }
       }
 
-      return token
-        ? postSendh5pProgress(topicId, statementId, statement, token)
-        : null;
+      return token ? postSendh5pProgress(topicId, statementId, statement, token) : null;
     },
-    [token]
+    [token],
   );
 
   const updateProfile = useCallback(
     (body: API.UpdateUserDetails) => {
-      setUser((prevState) => ({
-        ...prevState,
-        loading: true,
-      }));
-
-      return token
-        ? postUpdateProfile(body, token).then((res) => {
-            if (res.success === true) {
-              setUser((prevState) => ({
-                value: {
-                  ...res.data,
-                },
-                loading: false,
-              }));
-            } else if (res.success === false) {
-              setUser((prevState) => ({
-                ...prevState,
-                error: res,
-                loading: false,
-              }));
-            }
-          })
+      token
+        ? fetchValueStateData<API.UserItem>(postUpdateProfile(body, token), setUser)
         : Promise.reject();
     },
-    [token]
+    [token],
   );
 
   const updateAvatar = useCallback(
@@ -1497,16 +943,14 @@ export const EscolaLMSContextProvider: FunctionComponent<
           })
         : Promise.reject();
     },
-    [token]
+    [token],
   );
 
   const topicPing = useCallback(
     (topicId: number) => {
-      return token
-        ? putTopicPing(topicId, token).catch((err) => err)
-        : Promise.reject();
+      return token ? putTopicPing(topicId, token).catch((err) => err) : Promise.reject();
     },
-    [token]
+    [token],
   );
 
   const progressMap = useMemo(() => {
@@ -1519,15 +963,10 @@ export const EscolaLMSContextProvider: FunctionComponent<
     };
     if (progress.value) {
       progress.value.reduce((acc, course) => {
-        acc.coursesProcProgress[
-          typeof course.course.id === "number" ? course.course.id : 0
-        ] =
-          course.progress.reduce((sum, item) => sum + item.status, 0) /
-          course.progress.length;
+        acc.coursesProcProgress[typeof course.course.id === "number" ? course.course.id : 0] =
+          course.progress.reduce((sum, item) => sum + item.status, 0) / course.progress.length;
         acc.finishedTopics = acc.finishedTopics.concat(
-          course.progress
-            .filter((item) => item.status !== 0)
-            .map((item) => item.topic_id)
+          course.progress.filter((item) => item.status !== 0).map((item) => item.topic_id),
         );
         return acc;
       }, defaultMap);
@@ -1536,9 +975,8 @@ export const EscolaLMSContextProvider: FunctionComponent<
   }, [progress]);
 
   const topicIsFinished = useCallback(
-    (topicId: number) =>
-      progressMap && progressMap.finishedTopics.includes(topicId),
-    [progressMap]
+    (topicId: number) => progressMap && progressMap.finishedTopics.includes(topicId),
+    [progressMap],
   );
 
   const courseProgress = useCallback(
@@ -1546,13 +984,13 @@ export const EscolaLMSContextProvider: FunctionComponent<
       progressMap && progressMap.coursesProcProgress[courseId]
         ? progressMap.coursesProcProgress[courseId]
         : 0,
-    [progressMap]
+    [progressMap],
   );
 
   const getNextPrevTopic = useCallback(
     (topicId: number, next: boolean = true) => {
       const lesson: API.Lesson | undefined = program.value?.lessons.find(
-        (lesson) => !!lesson.topics?.find((topic) => topicId === topic.id)
+        (lesson) => !!lesson.topics?.find((topic) => topicId === topic.id),
       );
 
       if (program.value === undefined) {
@@ -1564,7 +1002,7 @@ export const EscolaLMSContextProvider: FunctionComponent<
       }
 
       const currentLessonIndex = program.value.lessons.findIndex(
-        (fLesson) => lesson.id === fLesson.id
+        (fLesson) => lesson.id === fLesson.id,
       );
       if (currentLessonIndex === undefined) {
         return null;
@@ -1572,9 +1010,7 @@ export const EscolaLMSContextProvider: FunctionComponent<
 
       const currentTopicIndex = (
         program.value && program.value.lessons ? program.value.lessons : []
-      )[currentLessonIndex].topics?.findIndex(
-        (topic) => Number(topic.id) === Number(topicId)
-      );
+      )[currentLessonIndex].topics?.findIndex((topic) => Number(topic.id) === Number(topicId));
 
       if (currentTopicIndex === undefined) {
         return null;
@@ -1597,18 +1033,14 @@ export const EscolaLMSContextProvider: FunctionComponent<
         } else {
           if (program.value.lessons[currentLessonIndex - 1]) {
             const newLesson = program.value.lessons[currentLessonIndex - 1];
-            return (
-              (newLesson.topics &&
-                newLesson.topics[newLesson.topics.length - 1]) ||
-              null
-            );
+            return (newLesson.topics && newLesson.topics[newLesson.topics.length - 1]) || null;
           }
         }
       }
 
       return null;
     },
-    [program]
+    [program],
   );
 
   const fontSizeToggle = useCallback(
@@ -1616,7 +1048,7 @@ export const EscolaLMSContextProvider: FunctionComponent<
       const newFontSize = (fontSize + (bigger ? 1 : -1)) % 4;
       return setFontSize(newFontSize);
     },
-    [fontSize]
+    [fontSize],
   );
 
   const getRefreshedToken = useCallback(() => {
@@ -1638,7 +1070,7 @@ export const EscolaLMSContextProvider: FunctionComponent<
     (body: API.ChangePasswordRequest) => {
       return token ? postNewPassword(token, body) : Promise.reject();
     },
-    [token]
+    [token],
   );
 
   return (
@@ -1741,9 +1173,7 @@ export const EscolaLMSContextProvider: FunctionComponent<
         generateWebinarJitsy,
       }}
     >
-      <EditorContextProvider url={`${apiUrl}/api/hh5p`}>
-        {children}
-      </EditorContextProvider>
+      <EditorContextProvider url={`${apiUrl}/api/hh5p`}>{children}</EditorContextProvider>
     </EscolaLMSContext.Provider>
   );
 };
