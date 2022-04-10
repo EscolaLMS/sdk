@@ -3,7 +3,6 @@ import * as API from "./../../types/api";
 import {
   ContextState,
   ContextPaginatedMetaState,
-  ContextPaginatedState,
   ContextListState,
   ContextStateValue,
   FontSize,

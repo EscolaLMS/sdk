@@ -12,11 +12,12 @@ export interface ContextPaginatedMetaState<T> {
   error?: API.DefaultResponseError;
 }
 
-export interface ContextPaginatedState<T> {
-  loading: boolean;
-  list?: API.PaginatedList<T>;
-  error?: API.DefaultResponseError;
-}
+//TODO: remove? unused
+// export interface ContextPaginatedState<T> {
+//   loading: boolean;
+//   list?: API.PaginatedList<T>;
+//   error?: API.DefaultResponseError;
+// }
 
 export interface ContextListState<T> {
   loading: boolean;
@@ -78,7 +79,7 @@ export interface EscolaLMSContextReadConfig {
 
 export interface EscolaLMSContextAPIConfig {
   apiUrl: string;
-  fetchCourses: (filter: API.CourseParams) => Promise<void>;
+  fetchCourses: (filter: API.CourseParams) => void;
   fetchUserGroup: (id: number) => Promise<void>;
   fetchUserGroups: (params: API.UserGroupsParams) => Promise<void>;
   fetchRegisterableGroups: () => Promise<void>;

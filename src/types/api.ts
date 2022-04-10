@@ -191,7 +191,7 @@ export type DefaultResponse<Model> = DefaultResponseSuccess<Model> | DefaultResp
 
 export type DataResponse<Model> = DataResponseSuccess<Model> | DefaultResponseError;
 
-type DefaultMetaResponse<Model> =
+export type DefaultMetaResponse<Model> =
   | (PaginatedMetaList<Model> & {
       message: string;
       success: true;

@@ -342,6 +342,38 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
     cart: null,
   });
 
+  const fetchPaginatedStateData = <T1,>(
+    fetchAction: Promise<API.DefaultMetaResponse<T1>>,
+    setState: React.Dispatch<React.SetStateAction<ContextPaginatedMetaState<T1>>>,
+  ): Promise<void> => {
+    setState((prevState) => ({ ...prevState, loading: true }));
+
+    return fetchAction
+      .then((response) => {
+        if (response.success) {
+          setState({
+            loading: false,
+            list: response,
+            error: undefined,
+          });
+        }
+        if (response.success === false) {
+          setState((prevState) => ({
+            ...prevState,
+            loading: false,
+            error: response,
+          }));
+        }
+      })
+      .catch((error) => {
+        setState((prevState) => ({
+          ...prevState,
+          loading: false,
+          error: error,
+        }));
+      });
+  };
+
   const fetchConfig = useCallback(() => {
     return getConfig().then((resposne) => {
       setConfig(resposne.data);
@@ -637,32 +669,8 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
   );
 
   const fetchCourses = useCallback(
-    (filter: API.CourseParams) => {
-      setCourses((prevState) => ({ ...prevState, loading: true }));
-      return getCourses(filter)
-        .then((response) => {
-          if (response.success) {
-            setCourses({
-              loading: false,
-              list: response,
-              error: undefined,
-            });
-          }
-          if (response.success === false) {
-            setCourses((prevState) => ({
-              ...prevState,
-              loading: false,
-              error: response,
-            }));
-          }
-        })
-        .catch((error) => {
-          setCourses((prevState) => ({
-            ...prevState,
-            loading: false,
-            error: error,
-          }));
-        });
+    (filter: API.CourseParams): void => {
+      fetchPaginatedStateData<API.Course>(getCourses(filter), setCourses);
     },
     [courses],
   );
