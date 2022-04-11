@@ -39,7 +39,10 @@ import {
   genereteJitsyWebinar,
 } from "../../services/webinars";
 import { events as getEvents } from "../../services/events";
-import { settings as getSettings, config as getConfig } from "./../../services/settings";
+import {
+  settings as getSettings,
+  config as getConfig,
+} from "./../../services/settings";
 import { uniqueTags as getUniqueTags } from "./../../services/tags";
 import { categoryTree as getCategoryTree } from "./../../services/categories";
 import { getNotifications, readNotification } from "../../services/notify";
@@ -113,14 +116,14 @@ export const sortProgram: SortProgram = (lessons) => {
     .sort((lessonA, lessonB) =>
       typeof lessonA.order === "number" && typeof lessonB.order === "number"
         ? lessonA.order - lessonB.order
-        : 0,
+        : 0
     )
     .map((lesson) => ({
       ...lesson,
       topics: [...(lesson.topics || [])].sort((topicA, topicB) =>
         typeof topicA.order === "number" && typeof topicB.order === "number"
           ? topicA.order - topicB.order
-          : 0,
+          : 0
       ),
     }));
 };
@@ -131,11 +134,9 @@ interface EscolaLMSContextProviderType {
   defaults?: Partial<EscolaLMSContextReadConfig>;
 }
 
-export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProviderType> = ({
-  children,
-  apiUrl,
-  defaults,
-}) => {
+export const EscolaLMSContextProvider: FunctionComponent<
+  EscolaLMSContextProviderType
+> = ({ children, apiUrl, defaults }) => {
   interceptors(apiUrl);
 
   const initialValues = {
@@ -144,26 +145,22 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
   };
 
   const getDefaultData = <K extends keyof EscolaLMSContextReadConfig>(
-    key: K,
+    key: K
   ): EscolaLMSContextReadConfig[K] => {
     return initialValues[key];
   };
 
-  const [courses, setCourses] = useLocalStorage<ContextPaginatedMetaState<API.CourseListItem>>(
-    "lms",
-    "courses",
-    getDefaultData("courses"),
-  );
+  const [courses, setCourses] = useLocalStorage<
+    ContextPaginatedMetaState<API.CourseListItem>
+  >("lms", "courses", getDefaultData("courses"));
 
   const [consultations, setConsultations] = useLocalStorage<
     ContextPaginatedMetaState<API.Consultation>
   >("lms", "consultations", getDefaultData("consultations"));
 
-  const [consultation, setConsultation] = useLocalStorage<ContextStateValue<API.Consultation>>(
-    "lms",
-    "consultation",
-    getDefaultData("consultation"),
-  );
+  const [consultation, setConsultation] = useLocalStorage<
+    ContextStateValue<API.Consultation>
+  >("lms", "consultation", getDefaultData("consultation"));
 
   const [userConsultations, setUserConsultations] = useLocalStorage<
     ContextPaginatedMetaState<API.Consultation>
@@ -177,105 +174,93 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
     ContextListState<EscolaLms.Webinar.Models.Webinar>
   >("lms", "webinars", getDefaultData("webinars"));
 
-  const [events, setEvents] = useLocalStorage<ContextPaginatedMetaState<API.Event>>(
-    "lms",
-    "events",
-    getDefaultData("events"),
-  );
+  const [events, setEvents] = useLocalStorage<
+    ContextPaginatedMetaState<API.Event>
+  >("lms", "events", getDefaultData("events"));
 
-  const [userGroup, setUserGroup] = useLocalStorage<ContextStateValue<API.UserGroupRow>>(
-    "lms",
-    "userGroup",
-    getDefaultData("userGroup"),
-  );
+  const [userGroup, setUserGroup] = useLocalStorage<
+    ContextStateValue<API.UserGroupRow>
+  >("lms", "userGroup", getDefaultData("userGroup"));
 
-  const [userGroups, setUserGroups] = useLocalStorage<ContextListState<API.UserGroup>>(
-    "lms",
-    "userGroups",
-    getDefaultData("userGroups"),
-  );
+  const [userGroups, setUserGroups] = useLocalStorage<
+    ContextListState<API.UserGroup>
+  >("lms", "userGroups", getDefaultData("userGroups"));
 
   const [registerableGroups, setRegisterableGroups] = useLocalStorage<
     ContextListState<API.UserGroup>
   >("lms", "registerableGroups", getDefaultData("registerableGroups"));
 
-  const [course, setCourse] = useLocalStorage<ContextStateValue<API.CourseListItem>>(
-    "lms",
-    "course",
-    getDefaultData("course"),
-  );
+  const [course, setCourse] = useLocalStorage<
+    ContextStateValue<API.CourseListItem>
+  >("lms", "course", getDefaultData("course"));
 
   const [settings, setSettings] = useLocalStorage<API.AppSettings>(
     "lms",
     "settings",
-    getDefaultData("settings"),
+    getDefaultData("settings")
   );
 
   const [config, setConfig] = useLocalStorage<API.AppConfig>(
     "lms",
     "config",
-    getDefaultData("config"),
+    getDefaultData("config")
   );
 
-  const [uniqueTags, setUniqueTags] = useLocalStorage<ContextListState<API.Tag>>(
-    "lms",
-    "tags",
-    getDefaultData("uniqueTags"),
-  );
+  const [uniqueTags, setUniqueTags] = useLocalStorage<
+    ContextListState<API.Tag>
+  >("lms", "tags", getDefaultData("uniqueTags"));
 
-  const [categoryTree, setCategoryTree] = useLocalStorage<ContextListState<API.Category>>(
-    "lms",
-    "categories",
-    getDefaultData("categoryTree"),
-  );
+  const [categoryTree, setCategoryTree] = useLocalStorage<
+    ContextListState<API.Category>
+  >("lms", "categories", getDefaultData("categoryTree"));
 
-  const [program, setProgram] = useLocalStorage<ContextStateValue<API.CourseProgram>>(
-    "lms",
-    "tags",
-    getDefaultData("program"),
-  );
+  const [program, setProgram] = useLocalStorage<
+    ContextStateValue<API.CourseProgram>
+  >("lms", "tags", getDefaultData("program"));
 
   const [cart, setCart] = useLocalStorage<ContextStateValue<API.Cart>>(
     "lms",
     "cart",
-    getDefaultData("cart"),
+    getDefaultData("cart")
   );
 
-  const [token, setToken] = useLocalStorage<string | null>("lms", "token", null);
+  const [token, setToken] = useLocalStorage<string | null>(
+    "lms",
+    "token",
+    null
+  );
 
   const [tokenExpireDate, setTokenExpireDate] = useLocalStorage<string | null>(
     "lms",
     "tokenExpireDate",
-    null,
+    null
   );
 
   const [user, setUser] = useLocalStorage<ContextStateValue<API.UserItem>>(
     "lms",
     "user",
-    getDefaultData("user"),
+    getDefaultData("user")
   );
 
-  const [progress, setProgress] = useState<ContextStateValue<API.CourseProgress>>(
-    getDefaultData("progress"),
-  );
+  const [progress, setProgress] = useState<
+    ContextStateValue<API.CourseProgress>
+  >(getDefaultData("progress"));
 
   const [tutors, setTutors] = useLocalStorage<ContextListState<API.UserItem>>(
     "lms",
     "tutors",
-    getDefaultData("tutors"),
+    getDefaultData("tutors")
   );
 
   const [orders, setOrders] = useLocalStorage<ContextListState<API.Order>>(
     "lms",
     "orders",
-    getDefaultData("orders"),
+    getDefaultData("orders")
   );
 
-  const [payments, setPayments] = useLocalStorage<ContextPaginatedMetaState<API.Payment>>(
-    "lms",
-    "payments",
-    getDefaultData("payments"),
-  );
+  const [payments, setPayments] = useLocalStorage<
+    ContextPaginatedMetaState<API.Payment>
+  >("lms", "payments", getDefaultData("payments"));
 
   const [certificates, setCertificates] = useLocalStorage<
     ContextPaginatedMetaState<API.Certificate>
@@ -285,37 +270,35 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
     ContextStateValue<API.MattermostData>
   >("lms", "mattermostChannels", getDefaultData("mattermostChannels"));
 
-  const [tutor, setTutor] = useState<ContextStateValue<API.UserItem>>(getDefaultData("tutor"));
-
-  const [pages, setPages] = useLocalStorage<ContextPaginatedMetaState<API.PageListItem>>(
-    "lms",
-    "pages",
-    getDefaultData("pages"),
+  const [tutor, setTutor] = useState<ContextStateValue<API.UserItem>>(
+    getDefaultData("tutor")
   );
+
+  const [pages, setPages] = useLocalStorage<
+    ContextPaginatedMetaState<API.PageListItem>
+  >("lms", "pages", getDefaultData("pages"));
 
   const [page, setPage] = useLocalStorage<ContextStateValue<API.Page>>(
     "lms",
     "page",
-    getDefaultData("page"),
+    getDefaultData("page")
   );
 
   const [fontSize, setFontSize] = useLocalStorage<FontSize>(
     "lms",
     "fontSize",
-    getDefaultData("fontSize"),
+    getDefaultData("fontSize")
   );
 
   const [h5p, setH5P] = useLocalStorage<ContextStateValue<API.H5PObject>>(
     "lms",
     "h5p",
-    getDefaultData("h5p"),
+    getDefaultData("h5p")
   );
 
-  const [notifications, setNotifications] = useLocalStorage<ContextListState<API.Notification>>(
-    "lms",
-    "notifications",
-    getDefaultData("notifications"),
-  );
+  const [notifications, setNotifications] = useLocalStorage<
+    ContextListState<API.Notification>
+  >("lms", "notifications", getDefaultData("notifications"));
 
   const [fields, setFields] = useLocalStorage<
     ContextListState<EscolaLms.ModelFields.Models.Metadata>
@@ -386,27 +369,30 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
       });
   }, []);
 
-  const fetchStationaryEvents = useCallback((filter: API.StationaryEventsParams) => {
-    setStationaryEvents((prevState) => ({ ...prevState, loading: true }));
+  const fetchStationaryEvents = useCallback(
+    (filter: API.StationaryEventsParams) => {
+      setStationaryEvents((prevState) => ({ ...prevState, loading: true }));
 
-    return getStationaryEvents(filter)
-      .then((response) => {
-        if (response.success) {
-          setStationaryEvents({
+      return getStationaryEvents(filter)
+        .then((response) => {
+          if (response.success) {
+            setStationaryEvents({
+              loading: false,
+              list: response.data,
+              error: undefined,
+            });
+          }
+        })
+        .catch((error) => {
+          setStationaryEvents((prevState) => ({
+            ...prevState,
             loading: false,
-            list: response.data,
-            error: undefined,
-          });
-        }
-      })
-      .catch((error) => {
-        setStationaryEvents((prevState) => ({
-          ...prevState,
-          loading: false,
-          error: error,
-        }));
-      });
-  }, []);
+            error: error,
+          }));
+        });
+    },
+    []
+  );
 
   const fetchUserWebinars = useCallback(() => {
     setUserWebinars((prevState) => ({ ...prevState, loading: true }));
@@ -492,7 +478,7 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
             })
         : Promise.reject();
     },
-    [token],
+    [token]
   );
 
   const rejectConsultationTerm = useCallback(
@@ -518,21 +504,21 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
             })
         : Promise.reject();
     },
-    [token],
+    [token]
   );
 
   const generateConsultationJitsy = useCallback(
     (id: number) => {
       return token ? genereteJitsy(token, id) : Promise.reject();
     },
-    [token],
+    [token]
   );
 
   const generateWebinarJitsy = useCallback(
     (id: number) => {
       return token ? genereteJitsyWebinar(token, id) : Promise.reject();
     },
-    [token],
+    [token]
   );
 
   const fetchCertificates = useCallback(() => {
@@ -563,7 +549,7 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
     (id: number) => {
       return token ? getCertificate(token, id) : Promise.reject();
     },
-    [token],
+    [token]
   );
 
   const fetchMattermostChannels = useCallback(() => {
@@ -619,7 +605,9 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
                   ...prevState,
                   list:
                     prevState && prevState.list
-                      ? prevState.list.filter((item: API.Notification) => item.id !== id)
+                      ? prevState.list.filter(
+                          (item: API.Notification) => item.id !== id
+                        )
                       : [],
                   loading: false,
                 }));
@@ -634,7 +622,7 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
             })
         : Promise.reject();
     },
-    [token, notifications],
+    [token, notifications]
   );
 
   const fetchCourses = useCallback(
@@ -665,7 +653,7 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
           }));
         });
     },
-    [courses],
+    [courses]
   );
 
   const fetchConsultations = useCallback(
@@ -696,7 +684,7 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
           }));
         });
     },
-    [consultations],
+    [consultations]
   );
 
   const fetchUserConsultations = useCallback(() => {
@@ -850,7 +838,7 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
           }));
         });
     },
-    [userGroups],
+    [userGroups]
   );
 
   const fetchRegisterableGroups = () => {
@@ -909,7 +897,7 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
           }));
         });
     },
-    [userGroups],
+    [userGroups]
   );
 
   const fetchCourse = useCallback((id: number) => {
@@ -1056,7 +1044,7 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
           }));
         });
     },
-    [fetchCart],
+    [fetchCart]
   );
 
   const removeFromCart = useCallback(
@@ -1091,7 +1079,7 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
           }));
         });
     },
-    [fetchCart],
+    [fetchCart]
   );
 
   const payWithStripe = useCallback(
@@ -1102,7 +1090,7 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
           })
         : Promise.reject();
     },
-    [token],
+    [token]
   );
 
   const payWithP24 = useCallback(
@@ -1118,7 +1106,7 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
             })
         : Promise.reject();
     },
-    [token],
+    [token]
   );
 
   const fetchProgress = useCallback(() => {
@@ -1157,7 +1145,7 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
             })
         : Promise.reject();
     },
-    [token],
+    [token]
   );
 
   const fetchProgram = useCallback(
@@ -1192,7 +1180,7 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
             })
         : Promise.reject();
     },
-    [token],
+    [token]
   );
 
   const fetchTutors = useCallback(() => {
@@ -1329,7 +1317,7 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
           }));
         });
     },
-    [pages],
+    [pages]
   );
 
   const fetchPage = useCallback(
@@ -1361,7 +1349,7 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
           });
         });
     },
-    [token],
+    [token]
   );
 
   const sendProgress = useCallback(
@@ -1377,7 +1365,9 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
                         return {
                           ...courseProgress,
                           progress: courseProgress.progress.map((progress) => {
-                            const el = data.find((item) => item.topic_id === progress.topic_id);
+                            const el = data.find(
+                              (item) => item.topic_id === progress.topic_id
+                            );
                             if (el) {
                               return el;
                             }
@@ -1392,7 +1382,7 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
           })
         : Promise.reject();
     },
-    [token],
+    [token]
   );
 
   const h5pProgress = useCallback(
@@ -1423,7 +1413,9 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
 
       if (completed.includes(statementId)) {
         if (
-          (!hasParent && statementCategory && !statementCategory[0]?.id.includes(questionSet)) ||
+          (!hasParent &&
+            statementCategory &&
+            !statementCategory[0]?.id.includes(questionSet)) ||
           (statementCategory &&
             statementCategory[0]?.id.includes(questionSet) &&
             result &&
@@ -1438,9 +1430,11 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
         }
       }
 
-      return token ? postSendh5pProgress(topicId, statementId, statement, token) : null;
+      return token
+        ? postSendh5pProgress(topicId, statementId, statement, token)
+        : null;
     },
-    [token],
+    [token]
   );
 
   const updateProfile = useCallback(
@@ -1469,7 +1463,7 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
           })
         : Promise.reject();
     },
-    [token],
+    [token]
   );
 
   const updateAvatar = useCallback(
@@ -1496,14 +1490,16 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
           })
         : Promise.reject();
     },
-    [token],
+    [token]
   );
 
   const topicPing = useCallback(
     (topicId: number) => {
-      return token ? putTopicPing(topicId, token).catch((err) => err) : Promise.reject();
+      return token
+        ? putTopicPing(topicId, token).catch((err) => err)
+        : Promise.reject();
     },
-    [token],
+    [token]
   );
 
   const progressMap = useMemo(() => {
@@ -1516,10 +1512,15 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
     };
     if (progress.value) {
       progress.value.reduce((acc, course) => {
-        acc.coursesProcProgress[typeof course.course.id === "number" ? course.course.id : 0] =
-          course.progress.reduce((sum, item) => sum + item.status, 0) / course.progress.length;
+        acc.coursesProcProgress[
+          typeof course.course.id === "number" ? course.course.id : 0
+        ] =
+          course.progress.reduce((sum, item) => sum + item.status, 0) /
+          course.progress.length;
         acc.finishedTopics = acc.finishedTopics.concat(
-          course.progress.filter((item) => item.status !== 0).map((item) => item.topic_id),
+          course.progress
+            .filter((item) => item.status !== 0)
+            .map((item) => item.topic_id)
         );
         return acc;
       }, defaultMap);
@@ -1528,8 +1529,9 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
   }, [progress]);
 
   const topicIsFinished = useCallback(
-    (topicId: number) => progressMap && progressMap.finishedTopics.includes(topicId),
-    [progressMap],
+    (topicId: number) =>
+      progressMap && progressMap.finishedTopics.includes(topicId),
+    [progressMap]
   );
 
   const courseProgress = useCallback(
@@ -1537,13 +1539,13 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
       progressMap && progressMap.coursesProcProgress[courseId]
         ? progressMap.coursesProcProgress[courseId]
         : 0,
-    [progressMap],
+    [progressMap]
   );
 
   const getNextPrevTopic = useCallback(
     (topicId: number, next: boolean = true) => {
       const lesson: API.Lesson | undefined = program.value?.lessons.find(
-        (lesson) => !!lesson.topics?.find((topic) => topicId === topic.id),
+        (lesson) => !!lesson.topics?.find((topic) => topicId === topic.id)
       );
 
       if (program.value === undefined) {
@@ -1555,7 +1557,7 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
       }
 
       const currentLessonIndex = program.value.lessons.findIndex(
-        (fLesson) => lesson.id === fLesson.id,
+        (fLesson) => lesson.id === fLesson.id
       );
       if (currentLessonIndex === undefined) {
         return null;
@@ -1563,7 +1565,9 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
 
       const currentTopicIndex = (
         program.value && program.value.lessons ? program.value.lessons : []
-      )[currentLessonIndex].topics?.findIndex((topic) => Number(topic.id) === Number(topicId));
+      )[currentLessonIndex].topics?.findIndex(
+        (topic) => Number(topic.id) === Number(topicId)
+      );
 
       if (currentTopicIndex === undefined) {
         return null;
@@ -1586,14 +1590,18 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
         } else {
           if (program.value.lessons[currentLessonIndex - 1]) {
             const newLesson = program.value.lessons[currentLessonIndex - 1];
-            return (newLesson.topics && newLesson.topics[newLesson.topics.length - 1]) || null;
+            return (
+              (newLesson.topics &&
+                newLesson.topics[newLesson.topics.length - 1]) ||
+              null
+            );
           }
         }
       }
 
       return null;
     },
-    [program],
+    [program]
   );
 
   const fontSizeToggle = useCallback(
@@ -1601,7 +1609,7 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
       const newFontSize = (fontSize + (bigger ? 1 : -1)) % 4;
       return setFontSize(newFontSize);
     },
-    [fontSize],
+    [fontSize]
   );
 
   const getRefreshedToken = useCallback(() => {
@@ -1623,7 +1631,7 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
     (body: API.ChangePasswordRequest) => {
       return token ? postNewPassword(token, body) : Promise.reject();
     },
-    [token],
+    [token]
   );
 
   const realizeVoucher = useCallback(
@@ -1638,7 +1646,7 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
             })
         : Promise.reject("No token provided");
     },
-    [token],
+    [token]
   );
 
   return (
@@ -1742,7 +1750,9 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
         realizeVoucher,
       }}
     >
-      <EditorContextProvider url={`${apiUrl}/api/hh5p`}>{children}</EditorContextProvider>
+      <EditorContextProvider url={`${apiUrl}/api/hh5p`}>
+        {children}
+      </EditorContextProvider>
     </EscolaLMSContext.Provider>
   );
 };
