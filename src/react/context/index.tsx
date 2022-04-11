@@ -1638,12 +1638,6 @@ export const EscolaLMSContextProvider: FunctionComponent<
     (voucher: string) => {
       return token
         ? postVoucher(voucher, token)
-            .then((res) => {
-              return res;
-            })
-            .catch((err) => {
-              return err;
-            })
         : Promise.reject("No token provided");
     },
     [token]
