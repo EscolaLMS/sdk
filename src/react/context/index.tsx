@@ -68,6 +68,7 @@ import {
   payWithP24 as postPayWithP24,
   orders as getOrders,
   payments as getPayments,
+  useVoucher as postVoucher,
 } from "./../../services/cart";
 import {
   userGroups as getUserGroups,
@@ -1633,6 +1634,15 @@ export const EscolaLMSContextProvider: FunctionComponent<
     [token]
   );
 
+  const realizeVoucher = useCallback(
+    (voucher: string) => {
+      return token
+        ? postVoucher(voucher, token)
+        : Promise.reject("No token provided");
+    },
+    [token]
+  );
+
   return (
     <EscolaLMSContext.Provider
       value={{
@@ -1731,6 +1741,7 @@ export const EscolaLMSContextProvider: FunctionComponent<
         userWebinars,
         fetchUserWebinars,
         generateWebinarJitsy,
+        realizeVoucher,
       }}
     >
       <EditorContextProvider url={`${apiUrl}/api/hh5p`}>

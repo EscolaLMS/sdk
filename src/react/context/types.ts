@@ -156,6 +156,7 @@ export interface EscolaLMSContextAPIConfig {
     webinarId: number
   ) => Promise<API.DefaultResponse<API.JitsyData>>;
   fetchUserWebinars: () => Promise<void>;
+  realizeVoucher: (voucher: string) => Promise<API.AuthResponse>;
 }
 export type EscolaLMSContextConfig = EscolaLMSContextReadConfig &
   EscolaLMSContextAPIConfig;
