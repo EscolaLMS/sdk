@@ -665,7 +665,7 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
 
     abortControllers.current.cart = controller;
 
-    fetchValueStateData<API.Cart>(getCart(token, { signal: controller.signal }), setCart);
+    return fetchValueStateData<API.Cart>(getCart(token, { signal: controller.signal }), setCart);
   }, [token, abortControllers]);
 
   const addToCart = useCallback(
@@ -751,7 +751,7 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
   );
 
   const fetchProgress = useCallback(() => {
-    token
+    return token
       ? fetchValueStateData<API.CourseProgress>(getProgress(token), setProgress)
       : Promise.reject();
   }, [token]);
@@ -769,7 +769,7 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
   }, []);
 
   const fetchTutor = useCallback((id: number) => {
-    fetchValueStateData<API.UserItem>(getTutor(Number(id)), setTutor);
+    return fetchValueStateData<API.UserItem>(getTutor(Number(id)), setTutor);
   }, []);
 
   const fetchOrders = useCallback(() => {
@@ -784,7 +784,7 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
 
   const fetchPages = useCallback(
     (filter?: API.CourseParams) => {
-      fetchPaginatedStateData<API.PageListItem>(getPages(filter), setPages);
+      return fetchPaginatedStateData<API.PageListItem>(getPages(filter), setPages);
     },
     [pages],
   );
@@ -912,7 +912,7 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
 
   const updateProfile = useCallback(
     (body: API.UpdateUserDetails) => {
-      token
+      return token
         ? fetchValueStateData<API.UserItem>(postUpdateProfile(body, token), setUser)
         : Promise.reject();
     },

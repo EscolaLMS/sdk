@@ -79,10 +79,10 @@ export interface EscolaLMSContextReadConfig {
 
 export interface EscolaLMSContextAPIConfig {
   apiUrl: string;
-  fetchCourses: (filter: API.CourseParams) => void;
+  fetchCourses: (filter: API.CourseParams) => Promise<void>;
   fetchUserGroup: (id: number) => Promise<void>;
   fetchUserGroups: (params: API.UserGroupsParams) => Promise<void>;
-  fetchRegisterableGroups: () => void;
+  fetchRegisterableGroups: () => Promise<void>;
   fetchCourse: (id: number) => Promise<void>;
   fetchProgram: (id: number) => Promise<void>;
   fetchConfig: () => Promise<void>;
@@ -94,10 +94,10 @@ export interface EscolaLMSContextAPIConfig {
   emailVerify: (id: string, hash: string) => Promise<API.AuthResponse>;
   addToCart: (id: number, quantity?: number) => Promise<void>;
   removeFromCart: (courseId: number) => Promise<void>;
-  fetchCart: () => void;
-  payWithStripe: (paymentMethodId: string) => void;
+  fetchCart: () => Promise<void>;
+  payWithStripe: (paymentMethodId: string) => Promise<API.SuccessResponse>;
   payWithP24: (email: string, return_url: string) => Promise<void>;
-  fetchProgress: () => void;
+  fetchProgress: () => Promise<void>;
   sendProgress: (courseId: number, data: API.CourseProgressItemElement[]) => Promise<void>;
   h5pProgress: (
     courseId: string,
@@ -105,15 +105,15 @@ export interface EscolaLMSContextAPIConfig {
     statement: API.IStatement,
   ) => Promise<API.SuccessResponse> | null;
   fetchTutors: () => Promise<void>;
-  fetchTutor: (id: number) => void;
+  fetchTutor: (id: number) => Promise<void>;
   fetchOrders: () => Promise<void>;
   fetchPayments: () => Promise<void>;
   fetchCertificates: () => Promise<void>;
   fetchCertificate: (id: number) => Promise<API.DefaultResponse<API.Certificate>>;
   fetchMattermostChannels: () => Promise<void>;
-  fetchPages: () => void;
+  fetchPages: () => Promise<void>;
   fetchPage: (slug: string) => void;
-  updateProfile: (data: API.UpdateUserDetails) => void;
+  updateProfile: (data: API.UpdateUserDetails) => Promise<void>;
   updateAvatar: (avatar: File) => Promise<void>;
   topicPing: (topicId: number) => Promise<Boolean>;
   topicIsFinished: (topicId: number) => Boolean;
@@ -125,15 +125,15 @@ export interface EscolaLMSContextAPIConfig {
   readNotify: (id: string) => Promise<void>;
   fetchH5P: (id: string) => void;
   getRefreshedToken: () => Promise<void>;
-  fetchConsultations: (filter: API.ConsultationParams) => void;
-  fetchConsultation: (id: number) => void;
+  fetchConsultations: (filter: API.ConsultationParams) => Promise<void>;
+  fetchConsultation: (id: number) => Promise<void>;
   fetchUserConsultations: () => Promise<void>;
-  fetchFields: (filter: API.FieldsParams) => void;
-  fetchStationaryEvents: (filter: API.StationaryEventsParams) => void;
+  fetchFields: (filter: API.FieldsParams) => Promise<void>;
+  fetchStationaryEvents: (filter: API.StationaryEventsParams) => Promise<void>;
   bookConsultationTerm: (id: number, term: string) => Promise<API.ScheduleConsultationResponse>;
   getProductInfo: (id: number) => Promise<API.DefaultResponse<API.Product>>;
-  fetchWebinars: (filter: API.WebinarParams) => void;
-  fetchEvents: (filter: API.EventsParams) => void;
+  fetchWebinars: (filter: API.WebinarParams) => Promise<void>;
+  fetchEvents: (filter: API.EventsParams) => Promise<void>;
   fetchTutorConsultations: () => Promise<void>;
   approveConsultationTerm: (consultation: number) => Promise<void>;
   rejectConsultationTerm: (consultation: number) => Promise<void>;
