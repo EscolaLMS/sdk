@@ -333,9 +333,11 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
     ContextStateValue<EscolaLms.Webinar.Models.Webinar>
   >("lms", "webinar", getDefaultData("webinar"));
 
-  const [userWebinars, setUserWebinars] = useLocalStorage<
-    ContextListState<EscolaLms.Webinar.Models.Webinar>
-  >("lms", "userWebinars", getDefaultData("userWebinars"));
+  const [userWebinars, setUserWebinars] = useLocalStorage<ContextListState<API.Event>>(
+    "lms",
+    "userWebinars",
+    getDefaultData("userWebinars"),
+  );
 
   const abortControllers = useRef<{
     cart: AbortController | null;
@@ -387,7 +389,7 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
 
   const fetchUserWebinars = useCallback(() => {
     return token
-      ? fetchListStateData<EscolaLms.Webinar.Models.Webinar>(getMyWebinars(token), setUserWebinars)
+      ? fetchListStateData<API.Event>(getMyWebinars(token), setUserWebinars)
       : Promise.reject();
   }, [token]);
 
