@@ -2,10 +2,7 @@ import request from "umi-request";
 import * as API from "../types/api";
 
 /**  GET /api/webinars */
-export async function webinars(
-  params: API.WebinarParams,
-  options?: { [key: string]: any }
-) {
+export async function webinars(params: API.WebinarParams, options?: { [key: string]: any }) {
   return request<API.WebinarsList>(`/api/webinars`, {
     method: "GET",
     params,
@@ -23,7 +20,7 @@ export async function getWebinar(id: number, options?: { [key: string]: any }) {
 
 /**  GET /api/webinars/me */
 export async function getMyWebinars(token: string) {
-  return request<API.WebinarsList>(`/api/webinars/me`, {
+  return request<API.DefaultMetaResponse<API.Event>>(`/api/webinars/me`, {
     method: "GET",
     headers: {
       Accept: "application/json",
@@ -35,15 +32,12 @@ export async function getMyWebinars(token: string) {
 
 /**  GET /api/webinars/generate-jitsi*/
 export async function genereteJitsyWebinar(token: string, id: number) {
-  return request<API.DefaultResponse<API.JitsyData>>(
-    `/api/webinars/generate-jitsi/${id}`,
-    {
-      method: "GET",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
+  return request<API.DefaultResponse<API.JitsyData>>(`/api/webinars/generate-jitsi/${id}`, {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
 }
