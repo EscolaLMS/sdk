@@ -141,6 +141,7 @@ export interface EscolaLMSContextAPIConfig {
   generateConsultationJitsy: (consultation: number) => Promise<API.DefaultResponse<API.JitsyData>>;
   generateWebinarJitsy: (webinarId: number) => Promise<API.DefaultResponse<API.JitsyData>>;
   fetchUserWebinars: () => Promise<void>;
+  realizeVoucher: (voucher: string) => Promise<API.AuthResponse>;
 }
 export type EscolaLMSContextConfig = EscolaLMSContextReadConfig & EscolaLMSContextAPIConfig;
 
