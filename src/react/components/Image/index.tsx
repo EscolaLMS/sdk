@@ -23,7 +23,6 @@ const getSrcSet = (srcSetPaths: SizeObj[] = []) =>
   srcSetPaths.map((srcSetPath) => `${getSrc(srcSetPath)} ${srcSetPath.size}w`).join(",");
 
 const Image: React.FC<ImageProps> = ({ path, size, srcSizes, alt = "LMS Image", ...props }) => {
-  console.log("image");
   const { apiUrl } = useContext(EscolaLMSContext);
   const imgRef = useRef<HTMLImageElement>(null);
   const imgSize = useMemo(() => (srcSizes?.[0] ? srcSizes[0] : size), [size, srcSizes]); // can be undefined
