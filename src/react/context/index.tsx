@@ -96,7 +96,7 @@ import {
 
 import { fields as getFields } from "../../services/fields";
 import { stationaryEvents as getStationaryEvents } from "../../services/stationary_events";
-import { fetchListStateData, fetchPaginatedStateData, fetchValueStateData } from "./setStates";
+import { fetchDataType } from "./setStates";
 
 export const SCORMPlayer: React.FC<{
   uuid: string;
@@ -377,38 +377,49 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
   }, []);
 
   const fetchFields = useCallback((filter: API.FieldsParams) => {
-    return fetchListStateData<EscolaLms.ModelFields.Models.Metadata>(getFields(filter), setFields);
+    return fetchDataType<EscolaLms.ModelFields.Models.Metadata>({
+      mode: "list",
+      fetchAction: getFields(filter),
+      setState: setFields,
+    });
   }, []);
 
   const fetchStationaryEvents = useCallback((filter: API.StationaryEventsParams) => {
-    return fetchPaginatedStateData<EscolaLms.StationaryEvents.Models.StationaryEvent>(
-      getStationaryEvents(filter),
-      setStationaryEvents,
-    );
+    return fetchDataType<EscolaLms.StationaryEvents.Models.StationaryEvent>({
+      mode: "paginated",
+      fetchAction: getStationaryEvents(filter),
+      setState: setStationaryEvents,
+    });
   }, []);
 
   const fetchUserWebinars = useCallback(() => {
     return token
-      ? fetchListStateData<API.Event>(getMyWebinars(token), setUserWebinars)
+      ? fetchDataType<API.Event>({
+          mode: "list",
+          fetchAction: getMyWebinars(token),
+          setState: setUserWebinars,
+        })
       : Promise.reject();
   }, [token]);
 
   const fetchTutorConsultations = useCallback(() => {
     return token
-      ? fetchPaginatedStateData<API.AppointmentTerm>(
-          getTutorConsultations(token),
-          setTutorConsultations,
-        )
+      ? fetchDataType<API.AppointmentTerm>({
+          mode: "paginated",
+          fetchAction: getTutorConsultations(token),
+          setState: setTutorConsultations,
+        })
       : Promise.reject();
   }, [token]);
 
   const approveConsultationTerm = useCallback(
     (id: number) => {
       return token
-        ? fetchPaginatedStateData<API.AppointmentTerm>(
-            approveConsultation(token, id),
-            setTutorConsultations,
-          )
+        ? fetchDataType<API.AppointmentTerm>({
+            mode: "paginated",
+            fetchAction: approveConsultation(token, id),
+            setState: setTutorConsultations,
+          })
         : Promise.reject();
     },
     [token],
@@ -417,10 +428,11 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
   const rejectConsultationTerm = useCallback(
     (id: number) => {
       return token
-        ? fetchPaginatedStateData<API.AppointmentTerm>(
-            rejectConsultation(token, id),
-            setTutorConsultations,
-          )
+        ? fetchDataType<API.AppointmentTerm>({
+            mode: "paginated",
+            fetchAction: rejectConsultation(token, id),
+            setState: setTutorConsultations,
+          })
         : Promise.reject();
     },
     [token],
@@ -442,7 +454,11 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
 
   const fetchCertificates = useCallback(() => {
     return token
-      ? fetchPaginatedStateData<API.Certificate>(getCertificates(token), setCertificates)
+      ? fetchDataType<API.Certificate>({
+          mode: "paginated",
+          fetchAction: getCertificates(token),
+          setState: setCertificates,
+        })
       : Promise.reject();
   }, [token]);
 
@@ -455,13 +471,21 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
 
   const fetchMattermostChannels = useCallback(() => {
     return token
-      ? fetchValueStateData<API.MattermostData>(getMattermostChannels(token), setMattermostChannels)
+      ? fetchDataType<API.MattermostData>({
+          mode: "value",
+          fetchAction: getMattermostChannels(token),
+          setState: setMattermostChannels,
+        })
       : Promise.reject();
   }, [token]);
 
   const fetchNotifications = useCallback(() => {
     return token
-      ? fetchListStateData<API.Notification>(getNotifications(token), setNotifications)
+      ? fetchDataType<API.Notification>({
+          mode: "list",
+          fetchAction: getNotifications(token),
+          setState: setNotifications,
+        })
       : Promise.reject();
   }, [token, notifications]);
 
@@ -495,21 +519,33 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
 
   const fetchCourses = useCallback(
     (filter: API.CourseParams) => {
-      return fetchPaginatedStateData<API.Course>(getCourses(filter), setCourses);
+      return fetchDataType<API.Course>({
+        mode: "paginated",
+        fetchAction: getCourses(filter),
+        setState: setCourses,
+      });
     },
     [courses],
   );
 
   const fetchConsultations = useCallback(
     (filter: API.ConsultationParams) => {
-      return fetchPaginatedStateData<API.Consultation>(getConsultations(filter), setConsultations);
+      return fetchDataType<API.Consultation>({
+        mode: "paginated",
+        fetchAction: getConsultations(filter),
+        setState: setConsultations,
+      });
     },
     [consultations],
   );
 
   const fetchUserConsultations = useCallback(() => {
     return token
-      ? fetchPaginatedStateData<API.Consultation>(getUserConsultations(token), setUserConsultations)
+      ? fetchDataType<API.Consultation>({
+          mode: "paginated",
+          fetchAction: getUserConsultations(token),
+          setState: setUserConsultations,
+        })
       : Promise.reject();
   }, [userConsultations]);
 
@@ -526,7 +562,11 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
   }, []);
 
   const fetchConsultation = useCallback((id: number) => {
-    return fetchValueStateData<API.Consultation>(getConsultation(id), setConsultation);
+    return fetchDataType<API.Consultation>({
+      mode: "value",
+      fetchAction: getConsultation(id),
+      setState: setConsultation,
+    });
   }, []);
 
   const getProductInfo = useCallback((id: number) => {
@@ -534,11 +574,19 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
   }, []);
 
   const fetchWebinars = useCallback((filter: API.WebinarParams) => {
-    return fetchPaginatedStateData<API.Webinar>(getWebinars(filter), setWebinars);
+    return fetchDataType<API.Webinar>({
+      mode: "paginated",
+      fetchAction: getWebinars(filter),
+      setState: setWebinars,
+    });
   }, []);
 
   const fetchEvents = useCallback((filter: API.EventsParams) => {
-    return fetchPaginatedStateData<API.Event>(getEvents(filter), setEvents);
+    return fetchDataType<API.Event>({
+      mode: "paginated",
+      fetchAction: getEvents(filter),
+      setState: setEvents,
+    });
   }, []);
 
   const fetchUserGroup = useCallback(
@@ -573,12 +621,20 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
   );
 
   const fetchRegisterableGroups = () => {
-    return fetchListStateData<API.UserGroup>(getRegisterableGroups(), setRegisterableGroups);
+    return fetchDataType<API.UserGroup>({
+      mode: "list",
+      fetchAction: getRegisterableGroups(),
+      setState: setRegisterableGroups,
+    });
   };
 
   const fetchUserGroups = useCallback(
     ({ pageSize, current }: API.UserGroupsParams) => {
-      return fetchListStateData<API.UserGroup>(getUserGroups({ pageSize, current }), setUserGroups);
+      return fetchDataType<API.UserGroup>({
+        mode: "list",
+        fetchAction: getUserGroups({ pageSize, current }),
+        setState: setUserGroups,
+      });
     },
     [userGroups],
   );
@@ -667,7 +723,11 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
 
     abortControllers.current.cart = controller;
 
-    return fetchValueStateData<API.Cart>(getCart(token, { signal: controller.signal }), setCart);
+    return fetchDataType<API.Cart>({
+      mode: "value",
+      fetchAction: getCart(token, { signal: controller.signal }),
+      setState: setCart,
+    });
   }, [token, abortControllers]);
 
   const addToCart = useCallback(
@@ -754,46 +814,81 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
 
   const fetchProgress = useCallback(() => {
     return token
-      ? fetchValueStateData<API.CourseProgress>(getProgress(token), setProgress)
+      ? fetchDataType<API.CourseProgress>({
+          mode: "value",
+          fetchAction: getProgress(token),
+          setState: setProgress,
+        })
       : Promise.reject();
   }, [token]);
 
   const fetchH5P = useCallback(
     (id: string) => {
-      token ? fetchValueStateData<API.H5PObject>(getH5p(Number(id)), setH5P) : Promise.reject();
-      setH5P({ loading: true });
+      token
+        ? fetchDataType<API.H5PObject>({
+            mode: "value",
+            fetchAction: getH5p(Number(id)),
+            setState: setH5P,
+          })
+        : Promise.reject();
     },
     [token],
   );
 
   const fetchTutors = useCallback(() => {
-    return fetchListStateData<API.UserItem>(getTutors(), setTutors);
+    return fetchDataType<API.UserItem>({
+      mode: "list",
+      fetchAction: getTutors(),
+      setState: setTutors,
+    });
   }, []);
 
   const fetchTutor = useCallback((id: number) => {
-    return fetchValueStateData<API.UserItem>(getTutor(Number(id)), setTutor);
+    return fetchDataType<API.UserItem>({
+      mode: "value",
+      fetchAction: getTutor(Number(id)),
+      setState: setTutor,
+    });
   }, []);
 
   const fetchOrders = useCallback(() => {
-    return token ? fetchListStateData<API.Order>(getOrders(token), setOrders) : Promise.reject();
+    return token
+      ? fetchDataType<API.Order>({
+          mode: "list",
+          fetchAction: getOrders(token),
+          setState: setOrders,
+        })
+      : Promise.reject();
   }, [token]);
 
   const fetchPayments = useCallback(() => {
     return token
-      ? fetchPaginatedStateData<API.Payment>(getPayments(token), setPayments)
+      ? fetchDataType<API.Payment>({
+          mode: "paginated",
+          fetchAction: getPayments(token),
+          setState: setPayments,
+        })
       : Promise.reject();
   }, [token]);
 
   const fetchPages = useCallback(
     (filter?: API.CourseParams) => {
-      return fetchPaginatedStateData<API.PageListItem>(getPages(filter), setPages);
+      return fetchDataType<API.PageListItem>({
+        mode: "paginated",
+        fetchAction: getPages(filter),
+        setState: setPages,
+      });
     },
     [pages],
   );
 
   const fetchPage = useCallback(
     (slug: string) => {
-      fetchValueStateData<API.Page>(getPage(slug), setPage);
+      return fetchDataType<API.PageListItem>({
+        mode: "value",
+        fetchAction: getPage(slug),
+        setState: setPage,
+      });
     },
     [token],
   );
@@ -915,7 +1010,11 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
   const updateProfile = useCallback(
     (body: API.UpdateUserDetails) => {
       return token
-        ? fetchValueStateData<API.UserItem>(postUpdateProfile(body, token), setUser)
+        ? fetchDataType<API.UserItem>({
+            mode: "value",
+            fetchAction: postUpdateProfile(body, token),
+            setState: setUser,
+          })
         : Promise.reject();
     },
     [token],
