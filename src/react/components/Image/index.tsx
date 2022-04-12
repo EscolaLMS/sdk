@@ -26,7 +26,6 @@ const Image: React.FC<ImageProps> = ({ path, size, srcSizes, alt = "LMS Image", 
   const { apiUrl } = useContext(EscolaLMSContext);
   const imgRef = useRef<HTMLImageElement>(null);
   const imgSize = useMemo(() => (srcSizes?.[0] ? srcSizes[0] : size), [size, srcSizes]); // can be undefined
-  const [shouldGenerate, setShouldGenerate] = useState<boolean>(true);
 
   const getSizeObj = useCallback(
     (size?: number, isDefault: boolean = false) => ({
@@ -56,17 +55,14 @@ const Image: React.FC<ImageProps> = ({ path, size, srcSizes, alt = "LMS Image", 
   );
 
   useLayoutEffect(() => {
-    if (!shouldGenerate) {
-      return;
-    }
     if (imgRef.current !== null) {
       imgRef.current.onerror = (error) => {
         if (imgRef.current !== null) {
           const currentSrc = imgRef.current.currentSrc;
+          imgRef.current.onerror = null;
 
           // if img is not cached yet, then use generator url
           if (sizesPaths.some((sp) => sp.cachePath === currentSrc)) {
-            setShouldGenerate(false);
             setSizesPaths(
               sizesPaths.map((sizeObj) => {
                 if (sizeObj.cachePath !== currentSrc) return sizeObj;
