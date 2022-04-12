@@ -348,45 +348,36 @@ export const EscolaLMSContextProvider: FunctionComponent<
 
   useEffect(() => {
     if (defaults) {
-      switch (true) {
-        case defaults.consultation !== null:
-          setConsultations({
-            loading: false,
-            list: defaults.consultations?.list,
-            error: undefined,
-          });
-          break;
-        case defaults.courses !== null:
-          setCourses({
-            loading: false,
-            list: defaults.courses?.list,
-            error: undefined,
-          });
-          break;
-        case defaults.webinars !== null:
-          setWebinars({
-            loading: false,
-            list: defaults.webinars?.list,
-            error: undefined,
-          });
-          break;
-        case defaults.stationaryEvents !== null:
-          setStationaryEvents({
-            loading: false,
-            list: defaults.stationaryEvents?.list,
-            error: undefined,
-          });
-          break;
-        case defaults.events !== null:
-          setEvents({
-            loading: false,
-            list: defaults.events?.list,
-            error: undefined,
-          });
-          break;
-        default:
-          console.log("No paginated content");
-      }
+      defaults.consultation !== null &&
+        setConsultations({
+          loading: false,
+          list: defaults.consultations?.list,
+          error: undefined,
+        });
+      defaults.courses !== null &&
+        setCourses({
+          loading: false,
+          list: defaults.courses?.list,
+          error: undefined,
+        });
+      defaults.webinars !== null &&
+        setWebinars({
+          loading: false,
+          list: defaults.webinars?.list,
+          error: undefined,
+        });
+      defaults.stationaryEvents !== null &&
+        setStationaryEvents({
+          loading: false,
+          list: defaults.stationaryEvents?.list,
+          error: undefined,
+        });
+      defaults.events !== null &&
+        setEvents({
+          loading: false,
+          list: defaults.events?.list,
+          error: undefined,
+        });
     }
   }, [defaults]);
 
