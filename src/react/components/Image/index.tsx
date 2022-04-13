@@ -1,6 +1,6 @@
 import React, { useContext, useRef, useLayoutEffect, useCallback, useMemo, useState } from "react";
 import { EscolaLMSContext } from "../../context";
-import { getImageApiPath, getImageCachePath } from "./utils";
+import { getImageApiPath, getImageCachePath, getImagePrefix } from "./utils";
 
 interface ImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
   path: string;
@@ -24,6 +24,7 @@ const getSrcSet = (srcSetPaths: SizeObj[] = []) =>
 
 const Image: React.FC<ImageProps> = ({ path, size, srcSizes, alt = "LMS Image", ...props }) => {
   const { apiUrl } = useContext(EscolaLMSContext);
+
   const imgRef = useRef<HTMLImageElement>(null);
   const imgSize = useMemo(() => (srcSizes?.[0] ? srcSizes[0] : size), [size, srcSizes]); // can be undefined
 
@@ -78,6 +79,14 @@ const Image: React.FC<ImageProps> = ({ path, size, srcSizes, alt = "LMS Image", 
       };
     }
   }, []);
+
+  if (path.includes(".svg")) {
+    return (
+      <div className="escolalms-image">
+        <img ref={imgRef} src={`${getImagePrefix(apiUrl)}${path}}`} alt={alt} {...props} />
+      </div>
+    );
+  }
 
   return (
     <div className="escolalms-image">
