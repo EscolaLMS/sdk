@@ -968,7 +968,7 @@ export type JitsyConfig = {
   domain: string;
   roomName: string;
   configOverwrite: Record<string, string>[];
-  interfaceConfigOverwrite: Record<string, string>[];
+  interfaceConfigOverwrite: Record<string, string>;
   userInfo: {
     displayName: string;
     email: string;
