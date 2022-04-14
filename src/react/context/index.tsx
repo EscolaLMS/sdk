@@ -180,6 +180,8 @@ interface EscolaLMSContextConfig {
   socialAuthorize: (token: string) => void;
   h5p: ContextStateValue<API.H5PObject>;
   fetchH5P: (id: string) => void;
+
+  // h5p
 }
 
 const defaultConfig: EscolaLMSContextConfig = {
