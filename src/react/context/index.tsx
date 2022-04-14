@@ -7,6 +7,7 @@ import React, {
   useContext,
   useMemo,
 } from "react";
+// @ts-ignore
 import request from "umi-request";
 import {
   course as getCourses,
@@ -48,7 +49,7 @@ import {
 import { useLocalStorage } from "../hooks/useLocalStorage";
 import { EditorContextProvider } from "@escolalms/h5p-react";
 import * as API from "./../../types/api";
-
+import { getH5p } from "../../services/h5p";
 interface IMock {
   children?: React.ReactElement[] | React.ReactElement;
   apiUrl: string;
@@ -177,6 +178,8 @@ interface EscolaLMSContextConfig {
   fontSizeToggle: (bigger: boolean) => void;
   fontSize: FontSize;
   socialAuthorize: (token: string) => void;
+  h5p: ContextStateValue<API.H5PObject>;
+  fetchH5P: (id: string) => void;
 }
 
 const defaultConfig: EscolaLMSContextConfig = {
@@ -289,6 +292,10 @@ const defaultConfig: EscolaLMSContextConfig = {
   fontSizeToggle: (bigger: boolean) => 0,
   fontSize: FontSize.regular,
   socialAuthorize: (token: string) => Promise.reject(),
+  h5p: {
+    loading: false,
+  },
+  fetchH5P: (id: string) => Promise.reject(),
 };
 
 export const SCORMPlayer: React.FC<{
@@ -446,6 +453,12 @@ export const EscolaLMSContextProvider: FunctionComponent<IMock> = ({
     defaultConfig.fontSize
   );
 
+  const [h5p, setH5P] = useLocalStorage<ContextStateValue<API.H5PObject>>(
+    "lms",
+    "h5p",
+    defaultConfig.h5p
+  );
+
   const abortControllers = useRef<{
     cart: AbortController | null;
   }>({
@@ -555,6 +568,28 @@ export const EscolaLMSContextProvider: FunctionComponent<IMock> = ({
         }));
       });
   };
+
+  const fetchH5P = useCallback(
+    (id: string) => {
+      setH5P({ loading: true });
+      token
+        ? getH5p(Number(id))
+            .then((response) => {
+              if (response.success) {
+                setH5P({ loading: false, value: response.data });
+              }
+            })
+            .catch((error) => {
+              setH5P((prevState) => ({
+                ...prevState,
+                loading: false,
+                error: error,
+              }));
+            })
+        : Promise.reject();
+    },
+    [token]
+  );
 
   const fetchUserGroups = useCallback(
     ({ pageSize, current }) => {
@@ -1309,6 +1344,8 @@ export const EscolaLMSContextProvider: FunctionComponent<IMock> = ({
         registerableGroups,
         fetchRegisterableGroups,
         socialAuthorize,
+        h5p,
+        fetchH5P,
       }}
     >
       <EditorContextProvider url={`${apiUrl}/api/hh5p`}>
