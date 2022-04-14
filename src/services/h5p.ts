@@ -6,7 +6,7 @@ export async function getH5p(id: number, options?: { [key: string]: any }) {
     `/api/hh5p/content/${id}`,
     {
       method: "GET",
-      /* useCache: true */ useCache: false,
+      useCache: false,
       ...(options || {}),
     }
   );
