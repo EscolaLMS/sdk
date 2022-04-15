@@ -274,6 +274,8 @@ export type ConsultationsList = DefaultMetaResponse<Consultation>;
 
 export type WebinarsList = DefaultMetaResponse<Webinar>;
 
+export type ProductList = DefaultMetaResponse<Product>;
+
 export type StationaryEventsList = DefaultMetaResponse<StationaryEvent>;
 
 export type EventsList = DefaultMetaResponse<Event>;

@@ -1,5 +1,17 @@
-import request from "umi-request";
+import request, { RequestOptionsInit } from "umi-request";
 import * as API from "../types/api";
+
+/**  GET /api/pages */
+export async function products(
+  params: API.PageParams & { type?: string },
+  options?: RequestOptionsInit,
+) {
+  return request<API.ProductList>(`/api/products`, {
+    method: "GET",
+    params,
+    ...(options || {}),
+  });
+}
 
 /**  GET /api/products/:id */
 export async function getSingleProduct(token: string, id: number) {
