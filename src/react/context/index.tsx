@@ -338,7 +338,7 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
     getDefaultData("userWebinars"),
   );
 
-  const [products, setProducts] = useLocalStorage<ContextListState<API.Product>>(
+  const [products, setProducts] = useLocalStorage<ContextPaginatedMetaState<API.Product>>(
     "lms",
     "products",
     getDefaultData("products"),
