@@ -3,7 +3,7 @@ import * as API from "../types/api";
 
 /**  GET /api/pages */
 export async function products(
-  params: API.PageParams & { type?: string },
+  params: API.PageParams & API.PaginationParams & { type?: string },
   options?: RequestOptionsInit,
 ) {
   return request<API.ProductList>(`/api/products`, {
