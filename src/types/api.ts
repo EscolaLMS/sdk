@@ -301,6 +301,7 @@ export type CourseParams = PageParams &
     author_id?: number;
     tag?: string;
     free?: boolean;
+    only_with_categories?: boolean;
   };
 
 export type ConsultationParams = PageParams &
@@ -308,6 +309,7 @@ export type ConsultationParams = PageParams &
     name?: string;
     status?: string;
     base_price?: number;
+    only_with_categories?: boolean;
   };
 
 export type WebinarParams = PageParams & PaginationParams & { name?: string; product?: Product };
