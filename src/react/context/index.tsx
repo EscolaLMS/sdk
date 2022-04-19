@@ -338,6 +338,12 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
     getDefaultData("userWebinars"),
   );
 
+  const [products, setProducts] = useLocalStorage<ContextPaginatedMetaState<API.Product>>(
+    "lms",
+    "products",
+    getDefaultData("products"),
+  );
+
   const abortControllers = useRef<{
     cart: AbortController | null;
   }>({
@@ -1768,6 +1774,7 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
         fetchUserWebinars,
         generateWebinarJitsy,
         realizeVoucher,
+        products,
       }}
     >
       <EditorContextProvider url={`${apiUrl}/api/hh5p`}>{children}</EditorContextProvider>

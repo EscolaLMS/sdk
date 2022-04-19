@@ -15,7 +15,7 @@ export async function stationaryEvents(
 }
 
 /**  GET /api/stationary-events/:id */
-export async function getStationaryEvent(id: number, options?: { [key: string]: any }) {
+export async function getStationaryEvent(id: number, options?: RequestOptionsInit) {
   return request<API.DefaultResponse<API.StationaryEvent>>(`/api/stationary-events/${id}`, {
     method: "GET",
     ...(options || {}),
