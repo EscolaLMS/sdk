@@ -76,8 +76,8 @@ export async function payWithP24(email: string, token: string, return_url: strin
 }
 
 export async function orders(
-  params: API.PaginationParams,
   token: string,
+  params?: API.PaginationParams,
   options?: RequestOptionsInit,
 ) {
   return request<API.OrderList>(`/api/orders`, {

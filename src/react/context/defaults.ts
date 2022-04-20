@@ -119,7 +119,7 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
     loading: false,
     list: [],
   },
-  fetchOrders: () => Promise.reject(),
+  fetchOrders: (filter?: API.PaginationParams) => Promise.reject(),
   payments: {
     loading: false,
   },
@@ -297,7 +297,7 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
     loading: false,
     list: [],
   },
-  fetchOrders: () => Promise.reject(),
+  fetchOrders: (filter?: API.PaginationParams) => Promise.reject(),
   payments: {
     loading: false,
   },

@@ -1296,13 +1296,13 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
   }, []);
 
   const fetchOrders = useCallback(
-    (params: API.PaginationParams) => {
+    (params?: API.PaginationParams) => {
       setOrders((prevState) => ({
         ...prevState,
         loading: true,
       }));
       return token
-        ? getOrders(params, token)
+        ? getOrders(token, params)
             .then((res) => {
               if (res.success) {
                 setOrders({
