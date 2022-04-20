@@ -168,7 +168,6 @@ export type PaginatedListParams = {
   current_page: number;
   total: number;
   per_page: number;
-  last_page: number;
 };
 
 export type DefaultResponseSuccess<Model> = {
