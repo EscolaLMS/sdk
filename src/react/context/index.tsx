@@ -1295,36 +1295,39 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
       });
   }, []);
 
-  const fetchOrders = useCallback(() => {
-    setOrders((prevState) => ({
-      ...prevState,
-      loading: true,
-    }));
-    return token
-      ? getOrders(token)
-          .then((res) => {
-            if (res.success) {
-              setOrders({
-                loading: false,
-                list: res.data,
-              });
-            } else if (res.success === false) {
-              {
+  const fetchOrders = useCallback(
+    (params: API.PaginationParams) => {
+      setOrders((prevState) => ({
+        ...prevState,
+        loading: true,
+      }));
+      return token
+        ? getOrders(params, token)
+            .then((res) => {
+              if (res.success) {
                 setOrders({
                   loading: false,
-                  error: res,
+                  list: res.data,
                 });
+              } else if (res.success === false) {
+                {
+                  setOrders({
+                    loading: false,
+                    error: res,
+                  });
+                }
               }
-            }
-          })
-          .catch((error) => {
-            setOrders({
-              loading: false,
-              error: error.data,
-            });
-          })
-      : Promise.reject();
-  }, [token]);
+            })
+            .catch((error) => {
+              setOrders({
+                loading: false,
+                error: error.data,
+              });
+            })
+        : Promise.reject();
+    },
+    [token],
+  );
 
   const fetchPayments = useCallback(() => {
     setPayments((prevState) => ({
