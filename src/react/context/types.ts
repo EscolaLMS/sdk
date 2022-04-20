@@ -75,6 +75,7 @@ export interface EscolaLMSContextReadConfig {
   stationaryEvent: ContextStateValue<API.StationaryEvent>;
   userWebinars: ContextListState<API.Event>;
   products: ContextPaginatedMetaState<API.Product>;
+  product: ContextStateValue<API.Product>;
 }
 
 export interface EscolaLMSContextAPIConfig {
@@ -131,7 +132,6 @@ export interface EscolaLMSContextAPIConfig {
   fetchFields: (filter: API.FieldsParams) => Promise<void>;
   fetchStationaryEvents: (filter: API.StationaryEventsParams) => Promise<void>;
   bookConsultationTerm: (id: number, term: string) => Promise<API.ScheduleConsultationResponse>;
-  getProductInfo: (id: number) => Promise<API.DefaultResponse<API.Product>>;
   fetchWebinars: (filter: API.WebinarParams) => Promise<void>;
   fetchEvents: (filter: API.EventsParams) => Promise<void>;
   fetchTutorConsultations: () => Promise<void>;

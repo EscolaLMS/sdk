@@ -128,7 +128,6 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
   },
   fetchCertificates: () => Promise.reject(),
   fetchCertificate: (id) => Promise.reject(id),
-  getProductInfo: (id: number) => Promise.reject(id),
   pages: {
     loading: false,
   },
@@ -208,6 +207,9 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
   changePassword: () => Promise.reject(),
   realizeVoucher: () => Promise.reject(),
   products: {
+    loading: false,
+  },
+  product: {
     loading: false,
   },
 };
@@ -306,7 +308,6 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
   },
   fetchCertificates: () => Promise.reject(),
   fetchCertificate: (id) => Promise.reject(id),
-  getProductInfo: (id: number) => Promise.reject(id),
   pages: {
     loading: false,
   },
@@ -387,6 +388,9 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
   changePassword: () => Promise.reject(),
   realizeVoucher: () => Promise.reject(),
   products: {
+    loading: false,
+  },
+  product: {
     loading: false,
   },
 };
