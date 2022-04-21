@@ -31,7 +31,6 @@ import {
   genereteJitsy,
   rejectConsultation,
 } from "./../../services/consultations";
-import { getSingleProduct } from "../../services/products";
 import {
   getMyWebinars,
   getWebinar,
