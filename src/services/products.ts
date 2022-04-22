@@ -14,7 +14,7 @@ export async function products(
 }
 
 /**  GET /api/products/:id */
-export async function getSingleProduct(token: string, id: number) {
+export async function getSingleProduct(id: number, token?: string) {
   return request<API.DefaultResponse<API.Product>>(`/api/products/${id}`, {
     method: "GET",
     headers: {

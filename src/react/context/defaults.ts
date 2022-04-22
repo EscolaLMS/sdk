@@ -210,6 +210,9 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
   products: {
     loading: false,
   },
+  product: {
+    loading: false,
+  },
 };
 
 export const defaultApiConfig: EscolaLMSContextConfig = {
@@ -387,6 +390,9 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
   changePassword: () => Promise.reject(),
   realizeVoucher: () => Promise.reject(),
   products: {
+    loading: false,
+  },
+  product: {
     loading: false,
   },
 };
