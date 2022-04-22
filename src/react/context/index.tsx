@@ -97,6 +97,7 @@ import {
 
 import { fields as getFields } from "../../services/fields";
 import { stationaryEvents as getStationaryEvents } from "../../services/stationary_events";
+import { questionnaireStars } from "../../services/questionnaire";
 
 export const SCORMPlayer: React.FC<{
   uuid: string;
@@ -344,6 +345,12 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
     getDefaultData("products"),
   );
 
+  const [stars, setStars] = useLocalStorage<ContextListState<API.QuestionnaireStars>>(
+    "lms",
+    "stars",
+    getDefaultData("stars"),
+  );
+
   const abortControllers = useRef<{
     cart: AbortController | null;
   }>({
@@ -443,6 +450,28 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
       })
       .catch((error) => {
         setStationaryEvents((prevState) => ({
+          ...prevState,
+          loading: false,
+          error: error,
+        }));
+      });
+  }, []);
+
+  const fetchStars = useCallback((model: string, id: number) => {
+    setStars((prevState) => ({ ...prevState, loading: true }));
+
+    return questionnaireStars(model, id)
+      .then((response) => {
+        if (response.success) {
+          setStars({
+            loading: false,
+            list: response.data,
+            error: undefined,
+          });
+        }
+      })
+      .catch((error) => {
+        setStars((prevState) => ({
           ...prevState,
           loading: false,
           error: error,
@@ -1778,6 +1807,8 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
         generateWebinarJitsy,
         realizeVoucher,
         products,
+        stars,
+        fetchStars,
       }}
     >
       <EditorContextProvider url={`${apiUrl}/api/hh5p`}>{children}</EditorContextProvider>

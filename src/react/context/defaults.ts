@@ -210,6 +210,10 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
   products: {
     loading: false,
   },
+  stars: {
+    loading: false,
+  },
+  fetchStars: (model: string, id: number) => Promise.reject(),
 };
 
 export const defaultApiConfig: EscolaLMSContextConfig = {
@@ -389,6 +393,10 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
   products: {
     loading: false,
   },
+  stars: {
+    loading: false,
+  },
+  fetchStars: (model: string, id: number) => Promise.reject(),
 };
 
 export const defaultConfig = Object.assign({}, defaultReadConfig, defaultApiConfig);

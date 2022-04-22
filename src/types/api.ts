@@ -1005,3 +1005,9 @@ export type AppointmentTerm = {
   is_ended?: boolean;
   in_coming?: boolean;
 };
+
+export type QuestionnaireStars = {
+  sum_rate: number;
+  count_answers: number;
+  avg_rate: string;
+};
