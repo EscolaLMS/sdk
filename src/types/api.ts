@@ -141,6 +141,7 @@ export type PaginatedList<Model> = {
   prev_page_url: string;
   to: number;
   total: number;
+  last_page: number;
 };
 
 export type PaginatedMetaList<Model> = {
@@ -148,6 +149,7 @@ export type PaginatedMetaList<Model> = {
   meta: {
     current_page: number;
     next_page_url: string;
+    last_page: number;
     path: string;
     per_page: number;
     prev_page_url: string;
