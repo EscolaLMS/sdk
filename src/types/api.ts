@@ -251,7 +251,7 @@ export type Consultation = EscolaLms.Consultations.Models.Consultation & {
 
 export type Product = EscolaLms.Cart.Models.Product & {
   buyable?: boolean;
-  poster_path: string | null;
+  poster_path?: string | null;
 };
 export type Webinar = EscolaLms.Webinar.Models.Webinar & {
   product?: Product;
