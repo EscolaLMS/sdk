@@ -345,6 +345,12 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
     getDefaultData("products"),
   );
 
+  const [product, setProduct] = useLocalStorage<ContextStateValue<API.Product>>(
+    "lms",
+    "product",
+    getDefaultData("product"),
+  );
+
   const abortControllers = useRef<{
     cart: AbortController | null;
   }>({
@@ -806,7 +812,7 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
   }, []);
 
   const getProductInfo = useCallback((id: number) => {
-    return token ? getSingleProduct(token, id) : Promise.reject();
+    return token ? getSingleProduct(id, token) : Promise.reject();
   }, []);
 
   const fetchWebinars = useCallback((filter: API.WebinarParams) => {
@@ -1779,6 +1785,7 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
         generateWebinarJitsy,
         realizeVoucher,
         products,
+        product,
       }}
     >
       <EditorContextProvider url={`${apiUrl}/api/hh5p`}>{children}</EditorContextProvider>
