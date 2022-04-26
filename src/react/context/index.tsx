@@ -97,6 +97,7 @@ import {
 
 import { fields as getFields } from "../../services/fields";
 import { stationaryEvents as getStationaryEvents } from "../../services/stationary_events";
+import { questionnaireStars } from "../../services/questionnaire";
 
 export const SCORMPlayer: React.FC<{
   uuid: string;
