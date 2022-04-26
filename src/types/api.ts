@@ -246,7 +246,7 @@ export type Consultation = EscolaLms.Consultations.Models.Consultation & {
   is_ended?: boolean;
   is_started?: boolean;
   in_coming?: boolean;
-  author: User & { categories: Category[] };
+  author: User & { categories: Category[]; bio: string | null };
 };
 
 export type Product = EscolaLms.Cart.Models.Product & {
