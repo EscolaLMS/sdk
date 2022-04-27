@@ -1,11 +1,4 @@
-import React, {
-  useContext,
-  useRef,
-  useLayoutEffect,
-  useCallback,
-  useMemo,
-  useState,
-} from "react";
+import React, { useContext, useRef, useLayoutEffect, useCallback, useMemo, useState } from "react";
 import { EscolaLMSContext } from "../../context";
 import { getImageApiPath, getImageCachePath, getImagePrefix } from "./utils";
 
@@ -24,47 +17,27 @@ interface SizeObj {
   isDefault: boolean;
 }
 
-const getSrc = (sizeObj: SizeObj) =>
-  sizeObj.inCache ? sizeObj.cachePath : sizeObj.apiPath;
+const getSrc = (sizeObj: SizeObj) => (sizeObj.inCache ? sizeObj.cachePath : sizeObj.apiPath);
 
 const getSrcSet = (srcSetPaths: SizeObj[] = []) =>
-  srcSetPaths
-    .map((srcSetPath) => `${getSrc(srcSetPath)} ${srcSetPath.size}w`)
-    .join(",");
+  srcSetPaths.map((srcSetPath) => `${getSrc(srcSetPath)} ${srcSetPath.size}w`).join(",");
 
-const Image: React.FC<ImageProps> = ({
-  path,
-  size,
-  srcSizes,
-  alt = "LMS Image",
-  ...props
-}) => {
+const Image: React.FC<ImageProps> = ({ path, size, srcSizes, alt = "LMS Image", ...props }) => {
   const { apiUrl } = useContext(EscolaLMSContext);
 
   const imgRef = useRef<HTMLImageElement>(null);
-  const imgSize = useMemo(
-    () => (srcSizes?.[0] ? srcSizes[0] : size),
-    [size, srcSizes]
-  ); // can be undefined
+  const imgSize = useMemo(() => (srcSizes?.[0] ? srcSizes[0] : size), [size, srcSizes]); // can be undefined
 
   const getSizeObj = useCallback(
     (size?: number, isDefault: boolean = false) => ({
       // super important that all param values are strings
-      cachePath: getImageCachePath(
-        apiUrl,
-        path,
-        size ? { w: size.toString() } : undefined
-      ),
-      apiPath: getImageApiPath(
-        apiUrl,
-        path,
-        size ? { w: size.toString() } : undefined
-      ),
+      cachePath: getImageCachePath(apiUrl, path, size ? { w: size.toString() } : undefined),
+      apiPath: getImageApiPath(apiUrl, path, size ? { w: size.toString() } : undefined),
       size: size,
       inCache: true,
       isDefault,
     }),
-    [apiUrl, path]
+    [apiUrl, path],
   );
 
   // array of all sizes
@@ -75,11 +48,11 @@ const Image: React.FC<ImageProps> = ({
 
   const src = useMemo<string>(
     () => getSrc(sizesPaths.find((path) => path.isDefault)!),
-    [sizesPaths]
+    [sizesPaths],
   );
   const srcSet = useMemo<string>(
     () => getSrcSet(sizesPaths.filter((path) => !path.isDefault)),
-    [sizesPaths]
+    [sizesPaths],
   );
 
   useLayoutEffect(() => {
@@ -99,7 +72,7 @@ const Image: React.FC<ImageProps> = ({
                   ...sizeObj,
                   inCache: false,
                 };
-              })
+              }),
             );
           }
         }
@@ -110,12 +83,7 @@ const Image: React.FC<ImageProps> = ({
   if (path.includes(".svg")) {
     return (
       <div className="escolalms-image">
-        <img
-          ref={imgRef}
-          src={`${getImagePrefix(apiUrl)}${path}}`}
-          alt={alt}
-          {...props}
-        />
+        <img ref={imgRef} src={`${getImagePrefix(apiUrl)}${path}}`} alt={alt} {...props} />
       </div>
     );
   }

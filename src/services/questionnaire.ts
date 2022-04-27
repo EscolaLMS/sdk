@@ -11,3 +11,11 @@ export async function questionnaireStars(model: string, id: number, options?: Re
     },
   );
 }
+
+/**  GET /api/questionnaire/:model/:id */
+export async function getQuestionnaires(model: string, id: number, options?: RequestOptionsInit) {
+  return request<API.DefaultResponse<any>>(`/api/questionnaire/${model}/${id}`, {
+    method: "GET",
+    ...(options || {}),
+  });
+}
