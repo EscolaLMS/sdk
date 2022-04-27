@@ -213,6 +213,13 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
   product: {
     loading: false,
   },
+  fetchQuestionnaires: (model: string, id: number) => Promise.reject(),
+  sendQuestionnaireAnswer: (
+    model: string,
+    modelID: number,
+    id: number,
+    body: Partial<EscolaLms.Questionnaire.Models.QuestionAnswer>,
+  ) => Promise.reject(),
 };
 
 export const defaultApiConfig: EscolaLMSContextConfig = {
@@ -395,6 +402,13 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
   product: {
     loading: false,
   },
+  fetchQuestionnaires: (model: string, id: number) => Promise.reject(),
+  sendQuestionnaireAnswer: (
+    model: string,
+    modelID: number,
+    id: number,
+    body: Partial<EscolaLms.Questionnaire.Models.QuestionAnswer>,
+  ) => Promise.reject(),
 };
 
 export const defaultConfig = Object.assign({}, defaultReadConfig, defaultApiConfig);

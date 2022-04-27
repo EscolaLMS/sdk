@@ -97,6 +97,7 @@ import {
 
 import { fields as getFields } from "../../services/fields";
 import { stationaryEvents as getStationaryEvents } from "../../services/stationary_events";
+import { getQuestionnaires, questionnaireAnswer } from "../../services/questionnaire";
 
 export const SCORMPlayer: React.FC<{
   uuid: string;
@@ -810,9 +811,12 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
     });
   }, []);
 
-  const getProductInfo = useCallback((id: number) => {
-    return token ? getSingleProduct(id, token) : Promise.reject();
-  }, []);
+  const getProductInfo = useCallback(
+    (id: number) => {
+      return token ? getSingleProduct(id, token) : Promise.reject();
+    },
+    [token],
+  );
 
   const fetchWebinars = useCallback((filter: API.WebinarParams) => {
     setWebinars((prevState) => ({ ...prevState, loading: true }));
@@ -1041,6 +1045,25 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
       }
     });
   }, []);
+
+  const fetchQuestionnaires = useCallback(
+    (model: string, id: number) => {
+      return token ? getQuestionnaires(token, model, id) : Promise.reject();
+    },
+    [token],
+  );
+
+  const sendQuestionnaireAnswer = useCallback(
+    (
+      model: string,
+      modelID: number,
+      id: number,
+      body: Partial<EscolaLms.Questionnaire.Models.QuestionAnswer>,
+    ) => {
+      return token ? questionnaireAnswer(token, model, modelID, id, body) : Promise.reject();
+    },
+    [token],
+  );
 
   const fetchCart = useCallback(() => {
     if (!token) {
@@ -1785,6 +1808,8 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
         realizeVoucher,
         products,
         product,
+        fetchQuestionnaires,
+        sendQuestionnaireAnswer,
       }}
     >
       <EditorContextProvider url={`${apiUrl}/api/hh5p`}>{children}</EditorContextProvider>

@@ -143,6 +143,16 @@ export interface EscolaLMSContextAPIConfig {
   generateWebinarJitsy: (webinarId: number) => Promise<API.DefaultResponse<API.JitsyData>>;
   fetchUserWebinars: () => Promise<void>;
   realizeVoucher: (voucher: string) => Promise<API.AuthResponse>;
+  fetchQuestionnaires: (
+    model: string,
+    id: number,
+  ) => Promise<API.DefaultMetaResponse<EscolaLms.Questionnaire.Models.Questionnaire>>;
+  sendQuestionnaireAnswer: (
+    model: string,
+    modelID: number,
+    id: number,
+    body: Partial<EscolaLms.Questionnaire.Models.QuestionAnswer>,
+  ) => Promise<API.DefaultResponse<EscolaLms.Questionnaire.Models.QuestionAnswer>>;
 }
 export type EscolaLMSContextConfig = EscolaLMSContextReadConfig & EscolaLMSContextAPIConfig;
 
