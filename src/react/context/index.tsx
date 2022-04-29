@@ -265,7 +265,7 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
     getDefaultData("tutors"),
   );
 
-  const [orders, setOrders] = useLocalStorage<ContextListState<API.Order>>(
+  const [orders, setOrders] = useLocalStorage<ContextPaginatedMetaState<API.Order>>(
     "lms",
     "orders",
     getDefaultData("orders"),
@@ -1314,7 +1314,7 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
               if (res.success) {
                 setOrders({
                   loading: false,
-                  list: res.data,
+                  list: res,
                 });
               } else if (res.success === false) {
                 {
