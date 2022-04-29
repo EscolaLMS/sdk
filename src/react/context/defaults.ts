@@ -213,6 +213,8 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
   product: {
     loading: false,
   },
+  fetchUserStationaryEvents: () => Promise.reject(),
+  userStationaryEvents: { loading: false },
 };
 
 export const defaultApiConfig: EscolaLMSContextConfig = {
@@ -395,6 +397,8 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
   product: {
     loading: false,
   },
+  fetchUserStationaryEvents: () => Promise.reject(),
+  userStationaryEvents: { loading: false },
 };
 
 export const defaultConfig = Object.assign({}, defaultReadConfig, defaultApiConfig);

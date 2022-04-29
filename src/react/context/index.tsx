@@ -96,7 +96,10 @@ import {
 } from "./defaults";
 
 import { fields as getFields } from "../../services/fields";
-import { stationaryEvents as getStationaryEvents } from "../../services/stationary_events";
+import {
+  stationaryEvents as getStationaryEvents,
+  getMyStationaryEvents,
+} from "../../services/stationary_events";
 import { questionnaireStars } from "../../services/questionnaire";
 
 export const SCORMPlayer: React.FC<{
@@ -329,6 +332,10 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
     ContextStateValue<EscolaLms.StationaryEvents.Models.StationaryEvent>
   >("lms", "stationaryEvent", getDefaultData("stationaryEvent"));
 
+  const [userStationaryEvents, setUserStationaryEvents] = useLocalStorage<
+    ContextListState<API.StationaryEvent>
+  >("lms", "userStationaryEvents", getDefaultData("userStationaryEvents"));
+
   const [webinar, setWebinar] = useLocalStorage<
     ContextStateValue<EscolaLms.Webinar.Models.Webinar>
   >("lms", "webinar", getDefaultData("webinar"));
@@ -480,6 +487,37 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
           })
           .catch((error) => {
             setUserWebinars((prevState) => ({
+              ...prevState,
+              loading: false,
+              error: error,
+            }));
+          })
+      : Promise.reject();
+  }, [token]);
+
+  const fetchUserStationaryEvents = useCallback(() => {
+    setUserStationaryEvents((prevState) => ({ ...prevState, loading: true }));
+
+    return token
+      ? getMyStationaryEvents(token)
+          .then((response) => {
+            if (response.success) {
+              setUserStationaryEvents({
+                loading: false,
+                list: response.data,
+                error: undefined,
+              });
+            }
+            if (response.success === false) {
+              setUserStationaryEvents((prevState) => ({
+                ...prevState,
+                loading: false,
+                error: response,
+              }));
+            }
+          })
+          .catch((error) => {
+            setUserStationaryEvents((prevState) => ({
               ...prevState,
               loading: false,
               error: error,
@@ -1786,6 +1824,8 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
         realizeVoucher,
         products,
         product,
+        fetchUserStationaryEvents,
+        userStationaryEvents,
       }}
     >
       <EditorContextProvider url={`${apiUrl}/api/hh5p`}>{children}</EditorContextProvider>
