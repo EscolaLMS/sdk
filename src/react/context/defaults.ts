@@ -202,7 +202,9 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
   generateConsultationJitsy: (consultationTermId: number) =>
     Promise.reject(consultationTermId),
   generateWebinarJitsy: (webinarId: number) => Promise.reject(webinarId),
-  webinars: { loading: false },
+  webinars: {
+    loading: false,
+  },
   webinar: {
     loading: false,
   },
@@ -214,6 +216,10 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
     loading: false,
   },
   product: {
+    loading: false,
+  },
+  fetchUserStationaryEvents: () => Promise.reject(),
+  userStationaryEvents: {
     loading: false,
   },
 };
@@ -391,7 +397,9 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
   generateConsultationJitsy: (consultationTermId: number) =>
     Promise.reject(consultationTermId),
   generateWebinarJitsy: (webinarId: number) => Promise.reject(webinarId),
-  events: { loading: false },
+  events: {
+    loading: false,
+  },
   fetchEvents: (filter: API.EventsParams) => Promise.reject(),
   changePassword: () => Promise.reject(),
   realizeVoucher: () => Promise.reject(),
@@ -399,6 +407,10 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
     loading: false,
   },
   product: {
+    loading: false,
+  },
+  fetchUserStationaryEvents: () => Promise.reject(),
+  userStationaryEvents: {
     loading: false,
   },
 };

@@ -665,6 +665,9 @@ export type StationaryEvent = EscolaLms.StationaryEvents.Models.StationaryEvent 
   isScheduled?: boolean;
   appointmentDate?: string;
   product?: Product | null;
+  is_ended?: boolean;
+  is_started?: boolean;
+  in_coming?: boolean;
 };
 
 export type Event = {

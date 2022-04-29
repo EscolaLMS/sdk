@@ -21,3 +21,15 @@ export async function getStationaryEvent(id: number, options?: RequestOptionsIni
     ...(options || {}),
   });
 }
+
+/**  GET /api/stationary-events/me */
+export async function getMyStationaryEvents(token: string) {
+  return request<API.DefaultMetaResponse<API.StationaryEvent>>(`/api/stationary-events/me`, {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+}
