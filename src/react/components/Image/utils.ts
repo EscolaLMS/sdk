@@ -37,14 +37,18 @@ export const getImagePrefix = (apiUrl: string) =>
 export const getImageCachePath = (
   apiUrl: string,
   imagePath: string,
-  params: Record<string, string> = {},
+  params: Record<string, string> = {}
 ) => {
   const prefix = getImagePrefix(apiUrl);
   const hash = getHash(imagePath + getStringifyParams(params));
   return `${prefix}/${hash}.${imagePath.split(".").pop()}`;
 };
 
-export const getImageApiPath = (apiUrl: string, imagePath: string, params: object = {}) => {
+export const getImageApiPath = (
+  apiUrl: string,
+  imagePath: string,
+  params: object = {}
+) => {
   return `${apiUrl}${IMG_ENDPOINT}/?${paramsToUrl({
     ...params,
     path: imagePath,
