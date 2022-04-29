@@ -103,8 +103,10 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
     loading: false,
     value: [],
   },
-  sendProgress: (courseId: number, data: API.CourseProgressItemElement[]) => Promise.reject(),
-  h5pProgress: (courseId: string, topicId: number, statement: API.IStatement) => Promise.reject(),
+  sendProgress: (courseId: number, data: API.CourseProgressItemElement[]) =>
+    Promise.reject(),
+  h5pProgress: (courseId: string, topicId: number, statement: API.IStatement) =>
+    Promise.reject(),
 
   tutors: {
     loading: false,
@@ -117,7 +119,6 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
   fetchTutor: (id: number) => Promise.reject(id),
   orders: {
     loading: false,
-    list: [],
   },
   fetchOrders: (filter?: API.PaginationParams) => Promise.reject(),
   payments: {
@@ -191,13 +192,15 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
   tutorConsultations: {
     loading: false,
   },
-  fetchStationaryEvents: (filter: API.StationaryEventsParams) => Promise.reject(),
+  fetchStationaryEvents: (filter: API.StationaryEventsParams) =>
+    Promise.reject(),
   bookConsultationTerm: (id: number, term: string) => Promise.reject(),
   fetchWebinars: (filter: API.WebinarParams) => Promise.reject(),
   fetchTutorConsultations: () => Promise.reject(),
   approveConsultationTerm: (consultationTermId: number) => Promise.reject(),
   rejectConsultationTerm: (consultationTermId: number) => Promise.reject(),
-  generateConsultationJitsy: (consultationTermId: number) => Promise.reject(consultationTermId),
+  generateConsultationJitsy: (consultationTermId: number) =>
+    Promise.reject(consultationTermId),
   generateWebinarJitsy: (webinarId: number) => Promise.reject(webinarId),
   webinars: { loading: false },
   webinar: {
@@ -284,8 +287,10 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
     loading: false,
     value: [],
   },
-  sendProgress: (courseId: number, data: API.CourseProgressItemElement[]) => Promise.reject(),
-  h5pProgress: (courseId: string, topicId: number, statement: API.IStatement) => Promise.reject(),
+  sendProgress: (courseId: number, data: API.CourseProgressItemElement[]) =>
+    Promise.reject(),
+  h5pProgress: (courseId: string, topicId: number, statement: API.IStatement) =>
+    Promise.reject(),
 
   tutors: {
     loading: false,
@@ -298,7 +303,6 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
   fetchTutor: (id: number) => Promise.reject(id),
   orders: {
     loading: false,
-    list: [],
   },
   fetchOrders: (filter?: API.PaginationParams) => Promise.reject(),
   payments: {
@@ -373,7 +377,8 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
   stationaryEvent: {
     loading: false,
   },
-  fetchStationaryEvents: (filter: API.StationaryEventsParams) => Promise.reject(),
+  fetchStationaryEvents: (filter: API.StationaryEventsParams) =>
+    Promise.reject(),
   bookConsultationTerm: (id: number, term: string) => Promise.reject(),
   fetchWebinars: (filter: API.WebinarParams) => Promise.reject(),
   webinars: { loading: false },
@@ -383,7 +388,8 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
   fetchTutorConsultations: () => Promise.reject(),
   approveConsultationTerm: (consultationTermId: number) => Promise.reject(),
   rejectConsultationTerm: (consultationTermId: number) => Promise.reject(),
-  generateConsultationJitsy: (consultationTermId: number) => Promise.reject(consultationTermId),
+  generateConsultationJitsy: (consultationTermId: number) =>
+    Promise.reject(consultationTermId),
   generateWebinarJitsy: (webinarId: number) => Promise.reject(webinarId),
   events: { loading: false },
   fetchEvents: (filter: API.EventsParams) => Promise.reject(),
@@ -397,4 +403,8 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
   },
 };
 
-export const defaultConfig = Object.assign({}, defaultReadConfig, defaultApiConfig);
+export const defaultConfig = Object.assign(
+  {},
+  defaultReadConfig,
+  defaultApiConfig
+);
