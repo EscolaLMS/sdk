@@ -398,7 +398,9 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
     loading: false,
   },
   fetchUserStationaryEvents: () => Promise.reject(),
-  userStationaryEvents: { loading: false },
+  userStationaryEvents: {
+    loading: false,
+  },
 };
 
 export const defaultConfig = Object.assign({}, defaultReadConfig, defaultApiConfig);
