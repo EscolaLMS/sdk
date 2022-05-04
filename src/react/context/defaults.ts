@@ -119,7 +119,6 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
   fetchTutor: (id: number) => Promise.reject(id),
   orders: {
     loading: false,
-    list: [],
   },
   fetchOrders: (filter?: API.PaginationParams) => Promise.reject(),
   payments: {
@@ -203,7 +202,9 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
   generateConsultationJitsy: (consultationTermId: number) =>
     Promise.reject(consultationTermId),
   generateWebinarJitsy: (webinarId: number) => Promise.reject(webinarId),
-  webinars: { loading: false },
+  webinars: {
+    loading: false,
+  },
   webinar: {
     loading: false,
   },
@@ -222,8 +223,12 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
     model: string,
     modelID: number,
     id: number,
-    body: Partial<EscolaLms.Questionnaire.Models.QuestionAnswer>
+    body: Partial<EscolaLms.Questionnaire.Http.Requests.QuestionnaireFrontAnswerRequest>
   ) => Promise.reject(),
+  fetchUserStationaryEvents: () => Promise.reject(),
+  userStationaryEvents: {
+    loading: false,
+  },
 };
 
 export const defaultApiConfig: EscolaLMSContextConfig = {
@@ -311,7 +316,6 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
   fetchTutor: (id: number) => Promise.reject(id),
   orders: {
     loading: false,
-    list: [],
   },
   fetchOrders: (filter?: API.PaginationParams) => Promise.reject(),
   payments: {
@@ -400,7 +404,9 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
   generateConsultationJitsy: (consultationTermId: number) =>
     Promise.reject(consultationTermId),
   generateWebinarJitsy: (webinarId: number) => Promise.reject(webinarId),
-  events: { loading: false },
+  events: {
+    loading: false,
+  },
   fetchEvents: (filter: API.EventsParams) => Promise.reject(),
   changePassword: () => Promise.reject(),
   realizeVoucher: () => Promise.reject(),
@@ -415,8 +421,12 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
     model: string,
     modelID: number,
     id: number,
-    body: Partial<EscolaLms.Questionnaire.Models.QuestionAnswer>
+    body: Partial<EscolaLms.Questionnaire.Http.Requests.QuestionnaireFrontAnswerRequest>
   ) => Promise.reject(),
+  fetchUserStationaryEvents: () => Promise.reject(),
+  userStationaryEvents: {
+    loading: false,
+  },
 };
 
 export const defaultConfig = Object.assign(

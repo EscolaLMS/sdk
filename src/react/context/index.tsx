@@ -99,11 +99,16 @@ import {
 } from "./defaults";
 
 import { fields as getFields } from "../../services/fields";
-import { stationaryEvents as getStationaryEvents } from "../../services/stationary_events";
+
 import {
   getQuestionnaires,
   questionnaireAnswer,
+  questionnaireStars,
 } from "../../services/questionnaire";
+import {
+  stationaryEvents as getStationaryEvents,
+  getMyStationaryEvents,
+} from "../../services/stationary_events";
 
 export const SCORMPlayer: React.FC<{
   uuid: string;
@@ -255,11 +260,9 @@ export const EscolaLMSContextProvider: FunctionComponent<
     getDefaultData("tutors")
   );
 
-  const [orders, setOrders] = useLocalStorage<ContextListState<API.Order>>(
-    "lms",
-    "orders",
-    getDefaultData("orders")
-  );
+  const [orders, setOrders] = useLocalStorage<
+    ContextPaginatedMetaState<API.Order>
+  >("lms", "orders", getDefaultData("orders"));
 
   const [payments, setPayments] = useLocalStorage<
     ContextPaginatedMetaState<API.Payment>
@@ -314,6 +317,10 @@ export const EscolaLMSContextProvider: FunctionComponent<
   const [stationaryEvent, setStationaryEvent] = useLocalStorage<
     ContextStateValue<EscolaLms.StationaryEvents.Models.StationaryEvent>
   >("lms", "stationaryEvent", getDefaultData("stationaryEvent"));
+
+  const [userStationaryEvents, setUserStationaryEvents] = useLocalStorage<
+    ContextListState<API.StationaryEvent>
+  >("lms", "userStationaryEvents", getDefaultData("userStationaryEvents"));
 
   const [webinar, setWebinar] = useLocalStorage<
     ContextStateValue<EscolaLms.Webinar.Models.Webinar>
@@ -465,6 +472,37 @@ export const EscolaLMSContextProvider: FunctionComponent<
           })
           .catch((error) => {
             setUserWebinars((prevState) => ({
+              ...prevState,
+              loading: false,
+              error: error,
+            }));
+          })
+      : Promise.reject();
+  }, [token]);
+
+  const fetchUserStationaryEvents = useCallback(() => {
+    setUserStationaryEvents((prevState) => ({ ...prevState, loading: true }));
+
+    return token
+      ? getMyStationaryEvents(token)
+          .then((response) => {
+            if (response.success) {
+              setUserStationaryEvents({
+                loading: false,
+                list: response.data,
+                error: undefined,
+              });
+            }
+            if (response.success === false) {
+              setUserStationaryEvents((prevState) => ({
+                ...prevState,
+                loading: false,
+                error: response,
+              }));
+            }
+          })
+          .catch((error) => {
+            setUserStationaryEvents((prevState) => ({
               ...prevState,
               loading: false,
               error: error,
@@ -1325,7 +1363,7 @@ export const EscolaLMSContextProvider: FunctionComponent<
               if (res.success) {
                 setOrders({
                   loading: false,
-                  list: res.data,
+                  list: res,
                 });
               } else if (res.success === false) {
                 {
@@ -1821,6 +1859,8 @@ export const EscolaLMSContextProvider: FunctionComponent<
         product,
         fetchQuestionnaires,
         sendQuestionnaireAnswer,
+        fetchUserStationaryEvents,
+        userStationaryEvents,
       }}
     >
       <EditorContextProvider url={`${apiUrl}/api/hh5p`}>

@@ -53,7 +53,7 @@ export interface EscolaLMSContextReadConfig {
   progress: ContextStateValue<API.CourseProgress>;
   tutors: ContextListState<API.UserItem>;
   tutor: ContextStateValue<API.UserItem>;
-  orders: ContextListState<API.Order>;
+  orders: ContextPaginatedMetaState<API.Order>;
   payments: ContextPaginatedMetaState<API.Payment>;
   certificates: ContextPaginatedMetaState<API.Certificate>;
   mattermostChannels: ContextStateValue<API.MattermostData>;
@@ -76,6 +76,7 @@ export interface EscolaLMSContextReadConfig {
   userWebinars: ContextListState<API.Event>;
   products: ContextPaginatedMetaState<API.Product>;
   product: ContextStateValue<API.Product>;
+  userStationaryEvents: ContextListState<API.StationaryEvent>;
 }
 
 export interface EscolaLMSContextAPIConfig {
@@ -169,10 +170,11 @@ export interface EscolaLMSContextAPIConfig {
     model: string,
     modelID: number,
     id: number,
-    body: Partial<EscolaLms.Questionnaire.Models.QuestionAnswer>
+    body: Partial<EscolaLms.Questionnaire.Http.Requests.QuestionnaireFrontAnswerRequest>
   ) => Promise<
     API.DefaultResponse<EscolaLms.Questionnaire.Models.QuestionAnswer>
   >;
+  fetchUserStationaryEvents: () => Promise<void>;
 }
 export type EscolaLMSContextConfig = EscolaLMSContextReadConfig &
   EscolaLMSContextAPIConfig;
