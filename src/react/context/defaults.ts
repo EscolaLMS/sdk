@@ -218,6 +218,13 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
   product: {
     loading: false,
   },
+  fetchQuestionnaires: (model: string, id: number) => Promise.reject(),
+  sendQuestionnaireAnswer: (
+    model: string,
+    modelID: number,
+    id: number,
+    body: Partial<EscolaLms.Questionnaire.Http.Requests.QuestionnaireFrontAnswerRequest>
+  ) => Promise.reject(),
   fetchUserStationaryEvents: () => Promise.reject(),
   userStationaryEvents: {
     loading: false,
@@ -409,6 +416,13 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
   product: {
     loading: false,
   },
+  fetchQuestionnaires: (model: string, id: number) => Promise.reject(),
+  sendQuestionnaireAnswer: (
+    model: string,
+    modelID: number,
+    id: number,
+    body: Partial<EscolaLms.Questionnaire.Http.Requests.QuestionnaireFrontAnswerRequest>
+  ) => Promise.reject(),
   fetchUserStationaryEvents: () => Promise.reject(),
   userStationaryEvents: {
     loading: false,

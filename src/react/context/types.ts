@@ -90,7 +90,9 @@ export interface EscolaLMSContextAPIConfig {
   fetchConfig: () => Promise<void>;
   login: (body: API.LoginRequest) => Promise<void>;
   logout: () => Promise<void>;
-  register: (body: API.RegisterRequest) => Promise<API.DefaultResponse<API.RegisterResponse>>;
+  register: (
+    body: API.RegisterRequest
+  ) => Promise<API.DefaultResponse<API.RegisterResponse>>;
   forgot: (body: API.ForgotRequest) => Promise<API.AuthResponse>;
   reset: (body: API.ResetPasswordRequest) => Promise<API.AuthResponse>;
   emailVerify: (id: string, hash: string) => Promise<API.AuthResponse>;
@@ -100,18 +102,23 @@ export interface EscolaLMSContextAPIConfig {
   payWithStripe: (paymentMethodId: string) => Promise<void>;
   payWithP24: (email: string, return_url: string) => Promise<void>;
   fetchProgress: () => Promise<void>;
-  sendProgress: (courseId: number, data: API.CourseProgressItemElement[]) => Promise<void>;
+  sendProgress: (
+    courseId: number,
+    data: API.CourseProgressItemElement[]
+  ) => Promise<void>;
   h5pProgress: (
     courseId: string,
     topicId: number,
-    statement: API.IStatement,
+    statement: API.IStatement
   ) => Promise<API.SuccessResponse> | null;
   fetchTutors: () => Promise<void>;
   fetchTutor: (id: number) => Promise<void>;
   fetchOrders: (params?: API.PaginationParams) => Promise<void>;
   fetchPayments: () => Promise<void>;
   fetchCertificates: () => Promise<void>;
-  fetchCertificate: (id: number) => Promise<API.DefaultResponse<API.Certificate>>;
+  fetchCertificate: (
+    id: number
+  ) => Promise<API.DefaultResponse<API.Certificate>>;
   fetchMattermostChannels: () => Promise<void>;
   fetchPages: () => Promise<void>;
   fetchPage: (slug: string) => Promise<void>;
@@ -132,20 +139,44 @@ export interface EscolaLMSContextAPIConfig {
   fetchUserConsultations: () => Promise<void>;
   fetchFields: (filter: API.FieldsParams) => Promise<void>;
   fetchStationaryEvents: (filter: API.StationaryEventsParams) => Promise<void>;
-  bookConsultationTerm: (id: number, term: string) => Promise<API.ScheduleConsultationResponse>;
+  bookConsultationTerm: (
+    id: number,
+    term: string
+  ) => Promise<API.ScheduleConsultationResponse>;
   getProductInfo: (id: number) => Promise<API.DefaultResponse<API.Product>>;
   fetchWebinars: (filter: API.WebinarParams) => Promise<void>;
   fetchEvents: (filter: API.EventsParams) => Promise<void>;
   fetchTutorConsultations: () => Promise<void>;
   approveConsultationTerm: (consultation: number) => Promise<void>;
   rejectConsultationTerm: (consultation: number) => Promise<void>;
-  changePassword: (body: API.ChangePasswordRequest) => Promise<API.AuthResponse>;
-  generateConsultationJitsy: (consultation: number) => Promise<API.DefaultResponse<API.JitsyData>>;
-  generateWebinarJitsy: (webinarId: number) => Promise<API.DefaultResponse<API.JitsyData>>;
+  changePassword: (
+    body: API.ChangePasswordRequest
+  ) => Promise<API.AuthResponse>;
+  generateConsultationJitsy: (
+    consultation: number
+  ) => Promise<API.DefaultResponse<API.JitsyData>>;
+  generateWebinarJitsy: (
+    webinarId: number
+  ) => Promise<API.DefaultResponse<API.JitsyData>>;
   fetchUserWebinars: () => Promise<void>;
   realizeVoucher: (voucher: string) => Promise<API.AuthResponse>;
+  fetchQuestionnaires: (
+    model: string,
+    id: number
+  ) => Promise<
+    API.DefaultMetaResponse<EscolaLms.Questionnaire.Models.Questionnaire>
+  >;
+  sendQuestionnaireAnswer: (
+    model: string,
+    modelID: number,
+    id: number,
+    body: Partial<EscolaLms.Questionnaire.Http.Requests.QuestionnaireFrontAnswerRequest>
+  ) => Promise<
+    API.DefaultResponse<EscolaLms.Questionnaire.Models.QuestionAnswer>
+  >;
   fetchUserStationaryEvents: () => Promise<void>;
 }
-export type EscolaLMSContextConfig = EscolaLMSContextReadConfig & EscolaLMSContextAPIConfig;
+export type EscolaLMSContextConfig = EscolaLMSContextReadConfig &
+  EscolaLMSContextAPIConfig;
 
 export type SortProgram = (lessons: API.Lesson[]) => API.Lesson[];
