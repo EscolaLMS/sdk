@@ -229,6 +229,7 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
   userStationaryEvents: {
     loading: false,
   },
+  fetchOrderInvoice: (id: number) => Promise.reject(id),
 };
 
 export const defaultApiConfig: EscolaLMSContextConfig = {
@@ -427,6 +428,7 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
   userStationaryEvents: {
     loading: false,
   },
+  fetchOrderInvoice: (id: number) => Promise.reject(id),
 };
 
 export const defaultConfig = Object.assign(

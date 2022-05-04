@@ -5,7 +5,7 @@ export async function addToCart(
   productId: number,
   token: string,
   quantity?: number,
-  options?: RequestOptionsInit,
+  options?: RequestOptionsInit
 ) {
   return request<API.SuccessResponse>(`/api/cart/products`, {
     method: "POST",
@@ -21,7 +21,11 @@ export async function addToCart(
   });
 }
 
-export async function removeFromCart(itemId: number, token: string, options?: RequestOptionsInit) {
+export async function removeFromCart(
+  itemId: number,
+  token: string,
+  options?: RequestOptionsInit
+) {
   return request<API.SuccessResponse>(`/api/cart/products/${itemId}`, {
     method: "DELETE",
     headers: {
@@ -46,7 +50,7 @@ export async function cart(token: string, options?: RequestOptionsInit) {
 export async function payWithStripe(
   paymentMethodId: string,
   token: string,
-  options?: RequestOptionsInit,
+  options?: RequestOptionsInit
 ) {
   return request<API.SuccessResponse>(`/api/cart/pay`, {
     method: "POST",
@@ -61,7 +65,11 @@ export async function payWithStripe(
   });
 }
 
-export async function payWithP24(email: string, token: string, return_url: string) {
+export async function payWithP24(
+  email: string,
+  token: string,
+  return_url: string
+) {
   return request<API.P24Response>(`/api/cart/pay`, {
     method: "POST",
     headers: {
@@ -78,7 +86,7 @@ export async function payWithP24(email: string, token: string, return_url: strin
 export async function orders(
   token: string,
   params?: API.PaginationParams,
-  options?: RequestOptionsInit,
+  options?: RequestOptionsInit
 ) {
   return request<API.OrderList>(`/api/orders`, {
     method: "GET",
@@ -113,5 +121,20 @@ export async function useVoucher(voucher: string, token: string) {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
     },
+  });
+}
+
+export async function orderInvoice(
+  token: string,
+  id: number,
+  options?: RequestOptionsInit
+) {
+  return request<any>(`/api/invoices/${id}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    ...(options || {}),
   });
 }
