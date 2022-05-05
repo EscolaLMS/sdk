@@ -132,7 +132,7 @@ export async function orderInvoice(
   return request<any>(`/api/invoices/${id}`, {
     method: "GET",
     headers: {
-      "Content-Type": "application/json",
+      "Content-Type": "application/pdf",
       Authorization: `Bearer ${token}`,
     },
     ...(options || {}),
