@@ -223,7 +223,7 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
     model: string,
     modelID: number,
     id: number,
-    body: Partial<EscolaLms.Questionnaire.Http.Requests.QuestionnaireFrontAnswerRequest>
+    body: Partial<EscolaLms.Questionnaire.Models.QuestionAnswer>
   ) => Promise.reject(),
   fetchUserStationaryEvents: () => Promise.reject(),
   userStationaryEvents: {
@@ -421,7 +421,7 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
     model: string,
     modelID: number,
     id: number,
-    body: Partial<EscolaLms.Questionnaire.Http.Requests.QuestionnaireFrontAnswerRequest>
+    body: Partial<EscolaLms.Questionnaire.Models.QuestionAnswer>
   ) => Promise.reject(),
   fetchUserStationaryEvents: () => Promise.reject(),
   userStationaryEvents: {
