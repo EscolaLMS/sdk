@@ -5,7 +5,7 @@ export async function addToCart(
   productId: number,
   token: string,
   quantity?: number,
-  options?: RequestOptionsInit,
+  options?: RequestOptionsInit
 ) {
   return request<API.SuccessResponse>(`/api/cart/products`, {
     method: "POST",
@@ -21,7 +21,11 @@ export async function addToCart(
   });
 }
 
-export async function removeFromCart(itemId: number, token: string, options?: RequestOptionsInit) {
+export async function removeFromCart(
+  itemId: number,
+  token: string,
+  options?: RequestOptionsInit
+) {
   return request<API.SuccessResponse>(`/api/cart/products/${itemId}`, {
     method: "DELETE",
     headers: {
@@ -43,10 +47,23 @@ export async function cart(token: string, options?: RequestOptionsInit) {
   });
 }
 
+export async function addMisingProducts(token: string, products: number[]) {
+  return request<API.DefaultResponseSuccess<API.Cart>>(`/api/cart/missing`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    data: {
+      products: products,
+    },
+  });
+}
+
 export async function payWithStripe(
   paymentMethodId: string,
   token: string,
-  options?: RequestOptionsInit,
+  options?: RequestOptionsInit
 ) {
   return request<API.SuccessResponse>(`/api/cart/pay`, {
     method: "POST",
@@ -61,7 +78,11 @@ export async function payWithStripe(
   });
 }
 
-export async function payWithP24(email: string, token: string, return_url: string) {
+export async function payWithP24(
+  email: string,
+  token: string,
+  return_url: string
+) {
   return request<API.P24Response>(`/api/cart/pay`, {
     method: "POST",
     headers: {
@@ -78,7 +99,7 @@ export async function payWithP24(email: string, token: string, return_url: strin
 export async function orders(
   token: string,
   params?: API.PaginationParams,
-  options?: RequestOptionsInit,
+  options?: RequestOptionsInit
 ) {
   return request<API.OrderList>(`/api/orders`, {
     method: "GET",

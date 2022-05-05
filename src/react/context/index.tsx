@@ -69,6 +69,7 @@ import {
   orders as getOrders,
   payments as getPayments,
   useVoucher as postVoucher,
+  addMisingProducts as postAddMisingProducts,
 } from "./../../services/cart";
 import {
   userGroups as getUserGroups,
@@ -143,295 +144,267 @@ interface EscolaLMSContextProviderType {
   defaults?: Partial<EscolaLMSContextReadConfig>;
 }
 
-export const EscolaLMSContextProvider: FunctionComponent<
-  EscolaLMSContextProviderType
-> = ({ children, apiUrl, defaults }) => {
-  interceptors(apiUrl);
-  const initialValues = {
-    ...defaultConfig,
-    ...defaults,
-  };
+export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProviderType> =
+  ({ children, apiUrl, defaults }) => {
+    interceptors(apiUrl);
+    const initialValues = {
+      ...defaultConfig,
+      ...defaults,
+    };
 
-  const getDefaultData = <K extends keyof EscolaLMSContextReadConfig>(
-    key: K
-  ): EscolaLMSContextReadConfig[K] => {
-    return initialValues[key];
-  };
+    const getDefaultData = <K extends keyof EscolaLMSContextReadConfig>(
+      key: K
+    ): EscolaLMSContextReadConfig[K] => {
+      return initialValues[key];
+    };
 
-  const [courses, setCourses] = useLocalStorage<
-    ContextPaginatedMetaState<API.CourseListItem>
-  >("lms", "courses", getDefaultData("courses"));
+    const [courses, setCourses] = useLocalStorage<
+      ContextPaginatedMetaState<API.CourseListItem>
+    >("lms", "courses", getDefaultData("courses"));
 
-  const [consultations, setConsultations] = useLocalStorage<
-    ContextPaginatedMetaState<API.Consultation>
-  >("lms", "consultations", getDefaultData("consultations"));
+    const [consultations, setConsultations] = useLocalStorage<
+      ContextPaginatedMetaState<API.Consultation>
+    >("lms", "consultations", getDefaultData("consultations"));
 
-  const [consultation, setConsultation] = useLocalStorage<
-    ContextStateValue<API.Consultation>
-  >("lms", "consultation", getDefaultData("consultation"));
+    const [consultation, setConsultation] = useLocalStorage<
+      ContextStateValue<API.Consultation>
+    >("lms", "consultation", getDefaultData("consultation"));
 
-  const [userConsultations, setUserConsultations] = useLocalStorage<
-    ContextPaginatedMetaState<API.Consultation>
-  >("lms", "userConsultations", getDefaultData("userConsultations"));
+    const [userConsultations, setUserConsultations] = useLocalStorage<
+      ContextPaginatedMetaState<API.Consultation>
+    >("lms", "userConsultations", getDefaultData("userConsultations"));
 
-  const [tutorConsultations, setTutorConsultations] = useLocalStorage<
-    ContextPaginatedMetaState<API.AppointmentTerm>
-  >("lms", "tutorConsultations", getDefaultData("tutorConsultations"));
+    const [tutorConsultations, setTutorConsultations] = useLocalStorage<
+      ContextPaginatedMetaState<API.AppointmentTerm>
+    >("lms", "tutorConsultations", getDefaultData("tutorConsultations"));
 
-  const [webinars, setWebinars] = useLocalStorage<
-    ContextListState<EscolaLms.Webinar.Models.Webinar>
-  >("lms", "webinars", getDefaultData("webinars"));
+    const [webinars, setWebinars] = useLocalStorage<
+      ContextListState<EscolaLms.Webinar.Models.Webinar>
+    >("lms", "webinars", getDefaultData("webinars"));
 
-  const [events, setEvents] = useLocalStorage<
-    ContextPaginatedMetaState<API.Event>
-  >("lms", "events", getDefaultData("events"));
+    const [events, setEvents] = useLocalStorage<
+      ContextPaginatedMetaState<API.Event>
+    >("lms", "events", getDefaultData("events"));
 
-  const [userGroup, setUserGroup] = useLocalStorage<
-    ContextStateValue<API.UserGroupRow>
-  >("lms", "userGroup", getDefaultData("userGroup"));
+    const [userGroup, setUserGroup] = useLocalStorage<
+      ContextStateValue<API.UserGroupRow>
+    >("lms", "userGroup", getDefaultData("userGroup"));
 
-  const [userGroups, setUserGroups] = useLocalStorage<
-    ContextListState<API.UserGroup>
-  >("lms", "userGroups", getDefaultData("userGroups"));
+    const [userGroups, setUserGroups] = useLocalStorage<
+      ContextListState<API.UserGroup>
+    >("lms", "userGroups", getDefaultData("userGroups"));
 
-  const [registerableGroups, setRegisterableGroups] = useLocalStorage<
-    ContextListState<API.UserGroup>
-  >("lms", "registerableGroups", getDefaultData("registerableGroups"));
+    const [registerableGroups, setRegisterableGroups] = useLocalStorage<
+      ContextListState<API.UserGroup>
+    >("lms", "registerableGroups", getDefaultData("registerableGroups"));
 
-  const [course, setCourse] = useLocalStorage<
-    ContextStateValue<API.CourseListItem>
-  >("lms", "course", getDefaultData("course"));
+    const [course, setCourse] = useLocalStorage<
+      ContextStateValue<API.CourseListItem>
+    >("lms", "course", getDefaultData("course"));
 
-  const [settings, setSettings] = useLocalStorage<API.AppSettings>(
-    "lms",
-    "settings",
-    getDefaultData("settings")
-  );
+    const [settings, setSettings] = useLocalStorage<API.AppSettings>(
+      "lms",
+      "settings",
+      getDefaultData("settings")
+    );
 
-  const [config, setConfig] = useLocalStorage<API.AppConfig>(
-    "lms",
-    "config",
-    getDefaultData("config")
-  );
+    const [config, setConfig] = useLocalStorage<API.AppConfig>(
+      "lms",
+      "config",
+      getDefaultData("config")
+    );
 
-  const [uniqueTags, setUniqueTags] = useLocalStorage<
-    ContextListState<API.Tag>
-  >("lms", "tags", getDefaultData("uniqueTags"));
+    const [uniqueTags, setUniqueTags] = useLocalStorage<
+      ContextListState<API.Tag>
+    >("lms", "tags", getDefaultData("uniqueTags"));
 
-  const [categoryTree, setCategoryTree] = useLocalStorage<
-    ContextListState<API.Category>
-  >("lms", "categories", getDefaultData("categoryTree"));
+    const [categoryTree, setCategoryTree] = useLocalStorage<
+      ContextListState<API.Category>
+    >("lms", "categories", getDefaultData("categoryTree"));
 
-  const [program, setProgram] = useLocalStorage<
-    ContextStateValue<API.CourseProgram>
-  >("lms", "tags", getDefaultData("program"));
+    const [program, setProgram] = useLocalStorage<
+      ContextStateValue<API.CourseProgram>
+    >("lms", "tags", getDefaultData("program"));
 
-  const [cart, setCart] = useLocalStorage<ContextStateValue<API.Cart>>(
-    "lms",
-    "cart",
-    getDefaultData("cart")
-  );
+    const [cart, setCart] = useLocalStorage<ContextStateValue<API.Cart>>(
+      "lms",
+      "cart",
+      getDefaultData("cart")
+    );
 
-  const [token, setToken] = useLocalStorage<string | null>(
-    "lms",
-    "token",
-    null
-  );
+    const [token, setToken] = useLocalStorage<string | null>(
+      "lms",
+      "token",
+      null
+    );
 
-  const [tokenExpireDate, setTokenExpireDate] = useLocalStorage<string | null>(
-    "lms",
-    "tokenExpireDate",
-    null
-  );
+    const [tokenExpireDate, setTokenExpireDate] = useLocalStorage<
+      string | null
+    >("lms", "tokenExpireDate", null);
 
-  const [user, setUser] = useLocalStorage<ContextStateValue<API.UserItem>>(
-    "lms",
-    "user",
-    getDefaultData("user")
-  );
+    const [user, setUser] = useLocalStorage<ContextStateValue<API.UserItem>>(
+      "lms",
+      "user",
+      getDefaultData("user")
+    );
 
-  const [progress, setProgress] = useState<
-    ContextStateValue<API.CourseProgress>
-  >(getDefaultData("progress"));
+    const [progress, setProgress] = useState<
+      ContextStateValue<API.CourseProgress>
+    >(getDefaultData("progress"));
 
-  const [tutors, setTutors] = useLocalStorage<ContextListState<API.UserItem>>(
-    "lms",
-    "tutors",
-    getDefaultData("tutors")
-  );
+    const [tutors, setTutors] = useLocalStorage<ContextListState<API.UserItem>>(
+      "lms",
+      "tutors",
+      getDefaultData("tutors")
+    );
 
-  const [orders, setOrders] = useLocalStorage<
-    ContextPaginatedMetaState<API.Order>
-  >("lms", "orders", getDefaultData("orders"));
+    const [orders, setOrders] = useLocalStorage<
+      ContextPaginatedMetaState<API.Order>
+    >("lms", "orders", getDefaultData("orders"));
 
-  const [payments, setPayments] = useLocalStorage<
-    ContextPaginatedMetaState<API.Payment>
-  >("lms", "payments", getDefaultData("payments"));
+    const [payments, setPayments] = useLocalStorage<
+      ContextPaginatedMetaState<API.Payment>
+    >("lms", "payments", getDefaultData("payments"));
 
-  const [certificates, setCertificates] = useLocalStorage<
-    ContextPaginatedMetaState<API.Certificate>
-  >("lms", "certificates", getDefaultData("certificates"));
+    const [certificates, setCertificates] = useLocalStorage<
+      ContextPaginatedMetaState<API.Certificate>
+    >("lms", "certificates", getDefaultData("certificates"));
 
-  const [mattermostChannels, setMattermostChannels] = useLocalStorage<
-    ContextStateValue<API.MattermostData>
-  >("lms", "mattermostChannels", getDefaultData("mattermostChannels"));
+    const [mattermostChannels, setMattermostChannels] = useLocalStorage<
+      ContextStateValue<API.MattermostData>
+    >("lms", "mattermostChannels", getDefaultData("mattermostChannels"));
 
-  const [tutor, setTutor] = useState<ContextStateValue<API.UserItem>>(
-    getDefaultData("tutor")
-  );
+    const [tutor, setTutor] = useState<ContextStateValue<API.UserItem>>(
+      getDefaultData("tutor")
+    );
 
-  const [pages, setPages] = useLocalStorage<
-    ContextPaginatedMetaState<API.PageListItem>
-  >("lms", "pages", getDefaultData("pages"));
+    const [pages, setPages] = useLocalStorage<
+      ContextPaginatedMetaState<API.PageListItem>
+    >("lms", "pages", getDefaultData("pages"));
 
-  const [page, setPage] = useLocalStorage<ContextStateValue<API.Page>>(
-    "lms",
-    "page",
-    getDefaultData("page")
-  );
+    const [page, setPage] = useLocalStorage<ContextStateValue<API.Page>>(
+      "lms",
+      "page",
+      getDefaultData("page")
+    );
 
-  const [fontSize, setFontSize] = useLocalStorage<FontSize>(
-    "lms",
-    "fontSize",
-    getDefaultData("fontSize")
-  );
+    const [fontSize, setFontSize] = useLocalStorage<FontSize>(
+      "lms",
+      "fontSize",
+      getDefaultData("fontSize")
+    );
 
-  const [h5p, setH5P] = useLocalStorage<ContextStateValue<API.H5PObject>>(
-    "lms",
-    "h5p",
-    getDefaultData("h5p")
-  );
+    const [h5p, setH5P] = useLocalStorage<ContextStateValue<API.H5PObject>>(
+      "lms",
+      "h5p",
+      getDefaultData("h5p")
+    );
 
-  const [notifications, setNotifications] = useLocalStorage<
-    ContextListState<API.Notification>
-  >("lms", "notifications", getDefaultData("notifications"));
+    const [notifications, setNotifications] = useLocalStorage<
+      ContextListState<API.Notification>
+    >("lms", "notifications", getDefaultData("notifications"));
 
-  const [fields, setFields] = useLocalStorage<
-    ContextListState<EscolaLms.ModelFields.Models.Metadata>
-  >("lms", "fields", getDefaultData("fields"));
+    const [fields, setFields] = useLocalStorage<
+      ContextListState<EscolaLms.ModelFields.Models.Metadata>
+    >("lms", "fields", getDefaultData("fields"));
 
-  const [stationaryEvents, setStationaryEvents] = useLocalStorage<
-    ContextListState<EscolaLms.StationaryEvents.Models.StationaryEvent>
-  >("lms", "stationaryEvents", getDefaultData("stationaryEvents"));
+    const [stationaryEvents, setStationaryEvents] = useLocalStorage<
+      ContextListState<EscolaLms.StationaryEvents.Models.StationaryEvent>
+    >("lms", "stationaryEvents", getDefaultData("stationaryEvents"));
 
-  const [stationaryEvent, setStationaryEvent] = useLocalStorage<
-    ContextStateValue<EscolaLms.StationaryEvents.Models.StationaryEvent>
-  >("lms", "stationaryEvent", getDefaultData("stationaryEvent"));
+    const [stationaryEvent, setStationaryEvent] = useLocalStorage<
+      ContextStateValue<EscolaLms.StationaryEvents.Models.StationaryEvent>
+    >("lms", "stationaryEvent", getDefaultData("stationaryEvent"));
 
-  const [userStationaryEvents, setUserStationaryEvents] = useLocalStorage<
-    ContextListState<API.StationaryEvent>
-  >("lms", "userStationaryEvents", getDefaultData("userStationaryEvents"));
+    const [userStationaryEvents, setUserStationaryEvents] = useLocalStorage<
+      ContextListState<API.StationaryEvent>
+    >("lms", "userStationaryEvents", getDefaultData("userStationaryEvents"));
 
-  const [webinar, setWebinar] = useLocalStorage<
-    ContextStateValue<EscolaLms.Webinar.Models.Webinar>
-  >("lms", "webinar", getDefaultData("webinar"));
+    const [webinar, setWebinar] = useLocalStorage<
+      ContextStateValue<EscolaLms.Webinar.Models.Webinar>
+    >("lms", "webinar", getDefaultData("webinar"));
 
-  const [userWebinars, setUserWebinars] = useLocalStorage<
-    ContextListState<API.Event>
-  >("lms", "userWebinars", getDefaultData("userWebinars"));
+    const [userWebinars, setUserWebinars] = useLocalStorage<
+      ContextListState<API.Event>
+    >("lms", "userWebinars", getDefaultData("userWebinars"));
 
-  const [products, setProducts] = useLocalStorage<
-    ContextPaginatedMetaState<API.Product>
-  >("lms", "products", getDefaultData("products"));
+    const [products, setProducts] = useLocalStorage<
+      ContextPaginatedMetaState<API.Product>
+    >("lms", "products", getDefaultData("products"));
 
-  const [product, setProduct] = useLocalStorage<ContextStateValue<API.Product>>(
-    "lms",
-    "product",
-    getDefaultData("product")
-  );
+    const [product, setProduct] = useLocalStorage<
+      ContextStateValue<API.Product>
+    >("lms", "product", getDefaultData("product"));
 
-  const abortControllers = useRef<{
-    cart: AbortController | null;
-  }>({
-    cart: null,
-  });
-
-  const fetchConfig = useCallback(() => {
-    return getConfig().then((resposne) => {
-      setConfig(resposne.data);
+    const abortControllers = useRef<{
+      cart: AbortController | null;
+    }>({
+      cart: null,
     });
-  }, []);
 
-  useEffect(() => {
-    getSettings().then((response) => {
-      setSettings(response.data);
-    });
-    fetchConfig();
-    setUniqueTags((prevState) => ({ ...prevState, loading: true }));
-    getUniqueTags().then((response) => {
-      setUniqueTags({ list: response.data, loading: false });
-    });
-    setCategoryTree((prevState) => ({ ...prevState, loading: true }));
-    getCategoryTree().then((response) => {
-      setCategoryTree({ list: response.data, loading: false });
-    });
-  }, []);
+    const fetchConfig = useCallback(() => {
+      return getConfig().then((resposne) => {
+        setConfig(resposne.data);
+      });
+    }, []);
 
-  useEffect(() => {
-    if (defaults) {
-      defaults.consultation !== null &&
-        setConsultations({
-          loading: false,
-          list: defaults.consultations?.list,
-          error: undefined,
-        });
-      defaults.courses !== null &&
-        setCourses({
-          loading: false,
-          list: defaults.courses?.list,
-          error: undefined,
-        });
-      defaults.webinars !== null &&
-        setWebinars({
-          loading: false,
-          list: defaults.webinars?.list,
-          error: undefined,
-        });
-      defaults.stationaryEvents !== null &&
-        setStationaryEvents({
-          loading: false,
-          list: defaults.stationaryEvents?.list,
-          error: undefined,
-        });
-      defaults.events !== null &&
-        setEvents({
-          loading: false,
-          list: defaults.events?.list,
-          error: undefined,
-        });
-    }
-  }, [defaults]);
+    useEffect(() => {
+      getSettings().then((response) => {
+        setSettings(response.data);
+      });
+      fetchConfig();
+      setUniqueTags((prevState) => ({ ...prevState, loading: true }));
+      getUniqueTags().then((response) => {
+        setUniqueTags({ list: response.data, loading: false });
+      });
+      setCategoryTree((prevState) => ({ ...prevState, loading: true }));
+      getCategoryTree().then((response) => {
+        setCategoryTree({ list: response.data, loading: false });
+      });
+    }, []);
 
-  const fetchFields = useCallback((filter: API.FieldsParams) => {
-    setFields((prevState) => ({ ...prevState, loading: true }));
-
-    return getFields(filter)
-      .then((response) => {
-        if (response.success) {
-          setFields({
+    useEffect(() => {
+      if (defaults) {
+        defaults.consultation !== null &&
+          setConsultations({
             loading: false,
-            list: response.data,
+            list: defaults.consultations?.list,
             error: undefined,
           });
-        }
-      })
-      .catch((error) => {
-        setFields((prevState) => ({
-          ...prevState,
-          loading: false,
-          error: error,
-        }));
-      });
-  }, []);
+        defaults.courses !== null &&
+          setCourses({
+            loading: false,
+            list: defaults.courses?.list,
+            error: undefined,
+          });
+        defaults.webinars !== null &&
+          setWebinars({
+            loading: false,
+            list: defaults.webinars?.list,
+            error: undefined,
+          });
+        defaults.stationaryEvents !== null &&
+          setStationaryEvents({
+            loading: false,
+            list: defaults.stationaryEvents?.list,
+            error: undefined,
+          });
+        defaults.events !== null &&
+          setEvents({
+            loading: false,
+            list: defaults.events?.list,
+            error: undefined,
+          });
+      }
+    }, [defaults]);
 
-  const fetchStationaryEvents = useCallback(
-    (filter: API.StationaryEventsParams) => {
-      setStationaryEvents((prevState) => ({ ...prevState, loading: true }));
+    const fetchFields = useCallback((filter: API.FieldsParams) => {
+      setFields((prevState) => ({ ...prevState, loading: true }));
 
-      return getStationaryEvents(filter)
+      return getFields(filter)
         .then((response) => {
           if (response.success) {
-            setStationaryEvents({
+            setFields({
               loading: false,
               list: response.data,
               error: undefined,
@@ -439,113 +412,105 @@ export const EscolaLMSContextProvider: FunctionComponent<
           }
         })
         .catch((error) => {
-          setStationaryEvents((prevState) => ({
+          setFields((prevState) => ({
             ...prevState,
             loading: false,
             error: error,
           }));
         });
-    },
-    []
-  );
+    }, []);
 
-  const fetchUserWebinars = useCallback(() => {
-    setUserWebinars((prevState) => ({ ...prevState, loading: true }));
+    const fetchStationaryEvents = useCallback(
+      (filter: API.StationaryEventsParams) => {
+        setStationaryEvents((prevState) => ({ ...prevState, loading: true }));
 
-    return token
-      ? getMyWebinars(token)
+        return getStationaryEvents(filter)
           .then((response) => {
             if (response.success) {
-              setUserWebinars({
+              setStationaryEvents({
                 loading: false,
                 list: response.data,
                 error: undefined,
               });
             }
-            if (response.success === false) {
+          })
+          .catch((error) => {
+            setStationaryEvents((prevState) => ({
+              ...prevState,
+              loading: false,
+              error: error,
+            }));
+          });
+      },
+      []
+    );
+
+    const fetchUserWebinars = useCallback(() => {
+      setUserWebinars((prevState) => ({ ...prevState, loading: true }));
+
+      return token
+        ? getMyWebinars(token)
+            .then((response) => {
+              if (response.success) {
+                setUserWebinars({
+                  loading: false,
+                  list: response.data,
+                  error: undefined,
+                });
+              }
+              if (response.success === false) {
+                setUserWebinars((prevState) => ({
+                  ...prevState,
+                  loading: false,
+                  error: response,
+                }));
+              }
+            })
+            .catch((error) => {
               setUserWebinars((prevState) => ({
                 ...prevState,
                 loading: false,
-                error: response,
+                error: error,
               }));
-            }
-          })
-          .catch((error) => {
-            setUserWebinars((prevState) => ({
-              ...prevState,
-              loading: false,
-              error: error,
-            }));
-          })
-      : Promise.reject();
-  }, [token]);
+            })
+        : Promise.reject();
+    }, [token]);
 
-  const fetchUserStationaryEvents = useCallback(() => {
-    setUserStationaryEvents((prevState) => ({ ...prevState, loading: true }));
+    const fetchUserStationaryEvents = useCallback(() => {
+      setUserStationaryEvents((prevState) => ({ ...prevState, loading: true }));
 
-    return token
-      ? getMyStationaryEvents(token)
-          .then((response) => {
-            if (response.success) {
-              setUserStationaryEvents({
-                loading: false,
-                list: response.data,
-                error: undefined,
-              });
-            }
-            if (response.success === false) {
+      return token
+        ? getMyStationaryEvents(token)
+            .then((response) => {
+              if (response.success) {
+                setUserStationaryEvents({
+                  loading: false,
+                  list: response.data,
+                  error: undefined,
+                });
+              }
+              if (response.success === false) {
+                setUserStationaryEvents((prevState) => ({
+                  ...prevState,
+                  loading: false,
+                  error: response,
+                }));
+              }
+            })
+            .catch((error) => {
               setUserStationaryEvents((prevState) => ({
                 ...prevState,
                 loading: false,
-                error: response,
+                error: error,
               }));
-            }
-          })
-          .catch((error) => {
-            setUserStationaryEvents((prevState) => ({
-              ...prevState,
-              loading: false,
-              error: error,
-            }));
-          })
-      : Promise.reject();
-  }, [token]);
+            })
+        : Promise.reject();
+    }, [token]);
 
-  const fetchTutorConsultations = useCallback(() => {
-    setTutorConsultations((prevState) => ({ ...prevState, loading: true }));
-    return token
-      ? getTutorConsultations(token)
-          .then((response) => {
-            if (response.success) {
-              setTutorConsultations({
-                loading: false,
-                list: response,
-                error: undefined,
-              });
-            }
-            if (response.success === false) {
-              setTutorConsultations((prevState) => ({
-                ...prevState,
-                loading: false,
-                error: response,
-              }));
-            }
-          })
-          .catch((error) => {
-            setTutorConsultations((prevState) => ({
-              ...prevState,
-              loading: false,
-              error: error,
-            }));
-          })
-      : Promise.reject();
-  }, [token]);
-
-  const approveConsultationTerm = useCallback(
-    (id: number) => {
+    const fetchTutorConsultations = useCallback(() => {
       setTutorConsultations((prevState) => ({ ...prevState, loading: true }));
       return token
-        ? approveConsultation(token, id)
+        ? getTutorConsultations(token)
             .then((response) => {
               if (response.success) {
                 setTutorConsultations({
@@ -554,149 +519,152 @@ export const EscolaLMSContextProvider: FunctionComponent<
                   error: undefined,
                 });
               }
-            })
-            .catch((error) => {
-              setTutorConsultations((prevState) => ({
-                ...prevState,
-                loading: false,
-                error: error,
-              }));
-            })
-        : Promise.reject();
-    },
-    [token]
-  );
-
-  const rejectConsultationTerm = useCallback(
-    (id: number) => {
-      setTutorConsultations((prevState) => ({ ...prevState, loading: true }));
-      return token
-        ? rejectConsultation(token, id)
-            .then((response) => {
-              if (response.success) {
-                setTutorConsultations({
-                  loading: false,
-                  list: response,
-                  error: undefined,
-                });
-              }
-            })
-            .catch((error) => {
-              setTutorConsultations((prevState) => ({
-                ...prevState,
-                loading: false,
-                error: error,
-              }));
-            })
-        : Promise.reject();
-    },
-    [token]
-  );
-
-  const generateConsultationJitsy = useCallback(
-    (id: number) => {
-      return token ? genereteJitsy(token, id) : Promise.reject();
-    },
-    [token]
-  );
-
-  const generateWebinarJitsy = useCallback(
-    (id: number) => {
-      return token ? genereteJitsyWebinar(token, id) : Promise.reject();
-    },
-    [token]
-  );
-
-  const fetchCertificates = useCallback(() => {
-    setCertificates((prevState) => ({ ...prevState, loading: true }));
-
-    return token
-      ? getCertificates(token)
-          .then((response) => {
-            if (response.success) {
-              setCertificates({
-                loading: false,
-                list: response,
-                error: undefined,
-              });
-            }
-          })
-          .catch((error) => {
-            setCertificates((prevState) => ({
-              ...prevState,
-              loading: false,
-              error: error,
-            }));
-          })
-      : Promise.reject();
-  }, [token]);
-
-  const fetchCertificate = useCallback(
-    (id: number) => {
-      return token ? getCertificate(token, id) : Promise.reject();
-    },
-    [token]
-  );
-
-  const fetchMattermostChannels = useCallback(() => {
-    setMattermostChannels((prevState) => ({ ...prevState, loading: true }));
-
-    return token
-      ? getMattermostChannels(token)
-          .then((response) => {
-            if (response.success) {
-              setMattermostChannels({
-                loading: false,
-                value: response.data,
-                error: undefined,
-              });
-            }
-          })
-          .catch((error) => {
-            setMattermostChannels((prevState) => ({
-              ...prevState,
-              loading: false,
-              error: error,
-            }));
-          })
-      : Promise.reject();
-  }, [token]);
-
-  const fetchNotifications = useCallback(() => {
-    setNotifications((prevState) => ({ ...prevState, loading: true }));
-    return token
-      ? getNotifications(token)
-          .then((response) => {
-            if (response.success) {
-              setNotifications({ list: response.data, loading: false });
-            }
-          })
-          .catch((error) => {
-            setNotifications((prevState) => ({
-              ...prevState,
-              loading: false,
-              error: error,
-            }));
-          })
-      : Promise.reject();
-  }, [token, notifications]);
-
-  const readNotify = useCallback(
-    (id: string) => {
-      return token
-        ? readNotification(id, token)
-            .then((response) => {
-              if (response.success) {
-                setNotifications((prevState) => ({
+              if (response.success === false) {
+                setTutorConsultations((prevState) => ({
                   ...prevState,
-                  list:
-                    prevState && prevState.list
-                      ? prevState.list.filter(
-                          (item: API.Notification) => item.id !== id
-                        )
-                      : [],
                   loading: false,
+                  error: response,
                 }));
+              }
+            })
+            .catch((error) => {
+              setTutorConsultations((prevState) => ({
+                ...prevState,
+                loading: false,
+                error: error,
+              }));
+            })
+        : Promise.reject();
+    }, [token]);
+
+    const approveConsultationTerm = useCallback(
+      (id: number) => {
+        setTutorConsultations((prevState) => ({ ...prevState, loading: true }));
+        return token
+          ? approveConsultation(token, id)
+              .then((response) => {
+                if (response.success) {
+                  setTutorConsultations({
+                    loading: false,
+                    list: response,
+                    error: undefined,
+                  });
+                }
+              })
+              .catch((error) => {
+                setTutorConsultations((prevState) => ({
+                  ...prevState,
+                  loading: false,
+                  error: error,
+                }));
+              })
+          : Promise.reject();
+      },
+      [token]
+    );
+
+    const rejectConsultationTerm = useCallback(
+      (id: number) => {
+        setTutorConsultations((prevState) => ({ ...prevState, loading: true }));
+        return token
+          ? rejectConsultation(token, id)
+              .then((response) => {
+                if (response.success) {
+                  setTutorConsultations({
+                    loading: false,
+                    list: response,
+                    error: undefined,
+                  });
+                }
+              })
+              .catch((error) => {
+                setTutorConsultations((prevState) => ({
+                  ...prevState,
+                  loading: false,
+                  error: error,
+                }));
+              })
+          : Promise.reject();
+      },
+      [token]
+    );
+
+    const generateConsultationJitsy = useCallback(
+      (id: number) => {
+        return token ? genereteJitsy(token, id) : Promise.reject();
+      },
+      [token]
+    );
+
+    const generateWebinarJitsy = useCallback(
+      (id: number) => {
+        return token ? genereteJitsyWebinar(token, id) : Promise.reject();
+      },
+      [token]
+    );
+
+    const fetchCertificates = useCallback(() => {
+      setCertificates((prevState) => ({ ...prevState, loading: true }));
+
+      return token
+        ? getCertificates(token)
+            .then((response) => {
+              if (response.success) {
+                setCertificates({
+                  loading: false,
+                  list: response,
+                  error: undefined,
+                });
+              }
+            })
+            .catch((error) => {
+              setCertificates((prevState) => ({
+                ...prevState,
+                loading: false,
+                error: error,
+              }));
+            })
+        : Promise.reject();
+    }, [token]);
+
+    const fetchCertificate = useCallback(
+      (id: number) => {
+        return token ? getCertificate(token, id) : Promise.reject();
+      },
+      [token]
+    );
+
+    const fetchMattermostChannels = useCallback(() => {
+      setMattermostChannels((prevState) => ({ ...prevState, loading: true }));
+
+      return token
+        ? getMattermostChannels(token)
+            .then((response) => {
+              if (response.success) {
+                setMattermostChannels({
+                  loading: false,
+                  value: response.data,
+                  error: undefined,
+                });
+              }
+            })
+            .catch((error) => {
+              setMattermostChannels((prevState) => ({
+                ...prevState,
+                loading: false,
+                error: error,
+              }));
+            })
+        : Promise.reject();
+    }, [token]);
+
+    const fetchNotifications = useCallback(() => {
+      setNotifications((prevState) => ({ ...prevState, loading: true }));
+      return token
+        ? getNotifications(token)
+            .then((response) => {
+              if (response.success) {
+                setNotifications({ list: response.data, loading: false });
               }
             })
             .catch((error) => {
@@ -707,86 +675,52 @@ export const EscolaLMSContextProvider: FunctionComponent<
               }));
             })
         : Promise.reject();
-    },
-    [token, notifications]
-  );
+    }, [token, notifications]);
 
-  const fetchCourses = useCallback(
-    (filter: API.CourseParams) => {
-      setCourses((prevState) => ({ ...prevState, loading: true }));
-      return getCourses(filter)
-        .then((response) => {
-          if (response.success) {
-            setCourses({
-              loading: false,
-              list: response,
-              error: undefined,
-            });
-          }
-          if (response.success === false) {
-            setCourses((prevState) => ({
-              ...prevState,
-              loading: false,
-              error: response,
-            }));
-          }
-        })
-        .catch((error) => {
-          setCourses((prevState) => ({
-            ...prevState,
-            loading: false,
-            error: error,
-          }));
-        });
-    },
-    [courses]
-  );
+    const readNotify = useCallback(
+      (id: string) => {
+        return token
+          ? readNotification(id, token)
+              .then((response) => {
+                if (response.success) {
+                  setNotifications((prevState) => ({
+                    ...prevState,
+                    list:
+                      prevState && prevState.list
+                        ? prevState.list.filter(
+                            (item: API.Notification) => item.id !== id
+                          )
+                        : [],
+                    loading: false,
+                  }));
+                }
+              })
+              .catch((error) => {
+                setNotifications((prevState) => ({
+                  ...prevState,
+                  loading: false,
+                  error: error,
+                }));
+              })
+          : Promise.reject();
+      },
+      [token, notifications]
+    );
 
-  const fetchConsultations = useCallback(
-    (filter: API.ConsultationParams) => {
-      setConsultations((prevState) => ({ ...prevState, loading: true }));
-      return getConsultations(filter)
-        .then((response) => {
-          if (response.success) {
-            setConsultations({
-              loading: false,
-              list: response,
-              error: undefined,
-            });
-          }
-          if (response.success === false) {
-            setConsultations((prevState) => ({
-              ...prevState,
-              loading: false,
-              error: response,
-            }));
-          }
-        })
-        .catch((error) => {
-          setConsultations((prevState) => ({
-            ...prevState,
-            loading: false,
-            error: error,
-          }));
-        });
-    },
-    [consultations]
-  );
-
-  const fetchUserConsultations = useCallback(() => {
-    setUserConsultations((prevState) => ({ ...prevState, loading: true }));
-    return token
-      ? getUserConsultations(token)
+    const fetchCourses = useCallback(
+      (filter: API.CourseParams) => {
+        setCourses((prevState) => ({ ...prevState, loading: true }));
+        return getCourses(filter)
           .then((response) => {
             if (response.success) {
-              setUserConsultations({
+              setCourses({
                 loading: false,
                 list: response,
                 error: undefined,
               });
             }
             if (response.success === false) {
-              setUserConsultations((prevState) => ({
+              setCourses((prevState) => ({
                 ...prevState,
                 loading: false,
                 error: response,
@@ -794,487 +728,61 @@ export const EscolaLMSContextProvider: FunctionComponent<
             }
           })
           .catch((error) => {
-            setUserConsultations((prevState) => ({
+            setCourses((prevState) => ({
               ...prevState,
               loading: false,
               error: error,
             }));
-          })
-      : Promise.reject();
-  }, [userConsultations]);
-
-  const bookConsultationTerm = useCallback((id: number, term: string) => {
-    return token
-      ? bookConsultationDate(token, id, term).then((response) => {
-          if (response.success) {
-            fetchUserConsultations();
-            return response;
-          }
-          throw Error("Error occured");
-        })
-      : Promise.reject();
-  }, []);
-
-  const fetchConsultation = useCallback((id: number) => {
-    setConsultation((prevState) => ({ ...prevState, loading: true }));
-    return getConsultation(id).then((response) => {
-      if (response.success) {
-        setConsultation({
-          loading: false,
-          value: {
-            ...response.data,
-          },
-        });
-      }
-      if (response.success === false) {
-        setConsultation((prevState) => ({
-          ...prevState,
-          loading: false,
-          error: response,
-        }));
-      }
-    });
-  }, []);
-
-  const getProductInfo = useCallback(
-    (id: number) => {
-      return token ? getSingleProduct(id, token) : Promise.reject();
-    },
-    [token]
-  );
-
-  const fetchWebinars = useCallback((filter: API.WebinarParams) => {
-    setWebinars((prevState) => ({ ...prevState, loading: true }));
-    return getWebinars(filter)
-      .then((response) => {
-        if (response.success) {
-          setWebinars({
-            loading: false,
-            list: response.data,
-            error: undefined,
           });
-        }
-        if (response.success === false) {
-          setWebinars((prevState) => ({
-            ...prevState,
-            loading: false,
-            error: response,
-          }));
-        }
-      })
-      .catch((error) => {
-        setWebinars((prevState) => ({
-          ...prevState,
-          loading: false,
-          error: error,
-        }));
-      });
-  }, []);
+      },
+      [courses]
+    );
 
-  const fetchEvents = useCallback((filter: API.EventsParams) => {
-    setEvents((prevState) => ({ ...prevState, loading: true }));
-    return getEvents(filter)
-      .then((response) => {
-        if (response.success) {
-          setEvents({
-            loading: false,
-            list: response,
-            error: undefined,
-          });
-        }
-        if (response.success === false) {
-          setEvents((prevState) => ({
-            ...prevState,
-            loading: false,
-            error: response,
-          }));
-        }
-      })
-      .catch((error) => {
-        setEvents((prevState) => ({
-          ...prevState,
-          loading: false,
-          error: error,
-        }));
-      });
-  }, []);
-
-  const fetchUserGroup = useCallback(
-    (id: number) => {
-      setUserGroup((prevState) => ({ ...prevState, loading: true }));
-      return getUserGroup(id)
-        .then((response) => {
-          if (response.success) {
-            setUserGroup({
-              loading: false,
-              value: response,
-              error: undefined,
-            });
-          }
-          if (response.success === false) {
-            setUserGroup((prevState) => ({
-              ...prevState,
-              loading: false,
-              error: response,
-            }));
-          }
-        })
-        .catch((error) => {
-          setUserGroup((prevState) => ({
-            ...prevState,
-            loading: false,
-            error: error,
-          }));
-        });
-    },
-    [userGroups]
-  );
-
-  const fetchRegisterableGroups = () => {
-    setRegisterableGroups((prevState) => ({ ...prevState, loading: true }));
-    return getRegisterableGroups()
-      .then((response) => {
-        if (response.success) {
-          setRegisterableGroups({
-            loading: false,
-            list: response.data,
-            error: undefined,
-          });
-        }
-        if (response.success === false) {
-          setRegisterableGroups((prevState) => ({
-            ...prevState,
-            loading: false,
-            error: response,
-          }));
-        }
-      })
-      .catch((error) => {
-        setRegisterableGroups((prevState) => ({
-          ...prevState,
-          loading: false,
-          error: error,
-        }));
-      });
-  };
-
-  const fetchUserGroups = useCallback(
-    ({ pageSize, current }: API.UserGroupsParams) => {
-      setUserGroups((prevState) => ({ ...prevState, loading: true }));
-      return getUserGroups({ pageSize, current })
-        .then((response) => {
-          if (response.success) {
-            setUserGroups({
-              loading: false,
-              list: response.data,
-              error: undefined,
-            });
-          }
-          if (response.success === false) {
-            setUserGroups((prevState) => ({
-              ...prevState,
-              loading: false,
-              error: response,
-            }));
-          }
-        })
-        .catch((error) => {
-          setUserGroups((prevState) => ({
-            ...prevState,
-            loading: false,
-            error: error,
-          }));
-        });
-    },
-    [userGroups]
-  );
-
-  const fetchCourse = useCallback((id: number) => {
-    setCourse((prevState) => ({ ...prevState, loading: true }));
-    return getCourse(id).then((response) => {
-      if (response.success) {
-        setCourse({
-          loading: false,
-          value: {
-            ...response.data,
-            lessons: sortProgram(response.data.lessons || []),
-          },
-        });
-      }
-      if (response.success === false) {
-        setCourse((prevState) => ({
-          ...prevState,
-          loading: false,
-          error: response,
-        }));
-      }
-    });
-  }, []);
-
-  const socialAuthorize = useCallback((token: string) => {
-    setToken(token);
-  }, []);
-
-  const resetState = useCallback(() => {
-    setToken(null);
-
-    setUser(defaultConfig.user);
-    setProgram(defaultConfig.program);
-    setCart(defaultConfig.cart);
-    setCertificates(defaultConfig.certificates);
-    setNotifications(defaultConfig.notifications);
-    setMattermostChannels(defaultConfig.mattermostChannels);
-  }, []);
-
-  const logout = useCallback(() => {
-    // API Call here to destroy token
-    resetState();
-
-    return Promise.resolve();
-  }, []);
-
-  const register = useCallback((body: API.RegisterRequest) => {
-    return postRegister(body);
-  }, []);
-
-  useEffect(() => {
-    if (token) {
-      setUser((prevState) => ({ ...prevState, loading: true }));
-      getProfile(token)
-        .then((response) => {
-          if (response.success) {
-            setUser({
-              loading: false,
-              value: response.data,
-            });
-          }
-          if (response.success === false) {
-            setUser((prevState) => ({
-              ...prevState,
-              loading: false,
-              error: response,
-            }));
-          }
-        })
-        .catch(() => {
-          logout();
-        });
-    }
-  }, [token, logout]);
-
-  const login = useCallback((body: API.LoginRequest) => {
-    return postLogin(body).then((response) => {
-      if (response.success) {
-        setToken(response.data.token);
-        setTokenExpireDate(response.data.expires_at);
-      }
-    });
-  }, []);
-
-  const fetchQuestionnaires = useCallback(
-    (model: string, id: number) => {
-      return token ? getQuestionnaires(token, model, id) : Promise.reject();
-    },
-    [token]
-  );
-
-  const sendQuestionnaireAnswer = useCallback(
-    (
-      model: string,
-      modelID: number,
-      id: number,
-      body: Partial<EscolaLms.Questionnaire.Models.QuestionAnswer>
-    ) => {
-      return token
-        ? questionnaireAnswer(token, model, modelID, id, body)
-        : Promise.reject();
-    },
-    [token]
-  );
-
-  const fetchCart = useCallback(() => {
-    if (!token) {
-      return Promise.reject("No token provided");
-    }
-    setCart((prevState) => ({
-      ...prevState,
-      loading: true,
-    }));
-
-    if (abortControllers.current.cart) {
-      abortControllers.current.cart.abort();
-    }
-
-    const controller = new AbortController();
-    abortControllers.current.cart = controller;
-
-    try {
-      return getCart(token, { signal: controller.signal })
-        .then((response) => {
-          if (response.data.hasOwnProperty("items")) {
-            setCart({
-              loading: false,
-              value: response.data as API.Cart,
-            });
-          } else {
-            setCart((prevState) => ({
-              ...prevState,
-              loading: false,
-            }));
-          }
-        })
-        .catch((err) => {
-          if (err.name !== "AbortError") {
-            console.log(err);
-          }
-        });
-    } catch (err: any) {
-      return Promise.reject(err);
-    }
-  }, [token, abortControllers]);
-
-  const addToCart = useCallback(
-    (productId: number, quantity?: number) => {
-      if (!token) {
-        return Promise.reject("No token provided");
-      }
-      setCart((prevState) => ({
-        ...prevState,
-        loading: true,
-      }));
-      return postAddToCart(productId, token, quantity)
-        .then(() => {
-          fetchCart();
-        })
-        .catch((error) => {
-          setCart((prevState) => ({
-            ...prevState,
-            loading: false,
-            error: error.data,
-          }));
-        });
-    },
-    [fetchCart]
-  );
-
-  const removeFromCart = useCallback(
-    (itemId: number) => {
-      if (!token) {
-        return Promise.reject("No token provided");
-      }
-      setCart((prevState) => ({
-        ...prevState,
-        loading: true,
-      }));
-      return deleteRemoveFromCart(itemId, token)
-        .then((response) => {
-          setCart((prevState) => ({
-            ...prevState,
-            loading: false,
-            value: {
-              ...prevState.value,
-              items:
-                prevState && prevState.value
-                  ? prevState.value.items.filter((item) => item.id !== itemId)
-                  : [],
-            },
-          }));
-          fetchCart();
-        })
-        .catch((error) => {
-          setCart((prevState) => ({
-            ...prevState,
-            loading: false,
-            error: error.data,
-          }));
-        });
-    },
-    [fetchCart]
-  );
-
-  const payWithStripe = useCallback(
-    (paymentMethodId: string) => {
-      return token
-        ? postPayWithStripe(paymentMethodId, token).then((res) => {
-            console.log(res);
-          })
-        : Promise.reject();
-    },
-    [token]
-  );
-
-  const payWithP24 = useCallback(
-    (email: string, return_url: string) => {
-      return token
-        ? postPayWithP24(email, token, return_url)
-            .then((res) => {
-              return res;
-            })
-            .catch((err) => {
-              console.log(err);
-              return err;
-            })
-        : Promise.reject();
-    },
-    [token]
-  );
-
-  const fetchProgress = useCallback(() => {
-    setProgress((prevState) => ({
-      ...prevState,
-      loading: true,
-    }));
-    return token
-      ? getProgress(token).then((res) => {
-          if (res.success) {
-            setProgress({
-              loading: false,
-              value: res.data,
-            });
-          }
-        })
-      : Promise.reject();
-  }, [token]);
-
-  const fetchH5P = useCallback(
-    (id: string) => {
-      setH5P({ loading: true });
-      token
-        ? getH5p(Number(id))
-            .then((response) => {
-              if (response.success) {
-                setH5P({ loading: false, value: response.data });
-              }
-            })
-            .catch((error) => {
-              setH5P((prevState) => ({
+    const fetchConsultations = useCallback(
+      (filter: API.ConsultationParams) => {
+        setConsultations((prevState) => ({ ...prevState, loading: true }));
+        return getConsultations(filter)
+          .then((response) => {
+            if (response.success) {
+              setConsultations({
+                loading: false,
+                list: response,
+                error: undefined,
+              });
+            }
+            if (response.success === false) {
+              setConsultations((prevState) => ({
                 ...prevState,
                 loading: false,
-                error: error,
+                error: response,
               }));
-            })
-        : Promise.reject();
-    },
-    [token]
-  );
+            }
+          })
+          .catch((error) => {
+            setConsultations((prevState) => ({
+              ...prevState,
+              loading: false,
+              error: error,
+            }));
+          });
+      },
+      [consultations]
+    );
 
-  const fetchProgram = useCallback(
-    (id: number) => {
-      setProgram((prevState) => ({ ...prevState, loading: true }));
-      return id && token
-        ? getCourseProgram(id, token)
+    const fetchUserConsultations = useCallback(() => {
+      setUserConsultations((prevState) => ({ ...prevState, loading: true }));
+      return token
+        ? getUserConsultations(token)
             .then((response) => {
               if (response.success) {
-                setProgram({
+                setUserConsultations({
                   loading: false,
-                  value: {
-                    ...response.data,
-                    lessons: sortProgram(response.data.lessons),
-                  },
+                  list: response,
+                  error: undefined,
                 });
               }
               if (response.success === false) {
-                setProgram((prevState) => ({
+                setUserConsultations((prevState) => ({
                   ...prevState,
                   loading: false,
                   error: response,
@@ -1282,173 +790,544 @@ export const EscolaLMSContextProvider: FunctionComponent<
               }
             })
             .catch((error) => {
-              setProgram((prevState) => ({
+              setUserConsultations((prevState) => ({
                 ...prevState,
                 loading: false,
-                error: error.data,
+                error: error,
               }));
             })
         : Promise.reject();
-    },
-    [token]
-  );
+    }, [userConsultations]);
 
-  const fetchTutors = useCallback(() => {
-    setTutors((prevState) => ({
-      ...prevState,
-      loading: true,
-    }));
-    return getTutors()
-      .then((res) => {
-        if (res.success) {
-          setTutors({
-            loading: false,
-            list: res.data,
-          });
-        } else if (res.success === false) {
-          {
-            setTutors({
-              loading: false,
-              error: res,
-            });
-          }
-        }
-      })
-      .catch((error) => {
-        setTutors({
-          loading: false,
-          error: error.data,
-        });
-      });
-  }, []);
-
-  const fetchTutor = useCallback((id: number) => {
-    setTutor((prevState) => ({
-      ...prevState,
-      loading: true,
-    }));
-    return getTutor(id)
-      .then((res) => {
-        if (res.success) {
-          setTutor({
-            loading: false,
-            value: res.data,
-          });
-        } else if (res.success === false) {
-          {
-            setTutor({
-              loading: false,
-              error: res,
-            });
-          }
-        }
-      })
-      .catch((error) => {
-        setTutor({
-          loading: false,
-          error: error.data,
-        });
-      });
-  }, []);
-
-  const fetchOrders = useCallback(
-    (params?: API.PaginationParams) => {
-      setOrders((prevState) => ({
-        ...prevState,
-        loading: true,
-      }));
+    const bookConsultationTerm = useCallback((id: number, term: string) => {
       return token
-        ? getOrders(token, params)
-            .then((res) => {
-              if (res.success) {
-                setOrders({
-                  loading: false,
-                  list: res,
-                });
-              } else if (res.success === false) {
-                {
-                  setOrders({
-                    loading: false,
-                    error: res,
-                  });
-                }
-              }
-            })
-            .catch((error) => {
-              setOrders({
-                loading: false,
-                error: error.data,
-              });
-            })
-        : Promise.reject();
-    },
-    [token]
-  );
-
-  const fetchPayments = useCallback(() => {
-    setPayments((prevState) => ({
-      ...prevState,
-      loading: true,
-    }));
-    return token
-      ? getPayments(token)
-          .then((res) => {
-            if (res.success) {
-              setPayments({
-                loading: false,
-                list: res,
-              });
+        ? bookConsultationDate(token, id, term).then((response) => {
+            if (response.success) {
+              fetchUserConsultations();
+              return response;
             }
+            throw Error("Error occured");
           })
-          .catch((error) => {
-            setPayments({
-              loading: false,
-              error: error.data,
-            });
-          })
-      : Promise.reject();
-  }, [token]);
+        : Promise.reject();
+    }, []);
 
-  const fetchPages = useCallback(
-    (filter?: API.CourseParams) => {
-      setPages((prevState) => ({ ...prevState, loading: true }));
-      return getPages(filter)
+    const fetchConsultation = useCallback((id: number) => {
+      setConsultation((prevState) => ({ ...prevState, loading: true }));
+      return getConsultation(id).then((response) => {
+        if (response.success) {
+          setConsultation({
+            loading: false,
+            value: {
+              ...response.data,
+            },
+          });
+        }
+        if (response.success === false) {
+          setConsultation((prevState) => ({
+            ...prevState,
+            loading: false,
+            error: response,
+          }));
+        }
+      });
+    }, []);
+
+    const getProductInfo = useCallback(
+      (id: number) => {
+        return token ? getSingleProduct(id, token) : Promise.reject();
+      },
+      [token]
+    );
+
+    const fetchWebinars = useCallback((filter: API.WebinarParams) => {
+      setWebinars((prevState) => ({ ...prevState, loading: true }));
+      return getWebinars(filter)
         .then((response) => {
           if (response.success) {
-            setPages({
+            setWebinars({
               loading: false,
-              list: response,
+              list: response.data,
               error: undefined,
             });
           }
+          if (response.success === false) {
+            setWebinars((prevState) => ({
+              ...prevState,
+              loading: false,
+              error: response,
+            }));
+          }
         })
         .catch((error) => {
-          setPages((prevState) => ({
+          setWebinars((prevState) => ({
             ...prevState,
             loading: false,
             error: error,
           }));
         });
-    },
-    [pages]
-  );
+    }, []);
 
-  const fetchPage = useCallback(
-    (slug: string) => {
-      setPage((prevState) => ({
+    const fetchEvents = useCallback((filter: API.EventsParams) => {
+      setEvents((prevState) => ({ ...prevState, loading: true }));
+      return getEvents(filter)
+        .then((response) => {
+          if (response.success) {
+            setEvents({
+              loading: false,
+              list: response,
+              error: undefined,
+            });
+          }
+          if (response.success === false) {
+            setEvents((prevState) => ({
+              ...prevState,
+              loading: false,
+              error: response,
+            }));
+          }
+        })
+        .catch((error) => {
+          setEvents((prevState) => ({
+            ...prevState,
+            loading: false,
+            error: error,
+          }));
+        });
+    }, []);
+
+    const fetchUserGroup = useCallback(
+      (id: number) => {
+        setUserGroup((prevState) => ({ ...prevState, loading: true }));
+        return getUserGroup(id)
+          .then((response) => {
+            if (response.success) {
+              setUserGroup({
+                loading: false,
+                value: response,
+                error: undefined,
+              });
+            }
+            if (response.success === false) {
+              setUserGroup((prevState) => ({
+                ...prevState,
+                loading: false,
+                error: response,
+              }));
+            }
+          })
+          .catch((error) => {
+            setUserGroup((prevState) => ({
+              ...prevState,
+              loading: false,
+              error: error,
+            }));
+          });
+      },
+      [userGroups]
+    );
+
+    const fetchRegisterableGroups = () => {
+      setRegisterableGroups((prevState) => ({ ...prevState, loading: true }));
+      return getRegisterableGroups()
+        .then((response) => {
+          if (response.success) {
+            setRegisterableGroups({
+              loading: false,
+              list: response.data,
+              error: undefined,
+            });
+          }
+          if (response.success === false) {
+            setRegisterableGroups((prevState) => ({
+              ...prevState,
+              loading: false,
+              error: response,
+            }));
+          }
+        })
+        .catch((error) => {
+          setRegisterableGroups((prevState) => ({
+            ...prevState,
+            loading: false,
+            error: error,
+          }));
+        });
+    };
+
+    const fetchUserGroups = useCallback(
+      ({ pageSize, current }: API.UserGroupsParams) => {
+        setUserGroups((prevState) => ({ ...prevState, loading: true }));
+        return getUserGroups({ pageSize, current })
+          .then((response) => {
+            if (response.success) {
+              setUserGroups({
+                loading: false,
+                list: response.data,
+                error: undefined,
+              });
+            }
+            if (response.success === false) {
+              setUserGroups((prevState) => ({
+                ...prevState,
+                loading: false,
+                error: response,
+              }));
+            }
+          })
+          .catch((error) => {
+            setUserGroups((prevState) => ({
+              ...prevState,
+              loading: false,
+              error: error,
+            }));
+          });
+      },
+      [userGroups]
+    );
+
+    const fetchCourse = useCallback((id: number) => {
+      setCourse((prevState) => ({ ...prevState, loading: true }));
+      return getCourse(id).then((response) => {
+        if (response.success) {
+          setCourse({
+            loading: false,
+            value: {
+              ...response.data,
+              lessons: sortProgram(response.data.lessons || []),
+            },
+          });
+        }
+        if (response.success === false) {
+          setCourse((prevState) => ({
+            ...prevState,
+            loading: false,
+            error: response,
+          }));
+        }
+      });
+    }, []);
+
+    const socialAuthorize = useCallback((token: string) => {
+      setToken(token);
+    }, []);
+
+    const resetState = useCallback(() => {
+      setToken(null);
+
+      setUser(defaultConfig.user);
+      setProgram(defaultConfig.program);
+      setCart(defaultConfig.cart);
+      setCertificates(defaultConfig.certificates);
+      setNotifications(defaultConfig.notifications);
+      setMattermostChannels(defaultConfig.mattermostChannels);
+    }, []);
+
+    const logout = useCallback(() => {
+      // API Call here to destroy token
+      resetState();
+
+      return Promise.resolve();
+    }, []);
+
+    const register = useCallback((body: API.RegisterRequest) => {
+      return postRegister(body);
+    }, []);
+
+    useEffect(() => {
+      if (token) {
+        setUser((prevState) => ({ ...prevState, loading: true }));
+        getProfile(token)
+          .then((response) => {
+            if (response.success) {
+              setUser({
+                loading: false,
+                value: response.data,
+              });
+            }
+            if (response.success === false) {
+              setUser((prevState) => ({
+                ...prevState,
+                loading: false,
+                error: response,
+              }));
+            }
+          })
+          .catch(() => {
+            logout();
+          });
+      }
+    }, [token, logout]);
+
+    const login = useCallback((body: API.LoginRequest) => {
+      return postLogin(body).then((response) => {
+        if (response.success) {
+          setToken(response.data.token);
+          setTokenExpireDate(response.data.expires_at);
+        }
+      });
+    }, []);
+
+    const fetchQuestionnaires = useCallback(
+      (model: string, id: number) => {
+        return token ? getQuestionnaires(token, model, id) : Promise.reject();
+      },
+      [token]
+    );
+
+    const sendQuestionnaireAnswer = useCallback(
+      (
+        model: string,
+        modelID: number,
+        id: number,
+        body: Partial<EscolaLms.Questionnaire.Models.QuestionAnswer>
+      ) => {
+        return token
+          ? questionnaireAnswer(token, model, modelID, id, body)
+          : Promise.reject();
+      },
+      [token]
+    );
+
+    const fetchCart = useCallback(() => {
+      if (!token) {
+        return Promise.reject("No token provided");
+      }
+      setCart((prevState) => ({
         ...prevState,
         loading: true,
       }));
-      return getPage(slug)
+
+      if (abortControllers.current.cart) {
+        abortControllers.current.cart.abort();
+      }
+
+      const controller = new AbortController();
+      abortControllers.current.cart = controller;
+
+      try {
+        return getCart(token, { signal: controller.signal })
+          .then((response) => {
+            if (response.data.hasOwnProperty("items")) {
+              setCart({
+                loading: false,
+                value: response.data as API.Cart,
+              });
+            } else {
+              setCart((prevState) => ({
+                ...prevState,
+                loading: false,
+              }));
+            }
+          })
+          .catch((err) => {
+            if (err.name !== "AbortError") {
+              console.log(err);
+            }
+          });
+      } catch (err: any) {
+        return Promise.reject(err);
+      }
+    }, [token, abortControllers]);
+
+    const addToCart = useCallback(
+      (productId: number, quantity?: number) => {
+        if (!token) {
+          return Promise.reject("No token provided");
+        }
+        setCart((prevState) => ({
+          ...prevState,
+          loading: true,
+        }));
+        return postAddToCart(productId, token, quantity)
+          .then(() => {
+            fetchCart();
+          })
+          .catch((error) => {
+            setCart((prevState) => ({
+              ...prevState,
+              loading: false,
+              error: error.data,
+            }));
+          });
+      },
+      [fetchCart]
+    );
+
+    const addMisingProducts = useCallback(
+      (products: number[]) => {
+        if (!token) {
+          return Promise.reject("No token provided");
+        }
+        setCart((prevState) => ({
+          ...prevState,
+          loading: true,
+        }));
+        return postAddMisingProducts(token, products)
+          .then(() => {
+            fetchCart();
+          })
+          .catch((error) => {
+            setCart((prevState) => ({
+              ...prevState,
+              loading: false,
+              error: error.data,
+            }));
+          });
+      },
+      [fetchCart]
+    );
+
+    const removeFromCart = useCallback(
+      (itemId: number) => {
+        if (!token) {
+          return Promise.reject("No token provided");
+        }
+        setCart((prevState) => ({
+          ...prevState,
+          loading: true,
+        }));
+        return deleteRemoveFromCart(itemId, token)
+          .then((response) => {
+            setCart((prevState) => ({
+              ...prevState,
+              loading: false,
+              value: {
+                ...prevState.value,
+                items:
+                  prevState && prevState.value
+                    ? prevState.value.items.filter((item) => item.id !== itemId)
+                    : [],
+              },
+            }));
+            fetchCart();
+          })
+          .catch((error) => {
+            setCart((prevState) => ({
+              ...prevState,
+              loading: false,
+              error: error.data,
+            }));
+          });
+      },
+      [fetchCart]
+    );
+
+    const payWithStripe = useCallback(
+      (paymentMethodId: string) => {
+        return token
+          ? postPayWithStripe(paymentMethodId, token).then((res) => {
+              console.log(res);
+            })
+          : Promise.reject();
+      },
+      [token]
+    );
+
+    const payWithP24 = useCallback(
+      (email: string, return_url: string) => {
+        return token
+          ? postPayWithP24(email, token, return_url)
+              .then((res) => {
+                return res;
+              })
+              .catch((err) => {
+                console.log(err);
+                return err;
+              })
+          : Promise.reject();
+      },
+      [token]
+    );
+
+    const fetchProgress = useCallback(() => {
+      setProgress((prevState) => ({
+        ...prevState,
+        loading: true,
+      }));
+      return token
+        ? getProgress(token).then((res) => {
+            if (res.success) {
+              setProgress({
+                loading: false,
+                value: res.data,
+              });
+            }
+          })
+        : Promise.reject();
+    }, [token]);
+
+    const fetchH5P = useCallback(
+      (id: string) => {
+        setH5P({ loading: true });
+        token
+          ? getH5p(Number(id))
+              .then((response) => {
+                if (response.success) {
+                  setH5P({ loading: false, value: response.data });
+                }
+              })
+              .catch((error) => {
+                setH5P((prevState) => ({
+                  ...prevState,
+                  loading: false,
+                  error: error,
+                }));
+              })
+          : Promise.reject();
+      },
+      [token]
+    );
+
+    const fetchProgram = useCallback(
+      (id: number) => {
+        setProgram((prevState) => ({ ...prevState, loading: true }));
+        return id && token
+          ? getCourseProgram(id, token)
+              .then((response) => {
+                if (response.success) {
+                  setProgram({
+                    loading: false,
+                    value: {
+                      ...response.data,
+                      lessons: sortProgram(response.data.lessons),
+                    },
+                  });
+                }
+                if (response.success === false) {
+                  setProgram((prevState) => ({
+                    ...prevState,
+                    loading: false,
+                    error: response,
+                  }));
+                }
+              })
+              .catch((error) => {
+                setProgram((prevState) => ({
+                  ...prevState,
+                  loading: false,
+                  error: error.data,
+                }));
+              })
+          : Promise.reject();
+      },
+      [token]
+    );
+
+    const fetchTutors = useCallback(() => {
+      setTutors((prevState) => ({
+        ...prevState,
+        loading: true,
+      }));
+      return getTutors()
         .then((res) => {
           if (res.success) {
-            setPage({
+            setTutors({
               loading: false,
-              value: res.data,
+              list: res.data,
             });
           } else if (res.success === false) {
             {
-              setPage({
+              setTutors({
                 loading: false,
                 error: res,
               });
@@ -1456,83 +1335,205 @@ export const EscolaLMSContextProvider: FunctionComponent<
           }
         })
         .catch((error) => {
-          setPage({
+          setTutors({
             loading: false,
             error: error.data,
           });
         });
-    },
-    [token]
-  );
+    }, []);
 
-  const sendProgress = useCallback(
-    (courseId: number, data: API.CourseProgressItemElement[]) => {
+    const fetchTutor = useCallback((id: number) => {
+      setTutor((prevState) => ({
+        ...prevState,
+        loading: true,
+      }));
+      return getTutor(id)
+        .then((res) => {
+          if (res.success) {
+            setTutor({
+              loading: false,
+              value: res.data,
+            });
+          } else if (res.success === false) {
+            {
+              setTutor({
+                loading: false,
+                error: res,
+              });
+            }
+          }
+        })
+        .catch((error) => {
+          setTutor({
+            loading: false,
+            error: error.data,
+          });
+        });
+    }, []);
+
+    const fetchOrders = useCallback(
+      (params?: API.PaginationParams) => {
+        setOrders((prevState) => ({
+          ...prevState,
+          loading: true,
+        }));
+        return token
+          ? getOrders(token, params)
+              .then((res) => {
+                if (res.success) {
+                  setOrders({
+                    loading: false,
+                    list: res,
+                  });
+                } else if (res.success === false) {
+                  {
+                    setOrders({
+                      loading: false,
+                      error: res,
+                    });
+                  }
+                }
+              })
+              .catch((error) => {
+                setOrders({
+                  loading: false,
+                  error: error.data,
+                });
+              })
+          : Promise.reject();
+      },
+      [token]
+    );
+
+    const fetchPayments = useCallback(() => {
+      setPayments((prevState) => ({
+        ...prevState,
+        loading: true,
+      }));
       return token
-        ? postSendProgress(courseId, data, token).then((res) => {
-            setProgress((prevState) => ({
-              ...prevState,
-              value:
-                prevState && prevState.value
-                  ? prevState.value.map((courseProgress) => {
-                      if (courseProgress.course.id === courseId) {
-                        return {
-                          ...courseProgress,
-                          progress: courseProgress.progress.map((progress) => {
-                            const el = data.find(
-                              (item) => item.topic_id === progress.topic_id
-                            );
-                            if (el) {
-                              return el;
-                            }
-                            return progress;
-                          }),
-                        };
-                      }
-                      return courseProgress;
-                    })
-                  : [],
-            }));
-          })
+        ? getPayments(token)
+            .then((res) => {
+              if (res.success) {
+                setPayments({
+                  loading: false,
+                  list: res,
+                });
+              }
+            })
+            .catch((error) => {
+              setPayments({
+                loading: false,
+                error: error.data,
+              });
+            })
         : Promise.reject();
-    },
-    [token]
-  );
+    }, [token]);
 
-  const h5pProgress = useCallback(
-    (courseId: string, topicId: number, statement: API.IStatement) => {
-      const statementId = statement?.verb?.id;
-      const statementCategory = statement?.context?.contextActivities?.category;
-      const result: API.IResult | undefined = statement?.result;
-      const hasParent =
-        statement?.context?.contextActivities?.parent &&
-        statement?.context?.contextActivities?.parent?.length > 0;
+    const fetchPages = useCallback(
+      (filter?: API.CourseParams) => {
+        setPages((prevState) => ({ ...prevState, loading: true }));
+        return getPages(filter)
+          .then((response) => {
+            if (response.success) {
+              setPages({
+                loading: false,
+                list: response,
+                error: undefined,
+              });
+            }
+          })
+          .catch((error) => {
+            setPages((prevState) => ({
+              ...prevState,
+              loading: false,
+              error: error,
+            }));
+          });
+      },
+      [pages]
+    );
 
-      if (
-        attempted === statementId &&
-        statementCategory &&
-        statementCategory[0].id.includes(guessTheAnswer)
-      ) {
-        sendProgress(Number(courseId), [
-          {
-            topic_id: topicId,
-            status: 1,
-          },
-        ]);
-      }
+    const fetchPage = useCallback(
+      (slug: string) => {
+        setPage((prevState) => ({
+          ...prevState,
+          loading: true,
+        }));
+        return getPage(slug)
+          .then((res) => {
+            if (res.success) {
+              setPage({
+                loading: false,
+                value: res.data,
+              });
+            } else if (res.success === false) {
+              {
+                setPage({
+                  loading: false,
+                  error: res,
+                });
+              }
+            }
+          })
+          .catch((error) => {
+            setPage({
+              loading: false,
+              error: error.data,
+            });
+          });
+      },
+      [token]
+    );
 
-      if (blackList.includes(statementId)) {
-        return null;
-      }
+    const sendProgress = useCallback(
+      (courseId: number, data: API.CourseProgressItemElement[]) => {
+        return token
+          ? postSendProgress(courseId, data, token).then((res) => {
+              setProgress((prevState) => ({
+                ...prevState,
+                value:
+                  prevState && prevState.value
+                    ? prevState.value.map((courseProgress) => {
+                        if (courseProgress.course.id === courseId) {
+                          return {
+                            ...courseProgress,
+                            progress: courseProgress.progress.map(
+                              (progress) => {
+                                const el = data.find(
+                                  (item) => item.topic_id === progress.topic_id
+                                );
+                                if (el) {
+                                  return el;
+                                }
+                                return progress;
+                              }
+                            ),
+                          };
+                        }
+                        return courseProgress;
+                      })
+                    : [],
+              }));
+            })
+          : Promise.reject();
+      },
+      [token]
+    );
 
-      if (completed.includes(statementId)) {
+    const h5pProgress = useCallback(
+      (courseId: string, topicId: number, statement: API.IStatement) => {
+        const statementId = statement?.verb?.id;
+        const statementCategory =
+          statement?.context?.contextActivities?.category;
+        const result: API.IResult | undefined = statement?.result;
+        const hasParent =
+          statement?.context?.contextActivities?.parent &&
+          statement?.context?.contextActivities?.parent?.length > 0;
+
         if (
-          (!hasParent &&
-            statementCategory &&
-            !statementCategory[0]?.id.includes(questionSet)) ||
-          (statementCategory &&
-            statementCategory[0]?.id.includes(questionSet) &&
-            result &&
-            result?.score?.max === result?.score?.raw)
+          attempted === statementId &&
+          statementCategory &&
+          statementCategory[0].id.includes(guessTheAnswer)
         ) {
           sendProgress(Number(courseId), [
             {
@@ -1541,331 +1542,354 @@ export const EscolaLMSContextProvider: FunctionComponent<
             },
           ]);
         }
-      }
 
-      return token
-        ? postSendh5pProgress(topicId, statementId, statement, token)
-        : null;
-    },
-    [token]
-  );
+        if (blackList.includes(statementId)) {
+          return null;
+        }
 
-  const updateProfile = useCallback(
-    (body: API.UpdateUserDetails) => {
-      setUser((prevState) => ({
-        ...prevState,
-        loading: true,
-      }));
+        if (completed.includes(statementId)) {
+          if (
+            (!hasParent &&
+              statementCategory &&
+              !statementCategory[0]?.id.includes(questionSet)) ||
+            (statementCategory &&
+              statementCategory[0]?.id.includes(questionSet) &&
+              result &&
+              result?.score?.max === result?.score?.raw)
+          ) {
+            sendProgress(Number(courseId), [
+              {
+                topic_id: topicId,
+                status: 1,
+              },
+            ]);
+          }
+        }
 
-      return token
-        ? postUpdateProfile(body, token).then((res) => {
-            if (res.success === true) {
-              setUser((prevState) => ({
-                value: {
-                  ...res.data,
-                },
-                loading: false,
-              }));
-            } else if (res.success === false) {
-              setUser((prevState) => ({
-                ...prevState,
-                error: res,
-                loading: false,
-              }));
-            }
-          })
-        : Promise.reject();
-    },
-    [token]
-  );
+        return token
+          ? postSendh5pProgress(topicId, statementId, statement, token)
+          : null;
+      },
+      [token]
+    );
 
-  const updateAvatar = useCallback(
-    (file: File) => {
-      setUser((prevState) => {
-        return {
+    const updateProfile = useCallback(
+      (body: API.UpdateUserDetails) => {
+        setUser((prevState) => ({
           ...prevState,
           loading: true,
-        };
-      });
-      return token
-        ? postUpdateAvatar(file, token).then((res) => {
-            if (res.success === true) {
-              setUser((prevState) => ({
-                ...prevState,
-                value: {
-                  ...res.data,
-                  avatar: res.data.avatar,
-                  path_avatar: res.data.path_avatar,
-                },
-                loading: false,
-              }));
-            }
-          })
-        : Promise.reject();
-    },
-    [token]
-  );
+        }));
 
-  const topicPing = useCallback(
-    (topicId: number) => {
-      return token
-        ? putTopicPing(topicId, token).catch((err) => err)
-        : Promise.reject();
-    },
-    [token]
-  );
+        return token
+          ? postUpdateProfile(body, token).then((res) => {
+              if (res.success === true) {
+                setUser((prevState) => ({
+                  value: {
+                    ...res.data,
+                  },
+                  loading: false,
+                }));
+              } else if (res.success === false) {
+                setUser((prevState) => ({
+                  ...prevState,
+                  error: res,
+                  loading: false,
+                }));
+              }
+            })
+          : Promise.reject();
+      },
+      [token]
+    );
 
-  const progressMap = useMemo(() => {
-    const defaultMap: {
-      coursesProcProgress: Record<number, number>;
-      finishedTopics: number[];
-    } = {
-      coursesProcProgress: {},
-      finishedTopics: [],
-    };
-    if (progress.value) {
-      progress.value.reduce((acc, course) => {
-        acc.coursesProcProgress[
-          typeof course.course.id === "number" ? course.course.id : 0
-        ] =
-          course.progress.reduce((sum, item) => sum + item.status, 0) /
-          course.progress.length;
-        acc.finishedTopics = acc.finishedTopics.concat(
-          course.progress
-            .filter((item) => item.status !== 0)
-            .map((item) => item.topic_id)
+    const updateAvatar = useCallback(
+      (file: File) => {
+        setUser((prevState) => {
+          return {
+            ...prevState,
+            loading: true,
+          };
+        });
+        return token
+          ? postUpdateAvatar(file, token).then((res) => {
+              if (res.success === true) {
+                setUser((prevState) => ({
+                  ...prevState,
+                  value: {
+                    ...res.data,
+                    avatar: res.data.avatar,
+                    path_avatar: res.data.path_avatar,
+                  },
+                  loading: false,
+                }));
+              }
+            })
+          : Promise.reject();
+      },
+      [token]
+    );
+
+    const topicPing = useCallback(
+      (topicId: number) => {
+        return token
+          ? putTopicPing(topicId, token).catch((err) => err)
+          : Promise.reject();
+      },
+      [token]
+    );
+
+    const progressMap = useMemo(() => {
+      const defaultMap: {
+        coursesProcProgress: Record<number, number>;
+        finishedTopics: number[];
+      } = {
+        coursesProcProgress: {},
+        finishedTopics: [],
+      };
+      if (progress.value) {
+        progress.value.reduce((acc, course) => {
+          acc.coursesProcProgress[
+            typeof course.course.id === "number" ? course.course.id : 0
+          ] =
+            course.progress.reduce((sum, item) => sum + item.status, 0) /
+            course.progress.length;
+          acc.finishedTopics = acc.finishedTopics.concat(
+            course.progress
+              .filter((item) => item.status !== 0)
+              .map((item) => item.topic_id)
+          );
+          return acc;
+        }, defaultMap);
+      }
+      return defaultMap;
+    }, [progress]);
+
+    const topicIsFinished = useCallback(
+      (topicId: number) =>
+        progressMap && progressMap.finishedTopics.includes(topicId),
+      [progressMap]
+    );
+
+    const courseProgress = useCallback(
+      (courseId: number) =>
+        progressMap && progressMap.coursesProcProgress[courseId]
+          ? progressMap.coursesProcProgress[courseId]
+          : 0,
+      [progressMap]
+    );
+
+    const getNextPrevTopic = useCallback(
+      (topicId: number, next: boolean = true) => {
+        const lesson: API.Lesson | undefined = program.value?.lessons.find(
+          (lesson) => !!lesson.topics?.find((topic) => topicId === topic.id)
         );
-        return acc;
-      }, defaultMap);
-    }
-    return defaultMap;
-  }, [progress]);
 
-  const topicIsFinished = useCallback(
-    (topicId: number) =>
-      progressMap && progressMap.finishedTopics.includes(topicId),
-    [progressMap]
-  );
-
-  const courseProgress = useCallback(
-    (courseId: number) =>
-      progressMap && progressMap.coursesProcProgress[courseId]
-        ? progressMap.coursesProcProgress[courseId]
-        : 0,
-    [progressMap]
-  );
-
-  const getNextPrevTopic = useCallback(
-    (topicId: number, next: boolean = true) => {
-      const lesson: API.Lesson | undefined = program.value?.lessons.find(
-        (lesson) => !!lesson.topics?.find((topic) => topicId === topic.id)
-      );
-
-      if (program.value === undefined) {
-        return null;
-      }
-
-      if (!lesson) {
-        return null;
-      }
-
-      const currentLessonIndex = program.value.lessons.findIndex(
-        (fLesson) => lesson.id === fLesson.id
-      );
-      if (currentLessonIndex === undefined) {
-        return null;
-      }
-
-      const currentTopicIndex = (
-        program.value && program.value.lessons ? program.value.lessons : []
-      )[currentLessonIndex].topics?.findIndex(
-        (topic) => Number(topic.id) === Number(topicId)
-      );
-
-      if (currentTopicIndex === undefined) {
-        return null;
-      }
-
-      const topics = program.value.lessons[currentLessonIndex].topics;
-
-      if (next) {
-        if (Array.isArray(topics) && topics[currentTopicIndex + 1]) {
-          return topics[currentTopicIndex + 1] || null;
-        } else {
-          if (program.value.lessons[currentLessonIndex + 1]) {
-            const newLesson = program.value.lessons[currentLessonIndex + 1];
-            return (newLesson.topics && newLesson.topics[0]) || null;
-          }
+        if (program.value === undefined) {
+          return null;
         }
-      } else {
-        if (Array.isArray(topics) && topics[currentTopicIndex - 1]) {
-          return topics[currentTopicIndex - 1] || null;
-        } else {
-          if (program.value.lessons[currentLessonIndex - 1]) {
-            const newLesson = program.value.lessons[currentLessonIndex - 1];
-            return (
-              (newLesson.topics &&
-                newLesson.topics[newLesson.topics.length - 1]) ||
-              null
-            );
-          }
+
+        if (!lesson) {
+          return null;
         }
-      }
 
-      return null;
-    },
-    [program]
-  );
+        const currentLessonIndex = program.value.lessons.findIndex(
+          (fLesson) => lesson.id === fLesson.id
+        );
+        if (currentLessonIndex === undefined) {
+          return null;
+        }
 
-  const fontSizeToggle = useCallback(
-    (bigger: boolean) => {
-      const newFontSize = (fontSize + (bigger ? 1 : -1)) % 4;
-      return setFontSize(newFontSize);
-    },
-    [fontSize]
-  );
+        const currentTopicIndex = (
+          program.value && program.value.lessons ? program.value.lessons : []
+        )[currentLessonIndex].topics?.findIndex(
+          (topic) => Number(topic.id) === Number(topicId)
+        );
 
-  const getRefreshedToken = useCallback(() => {
-    return token
-      ? refreshToken(token)
-          .then((res) => {
-            if (res.success) {
-              setTokenExpireDate(res.data.expires_at);
-              setToken(res.data.token);
+        if (currentTopicIndex === undefined) {
+          return null;
+        }
+
+        const topics = program.value.lessons[currentLessonIndex].topics;
+
+        if (next) {
+          if (Array.isArray(topics) && topics[currentTopicIndex + 1]) {
+            return topics[currentTopicIndex + 1] || null;
+          } else {
+            if (program.value.lessons[currentLessonIndex + 1]) {
+              const newLesson = program.value.lessons[currentLessonIndex + 1];
+              return (newLesson.topics && newLesson.topics[0]) || null;
             }
-          })
-          .catch((error) => {
-            console.log(error);
-          })
-      : Promise.reject();
-  }, [token]);
+          }
+        } else {
+          if (Array.isArray(topics) && topics[currentTopicIndex - 1]) {
+            return topics[currentTopicIndex - 1] || null;
+          } else {
+            if (program.value.lessons[currentLessonIndex - 1]) {
+              const newLesson = program.value.lessons[currentLessonIndex - 1];
+              return (
+                (newLesson.topics &&
+                  newLesson.topics[newLesson.topics.length - 1]) ||
+                null
+              );
+            }
+          }
+        }
 
-  const changePassword = useCallback(
-    (body: API.ChangePasswordRequest) => {
-      return token ? postNewPassword(token, body) : Promise.reject();
-    },
-    [token]
-  );
+        return null;
+      },
+      [program]
+    );
 
-  const realizeVoucher = useCallback(
-    (voucher: string) => {
+    const fontSizeToggle = useCallback(
+      (bigger: boolean) => {
+        const newFontSize = (fontSize + (bigger ? 1 : -1)) % 4;
+        return setFontSize(newFontSize);
+      },
+      [fontSize]
+    );
+
+    const getRefreshedToken = useCallback(() => {
       return token
-        ? postVoucher(voucher, token)
-        : Promise.reject("No token provided");
-    },
-    [token]
-  );
+        ? refreshToken(token)
+            .then((res) => {
+              if (res.success) {
+                setTokenExpireDate(res.data.expires_at);
+                setToken(res.data.token);
+              }
+            })
+            .catch((error) => {
+              console.log(error);
+            })
+        : Promise.reject();
+    }, [token]);
 
-  return (
-    <EscolaLMSContext.Provider
-      value={{
-        apiUrl,
-        courses,
-        course,
-        program,
-        fetchCourses,
-        fetchCourse,
-        fetchProgram,
-        settings,
-        config,
-        fetchConfig,
-        uniqueTags,
-        categoryTree,
-        login,
-        logout,
-        forgot,
-        reset,
-        user,
-        register,
-        fetchCart,
-        addToCart,
-        removeFromCart,
-        cart,
-        payWithStripe,
-        fetchProgress,
-        progress,
-        sendProgress,
-        fetchTutors,
-        tutors,
-        fetchTutor,
-        tutor,
-        fetchOrders,
-        orders,
-        fetchPayments,
-        payments,
-        pages,
-        fetchPages,
-        page,
-        fetchPage,
-        updateProfile,
-        updateAvatar,
-        topicPing,
-        topicIsFinished,
-        courseProgress,
-        getNextPrevTopic,
-        fontSize,
-        fontSizeToggle,
-        h5pProgress,
-        userGroups,
-        fetchUserGroups,
-        userGroup,
-        fetchUserGroup,
-        registerableGroups,
-        fetchRegisterableGroups,
-        socialAuthorize,
-        notifications,
-        fetchNotifications,
-        readNotify,
-        certificates,
-        fetchCertificates,
-        fetchCertificate,
-        mattermostChannels,
-        fetchMattermostChannels,
-        h5p,
-        fetchH5P,
-        emailVerify,
-        getRefreshedToken,
-        tokenExpireDate,
-        fetchConsultations,
-        consultations,
-        consultation,
-        fetchConsultation,
-        fields,
-        fetchFields,
-        stationaryEvents,
-        fetchStationaryEvents,
-        fetchUserConsultations,
-        userConsultations,
-        bookConsultationTerm,
-        fetchWebinars,
-        webinars,
-        payWithP24,
-        getProductInfo,
-        fetchTutorConsultations,
-        approveConsultationTerm,
-        generateConsultationJitsy,
-        rejectConsultationTerm,
-        tutorConsultations,
-        fetchEvents,
-        events,
-        changePassword,
-        stationaryEvent,
-        webinar,
-        userWebinars,
-        fetchUserWebinars,
-        generateWebinarJitsy,
-        realizeVoucher,
-        products,
-        product,
-        fetchQuestionnaires,
-        sendQuestionnaireAnswer,
-        fetchUserStationaryEvents,
-        userStationaryEvents,
-      }}
-    >
-      <EditorContextProvider url={`${apiUrl}/api/hh5p`}>
-        {children}
-      </EditorContextProvider>
-    </EscolaLMSContext.Provider>
-  );
-};
+    const changePassword = useCallback(
+      (body: API.ChangePasswordRequest) => {
+        return token ? postNewPassword(token, body) : Promise.reject();
+      },
+      [token]
+    );
+
+    const realizeVoucher = useCallback(
+      (voucher: string) => {
+        return token
+          ? postVoucher(voucher, token)
+          : Promise.reject("No token provided");
+      },
+      [token]
+    );
+
+    return (
+      <EscolaLMSContext.Provider
+        value={{
+          apiUrl,
+          courses,
+          course,
+          program,
+          fetchCourses,
+          fetchCourse,
+          fetchProgram,
+          settings,
+          config,
+          fetchConfig,
+          uniqueTags,
+          categoryTree,
+          login,
+          logout,
+          forgot,
+          reset,
+          user,
+          register,
+          fetchCart,
+          addToCart,
+          removeFromCart,
+          cart,
+          payWithStripe,
+          fetchProgress,
+          progress,
+          sendProgress,
+          fetchTutors,
+          tutors,
+          fetchTutor,
+          tutor,
+          fetchOrders,
+          orders,
+          fetchPayments,
+          payments,
+          pages,
+          fetchPages,
+          page,
+          fetchPage,
+          updateProfile,
+          updateAvatar,
+          topicPing,
+          topicIsFinished,
+          courseProgress,
+          getNextPrevTopic,
+          fontSize,
+          fontSizeToggle,
+          h5pProgress,
+          userGroups,
+          fetchUserGroups,
+          userGroup,
+          fetchUserGroup,
+          registerableGroups,
+          fetchRegisterableGroups,
+          socialAuthorize,
+          notifications,
+          fetchNotifications,
+          readNotify,
+          certificates,
+          fetchCertificates,
+          fetchCertificate,
+          mattermostChannels,
+          fetchMattermostChannels,
+          h5p,
+          fetchH5P,
+          emailVerify,
+          getRefreshedToken,
+          tokenExpireDate,
+          fetchConsultations,
+          consultations,
+          consultation,
+          fetchConsultation,
+          fields,
+          fetchFields,
+          stationaryEvents,
+          fetchStationaryEvents,
+          fetchUserConsultations,
+          userConsultations,
+          bookConsultationTerm,
+          fetchWebinars,
+          webinars,
+          payWithP24,
+          getProductInfo,
+          fetchTutorConsultations,
+          approveConsultationTerm,
+          generateConsultationJitsy,
+          rejectConsultationTerm,
+          tutorConsultations,
+          fetchEvents,
+          events,
+          changePassword,
+          stationaryEvent,
+          webinar,
+          userWebinars,
+          fetchUserWebinars,
+          generateWebinarJitsy,
+          realizeVoucher,
+          products,
+          product,
+          fetchQuestionnaires,
+          sendQuestionnaireAnswer,
+          fetchUserStationaryEvents,
+          userStationaryEvents,
+          addMisingProducts,
+        }}
+      >
+        <EditorContextProvider url={`${apiUrl}/api/hh5p`}>
+          {children}
+        </EditorContextProvider>
+      </EscolaLMSContext.Provider>
+    );
+  };
