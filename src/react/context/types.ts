@@ -170,7 +170,7 @@ export interface EscolaLMSContextAPIConfig {
     model: string,
     modelID: number,
     id: number,
-    body: Partial<EscolaLms.Questionnaire.Http.Requests.QuestionnaireFrontAnswerRequest>
+    body: Partial<EscolaLms.Questionnaire.Models.QuestionAnswer>
   ) => Promise<
     API.DefaultResponse<EscolaLms.Questionnaire.Models.QuestionAnswer>
   >;
