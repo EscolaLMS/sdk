@@ -70,6 +70,7 @@ import {
   payments as getPayments,
   useVoucher as postVoucher,
   orderInvoice,
+  addMisingProducts as postAddMisingProducts,
 } from "./../../services/cart";
 import {
   userGroups as getUserGroups,
@@ -1153,6 +1154,30 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
       [fetchCart]
     );
 
+    const addMisingProducts = useCallback(
+      (products: number[]) => {
+        if (!token) {
+          return Promise.reject("No token provided");
+        }
+        setCart((prevState) => ({
+          ...prevState,
+          loading: true,
+        }));
+        return postAddMisingProducts(token, products)
+          .then(() => {
+            fetchCart();
+          })
+          .catch((error) => {
+            setCart((prevState) => ({
+              ...prevState,
+              loading: false,
+              error: error.data,
+            }));
+          });
+      },
+      [fetchCart]
+    );
+
     const removeFromCart = useCallback(
       (itemId: number) => {
         if (!token) {
@@ -1868,6 +1893,7 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
           fetchUserStationaryEvents,
           userStationaryEvents,
           fetchOrderInvoice,
+          addMisingProducts,
         }}
       >
         <EditorContextProvider url={`${apiUrl}/api/hh5p`}>

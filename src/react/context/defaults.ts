@@ -90,6 +90,7 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
   reset: (body: API.ResetPasswordRequest) => Promise.reject(),
   emailVerify: (id: string, hash: string) => Promise.reject(),
   addToCart: (id: number, quantity?: number) => Promise.reject(),
+  addMisingProducts: (products: number[]) => Promise.reject(),
   removeFromCart: (id) => Promise.reject(id),
   fetchCart: () => Promise.reject(),
   cart: {
@@ -288,6 +289,7 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
   reset: (body: API.ResetPasswordRequest) => Promise.reject(),
   emailVerify: (id: string, hash: string) => Promise.reject(),
   addToCart: (id: number, quantity?: number) => Promise.reject(),
+  addMisingProducts: (products: number[]) => Promise.reject(),
   removeFromCart: (id) => Promise.reject(id),
   fetchCart: () => Promise.reject(),
   cart: {

@@ -97,6 +97,7 @@ export interface EscolaLMSContextAPIConfig {
   reset: (body: API.ResetPasswordRequest) => Promise<API.AuthResponse>;
   emailVerify: (id: string, hash: string) => Promise<API.AuthResponse>;
   addToCart: (id: number, quantity?: number) => Promise<void>;
+  addMisingProducts: (products: number[]) => Promise<void>;
   removeFromCart: (courseId: number) => Promise<void>;
   fetchCart: () => Promise<void>;
   payWithStripe: (paymentMethodId: string) => Promise<void>;
