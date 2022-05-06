@@ -1,10 +1,11 @@
 import request, { RequestOptionsInit } from "umi-request";
 import * as API from "../types/api";
 
-/**  GET /api/pages */
+/**  GET /api/products */
 export async function products(
-  params: API.PageParams & API.PaginationParams & { type?: string, 'tags[]'?: string },
-  options?: RequestOptionsInit,
+  params: API.PageParams &
+    API.PaginationParams & { type?: string; "tags[]"?: string },
+  options?: RequestOptionsInit
 ) {
   return request<API.ProductList>(`/api/products`, {
     method: "GET",

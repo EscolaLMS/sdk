@@ -136,3 +136,18 @@ export async function useVoucher(voucher: string, token: string) {
     },
   });
 }
+
+export async function orderInvoice(
+  token: string,
+  id: number,
+  options?: RequestOptionsInit
+) {
+  return request<any>(`/api/invoices/${id}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/pdf",
+      Authorization: `Bearer ${token}`,
+    },
+    ...(options || {}),
+  });
+}

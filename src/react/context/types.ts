@@ -176,6 +176,7 @@ export interface EscolaLMSContextAPIConfig {
     API.DefaultResponse<EscolaLms.Questionnaire.Models.QuestionAnswer>
   >;
   fetchUserStationaryEvents: () => Promise<void>;
+  fetchOrderInvoice: (id: number) => Promise<Blob>;
 }
 export type EscolaLMSContextConfig = EscolaLMSContextReadConfig &
   EscolaLMSContextAPIConfig;
