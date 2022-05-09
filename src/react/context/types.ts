@@ -48,7 +48,7 @@ export interface EscolaLMSContextReadConfig {
   config: API.AppConfig;
   uniqueTags: ContextListState<API.Tag>;
   categoryTree: ContextListState<API.Category>;
-  user: ContextStateValue<API.UserItem>;
+  user: ContextStateValue<API.UserAsProfile>;
   cart: ContextStateValue<API.Cart>;
   progress: ContextStateValue<API.CourseProgress>;
   tutors: ContextListState<API.UserItem>;

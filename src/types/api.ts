@@ -66,7 +66,10 @@ export type IStatement = {
   verb: { id: IEvent };
 };
 
-export type IEventException = "GuessTheAnswer" | "Questionnaire" | "QuestionSet";
+export type IEventException =
+  | "GuessTheAnswer"
+  | "Questionnaire"
+  | "QuestionSet";
 
 export type Category = {
   id: number;
@@ -189,9 +192,13 @@ export type DefaultResponseError = {
   };
 };
 
-export type DefaultResponse<Model> = DefaultResponseSuccess<Model> | DefaultResponseError;
+export type DefaultResponse<Model> =
+  | DefaultResponseSuccess<Model>
+  | DefaultResponseError;
 
-export type DataResponse<Model> = DataResponseSuccess<Model> | DefaultResponseError;
+export type DataResponse<Model> =
+  | DataResponseSuccess<Model>
+  | DefaultResponseError;
 
 export type DefaultMetaResponse<Model> =
   | (PaginatedMetaList<Model> & {
@@ -210,7 +217,8 @@ export type CertificateList = DefaultMetaResponse<Certificate>;
 
 export type MattermostChannelList = DefaultResponseSuccess<MattermostData>;
 
-export type P24Response = DefaultResponseSuccess<EscolaLms.Payments.Models.Payment>;
+export type P24Response =
+  DefaultResponseSuccess<EscolaLms.Payments.Models.Payment>;
 
 export type TutorList = DefaultResponse<UserItem[]>;
 
@@ -246,7 +254,10 @@ export type Consultation = EscolaLms.Consultations.Models.Consultation & {
   is_ended?: boolean;
   is_started?: boolean;
   in_coming?: boolean;
-  author: User & { categories: Category[] } & Record<string, string | number | boolean>;
+  author: User & { categories: Category[] } & Record<
+      string,
+      string | number | boolean
+    >;
 };
 
 export type Product = EscolaLms.Cart.Models.Product & {
@@ -324,7 +335,8 @@ export type ConsultationParams = PageParams &
     only_with_categories?: boolean;
   };
 
-export type WebinarParams = PageParams & PaginationParams & { name?: string; product?: Product };
+export type WebinarParams = PageParams &
+  PaginationParams & { name?: string; product?: Product };
 
 export type StationaryEventsParams = PageParams &
   PaginationParams & {
@@ -415,7 +427,11 @@ export type UserItem = EscolaLms.Auth.Models.User & {
   avatar?: string;
   // path_avatar: string | null;
   bio?: string | null;
-  // roles?: string[];
+  categories?: Category[] | null;
+};
+
+export type UserAsProfile = Omit<UserItem, "roles"> & {
+  roles: string[];
 };
 
 export type UpdateUserDetails = {
@@ -659,16 +675,17 @@ export type AppCurrency = {
   enum: string[];
 };
 
-export type StationaryEvent = EscolaLms.StationaryEvents.Models.StationaryEvent & {
-  date?: string;
-  title?: string;
-  isScheduled?: boolean;
-  appointmentDate?: string;
-  product?: Product | null;
-  is_ended?: boolean;
-  is_started?: boolean;
-  in_coming?: boolean;
-};
+export type StationaryEvent =
+  EscolaLms.StationaryEvents.Models.StationaryEvent & {
+    date?: string;
+    title?: string;
+    isScheduled?: boolean;
+    appointmentDate?: string;
+    product?: Product | null;
+    is_ended?: boolean;
+    is_started?: boolean;
+    in_coming?: boolean;
+  };
 
 export type Event = {
   id: number;
@@ -977,7 +994,7 @@ export type H5PObject = {
       contentUserData: [
         {
           state: object;
-        },
+        }
       ];
     }
   >;
