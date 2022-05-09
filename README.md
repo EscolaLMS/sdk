@@ -1,6 +1,8 @@
 # EscolaLMS Software Development Kit
 
 [![Maintainability](https://api.codeclimate.com/v1/badges/55841ab42538f51a42d2/maintainability)](https://codeclimate.com/github/EscolaLMS/sdk/maintainability)
+![npm](https://img.shields.io/npm/v/@escolalms/sdk)
+![npm](https://img.shields.io/npm/dm/@escolalms/sdk)
 
 The following project contains:
 
