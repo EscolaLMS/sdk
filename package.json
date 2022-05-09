@@ -14,9 +14,9 @@
     "@types/react": "^17",
     "@types/react-dom": "^17",
     "jssha": "^3.2.0",
-    "react": "^18",
-    "react-dom": "^18",
-    "typescript": "^4.1.2",
+    "react": "^17",
+    "react-dom": "^17",
+    "typescript": "^4.6.4",
     "umi-request": "^1.4.0"
   },
   "scripts": {
