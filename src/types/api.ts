@@ -427,7 +427,11 @@ export type UserItem = EscolaLms.Auth.Models.User & {
   avatar?: string;
   // path_avatar: string | null;
   bio?: string | null;
-  roles?: string[];
+  categories?: Category[] | null;
+};
+
+export type UserAsProfile = Omit<UserItem, "roles"> & {
+  roles: string[];
 };
 
 export type UpdateUserDetails = {

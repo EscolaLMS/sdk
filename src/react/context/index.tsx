@@ -243,11 +243,9 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
       string | null
     >("lms", "tokenExpireDate", null);
 
-    const [user, setUser] = useLocalStorage<ContextStateValue<API.UserItem>>(
-      "lms",
-      "user",
-      getDefaultData("user")
-    );
+    const [user, setUser] = useLocalStorage<
+      ContextStateValue<API.UserAsProfile>
+    >("lms", "user", getDefaultData("user"));
 
     const [progress, setProgress] = useState<
       ContextStateValue<API.CourseProgress>
