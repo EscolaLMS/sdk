@@ -1,5 +1,6 @@
 import request from "umi-request";
 import * as API from "../types/api";
+import { currentTimezone } from "../utils";
 
 export async function login(
   body: API.LoginRequest,
@@ -24,6 +25,7 @@ export async function profile(token: string) {
         Accept: "application/json",
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
+        Current_timezone: currentTimezone(),
       },
     }
   );
@@ -57,6 +59,7 @@ export async function updateProfile(
       Accept: "application/json",
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
+      Current_timezone: currentTimezone(),
     },
   });
 }
@@ -72,6 +75,7 @@ export async function updateAvatar(file: File, token: string) {
       headers: {
         Accept: "application/json",
         Authorization: `Bearer ${token}`,
+        Current_timezone: currentTimezone(),
       },
     }
   );
@@ -122,6 +126,7 @@ export async function refreshToken(token: string) {
       headers: {
         Accept: "application/json",
         Authorization: `Bearer ${token}`,
+        Current_timezone: currentTimezone(),
       },
     }
   );

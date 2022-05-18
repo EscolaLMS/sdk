@@ -1,5 +1,6 @@
 import request from "umi-request";
 import * as API from "../types/api";
+import { currentTimezone } from "../utils";
 
 /**  GET /api/mattermost/me */
 export async function getMattermostChannels(
@@ -13,6 +14,7 @@ export async function getMattermostChannels(
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
+      Current_timezone: currentTimezone(),
     },
     ...(options || {}),
   });
