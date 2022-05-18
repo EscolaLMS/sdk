@@ -8,7 +8,7 @@ export async function questionnaireStars(
   id: number,
   options?: RequestOptionsInit
 ) {
-  return request<API.DefaultResponse<API.QuestionnaireStars[]>>(
+  return request<API.DefaultResponse<API.QuestionnaireStars>>(
     `/api/questionnaire/stars/${model}/${id}`,
     {
       method: "GET",
