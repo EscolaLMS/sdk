@@ -1,5 +1,6 @@
 import request from "umi-request";
 import * as API from "../types/api";
+import { currentTimezone } from "../utils";
 
 /**  GET /api/pdfs */
 export async function getCertificates(
@@ -13,6 +14,7 @@ export async function getCertificates(
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
+      Current_timezone: currentTimezone(),
     },
     ...(options || {}),
   });
@@ -29,6 +31,7 @@ export async function getCertificate(
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
+      Current_timezone: currentTimezone(),
     },
     ...(options || {}),
   });

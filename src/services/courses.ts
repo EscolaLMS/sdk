@@ -2,6 +2,7 @@
 /* eslint-disable */
 import request from "umi-request";
 import * as API from "../types/api";
+import { currentTimezone } from "../utils";
 
 export enum TopicType {
   Unselected = "",
@@ -61,6 +62,7 @@ export async function getCourseProgram(
         ? {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
+            Current_timezone: currentTimezone(),
           }
         : {
             "Content-Type": "application/json",
@@ -81,6 +83,7 @@ export async function progress(
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
+        Current_timezone: currentTimezone(),
       },
       ...(options || {}),
     }
@@ -100,6 +103,7 @@ export async function sendProgress(
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
+        Current_timezone: currentTimezone(),
       },
       data: {
         progress: data,
@@ -133,6 +137,7 @@ export async function topicPing(
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
+      Current_timezone: currentTimezone(),
     },
 
     ...(options || {}),
@@ -150,6 +155,7 @@ export async function h5pProgress(
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
+      Current_timezone: currentTimezone(),
     },
 
     data: {

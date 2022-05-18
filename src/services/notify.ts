@@ -1,5 +1,6 @@
 import request from "umi-request";
 import * as API from "../types/api";
+import { currentTimezone } from "../utils";
 
 export async function getNotifications(
   token: string,
@@ -13,6 +14,7 @@ export async function getNotifications(
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
+        Current_timezone: currentTimezone(),
       },
       ...(options || {}),
     }
@@ -32,6 +34,7 @@ export async function readNotification(
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
+        Current_timezone: currentTimezone(),
       },
       ...(options || {}),
     }

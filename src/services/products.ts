@@ -1,5 +1,6 @@
 import request, { RequestOptionsInit } from "umi-request";
 import * as API from "../types/api";
+import { currentTimezone } from "../utils";
 
 /**  GET /api/products */
 export async function products(
@@ -22,6 +23,7 @@ export async function getSingleProduct(id: number, token?: string) {
       Accept: "application/json",
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
+      Current_timezone: currentTimezone(),
     },
   });
 }
