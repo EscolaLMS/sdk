@@ -31,7 +31,7 @@ export async function getQuestionnaires(
       Accept: "application/json",
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
-      Current_timezone: currentTimezone(),
+      "Current-timezone": currentTimezone(),
     },
   });
 }
@@ -52,7 +52,7 @@ export async function questionnaireAnswer(
       Accept: "application/json",
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
-      Current_timezone: currentTimezone(),
+      "Current-timezone": currentTimezone(),
     },
     data,
   });

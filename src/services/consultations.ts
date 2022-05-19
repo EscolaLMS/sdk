@@ -36,7 +36,7 @@ export async function getUserConsultations(token: string) {
       Accept: "application/json",
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
-      Current_timezone: currentTimezone(),
+      "Current-timezone": currentTimezone(),
     },
   });
 }
@@ -55,7 +55,7 @@ export async function bookConsultationDate(
         Accept: "application/json",
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
-        Current_timezone: currentTimezone(),
+        "Current-timezone": currentTimezone(),
       },
       data: {
         term: term,
@@ -72,7 +72,7 @@ export async function getTutorConsultations(token: string) {
       Accept: "application/json",
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
-      Current_timezone: currentTimezone(),
+      "Current-timezone": currentTimezone(),
     },
   });
 }
@@ -87,7 +87,7 @@ export async function approveConsultation(token: string, id: number) {
         Accept: "application/json",
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
-        Current_timezone: currentTimezone(),
+        "Current-timezone": currentTimezone(),
       },
     }
   );
@@ -103,7 +103,7 @@ export async function rejectConsultation(token: string, id: number) {
         Accept: "application/json",
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
-        Current_timezone: currentTimezone(),
+        "Current-timezone": currentTimezone(),
       },
     }
   );
@@ -119,7 +119,7 @@ export async function genereteJitsy(token: string, id: number) {
         Accept: "application/json",
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
-        Current_timezone: currentTimezone(),
+        "Current-timezone": currentTimezone(),
       },
     }
   );

@@ -14,7 +14,7 @@ export async function getMattermostChannels(
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
-      Current_timezone: currentTimezone(),
+      "Current-timezone": currentTimezone(),
     },
     ...(options || {}),
   });

@@ -13,7 +13,7 @@ export async function addToCart(
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
-      Current_timezone: currentTimezone(),
+      "Current-timezone": currentTimezone(),
     },
     data: {
       id: productId,
@@ -33,7 +33,7 @@ export async function removeFromCart(
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
-      Current_timezone: currentTimezone(),
+      "Current-timezone": currentTimezone(),
     },
     ...(options || {}),
   });
@@ -44,7 +44,7 @@ export async function cart(token: string, options?: RequestOptionsInit) {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
-      Current_timezone: currentTimezone(),
+      "Current-timezone": currentTimezone(),
       Authorization: `Bearer ${token}`,
     },
     ...(options || {}),
@@ -57,7 +57,7 @@ export async function addMisingProducts(token: string, products: number[]) {
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
-      Current_timezone: currentTimezone(),
+      "Current-timezone": currentTimezone(),
     },
     data: {
       products: products,
@@ -75,7 +75,7 @@ export async function payWithStripe(
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
-      Current_timezone: currentTimezone(),
+      "Current-timezone": currentTimezone(),
     },
     data: {
       paymentMethodId,
@@ -94,7 +94,7 @@ export async function payWithP24(
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
-      Current_timezone: currentTimezone(),
+      "Current-timezone": currentTimezone(),
     },
     data: {
       email,
@@ -113,7 +113,7 @@ export async function orders(
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
-      Current_timezone: currentTimezone(),
+      "Current-timezone": currentTimezone(),
     },
     params,
     ...(options || {}),
@@ -126,7 +126,7 @@ export async function payments(token: string, options?: RequestOptionsInit) {
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
-      Current_timezone: currentTimezone(),
+      "Current-timezone": currentTimezone(),
     },
     ...(options || {}),
   });
@@ -142,7 +142,7 @@ export async function useVoucher(voucher: string, token: string) {
       Accept: "application/json",
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
-      Current_timezone: currentTimezone(),
+      "Current-timezone": currentTimezone(),
     },
   });
 }
@@ -157,7 +157,7 @@ export async function orderInvoice(
     headers: {
       "Content-Type": "application/pdf",
       Authorization: `Bearer ${token}`,
-      Current_timezone: currentTimezone(),
+      "Current-timezone": currentTimezone(),
     },
     ...(options || {}),
   });

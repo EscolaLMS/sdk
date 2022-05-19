@@ -14,7 +14,7 @@ export async function getCertificates(
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
-      Current_timezone: currentTimezone(),
+      "Current-timezone": currentTimezone(),
     },
     ...(options || {}),
   });
@@ -31,7 +31,7 @@ export async function getCertificate(
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
-      Current_timezone: currentTimezone(),
+      "Current-timezone": currentTimezone(),
     },
     ...(options || {}),
   });

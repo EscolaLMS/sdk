@@ -39,7 +39,7 @@ export async function getMyStationaryEvents(token: string) {
         Accept: "application/json",
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
-        Current_timezone: currentTimezone(),
+        "Current-timezone": currentTimezone(),
       },
     }
   );
