@@ -62,7 +62,7 @@ export async function getCourseProgram(
         ? {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
-            Current_timezone: currentTimezone(),
+            "Current-timezone": currentTimezone(),
           }
         : {
             "Content-Type": "application/json",
@@ -83,7 +83,7 @@ export async function progress(
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
-        Current_timezone: currentTimezone(),
+        "Current-timezone": currentTimezone(),
       },
       ...(options || {}),
     }
@@ -103,7 +103,7 @@ export async function sendProgress(
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
-        Current_timezone: currentTimezone(),
+        "Current-timezone": currentTimezone(),
       },
       data: {
         progress: data,
@@ -137,7 +137,7 @@ export async function topicPing(
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
-      Current_timezone: currentTimezone(),
+      "Current-timezone": currentTimezone(),
     },
 
     ...(options || {}),
@@ -155,7 +155,7 @@ export async function h5pProgress(
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
-      Current_timezone: currentTimezone(),
+      "Current-timezone": currentTimezone(),
     },
 
     data: {

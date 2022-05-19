@@ -14,7 +14,7 @@ export async function getNotifications(
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
-        Current_timezone: currentTimezone(),
+        "Current-timezone": currentTimezone(),
       },
       ...(options || {}),
     }
@@ -34,7 +34,7 @@ export async function readNotification(
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
-        Current_timezone: currentTimezone(),
+        "Current-timezone": currentTimezone(),
       },
       ...(options || {}),
     }
