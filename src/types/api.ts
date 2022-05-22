@@ -258,6 +258,7 @@ export type Consultation = EscolaLms.Consultations.Models.Consultation & {
       string,
       string | number | boolean
     >;
+  busy_terms: string[];
 };
 
 export type Product = EscolaLms.Cart.Models.Product & {
