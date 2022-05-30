@@ -153,6 +153,8 @@ export const EscolaLMSContextProvider: FunctionComponent<
     ...defaultConfig,
     ...defaults,
   };
+  
+  const getImagePrefix = () => imagePrefix
 
   const getDefaultData = <K extends keyof EscolaLMSContextReadConfig>(
     key: K
@@ -1896,7 +1898,7 @@ export const EscolaLMSContextProvider: FunctionComponent<
         userStationaryEvents,
         fetchOrderInvoice,
         addMisingProducts,
-        imagePrefix
+        getImagePrefix
       }}
     >
       <EditorContextProvider url={`${apiUrl}/api/hh5p`}>
