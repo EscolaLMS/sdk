@@ -147,7 +147,7 @@ interface EscolaLMSContextProviderType {
 
 export const EscolaLMSContextProvider: FunctionComponent<
   EscolaLMSContextProviderType
-> = ({ children, apiUrl, defaults }) => {
+> = ({ children, apiUrl, defaults, imagePrefix = null }) => {
   interceptors(apiUrl);
   const initialValues = {
     ...defaultConfig,
@@ -1896,6 +1896,7 @@ export const EscolaLMSContextProvider: FunctionComponent<
         userStationaryEvents,
         fetchOrderInvoice,
         addMisingProducts,
+        imagePrefix
       }}
     >
       <EditorContextProvider url={`${apiUrl}/api/hh5p`}>
