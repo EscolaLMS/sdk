@@ -7,7 +7,6 @@ import React, {
   useState,
 } from "react";
 import { EscolaLMSContext } from "../../context";
-import { getImageApiPath, getImageCachePath, getImagePrefix } from "./utils";
 
 interface ImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
   path: string;
@@ -39,7 +38,7 @@ const Image: React.FC<ImageProps> = ({
   alt = "LMS Image",
   ...props
 }) => {
-  const { apiUrl } = useContext(EscolaLMSContext);
+  const { apiUrl,  getImageApiPath, getImageCachePath, getImagePrefix } = useContext(EscolaLMSContext);
 
   const imgRef = useRef<HTMLImageElement>(null);
   const imgSize = useMemo(
