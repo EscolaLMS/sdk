@@ -81,6 +81,7 @@ export interface EscolaLMSContextReadConfig {
 
 export interface EscolaLMSContextAPIConfig {
   apiUrl: string;
+  getImagePrefix: () => string;
   fetchCourses: (filter: API.CourseParams) => Promise<void>;
   fetchUserGroup: (id: number) => Promise<void>;
   fetchUserGroups: (params: API.UserGroupsParams) => Promise<void>;

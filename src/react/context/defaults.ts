@@ -36,6 +36,8 @@ export const questionSet: API.IEventException = "QuestionSet";
 
 export const defaultReadConfig: EscolaLMSContextConfig = {
   apiUrl: "",
+
+  getImagePrefix: () => "",
   courses: {
     loading: false,
   },
@@ -235,6 +237,8 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
 
 export const defaultApiConfig: EscolaLMSContextConfig = {
   apiUrl: "",
+
+  getImagePrefix: () => "",
   courses: {
     loading: false,
   },

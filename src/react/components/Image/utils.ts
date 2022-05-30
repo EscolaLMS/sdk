@@ -1,7 +1,6 @@
 import jsSHA from "jssha";
 
 const IMG_ENDPOINT = `/api/images/img`;
-const CACHE_ENDPOINT = `/storage/imgcache`;
 
 // https://startup-academy-stage.s3.eu-central-1.amazonaws.com/imgcache/5c14861ecd894c6eccc5604658cc2401f8a82aaf.jpg
 
@@ -22,24 +21,12 @@ const getStringifyParams = (params: object) => {
   return paramsInString === JSON.stringify({}) ? "[]" : paramsInString;
 };
 
-export const getImagePrefix = (apiUrl: string) =>
-  /** TS ignore below is on purpose */
-  //@ts-ignore
-  process?.env?.CACHE_PREFIX ||
-  //@ts-ignore
-  process?.env?.NEXT_PUBLIC_CACHE_PREFIX ||
-  //@ts-ignore
-  process?.env?.REACT_APP_CACHE_PREFIX ||
-  //@ts-ignore
-  window?.CACHE_PREFIX ||
-  `${apiUrl}/storage/imgcache`;
-
 export const getImageCachePath = (
   apiUrl: string,
   imagePath: string,
-  params: Record<string, string> = {}
+  params: Record<string, string> = {},
+  prefix: string
 ) => {
-  const prefix = getImagePrefix(apiUrl);
   const hash = getHash(imagePath + getStringifyParams(params));
   return `${prefix}/${hash}.${imagePath.split(".").pop()}`;
 };

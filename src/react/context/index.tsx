@@ -143,16 +143,24 @@ interface EscolaLMSContextProviderType {
   children?: React.ReactElement[] | React.ReactElement;
   apiUrl: string;
   defaults?: Partial<EscolaLMSContextReadConfig>;
+  imagePrefix?: string;
 }
 
 export const EscolaLMSContextProvider: FunctionComponent<
   EscolaLMSContextProviderType
-> = ({ children, apiUrl, defaults }) => {
+> = ({
+  children,
+  apiUrl,
+  defaults,
+  imagePrefix = `${apiUrl}/storage/imgcache`,
+}) => {
   interceptors(apiUrl);
   const initialValues = {
     ...defaultConfig,
     ...defaults,
   };
+
+  const getImagePrefix = () => imagePrefix;
 
   const getDefaultData = <K extends keyof EscolaLMSContextReadConfig>(
     key: K
@@ -1896,6 +1904,7 @@ export const EscolaLMSContextProvider: FunctionComponent<
         userStationaryEvents,
         fetchOrderInvoice,
         addMisingProducts,
+        getImagePrefix,
       }}
     >
       <EditorContextProvider url={`${apiUrl}/api/hh5p`}>
