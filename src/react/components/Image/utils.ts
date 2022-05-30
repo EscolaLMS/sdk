@@ -22,13 +22,12 @@ const getStringifyParams = (params: object) => {
 };
 
 export const getImageCachePath = (
-  apiUrl: string,
   imagePath: string,
   params: Record<string, string> = {},
   prefix: string
 ) => {
   const hash = getHash(imagePath + getStringifyParams(params));
-  return `${prefix}/${hash}.${imagePath.split(".").pop()}`;
+  return `${prefix}/${hash}.${imagePath?.split(".")?.pop()}`;
 };
 
 export const getImageApiPath = (

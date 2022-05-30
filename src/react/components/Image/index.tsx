@@ -52,7 +52,6 @@ const Image: React.FC<ImageProps> = ({
     (size?: number, isDefault: boolean = false) => ({
       // super important that all param values are strings
       cachePath: getImageCachePath(
-        apiUrl,
         path,
         size ? { w: size.toString() } : undefined,
         getImagePrefix()
