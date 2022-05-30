@@ -40,7 +40,7 @@ const Image: React.FC<ImageProps> = ({
   alt = "LMS Image",
   ...props
 }) => {
-  const { apiUrl,   getImagePrefix } = useContext(EscolaLMSContext);
+  const { apiUrl, getImagePrefix } = useContext(EscolaLMSContext);
 
   const imgRef = useRef<HTMLImageElement>(null);
   const imgSize = useMemo(
@@ -54,7 +54,8 @@ const Image: React.FC<ImageProps> = ({
       cachePath: getImageCachePath(
         apiUrl,
         path,
-        size ? { w: size.toString() } : undefined
+        size ? { w: size.toString() } : undefined,
+        getImagePrefix()
       ),
       apiPath: getImageApiPath(
         apiUrl,
@@ -113,7 +114,7 @@ const Image: React.FC<ImageProps> = ({
       <div className="escolalms-image">
         <img
           ref={imgRef}
-          src={`${getImagePrefix(apiUrl)}${path}}`}
+          src={`${getImagePrefix()}${path}}`}
           alt={alt}
           {...props}
         />
