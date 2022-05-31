@@ -11,11 +11,11 @@
     "@types/html-escaper": "^3.0.0",
     "@types/jest": "^26.0.15",
     "@types/node": "^12.0.0",
-    "@types/react": "^17",
-    "@types/react-dom": "^17",
+    "@types/react": "^17|^18",
+    "@types/react-dom": "^17|^18",
     "jssha": "^3.2.0",
-    "react": "^17",
-    "react-dom": "^17",
+    "react": "^17|^18",
+    "react-dom": "^17|^18",
     "typescript": "^4.6.4",
     "umi-request": "^1.4.0"
   },
@@ -65,7 +65,7 @@
     "api"
   ],
   "author": "Mateusz Wojczal <mateusz@wojczal.com>",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/EscolaLMS/sdk/issues"
   },
