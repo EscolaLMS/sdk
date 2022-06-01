@@ -1,4 +1,4 @@
-import request from "umi-request";
+import request, { RequestOptionsInit } from "umi-request";
 import * as API from "../types/api";
 import { currentTimezone } from "../utils";
 
@@ -121,6 +121,31 @@ export async function genereteJitsy(token: string, id: number) {
         Authorization: `Bearer ${token}`,
         "Current-timezone": currentTimezone(),
       },
+    }
+  );
+}
+
+/**  POST /api/consultations/change-term/{termId} */
+export async function changeTermDate(
+  termId: number,
+  newDate: string,
+  token: string,
+  options?: RequestOptionsInit
+) {
+  return request<API.DefaultResponse<API.Consultation>>(
+    `/api/consultations/change-term/${termId}`,
+    {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+        "Current-timezone": currentTimezone(),
+      },
+      data: {
+        executed_at: newDate,
+      },
+      ...(options || {}),
     }
   );
 }

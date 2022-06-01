@@ -178,6 +178,10 @@ export interface EscolaLMSContextAPIConfig {
   >;
   fetchUserStationaryEvents: () => Promise<void>;
   fetchOrderInvoice: (id: number) => Promise<Blob>;
+  changeConsultationTerm: (
+    termId: number,
+    newDate: string
+  ) => Promise<API.DefaultResponse<object>>;
 }
 export type EscolaLMSContextConfig = EscolaLMSContextReadConfig &
   EscolaLMSContextAPIConfig;

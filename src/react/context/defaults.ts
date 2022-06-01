@@ -233,6 +233,7 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
     loading: false,
   },
   fetchOrderInvoice: (id: number) => Promise.reject(id),
+  changeConsultationTerm: (termId: number, newDate: string) => Promise.reject(),
 };
 
 export const defaultApiConfig: EscolaLMSContextConfig = {
@@ -435,6 +436,7 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
     loading: false,
   },
   fetchOrderInvoice: (id: number) => Promise.reject(id),
+  changeConsultationTerm: (termId: number, newDate: string) => Promise.reject(),
 };
 
 export const defaultConfig = Object.assign(
