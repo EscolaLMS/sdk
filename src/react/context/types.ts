@@ -102,7 +102,11 @@ export interface EscolaLMSContextAPIConfig {
   removeFromCart: (courseId: number) => Promise<void>;
   fetchCart: () => Promise<void>;
   payWithStripe: (paymentMethodId: string) => Promise<void>;
-  payWithP24: (email: string, return_url: string) => Promise<void>;
+  payWithP24: (
+    email: string,
+    return_url: string,
+    data?: API.InvoiceData
+  ) => Promise<void>;
   fetchProgress: () => Promise<void>;
   sendProgress: (
     courseId: number,

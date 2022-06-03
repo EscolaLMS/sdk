@@ -100,7 +100,8 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
     value: { total: 0, subtotal: 0, tax: 0, items: [] },
   },
   payWithStripe: (paymentMethodId: string) => Promise.reject(paymentMethodId),
-  payWithP24: (email: string, return_url: string) => Promise.reject(),
+  payWithP24: (email: string, return_url: string, data?: API.InvoiceData) =>
+    Promise.reject(),
   fetchProgress: () => Promise.reject(),
   progress: {
     loading: false,
@@ -302,7 +303,8 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
     value: { total: 0, subtotal: 0, tax: 0, items: [] },
   },
   payWithStripe: (paymentMethodId: string) => Promise.reject(paymentMethodId),
-  payWithP24: (email: string, return_url: string) => Promise.reject(),
+  payWithP24: (email: string, return_url: string, data?: API.InvoiceData) =>
+    Promise.reject(),
   fetchProgress: () => Promise.reject(),
   progress: {
     loading: false,
