@@ -1244,9 +1244,9 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
     );
 
     const payWithP24 = useCallback(
-      (email: string, return_url: string) => {
+      (email: string, return_url: string, data?: API.InvoiceData) => {
         return token
-          ? postPayWithP24(email, token, return_url)
+          ? postPayWithP24(email, return_url, token, data)
               .then((res) => {
                 return res;
               })

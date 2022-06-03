@@ -1033,10 +1033,23 @@ export type AppointmentTerm = {
   is_started?: boolean;
   is_ended?: boolean;
   in_coming?: boolean;
+  related_product?: API.Product;
 };
 
 export type QuestionnaireStars = {
   sum_rate: number;
   count_answers: number;
   avg_rate: string;
+};
+
+export type InvoiceData = {
+  client_email: string;
+  client_name?: string;
+  client_street?: string;
+  client_street_number?: string;
+  client_postal?: string;
+  client_city?: string;
+  client_country?: string;
+  client_company?: string;
+  client_taxid?: string;
 };

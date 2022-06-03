@@ -86,8 +86,9 @@ export async function payWithStripe(
 
 export async function payWithP24(
   email: string,
+  return_url: string,
   token: string,
-  return_url: string
+  data?: API.InvoiceData
 ) {
   return request<API.P24Response>(`/api/cart/pay`, {
     method: "POST",
@@ -96,10 +97,7 @@ export async function payWithP24(
       Authorization: `Bearer ${token}`,
       "Current-timezone": currentTimezone(),
     },
-    data: {
-      email,
-      return_url,
-    },
+    data: { email, return_url, ...data },
   });
 }
 
