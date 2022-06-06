@@ -66,7 +66,7 @@ export async function addMisingProducts(token: string, products: number[]) {
 }
 
 export async function payWithStripe(
-  paymentMethodId: string,
+  payment_method: string,
   return_url: string,
   token: string
 ) {
@@ -78,8 +78,8 @@ export async function payWithStripe(
       "Current-timezone": currentTimezone(),
     },
     data: {
-      paymentMethodId,
       gateway: "stripe",
+      payment_method,
       return_url,
     },
   });

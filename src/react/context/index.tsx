@@ -1238,9 +1238,9 @@ export const EscolaLMSContextProvider: FunctionComponent<
   );
 
   const payWithStripe = useCallback(
-    (paymentMethodId: string, return_url: string) => {
+    (payment_method: string, return_url: string) => {
       return token
-        ? postPayWithStripe(paymentMethodId, return_url, token).then((res) => {
+        ? postPayWithStripe(payment_method, return_url, token).then((res) => {
             console.log(res);
           })
         : Promise.reject();
