@@ -1291,21 +1291,20 @@ export const EscolaLMSContextProvider: FunctionComponent<
   const fetchH5P = useCallback(
     (id: string) => {
       setH5P({ loading: true });
-      token
-        ? getH5p(Number(id))
-            .then((response) => {
-              if (response.success) {
-                setH5P({ loading: false, value: response.data });
-              }
-            })
-            .catch((error) => {
-              setH5P((prevState) => ({
-                ...prevState,
-                loading: false,
-                error: error,
-              }));
-            })
-        : Promise.reject();
+
+      return getH5p(Number(id))
+        .then((response) => {
+          if (response.success) {
+            setH5P({ loading: false, value: response.data });
+          }
+        })
+        .catch((error) => {
+          setH5P((prevState) => ({
+            ...prevState,
+            loading: false,
+            error: error,
+          }));
+        });
     },
     [token]
   );
