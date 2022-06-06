@@ -79,7 +79,7 @@ export async function payWithStripe(
     },
     data: {
       paymentMethodId,
-      gateway: "stripe",
+      payment_method: "stripe",
       return_url,
     },
   });
