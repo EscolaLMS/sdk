@@ -67,8 +67,8 @@ export async function addMisingProducts(token: string, products: number[]) {
 
 export async function payWithStripe(
   paymentMethodId: string,
-  token: string,
-  options?: RequestOptionsInit
+  return_url: string,
+  token: string
 ) {
   return request<API.SuccessResponse>(`/api/cart/pay`, {
     method: "POST",
@@ -79,8 +79,9 @@ export async function payWithStripe(
     },
     data: {
       paymentMethodId,
+      gateway: "stripe",
+      return_url,
     },
-    ...(options || {}),
   });
 }
 
