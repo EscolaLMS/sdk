@@ -121,7 +121,7 @@ export interface EscolaLMSContextAPIConfig {
   fetchTutor: (id: number) => Promise<void>;
   fetchOrders: (params?: API.PaginationParams) => Promise<void>;
   fetchPayments: () => Promise<void>;
-  fetchCertificates: () => Promise<void>;
+  fetchCertificates: (params?: API.PaginationParams) => Promise<void>;
   fetchCertificate: (
     id: number
   ) => Promise<API.DefaultResponse<API.Certificate>>;
