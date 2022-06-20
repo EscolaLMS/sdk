@@ -1,4 +1,4 @@
-import request from "umi-request";
+import request, { RequestOptionsInit } from "umi-request";
 import * as API from "../types/api";
 import { currentTimezone } from "../utils";
 
@@ -6,7 +6,7 @@ import { currentTimezone } from "../utils";
 export async function getCertificates(
   token: string,
   params?: API.PaginationParams,
-  options?: { [key: string]: any }
+  options?: RequestOptionsInit
 ) {
   return request<API.CertificateList>(`/api/pdfs`, {
     method: "GET",
