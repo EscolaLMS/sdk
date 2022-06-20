@@ -618,29 +618,32 @@ export const EscolaLMSContextProvider: FunctionComponent<
     [token]
   );
 
-  const fetchCertificates = useCallback(() => {
-    setCertificates((prevState) => ({ ...prevState, loading: true }));
+  const fetchCertificates = useCallback(
+    (params?: API.PaginationParams) => {
+      setCertificates((prevState) => ({ ...prevState, loading: true }));
 
-    return token
-      ? getCertificates(token)
-          .then((response) => {
-            if (response.success) {
-              setCertificates({
+      return token
+        ? getCertificates(token, params)
+            .then((response) => {
+              if (response.success) {
+                setCertificates({
+                  loading: false,
+                  list: response,
+                  error: undefined,
+                });
+              }
+            })
+            .catch((error) => {
+              setCertificates((prevState) => ({
+                ...prevState,
                 loading: false,
-                list: response,
-                error: undefined,
-              });
-            }
-          })
-          .catch((error) => {
-            setCertificates((prevState) => ({
-              ...prevState,
-              loading: false,
-              error: error,
-            }));
-          })
-      : Promise.reject();
-  }, [token]);
+                error: error,
+              }));
+            })
+        : Promise.reject();
+    },
+    [token]
+  );
 
   const fetchCertificate = useCallback(
     (id: number) => {

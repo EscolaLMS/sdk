@@ -132,7 +132,7 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
   certificates: {
     loading: false,
   },
-  fetchCertificates: () => Promise.reject(),
+  fetchCertificates: (params?: API.PaginationParams) => Promise.reject(),
   fetchCertificate: (id) => Promise.reject(id),
   getProductInfo: (id: number) => Promise.reject(id),
   pages: {
@@ -336,7 +336,7 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
   certificates: {
     loading: false,
   },
-  fetchCertificates: () => Promise.reject(),
+  fetchCertificates: (params?: API.PaginationParams) => Promise.reject(),
   fetchCertificate: (id) => Promise.reject(id),
   getProductInfo: (id: number) => Promise.reject(id),
   pages: {
