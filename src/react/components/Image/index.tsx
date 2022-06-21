@@ -112,6 +112,7 @@ const Image: React.FC<ImageProps> = ({
     return (
       <div className="escolalms-image">
         <img
+          loading={"lazy"}
           ref={imgRef}
           src={`${getImagePrefix()}${path}}`}
           alt={alt}
@@ -124,6 +125,7 @@ const Image: React.FC<ImageProps> = ({
   return (
     <div className="escolalms-image">
       <img
+        loading={"lazy"}
         ref={imgRef}
         src={src}
         srcSet={srcSet !== "" ? srcSet : undefined}
