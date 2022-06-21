@@ -15,6 +15,7 @@ interface ImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
   size?: number;
   srcSizes?: number[];
   alt?: string;
+  format?: string;
 }
 
 interface SizeObj {
@@ -38,6 +39,7 @@ const Image: React.FC<ImageProps> = ({
   size,
   srcSizes,
   alt = "LMS Image",
+  format = "webp",
   ...props
 }) => {
   const { apiUrl, getImagePrefix } = useContext(EscolaLMSContext);
@@ -54,12 +56,14 @@ const Image: React.FC<ImageProps> = ({
       cachePath: getImageCachePath(
         path,
         size ? { w: size.toString() } : undefined,
-        getImagePrefix()
+        getImagePrefix(),
+        format
       ),
       apiPath: getImageApiPath(
         apiUrl,
         path,
-        size ? { w: size.toString() } : undefined
+        size ? { w: size.toString() } : undefined,
+        format
       ),
       size: size,
       inCache: true,
