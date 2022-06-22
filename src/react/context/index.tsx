@@ -406,25 +406,15 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
     }, [defaults]);
 
     const fetchFields = useCallback((filter: API.FieldsParams) => {
-      setFields((prevState) => ({ ...prevState, loading: true }));
-
-      return getFields(filter)
-        .then((response) => {
-          if (response.success) {
-            setFields({
-              loading: false,
-              list: response.data,
-              error: undefined,
-            });
-          }
-        })
-        .catch((error) => {
-          setFields((prevState) => ({
-            ...prevState,
-            loading: false,
-            error: error,
-          }));
-        });
+      return fetchDataType<EscolaLms.ModelFields.Models.Metadata>({
+        controllers: abortControllers.current,
+        controller: `fields/${JSON.stringify(filter)}`,
+        mode: "list",
+        fetchAction: getFields(filter, {
+          signal: abortControllers.current?.fields?.signal,
+        }),
+        setState: setFields,
+      });
     }, []);
 
     const fetchStationaryEvents = useCallback(
@@ -977,9 +967,9 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
     };
 
     const fetchUserGroups = useCallback(
-      ({ pageSize, current }: API.UserGroupsParams) => {
+      (params: API.UserGroupsParams) => {
         setUserGroups((prevState) => ({ ...prevState, loading: true }));
-        return getUserGroups({ pageSize, current })
+        return getUserGroups(params)
           .then((response) => {
             if (response.success) {
               setUserGroups({
@@ -1055,30 +1045,23 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
       return postRegister(body);
     }, []);
 
-    useEffect(() => {
-      if (token) {
-        setUser((prevState) => ({ ...prevState, loading: true }));
-        getProfile(token)
-          .then((response) => {
-            if (response.success) {
-              setUser({
-                loading: false,
-                value: response.data,
-              });
-            }
-            if (response.success === false) {
-              setUser((prevState) => ({
-                ...prevState,
-                loading: false,
-                error: response,
-              }));
-            }
+    const fetchProfile = useCallback(() => {
+      return token
+        ? fetchDataType<API.UserAsProfile>({
+            controllers: abortControllers.current,
+            controller: `profile`,
+            mode: "value",
+            fetchAction: getProfile(token, {
+              signal: abortControllers.current?.profile?.signal,
+            }),
+            setState: setUser,
           })
-          .catch(() => {
-            logout();
-          });
-      }
-    }, [token, logout]);
+        : Promise.reject(logout());
+    }, [token]);
+
+    useEffect(() => {
+      fetchProfile();
+    }, [token]);
 
     const login = useCallback((body: API.LoginRequest) => {
       return postLogin(body).then((response) => {
@@ -1111,45 +1094,18 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
     );
 
     const fetchCart = useCallback(() => {
-      if (!token) {
-        return Promise.reject("No token provided");
-      }
-      setCart((prevState) => ({
-        ...prevState,
-        loading: true,
-      }));
-
-      if (abortControllers.current.cart) {
-        abortControllers.current.cart.abort();
-      }
-
-      const controller = new AbortController();
-      abortControllers.current.cart = controller;
-
-      try {
-        return getCart(token, { signal: controller.signal })
-          .then((response) => {
-            if (response.data.hasOwnProperty("items")) {
-              setCart({
-                loading: false,
-                value: response.data as API.Cart,
-              });
-            } else {
-              setCart((prevState) => ({
-                ...prevState,
-                loading: false,
-              }));
-            }
+      return token
+        ? fetchDataType<API.Cart>({
+            controllers: abortControllers.current,
+            controller: `cart`,
+            mode: "value",
+            fetchAction: getCart(token, {
+              signal: abortControllers.current?.cart?.signal,
+            }),
+            setState: setCart,
           })
-          .catch((err) => {
-            if (err.name !== "AbortError") {
-              console.log(err);
-            }
-          });
-      } catch (err: any) {
-        return Promise.reject(err);
-      }
-    }, [token, abortControllers]);
+        : Promise.reject();
+    }, [token]);
 
     const addToCart = useCallback(
       (productId: number, quantity?: number) => {
@@ -1261,47 +1217,9 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
       [token]
     );
 
-    const fetchProgress = useCallback(() => {
-      setProgress((prevState) => ({
-        ...prevState,
-        loading: true,
-      }));
-      return token
-        ? getProgress(token).then((res) => {
-            if (res.success) {
-              setProgress({
-                loading: false,
-                value: res.data,
-              });
-            }
-          })
-        : Promise.reject();
-    }, [token]);
-
     const fetchOrderInvoice = useCallback(
       (id: number) => {
         return token ? orderInvoice(token, id) : Promise.reject();
-      },
-      [token]
-    );
-
-    const fetchH5P = useCallback(
-      (id: string) => {
-        setH5P({ loading: true });
-
-        return getH5p(Number(id))
-          .then((response) => {
-            if (response.success) {
-              setH5P({ loading: false, value: response.data });
-            }
-          })
-          .catch((error) => {
-            setH5P((prevState) => ({
-              ...prevState,
-              loading: false,
-              error: error,
-            }));
-          });
       },
       [token]
     );
@@ -1341,119 +1259,87 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
       [token]
     );
 
-    const fetchTutors = useCallback(() => {
-      setTutors((prevState) => ({
-        ...prevState,
-        loading: true,
-      }));
-      return getTutors()
-        .then((res) => {
-          if (res.success) {
-            setTutors({
-              loading: false,
-              list: res.data,
-            });
-          } else if (res.success === false) {
-            {
-              setTutors({
-                loading: false,
-                error: res,
-              });
-            }
-          }
-        })
-        .catch((error) => {
-          setTutors({
-            loading: false,
-            error: error.data,
-          });
-        });
+    const fetchProgress = useCallback(() => {
+      return token
+        ? fetchDataType<API.CourseProgress>({
+            controllers: abortControllers.current,
+            controller: `progress`,
+            mode: "value",
+            fetchAction: getProgress(token, {
+              signal: abortControllers.current?.progress?.signal,
+            }),
+            setState: setProgress,
+          })
+        : Promise.reject();
+    }, [token]);
+
+    const fetchH5P = useCallback((id: string) => {
+      return fetchDataType<API.H5PObject>({
+        controllers: abortControllers.current,
+        controller: `h5p`,
+        mode: "value",
+        fetchAction: getH5p(Number(id), {
+          signal: abortControllers.current?.h5p?.signal,
+        }),
+        setState: setH5P,
+      });
     }, []);
 
-    const fetchTutor = useCallback((id: number) => {
-      setTutor((prevState) => ({
-        ...prevState,
-        loading: true,
-      }));
-      return getTutor(id)
-        .then((res) => {
-          if (res.success) {
-            setTutor({
-              loading: false,
-              value: res.data,
-            });
-          } else if (res.success === false) {
-            {
-              setTutor({
-                loading: false,
-                error: res,
-              });
-            }
-          }
-        })
-        .catch((error) => {
-          setTutor({
-            loading: false,
-            error: error.data,
-          });
-        });
+    const fetchTutors = useCallback(() => {
+      return fetchDataType<API.UserItem>({
+        controllers: abortControllers.current,
+        controller: `tutors`,
+        mode: "list",
+        fetchAction: getTutors({
+          signal: abortControllers.current?.tutors?.signal,
+        }),
+        setState: setTutors,
+      });
     }, []);
+
+    const fetchTutor = useCallback(
+      (id: number) => {
+        return fetchDataType<API.UserItem>({
+          controllers: abortControllers.current,
+          controller: `tutor`,
+          mode: "value",
+          fetchAction: getTutor(id, {
+            signal: abortControllers.current?.tutor?.signal,
+          }),
+          setState: setTutor,
+        });
+      },
+      [token]
+    );
 
     const fetchOrders = useCallback(
       (params?: API.PaginationParams) => {
-        setOrders((prevState) => ({
-          ...prevState,
-          loading: true,
-        }));
         return token
-          ? getOrders(token, params)
-              .then((res) => {
-                if (res.success) {
-                  setOrders({
-                    loading: false,
-                    list: res,
-                  });
-                } else if (res.success === false) {
-                  {
-                    setOrders({
-                      loading: false,
-                      error: res,
-                    });
-                  }
-                }
-              })
-              .catch((error) => {
-                setOrders({
-                  loading: false,
-                  error: error.data,
-                });
-              })
+          ? fetchDataType<API.Order>({
+              controllers: abortControllers.current,
+              controller: `orders/${JSON.stringify(params)}`,
+              mode: "paginated",
+              fetchAction: getOrders(token, params, {
+                signal: abortControllers.current?.orders?.signal,
+              }),
+              setState: setOrders,
+            })
           : Promise.reject();
       },
       [token]
     );
 
     const fetchPayments = useCallback(() => {
-      setPayments((prevState) => ({
-        ...prevState,
-        loading: true,
-      }));
       return token
-        ? getPayments(token)
-            .then((res) => {
-              if (res.success) {
-                setPayments({
-                  loading: false,
-                  list: res,
-                });
-              }
-            })
-            .catch((error) => {
-              setPayments({
-                loading: false,
-                error: error.data,
-              });
-            })
+        ? fetchDataType<API.Payment>({
+            controllers: abortControllers.current,
+            controller: "payments",
+            mode: "paginated",
+            fetchAction: getPayments(token, {
+              signal: abortControllers.current?.payments?.signal,
+            }),
+            setState: setPayments,
+          })
         : Promise.reject();
     }, [token]);
 
@@ -1468,63 +1354,18 @@ export const EscolaLMSContextProvider: FunctionComponent<EscolaLMSContextProvide
         setState: setPages,
       });
     }, [pages]);
-    /*
-    const fetchPages = useCallback(
-      (filter?: API.CourseParams) => {
-        setPages((prevState) => ({ ...prevState, loading: true }));
-        return getPages(filter)
-          .then((response) => {
-            if (response.success) {
-              setPages({
-                loading: false,
-                list: response,
-                error: undefined,
-              });
-            }
-          })
-          .catch((error) => {
-            setPages((prevState) => ({
-              ...prevState,
-              loading: false,
-              error: error,
-            }));
-          });
-      },
-      [pages]
-    );
-      */
 
-    const fetchPage = useCallback(
-      (slug: string) => {
-        setPage((prevState) => ({
-          ...prevState,
-          loading: true,
-        }));
-        return getPage(slug)
-          .then((res) => {
-            if (res.success) {
-              setPage({
-                loading: false,
-                value: res.data,
-              });
-            } else if (res.success === false) {
-              {
-                setPage({
-                  loading: false,
-                  error: res,
-                });
-              }
-            }
-          })
-          .catch((error) => {
-            setPage({
-              loading: false,
-              error: error.data,
-            });
-          });
-      },
-      [token]
-    );
+    const fetchPage = useCallback((slug: string) => {
+      return fetchDataType<API.PageListItem>({
+        controllers: abortControllers.current,
+        controller: "page",
+        mode: "value",
+        fetchAction: getPage(slug, {
+          signal: abortControllers.current?.page?.signal,
+        }),
+        setState: setPage,
+      });
+    }, []);
 
     const sendProgress = useCallback(
       (courseId: number, data: API.CourseProgressItemElement[]) => {

@@ -26,7 +26,7 @@ type fetchDataType<T> =
       controller?: string;
       controllers?: Record<string, AbortController | null>;
       mode: "list";
-      fetchAction: Promise<API.DefaultMetaResponse<T>>;
+      fetchAction: Promise<API.DefaultResponse<T[]>>;
       setState: React.Dispatch<React.SetStateAction<ContextListState<T>>>;
     };
 
