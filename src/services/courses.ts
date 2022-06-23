@@ -1,6 +1,6 @@
 // @ts-ignore
 /* eslint-disable */
-import request from "umi-request";
+import request, { RequestOptionsInit } from "umi-request";
 import * as API from "../types/api";
 import { currentTimezone } from "../utils";
 
@@ -31,7 +31,7 @@ export const noCompletedEventsIds: string[] = [
 /**  GET /api/courses */
 export async function course(
   params: API.CourseParams,
-  options?: { [key: string]: any }
+  options?: RequestOptionsInit
 ) {
   return request<API.CourseList>(`/api/courses`, {
     method: "GET",
@@ -41,7 +41,7 @@ export async function course(
 }
 
 /**  GET /api/courses/:id */
-export async function getCourse(id: number, options?: { [key: string]: any }) {
+export async function getCourse(id: number, options?: RequestOptionsInit) {
   return request<API.DefaultResponse<API.Course>>(`/api/courses/${id}`, {
     method: "GET",
     ...(options || {}),
@@ -52,7 +52,7 @@ export async function getCourse(id: number, options?: { [key: string]: any }) {
 export async function getCourseProgram(
   id: number,
   token?: string | null,
-  options?: { [key: string]: any }
+  options?: RequestOptionsInit
 ) {
   return request<API.DefaultResponse<API.CourseProgram>>(
     `/api/courses/${id}/program`,
@@ -72,10 +72,7 @@ export async function getCourseProgram(
   );
 }
 
-export async function progress(
-  token: string,
-  options?: { [key: string]: any }
-) {
+export async function progress(token: string, options?: RequestOptionsInit) {
   return request<API.DefaultResponse<API.CourseProgress>>(
     `/api/courses/progress`,
     {
@@ -94,7 +91,7 @@ export async function sendProgress(
   courseId: number,
   data: API.CourseProgressItemElement[],
   token: string,
-  options?: { [key: string]: any }
+  options?: RequestOptionsInit
 ) {
   return request<API.DefaultResponse<API.CourseProgress>>(
     `/api/courses/progress/${courseId}`,
@@ -113,14 +110,14 @@ export async function sendProgress(
   );
 }
 
-export async function tutors(options?: { [key: string]: any }) {
+export async function tutors(options?: RequestOptionsInit) {
   return request<API.TutorList>(`/api/tutors`, {
     method: "GET",
     ...(options || {}),
   });
 }
 
-export async function tutor(id: number, options?: { [key: string]: any }) {
+export async function tutor(id: number, options?: RequestOptionsInit) {
   return request<API.TutorSingle>(`/api/tutors/${id}`, {
     method: "GET",
     ...(options || {}),
@@ -130,7 +127,7 @@ export async function tutor(id: number, options?: { [key: string]: any }) {
 export async function topicPing(
   topicId: number,
   token: string,
-  options?: { [key: string]: any }
+  options?: RequestOptionsInit
 ) {
   return request<Boolean>(`/api/courses/progress/${topicId}/ping`, {
     method: "PUT",

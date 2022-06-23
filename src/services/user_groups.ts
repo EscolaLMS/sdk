@@ -1,7 +1,7 @@
-import request from "umi-request";
+import request, { RequestOptionsInit } from "umi-request";
 import * as API from "../types/api";
 
-export async function registerableGroups(options?: { [key: string]: any }) {
+export async function registerableGroups(options?: RequestOptionsInit) {
   return request<API.UserGroupList>("/api/auth/registerable-groups", {
     method: "GET",
     useCache: true,
@@ -11,7 +11,7 @@ export async function registerableGroups(options?: { [key: string]: any }) {
 
 export async function userGroups(
   params: API.UserGroupsParams,
-  options?: { [key: string]: any }
+  options?: RequestOptionsInit
 ) {
   return request<API.UserGroupList>("/api/admin/user-groups", {
     params: {
@@ -25,7 +25,7 @@ export async function userGroups(
   });
 }
 
-export async function userGroup(id: number, options?: { [key: string]: any }) {
+export async function userGroup(id: number, options?: RequestOptionsInit) {
   return request<API.UserGroupRow>(`/api/admin/user-groups/${id}`, {
     method: "GET",
     useCache: true,
@@ -36,7 +36,7 @@ export async function userGroup(id: number, options?: { [key: string]: any }) {
 export async function updateUserGroup(
   id: number,
   data: Partial<API.UserGroup>,
-  options?: { [key: string]: any }
+  options?: RequestOptionsInit
 ) {
   return request<API.UserGroupRow>(`/api/admin/user-groups/${id}`, {
     data,
@@ -47,7 +47,7 @@ export async function updateUserGroup(
 
 export async function createUserGroup(
   data: Partial<API.UserGroup>,
-  options?: { [key: string]: any }
+  options?: RequestOptionsInit
 ) {
   return request<API.UserGroupRow>(`/api/admin/user-groups`, {
     data,
@@ -58,7 +58,7 @@ export async function createUserGroup(
 
 export async function deleteUserGroup(
   id: number,
-  options?: { [key: string]: any }
+  options?: RequestOptionsInit
 ) {
   return request<API.UserGroupRow>(`/api/admin/user-groups/${id}`, {
     method: "DELETE",
@@ -69,7 +69,7 @@ export async function deleteUserGroup(
 export async function addUserToGroup(
   group_id: number,
   user_id: number,
-  options?: { [key: string]: any }
+  options?: RequestOptionsInit
 ) {
   return request<API.UserGroupAddRow>(
     `/api/admin/user-groups/${group_id}/members`,
@@ -86,7 +86,7 @@ export async function addUserToGroup(
 export async function removeUserFromGroup(
   group_id: number,
   user_id: number,
-  options?: { [key: string]: any }
+  options?: RequestOptionsInit
 ) {
   return request<API.UserGroupAddRow>(
     `/api/admin/user-groups/${group_id}/members/${user_id}`,

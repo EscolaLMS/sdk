@@ -183,6 +183,12 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
   },
   userWebinars: { loading: false },
   fetchUserWebinars: () => Promise.reject(),
+  fetchWebinar: (id: number) => Promise.reject(),
+  fetchProducts: (
+    filter: API.PageParams &
+      API.PaginationParams & { type?: string; "tags[]"?: string }
+  ) => Promise.reject(),
+  fetchProduct: (id: number) => Promise.reject(),
   fields: {
     loading: false,
     list: [],
@@ -199,6 +205,7 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
   },
   fetchStationaryEvents: (filter: API.StationaryEventsParams) =>
     Promise.reject(),
+  fetchStationaryEvent: (id: number) => Promise.reject(),
   bookConsultationTerm: (id: number, term: string) => Promise.reject(),
   fetchWebinars: (filter: API.WebinarParams) => Promise.reject(),
   fetchTutorConsultations: () => Promise.reject(),
@@ -395,6 +402,12 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
   },
   userWebinars: { loading: false },
   fetchUserWebinars: () => Promise.reject(),
+  fetchWebinar: (id: number) => Promise.reject(),
+  fetchProducts: (
+    filter: API.PageParams &
+      API.PaginationParams & { type?: string; "tags[]"?: string }
+  ) => Promise.reject(),
+  fetchProduct: (id: number) => Promise.reject(),
   fetchFields: (filter: API.FieldsParams) => Promise.reject(),
   stationaryEvents: {
     loading: false,
@@ -404,6 +417,7 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
   },
   fetchStationaryEvents: (filter: API.StationaryEventsParams) =>
     Promise.reject(),
+  fetchStationaryEvent: (id: number) => Promise.reject(),
   bookConsultationTerm: (id: number, term: string) => Promise.reject(),
   fetchWebinars: (filter: API.WebinarParams) => Promise.reject(),
   webinars: { loading: false },
