@@ -1,16 +1,16 @@
 import { useContext } from "react";
 import { act } from "react-dom/test-utils";
-import { EscolaLMSContext } from "./index";
-import { render, fireEvent, waitFor, screen } from "../../../tests/test-utils";
+import { EscolaLMSContext } from "./../../src/react/context";
+import { render, fireEvent, waitFor, screen } from "../test-utils";
 
-import { response as categoriesResponse } from "../../../tests/test_server/categories";
-import { response as configResponse } from "../../../tests/test_server/config";
-import { response as settingsResponse } from "../../../tests/test_server/settings";
-import { response as tagsResponse } from "../../../tests/test_server/tags";
+import { response as categoriesResponse } from "../test_server/categories";
+import { response as configResponse } from "../test_server/config";
+import { response as settingsResponse } from "../test_server/settings";
+import { response as tagsResponse } from "../test_server/tags";
 
 import "@testing-library/jest-dom";
 
-import fakeServer from "../../../tests/test_server";
+import fakeServer from "../test_server";
 
 const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
