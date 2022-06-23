@@ -20,5 +20,6 @@
     "types": ["jest", "node"],
     "typeRoots": ["./types", "./node_modules/@types", "./src/typings.d.ts"]
   },
-  "include": ["index.d.ts", "src", "node_modules/@escolalms/ts-types"]
+  "include": ["index.d.ts", "src", "node_modules/@escolalms/ts-types"],
+  "exclude": ["tests/**/*"]
 }
