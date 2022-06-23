@@ -20,7 +20,8 @@
     "umi-request": "^1.4.0"
   },
   "scripts": {
-    "lib": "tsc --noEmit false --outDir lib --module commonjs"
+    "lib": "tsc --noEmit false --outDir lib --module commonjs",
+    "test": "jest"
   },
   "eslintConfig": {
     "extends": [
