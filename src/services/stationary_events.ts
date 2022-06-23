@@ -30,7 +30,10 @@ export async function getStationaryEvent(
 }
 
 /**  GET /api/stationary-events/me */
-export async function getMyStationaryEvents(token: string) {
+export async function getMyStationaryEvents(
+  token: string,
+  options?: RequestOptionsInit
+) {
   return request<API.DefaultMetaResponse<API.StationaryEvent>>(
     `/api/stationary-events/me`,
     {
@@ -41,6 +44,7 @@ export async function getMyStationaryEvents(token: string) {
         Authorization: `Bearer ${token}`,
         "Current-timezone": currentTimezone(),
       },
+      ...(options || {}),
     }
   );
 }

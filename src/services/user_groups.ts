@@ -1,7 +1,7 @@
 import request, { RequestOptionsInit } from "umi-request";
 import * as API from "../types/api";
 
-export async function registerableGroups(options?: { [key: string]: any }) {
+export async function registerableGroups(options?: RequestOptionsInit) {
   return request<API.UserGroupList>("/api/auth/registerable-groups", {
     method: "GET",
     useCache: true,

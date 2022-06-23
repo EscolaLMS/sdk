@@ -16,7 +16,11 @@ export async function products(
 }
 
 /**  GET /api/products/:id */
-export async function getSingleProduct(id: number, token?: string) {
+export async function getSingleProduct(
+  id: number,
+  token?: string,
+  options?: RequestOptionsInit
+) {
   return request<API.DefaultResponse<API.Product>>(`/api/products/${id}`, {
     method: "GET",
     headers: {
@@ -25,5 +29,6 @@ export async function getSingleProduct(id: number, token?: string) {
       Authorization: `Bearer ${token}`,
       "Current-timezone": currentTimezone(),
     },
+    ...(options || {}),
   });
 }

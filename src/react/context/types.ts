@@ -39,8 +39,8 @@ export enum FontSize {
 
 export interface EscolaLMSContextReadConfig {
   courses: ContextPaginatedMetaState<API.CourseListItem>;
-  userGroup: ContextStateValue<API.UserGroupRow>;
-  userGroups: ContextListState<API.UserGroup>;
+  userGroup: ContextStateValue<API.UserGroup>;
+  userGroups: ContextPaginatedMetaState<API.UserGroup>;
   registerableGroups: ContextListState<API.UserGroup>;
   course: ContextStateValue<API.CourseListItem>;
   program: ContextStateValue<API.CourseProgram>;
@@ -145,12 +145,19 @@ export interface EscolaLMSContextAPIConfig {
   fetchUserConsultations: () => Promise<void>;
   fetchFields: (filter: API.FieldsParams) => Promise<void>;
   fetchStationaryEvents: (filter: API.StationaryEventsParams) => Promise<void>;
+  fetchStationaryEvent: (id: number) => Promise<void>;
   bookConsultationTerm: (
     id: number,
     term: string
   ) => Promise<API.ScheduleConsultationResponse>;
+  fetchProducts: (
+    filter: API.PageParams &
+      API.PaginationParams & { type?: string; "tags[]"?: string }
+  ) => Promise<void>;
+  fetchProduct: (id: number) => Promise<void>;
   getProductInfo: (id: number) => Promise<API.DefaultResponse<API.Product>>;
   fetchWebinars: (filter: API.WebinarParams) => Promise<void>;
+  fetchWebinar: (id: number) => Promise<void>;
   fetchEvents: (filter: API.EventsParams) => Promise<void>;
   fetchTutorConsultations: () => Promise<void>;
   approveConsultationTerm: (consultation: number) => Promise<void>;
