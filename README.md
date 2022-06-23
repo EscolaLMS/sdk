@@ -15,6 +15,8 @@ The following project contains:
 
 - [Types of all API Responses](https://github.com/EscolaLMS/sdk/blob/main/src/types/api.ts)
 
+- [ts-models](https://github.com/EscolaLMS/ts-models) those types are automatically generated
+
 ## React
 
 For rapid React application development here is list of
