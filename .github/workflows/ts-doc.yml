@@ -7,7 +7,7 @@ on:
 
 jobs:
   swagger-gh-pages:
-    runs-on: ubuntu-latest   
+    runs-on: ubuntu-latest
 
     steps:
       - name: Instantiate package
@@ -17,7 +17,7 @@ jobs:
         run: yarn add typedoc
 
       - name: Generate typedoc
-        run: yarn typedoc src/index.ts --out build        
+        run: yarn typedoc src/index.ts --plugin typedoc-plugin-missing-exports --out build
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3

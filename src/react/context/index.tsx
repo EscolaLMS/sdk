@@ -141,11 +141,16 @@ export const sortProgram: SortProgram = (lessons) => {
     }));
 };
 
-interface EscolaLMSContextProviderType {
+export interface EscolaLMSContextProviderType {
   apiUrl: string;
   defaults?: Partial<EscolaLMSContextReadConfig>;
   imagePrefix?: string;
 }
+
+/**
+ *
+ * @component
+ */
 
 export const EscolaLMSContextProvider: FunctionComponent<
   PropsWithChildren<EscolaLMSContextProviderType>

@@ -56,7 +56,8 @@
     "jest-environment-jsdom": "^28.1.1",
     "nock": "^13.2.7",
     "ts-jest": "^28.0.5",
-    "typedoc": "^0.22.5"
+    "typedoc": "^0.22.17",
+    "typedoc-plugin-missing-exports": "^0.22.6"
   },
   "repository": {
     "type": "git",

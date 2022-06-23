@@ -15,6 +15,8 @@ The following project contains:
 
 - [Types of all API Responses](https://github.com/EscolaLMS/sdk/blob/main/src/types/api.ts)
 
+- [ts-models](https://github.com/EscolaLMS/ts-models) those types are automatically generated
+
 ## React
 
 For rapid React application development here is list of
@@ -22,6 +24,50 @@ For rapid React application development here is list of
 - [React Context](https://github.com/EscolaLMS/sdk/blob/main/src/react/context/index.tsx)
 - [React hooks](https://github.com/EscolaLMS/sdk/tree/main/src/react/hooks)
 - [React Components](https://github.com/EscolaLMS/sdk/tree/main/src/react/components)
+
+### Context
+
+Simplest React appliaction consuming Wellms Context API would look like
+
+```tsx
+import React, { useContext } from "react";
+import ReactDOM from "react-dom/client";
+import { EscolaLMSContextProvider } from "@escolalms/sdk/lib/react/context";
+
+declare global {
+  interface Window {
+    REACT_APP_API_URL: string;
+  }
+}
+
+const App = () => {
+  const { user, courses, fetchCourses } = useContext(EscolaLMSContext);
+
+  useEffect(() => fetchCourses(), []);
+
+  console.log("current user data", user);
+
+  return (
+    <React.Fragment>
+      <ul>
+        {courses.list.map((course) => (
+          <li key={course.id}>{course.title}</li>
+        ))}
+      </ul>
+    </React.Fragment>
+  );
+};
+
+const API_URL =
+  window.REACT_APP_API_URL ||
+  (process && process.env && process.env.REACT_APP_PUBLIC_API_URL);
+
+ReactDOM.createRoot(document.getElementById("root") as Element).render(
+  <EscolaLMSContextProvider apiUrl={API_URL}>
+    <App />
+  </EscolaLMSContextProvider>
+);
+```
 
 ## API endpoint calls
 
