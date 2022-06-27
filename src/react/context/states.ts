@@ -31,7 +31,6 @@ type fetchDataType<T> =
     };
 
 export const fetchDataType = <T>(params: fetchDataType<T>) => {
-  console.log("fetchDataType", params);
   const { setState, fetchAction, mode, controller, controllers } = params;
 
   if (mode === "paginated") {
@@ -46,7 +45,6 @@ export const fetchDataType = <T>(params: fetchDataType<T>) => {
 
   if (controller && controllers) {
     if (controllers[controller]) {
-      console.log("abort", params);
       controllers[controller]?.abort();
     }
     controllers[controller] = new AbortController();
