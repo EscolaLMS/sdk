@@ -1,12 +1,10 @@
-import request from "umi-request";
+import request, { RequestOptionsInit } from "umi-request";
 import * as API from "../types/api";
 
 /**  GET /api/courses */
-export async function categoryTree() {
-  return request<API.DataResponseSuccess<API.Category[]>>(
-    `/api/categories/tree`,
-    {
-      method: "GET",
-    }
-  );
+export async function categoryTree(options?: RequestOptionsInit) {
+  return request<API.DefaultResponse<API.Category[]>>(`/api/categories/tree`, {
+    method: "GET",
+    ...(options || {}),
+  });
 }

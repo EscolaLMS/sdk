@@ -1,11 +1,11 @@
-import request from "umi-request";
+import request, { RequestOptionsInit } from "umi-request";
 import * as API from "../types/api";
 import { currentTimezone } from "../utils";
 
 /**  GET /api/webinars */
 export async function webinars(
   params: API.WebinarParams,
-  options?: { [key: string]: any }
+  options?: RequestOptionsInit
 ) {
   return request<API.WebinarsList>(`/api/webinars`, {
     method: "GET",
@@ -15,7 +15,7 @@ export async function webinars(
 }
 
 /**  GET /api/webinars/:id */
-export async function getWebinar(id: number, options?: { [key: string]: any }) {
+export async function getWebinar(id: number, options?: RequestOptionsInit) {
   return request<API.DefaultResponse<API.Webinar>>(`/api/webinars/${id}`, {
     method: "GET",
     ...(options || {}),
@@ -23,7 +23,10 @@ export async function getWebinar(id: number, options?: { [key: string]: any }) {
 }
 
 /**  GET /api/webinars/me */
-export async function getMyWebinars(token: string) {
+export async function getMyWebinars(
+  token: string,
+  options?: RequestOptionsInit
+) {
   return request<API.DefaultMetaResponse<API.Event>>(`/api/webinars/me`, {
     method: "GET",
     headers: {
@@ -32,11 +35,16 @@ export async function getMyWebinars(token: string) {
       Authorization: `Bearer ${token}`,
       "Current-timezone": currentTimezone(),
     },
+    ...(options || {}),
   });
 }
 
 /**  GET /api/webinars/generate-jitsi*/
-export async function genereteJitsyWebinar(token: string, id: number) {
+export async function genereteJitsyWebinar(
+  token: string,
+  id: number,
+  options?: RequestOptionsInit
+) {
   return request<API.DefaultResponse<API.JitsyData>>(
     `/api/webinars/generate-jitsi/${id}`,
     {
@@ -47,6 +55,7 @@ export async function genereteJitsyWebinar(token: string, id: number) {
         Authorization: `Bearer ${token}`,
         "Current-timezone": currentTimezone(),
       },
+      ...(options || {}),
     }
   );
 }

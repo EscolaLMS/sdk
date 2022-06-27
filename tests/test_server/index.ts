@@ -11,6 +11,5 @@ export default () => {
   config(scope);
   settings(scope);
   tags(scope);
-  console.log("fake created");
   return scope;
 };

@@ -1,10 +1,10 @@
-import request from "umi-request";
+import request, { RequestOptionsInit } from "umi-request";
 import * as API from "../types/api";
 import { currentTimezone } from "../utils";
 
 export async function login(
   body: API.LoginRequest,
-  options?: { [key: string]: any }
+  options?: RequestOptionsInit
 ) {
   return request<API.LoginResponse>("/api/auth/login", {
     method: "POST",
@@ -16,7 +16,7 @@ export async function login(
   });
 }
 
-export async function profile(token: string) {
+export async function profile(token: string, options?: RequestOptionsInit) {
   return request<API.DefaultResponse<API.UserItem & { roles: string[] }>>(
     "/api/profile/me",
     {
@@ -27,13 +27,14 @@ export async function profile(token: string) {
         Authorization: `Bearer ${token}`,
         "Current-timezone": currentTimezone(),
       },
+      ...(options || {}),
     }
   );
 }
 
 export async function register(
   body: API.RegisterRequest,
-  options?: { [key: string]: any }
+  options?: RequestOptionsInit
 ) {
   return request<API.DefaultResponse<API.RegisterResponse>>(
     "/api/auth/register",
@@ -83,7 +84,7 @@ export async function updateAvatar(file: File, token: string) {
 
 export async function forgot(
   body: API.ForgotRequest,
-  options?: { [key: string]: any }
+  options?: RequestOptionsInit
 ) {
   return request<API.AuthResponse>("/api/auth/password/forgot", {
     method: "POST",
@@ -97,7 +98,7 @@ export async function forgot(
 
 export async function reset(
   body: API.ResetPasswordRequest,
-  options?: { [key: string]: any }
+  options?: RequestOptionsInit
 ) {
   return request<API.AuthResponse>("/api/auth/password/reset", {
     method: "POST",

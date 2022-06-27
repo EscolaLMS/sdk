@@ -246,6 +246,26 @@ export type PageList = DefaultMetaResponse<Page>;
 
 export type PageListItem = Page;
 
+export type ConsultationsList = DefaultMetaResponse<Consultation>;
+
+export type WebinarsList = DefaultMetaResponse<Webinar>;
+
+export type ProductList = DefaultMetaResponse<Product>;
+
+export type StationaryEventsList = DefaultMetaResponse<StationaryEvent>;
+
+export type EventsList = DefaultMetaResponse<Event>;
+
+export type TutorConsultationList = DefaultMetaResponse<AppointmentTerm>;
+
+export type UserGroups = UserGroup[];
+
+export type UserGroupRow = DefaultResponse<UserGroup>;
+
+export type UserGroupAddRow = DefaultResponse<UserItem[]>;
+
+export type UserGroupList = DefaultMetaResponse<UserGroup>;
+
 export type Consultation = EscolaLms.Consultations.Models.Consultation & {
   product?: Product;
   executed_status?: null | "reported" | "not_reported" | "reject" | "approved";
@@ -294,18 +314,6 @@ export type CartItem = EscolaLms.Cart.Models.CartItem & {
   product_id?: number;
   total_with_tax?: number;
 };
-
-export type ConsultationsList = DefaultMetaResponse<Consultation>;
-
-export type WebinarsList = DefaultMetaResponse<Webinar>;
-
-export type ProductList = DefaultMetaResponse<Product>;
-
-export type StationaryEventsList = DefaultMetaResponse<StationaryEvent>;
-
-export type EventsList = DefaultMetaResponse<Event>;
-
-export type TutorConsultationList = DefaultMetaResponse<AppointmentTerm>;
 
 export type PaginationParams = {
   order_by?: string;
@@ -833,14 +841,6 @@ export type UserGroup = {
   parent_id?: null | number;
   registerable?: boolean;
 };
-
-export type UserGroups = UserGroup[];
-
-export type UserGroupRow = DefaultResponse<UserGroup>;
-
-export type UserGroupAddRow = DefaultResponse<UserItem[]>;
-
-export type UserGroupList = DefaultMetaResponse<UserGroup>;
 
 export type UserGroupsParams = {
   current?: number;

@@ -5,7 +5,7 @@ import { currentTimezone } from "../utils";
 /**  GET /api/consultations */
 export async function consultations(
   params: API.ConsultationParams,
-  options?: { [key: string]: any }
+  options?: RequestOptionsInit
 ) {
   return request<API.ConsultationsList>(`/api/consultations`, {
     method: "GET",
@@ -17,7 +17,7 @@ export async function consultations(
 /**  GET /api/consultations/:id */
 export async function getConsultation(
   id: number,
-  options?: { [key: string]: any }
+  options?: RequestOptionsInit
 ) {
   return request<API.DefaultResponse<API.Consultation>>(
     `/api/consultations/${id}`,
@@ -29,7 +29,10 @@ export async function getConsultation(
 }
 
 /**  GET /api/consultations/me */
-export async function getUserConsultations(token: string) {
+export async function getUserConsultations(
+  token: string,
+  options?: RequestOptionsInit
+) {
   return request<API.ConsultationsList>(`/api/consultations/me`, {
     method: "GET",
     headers: {
@@ -38,6 +41,7 @@ export async function getUserConsultations(token: string) {
       Authorization: `Bearer ${token}`,
       "Current-timezone": currentTimezone(),
     },
+    ...(options || {}),
   });
 }
 
@@ -45,7 +49,8 @@ export async function getUserConsultations(token: string) {
 export async function bookConsultationDate(
   token: string,
   id: number,
-  term: string
+  term: string,
+  options?: RequestOptionsInit
 ) {
   return request<API.ScheduleConsultationResponse>(
     `/api/consultations/report-term/${id}`,
@@ -60,12 +65,16 @@ export async function bookConsultationDate(
       data: {
         term: term,
       },
+      ...(options || {}),
     }
   );
 }
 
 /**  GET /api/consultations/my-schedule*/
-export async function getTutorConsultations(token: string) {
+export async function getTutorConsultations(
+  token: string,
+  options?: RequestOptionsInit
+) {
   return request<API.TutorConsultationList>(`/api/consultations/my-schedule`, {
     method: "GET",
     headers: {
@@ -74,11 +83,16 @@ export async function getTutorConsultations(token: string) {
       Authorization: `Bearer ${token}`,
       "Current-timezone": currentTimezone(),
     },
+    ...(options || {}),
   });
 }
 
 /**  GET /api/consultations/approve-term*/
-export async function approveConsultation(token: string, id: number) {
+export async function approveConsultation(
+  token: string,
+  id: number,
+  options?: RequestOptionsInit
+) {
   return request<API.TutorConsultationList>(
     `/api/consultations/approve-term/${id}`,
     {
@@ -89,12 +103,17 @@ export async function approveConsultation(token: string, id: number) {
         Authorization: `Bearer ${token}`,
         "Current-timezone": currentTimezone(),
       },
+      ...(options || {}),
     }
   );
 }
 
 /**  GET /api/consultations/reject-term*/
-export async function rejectConsultation(token: string, id: number) {
+export async function rejectConsultation(
+  token: string,
+  id: number,
+  options?: RequestOptionsInit
+) {
   return request<API.TutorConsultationList>(
     `/api/consultations/reject-term/${id}`,
     {
@@ -105,12 +124,17 @@ export async function rejectConsultation(token: string, id: number) {
         Authorization: `Bearer ${token}`,
         "Current-timezone": currentTimezone(),
       },
+      ...(options || {}),
     }
   );
 }
 
 /**  GET /api/consultations/generate-jitsi*/
-export async function genereteJitsy(token: string, id: number) {
+export async function genereteJitsy(
+  token: string,
+  id: number,
+  options?: RequestOptionsInit
+) {
   return request<API.DefaultResponse<API.JitsyData>>(
     `/api/consultations/generate-jitsi/${id}`,
     {
@@ -121,6 +145,7 @@ export async function genereteJitsy(token: string, id: number) {
         Authorization: `Bearer ${token}`,
         "Current-timezone": currentTimezone(),
       },
+      ...(options || {}),
     }
   );
 }

@@ -24,7 +24,7 @@ export async function getCertificates(
 export async function getCertificate(
   token: string,
   id: number,
-  options?: { [key: string]: any }
+  options?: RequestOptionsInit
 ) {
   return request<API.DefaultResponse<API.Certificate>>(`/api/pdfs/${id}`, {
     method: "GET",

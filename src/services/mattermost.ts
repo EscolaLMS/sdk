@@ -1,4 +1,4 @@
-import request from "umi-request";
+import request, { RequestOptionsInit } from "umi-request";
 import * as API from "../types/api";
 import { currentTimezone } from "../utils";
 
@@ -6,7 +6,7 @@ import { currentTimezone } from "../utils";
 export async function getMattermostChannels(
   token: string,
   params?: API.PageParams,
-  options?: { [key: string]: any }
+  options?: RequestOptionsInit
 ) {
   return request<API.MattermostChannelList>(`/api/mattermost/me`, {
     method: "GET",
