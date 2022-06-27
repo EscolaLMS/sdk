@@ -372,20 +372,38 @@ export const EscolaLMSContextProvider: FunctionComponent<
     });
   }, []);
 
+  const fetchCategories = useCallback(() => {
+    return fetchDataType<API.Category>({
+      controllers: abortControllers.current,
+      controller: `categories`,
+      mode: "list",
+      fetchAction: getCategoryTree({
+        signal: abortControllers.current?.categories?.signal,
+      }),
+      setState: setCategoryTree,
+    });
+  }, []);
+
+  const fetchTags = useCallback(() => {
+    return fetchDataType<API.Tag>({
+      controllers: abortControllers.current,
+      controller: `tags`,
+      mode: "list",
+      fetchAction: getUniqueTags({
+        signal: abortControllers.current?.tags?.signal,
+      }),
+      setState: setUniqueTags,
+    });
+  }, []);
+
   useEffect(() => {
     // TODO: remove this since it's not always needed
     getSettings().then((response) => {
       setSettings(response.data);
     });
     fetchConfig();
-    setUniqueTags((prevState) => ({ ...prevState, loading: true }));
-    getUniqueTags().then((response) => {
-      setUniqueTags({ list: response.data, loading: false });
-    });
-    setCategoryTree((prevState) => ({ ...prevState, loading: true }));
-    getCategoryTree().then((response) => {
-      setCategoryTree({ list: response.data, loading: false });
-    });
+    fetchTags();
+    fetchCategories();
   }, []);
 
   useEffect(() => {
@@ -451,7 +469,7 @@ export const EscolaLMSContextProvider: FunctionComponent<
             fetchAction: getSingleProduct(id, token, {
               signal: abortControllers.current?.product?.signal,
             }),
-            setState: setProducts,
+            setState: setProduct,
           })
         : Promise.reject();
     },
@@ -924,12 +942,39 @@ export const EscolaLMSContextProvider: FunctionComponent<
           }),
           setState: setUser,
         })
-      : Promise.reject(logout());
+      : Promise.reject();
   }, [token]);
 
   useEffect(() => {
-    fetchProfile().catch(() => {});
-  }, [token]);
+    fetchProfile().catch(() => {
+      logout();
+    });
+  }, [token, logout]);
+
+  useEffect(() => {
+    if (token) {
+      setUser((prevState) => ({ ...prevState, loading: true }));
+      getProfile(token)
+        .then((response) => {
+          if (response.success) {
+            setUser({
+              loading: false,
+              value: response.data,
+            });
+          }
+          if (response.success === false) {
+            setUser((prevState) => ({
+              ...prevState,
+              loading: false,
+              error: response,
+            }));
+          }
+        })
+        .catch(() => {
+          logout();
+        });
+    }
+  }, [token, logout]);
 
   const login = useCallback((body: API.LoginRequest) => {
     return postLogin(body).then((response) => {
