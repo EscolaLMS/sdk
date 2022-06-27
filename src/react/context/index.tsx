@@ -820,16 +820,13 @@ export const EscolaLMSContextProvider: FunctionComponent<
 
   const fetchConsultation = useCallback((id: number) => {
     return fetchDataType<API.Consultation>({
+      id: id,
       controllers: abortControllers.current,
       controller: `consultation`,
       mode: "value",
-      fetchAction: getConsultation(
-        id,
-
-        {
-          signal: abortControllers.current?.consultation?.signal,
-        }
-      ),
+      fetchAction: getConsultation(id, {
+        signal: abortControllers.current?.consultation?.signal,
+      }),
       setState: setConsultation,
     });
   }, []);
@@ -917,22 +914,63 @@ export const EscolaLMSContextProvider: FunctionComponent<
   );
 
   const fetchCourse = useCallback((id: number) => {
-    setCourse((prevState) => ({ ...prevState, loading: true }));
+    setCourse((prevState) => ({
+      ...prevState,
+      loading: true,
+      byId: prevState.byId
+        ? {
+            ...prevState.byId,
+            [id]: {
+              ...prevState.byId[id],
+              loading: true,
+            },
+          }
+        : { [id]: { loading: true } },
+    }));
     return getCourse(id).then((response) => {
       if (response.success) {
-        setCourse({
+        const lessons = sortProgram(response.data.lessons || []);
+        setCourse((prevState) => ({
           loading: false,
           value: {
             ...response.data,
-            lessons: sortProgram(response.data.lessons || []),
+            lessons: lessons,
           },
-        });
+          byId: prevState.byId
+            ? {
+                ...prevState.byId,
+                [id]: {
+                  value: response.data,
+                  loading: false,
+                },
+              }
+            : {
+                [id]: {
+                  value: response.data,
+                  loading: false,
+                },
+              },
+        }));
       }
       if (response.success === false) {
         setCourse((prevState) => ({
           ...prevState,
           loading: false,
           error: response,
+          byId: prevState.byId
+            ? {
+                ...prevState.byId,
+                [id]: {
+                  error: response,
+                  loading: false,
+                },
+              }
+            : {
+                [id]: {
+                  error: response,
+                  loading: false,
+                },
+              },
         }));
       }
     });

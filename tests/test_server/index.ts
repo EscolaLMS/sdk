@@ -4,6 +4,8 @@ import categories from "./categories";
 import config from "./config";
 import settings from "./settings";
 import tags from "./tags";
+import course from "./course";
+import courses from "./courses";
 
 export default () => {
   const scope = nock("http://api.localhost");
@@ -11,5 +13,7 @@ export default () => {
   config(scope);
   settings(scope);
   tags(scope);
+  course(scope);
+  courses(scope);
   return scope;
 };

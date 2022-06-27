@@ -28,6 +28,10 @@ export interface ContextStateValue<T> {
   loading: boolean;
   value?: T;
   error?: API.DefaultResponseError;
+  byId?: Record<
+    number | string,
+    { loading: boolean; value?: T; error?: API.DefaultResponseError }
+  >;
 }
 
 export enum FontSize {

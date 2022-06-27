@@ -15,15 +15,11 @@ import "@testing-library/jest-dom";
 
 import fakeServer from "../test_server";
 
-const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
-
 beforeAll(() => {
   fakeServer();
 });
 
 const InititalFetches = () => {
-  // const [loading, setLoading] = useState(true);
-
   const { fetchSettings, fetchCategories, fetchConfig, fetchTags } =
     useContext(EscolaLMSContext);
 
