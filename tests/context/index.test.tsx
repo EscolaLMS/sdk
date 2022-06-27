@@ -1,6 +1,9 @@
-import { useContext } from "react";
+import { useContext, useState, useEffect, useMemo } from "react";
 import { act } from "react-dom/test-utils";
-import { EscolaLMSContext } from "./../../src/react/context";
+import {
+  EscolaLMSContext,
+  EscolaLMSContextProvider,
+} from "./../../src/react/context";
 import { render, fireEvent, waitFor, screen } from "../test-utils";
 
 import { response as categoriesResponse } from "../test_server/categories";
@@ -19,20 +22,46 @@ beforeAll(() => {
 });
 
 const InititalFetches = () => {
-  const { settings, categoryTree, config } = useContext(EscolaLMSContext);
+  // const [loading, setLoading] = useState(true);
+
+  const { fetchSettings, fetchCategories, fetchConfig, fetchTags } =
+    useContext(EscolaLMSContext);
+
+  const { settings, categoryTree, config, uniqueTags } =
+    useContext(EscolaLMSContext);
+
+  useEffect(() => {
+    fetchSettings();
+    fetchCategories();
+    fetchConfig();
+    fetchTags();
+  }, [fetchSettings, fetchCategories, fetchConfig, fetchTags]);
+
+  const loading = useMemo(() => {
+    return (
+      settings.loading &&
+      categoryTree.loading &&
+      config.loading &&
+      uniqueTags.loading
+    );
+  }, [settings, categoryTree, config, uniqueTags]);
+
+  if (loading) {
+    return <div>Loading</div>;
+  }
 
   return (
     <div>
-      <div>{config.loading ? "Loading ..." : "Loaded"}</div>
+      <div>Loaded</div>
       <div data-testid="settings">{JSON.stringify(settings)}</div>
       <div data-testid="categoryTree">{JSON.stringify(categoryTree)}</div>
       <div data-testid="config">{JSON.stringify(config)}</div>
+      <div data-testid="tags">{JSON.stringify(uniqueTags)}</div>
     </div>
   );
 };
 
 it("checks initial fetches", async () => {
-  /*
   await act(async () => {
     try {
       render(<InititalFetches />);
@@ -40,28 +69,23 @@ it("checks initial fetches", async () => {
       console.log(er);
     }
   });
-  */
-  await new Promise((resolve) => setTimeout(resolve, 1000));
-  render(<InititalFetches />);
-  await wait(1000); // wait for the API Response
 
   await waitFor(() => {
     expect(screen.queryByText("Loaded")).toBeInTheDocument();
   });
 
-  act(() => {
-    expect(screen.getByTestId("settings")).toHaveTextContent(
-      JSON.stringify(settingsResponse.data)
-    );
-    expect(screen.getByTestId("categoryTree")).toHaveTextContent(
-      JSON.stringify(categoriesResponse.data)
-    );
-    expect(screen.getByTestId("config")).toHaveTextContent(
-      JSON.stringify(configResponse.data)
-    );
-  });
-
-  await wait(1000); // wait for the API Response
+  expect(screen.getByTestId("settings")).toHaveTextContent(
+    JSON.stringify(settingsResponse.data)
+  );
+  expect(screen.getByTestId("categoryTree")).toHaveTextContent(
+    JSON.stringify(categoriesResponse.data)
+  );
+  expect(screen.getByTestId("config")).toHaveTextContent(
+    JSON.stringify(configResponse.data)
+  );
+  expect(screen.getByTestId("tags")).toHaveTextContent(
+    JSON.stringify(tagsResponse.data)
+  );
 });
 
 export {}; // 👈️ if you don't have anything else to export

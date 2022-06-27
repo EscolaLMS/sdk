@@ -64,22 +64,23 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
   fetchProgram: (id: number) => Promise.reject(),
   login: (body: API.LoginRequest) => Promise.reject(),
   logout: () => Promise.reject(),
-  settings: {},
+  settings: { loading: false, value: {} },
+  fetchSettings: () => Promise.reject(),
   config: {
-    escola_auth: {
-      additional_fields: [],
-      additional_fields_required: [],
-    },
+    loading: false,
+    value: {},
   },
   fetchConfig: () => Promise.reject(),
   uniqueTags: {
     loading: false,
     list: [],
   },
+  fetchTags: () => Promise.reject(),
   categoryTree: {
     loading: false,
     list: [],
   },
+  fetchCategories: () => Promise.reject(),
   user: {
     loading: false,
   },
@@ -275,11 +276,17 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
   fetchProgram: (id: number) => Promise.reject(),
   login: (body: API.LoginRequest) => Promise.reject(),
   logout: () => Promise.reject(),
-  settings: {},
+  settings: {
+    loading: false,
+  },
+  fetchSettings: () => Promise.reject(),
   config: {
-    escola_auth: {
-      additional_fields: [],
-      additional_fields_required: [],
+    loading: false,
+    value: {
+      escola_auth: {
+        additional_fields: [],
+        additional_fields_required: [],
+      },
     },
   },
   fetchConfig: () => Promise.reject(),
@@ -287,10 +294,13 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
     loading: false,
     list: [],
   },
+  fetchTags: () => Promise.reject(),
   categoryTree: {
     loading: false,
     list: [],
   },
+  fetchCategories: () => Promise.reject(),
+
   user: {
     loading: false,
   },

@@ -4,7 +4,10 @@ import { EscolaLMSContextProvider } from "../src/react/context/index";
 
 const AllTheProviders: FC<PropsWithChildren<{}>> = ({ children }) => {
   return (
-    <EscolaLMSContextProvider apiUrl="http://api.localhost">
+    <EscolaLMSContextProvider
+      apiUrl="http://api.localhost"
+      initialFetch={false}
+    >
       {children}
     </EscolaLMSContextProvider>
   );

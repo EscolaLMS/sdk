@@ -151,6 +151,7 @@ export interface EscolaLMSContextProviderType {
   apiUrl: string;
   defaults?: Partial<EscolaLMSContextReadConfig>;
   imagePrefix?: string;
+  initialFetch?: boolean;
 }
 
 /**
@@ -165,6 +166,7 @@ export const EscolaLMSContextProvider: FunctionComponent<
   apiUrl,
   defaults,
   imagePrefix = `${apiUrl}/storage/imgcache`,
+  initialFetch = true,
 }) => {
   interceptors(apiUrl);
   const initialValues = {
@@ -226,13 +228,11 @@ export const EscolaLMSContextProvider: FunctionComponent<
     ContextStateValue<API.CourseListItem>
   >("lms", "course", getDefaultData("course"));
 
-  const [settings, setSettings] = useLocalStorage<API.AppSettings>(
-    "lms",
-    "settings",
-    getDefaultData("settings")
-  );
+  const [settings, setSettings] = useLocalStorage<
+    ContextStateValue<API.AppSettings>
+  >("lms", "settings", getDefaultData("settings"));
 
-  const [config, setConfig] = useLocalStorage<API.AppConfig>(
+  const [config, setConfig] = useLocalStorage<ContextStateValue<API.AppConfig>>(
     "lms",
     "config",
     getDefaultData("config")
@@ -366,9 +366,43 @@ export const EscolaLMSContextProvider: FunctionComponent<
 
   const abortControllers = useRef<Record<string, AbortController | null>>({});
 
+  /*
   const fetchConfig = useCallback(() => {
     return getConfig().then((resposne) => {
       setConfig(resposne.data);
+    });
+  }, []);
+
+  const fetchSettings = useCallback(() => {
+    return getSettings().then((resposne) => {
+      console.log("setSettings", resposne.data);
+      setSettings(resposne.data);
+    });
+  }, []);
+
+  */
+
+  const fetchConfig = useCallback(() => {
+    return fetchDataType<API.AppConfig>({
+      controllers: abortControllers.current,
+      controller: `config`,
+      mode: "value",
+      fetchAction: getConfig({
+        signal: abortControllers.current?.config?.signal,
+      }),
+      setState: setConfig,
+    });
+  }, []);
+
+  const fetchSettings = useCallback(() => {
+    return fetchDataType<API.AppSettings>({
+      controllers: abortControllers.current,
+      controller: `settings`,
+      mode: "value",
+      fetchAction: getSettings({
+        signal: abortControllers.current?.settings?.signal,
+      }),
+      setState: setSettings,
     });
   }, []);
 
@@ -397,14 +431,13 @@ export const EscolaLMSContextProvider: FunctionComponent<
   }, []);
 
   useEffect(() => {
-    // TODO: remove this since it's not always needed
-    getSettings().then((response) => {
-      setSettings(response.data);
-    });
-    fetchConfig();
-    fetchTags();
-    fetchCategories();
-  }, []);
+    if (initialFetch) {
+      fetchSettings();
+      fetchConfig();
+      fetchTags();
+      fetchCategories();
+    }
+  }, [initialFetch]);
 
   useEffect(() => {
     if (defaults) {
@@ -1581,10 +1614,13 @@ export const EscolaLMSContextProvider: FunctionComponent<
         fetchCourses,
         fetchCourse,
         fetchProgram,
+        fetchSettings,
         settings,
         config,
         fetchConfig,
+        fetchTags,
         uniqueTags,
+        fetchCategories,
         categoryTree,
         login,
         logout,

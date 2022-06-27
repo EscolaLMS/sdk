@@ -44,8 +44,8 @@ export interface EscolaLMSContextReadConfig {
   registerableGroups: ContextListState<API.UserGroup>;
   course: ContextStateValue<API.CourseListItem>;
   program: ContextStateValue<API.CourseProgram>;
-  settings: API.AppSettings;
-  config: API.AppConfig;
+  settings: ContextStateValue<API.AppSettings>;
+  config: ContextStateValue<API.AppConfig>;
   uniqueTags: ContextListState<API.Tag>;
   categoryTree: ContextListState<API.Category>;
   user: ContextStateValue<API.UserAsProfile>;
@@ -89,6 +89,9 @@ export interface EscolaLMSContextAPIConfig {
   fetchCourse: (id: number) => Promise<void>;
   fetchProgram: (id: number) => Promise<void>;
   fetchConfig: () => Promise<void>;
+  fetchSettings: () => Promise<void>;
+  fetchCategories: () => Promise<void>;
+  fetchTags: () => Promise<void>;
   login: (body: API.LoginRequest) => Promise<void>;
   logout: () => Promise<void>;
   register: (
