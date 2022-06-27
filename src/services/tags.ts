@@ -1,9 +1,10 @@
-import request from "umi-request";
+import request, { RequestOptionsInit } from "umi-request";
 import * as API from "../types/api";
 
 /**  GET /api/courses */
-export async function uniqueTags() {
-  return request<API.DataResponseSuccess<API.Tag[]>>(`/api/tags/unique`, {
+export async function uniqueTags(options?: RequestOptionsInit) {
+  return request<API.DefaultResponse<API.Tag[]>>(`/api/tags/unique`, {
     method: "GET",
+    ...(options || {}),
   });
 }
