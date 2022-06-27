@@ -22,7 +22,7 @@
   "scripts": {
     "lib": "tsc --noEmit false --outDir lib --module commonjs",
     "test": "jest",
-    "test-trace": "node --unhandled-rejections=strict --trace-warnings ./node_modules/.bin/jest "
+    "test-trace": "DEBUG=nock.* node --unhandled-rejections=strict --trace-warnings ./node_modules/.bin/jest "
   },
   "eslintConfig": {
     "extends": [

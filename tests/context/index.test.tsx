@@ -28,6 +28,9 @@ const InititalFetches = () => {
 
   useEffect(() => {
     fetchSettings();
+    fetchSettings();
+    fetchSettings();
+    fetchSettings();
     fetchCategories();
     fetchConfig();
     fetchTags();
@@ -59,11 +62,7 @@ const InititalFetches = () => {
 
 it("checks initial fetches", async () => {
   await act(async () => {
-    try {
-      render(<InititalFetches />);
-    } catch (er) {
-      console.log(er);
-    }
+    render(<InititalFetches />);
   });
 
   await waitFor(() => {

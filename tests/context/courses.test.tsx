@@ -14,13 +14,13 @@ beforeAll(() => {
 const getIds = (courses: { id: number }[]) =>
   courses.map((c) => c.id).join(",");
 
-const Courses = () => {
+const Courses = ({ filter = {} }) => {
   const { fetchCourses, courses } = useContext(EscolaLMSContext);
 
   useEffect(() => {
     // TODO: test filters
-    fetchCourses({});
-  }, []);
+    fetchCourses(filter);
+  }, [filter]);
 
   if (courses.loading) {
     return <div>Loading</div>;
@@ -38,7 +38,8 @@ const Courses = () => {
 
 it("test fetching courses", async () => {
   await act(async () => {
-    render(<Courses />);
+    const filter = {};
+    render(<Courses filter={filter} />);
   });
 
   await waitFor(() => {

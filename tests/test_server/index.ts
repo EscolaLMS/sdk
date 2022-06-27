@@ -9,11 +9,11 @@ import courses from "./courses";
 
 export default () => {
   const scope = nock("http://api.localhost");
-  categories(scope);
-  config(scope);
-  settings(scope);
-  tags(scope);
-  course(scope);
-  courses(scope);
+  categories(scope).persist();
+  config(scope).persist();
+  settings(scope).persist();
+  tags(scope).persist();
+  course(scope).persist();
+  courses(scope).persist();
   return scope;
 };

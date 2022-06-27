@@ -946,4 +946,4 @@ export const response = {
 };
 
 export default (scope: nock.Scope) =>
-  scope.get("/api/courses").reply(200, response);
+  scope.get("/api/courses").query(true).reply(200, response);
