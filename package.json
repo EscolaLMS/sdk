@@ -21,7 +21,8 @@
   },
   "scripts": {
     "lib": "tsc --noEmit false --outDir lib --module commonjs",
-    "test": "jest"
+    "test": "jest",
+    "test-trace": "node --unhandled-rejections=strict --trace-warnings ./node_modules/.bin/jest "
   },
   "eslintConfig": {
     "extends": [
@@ -52,6 +53,7 @@
     "lib": "lib"
   },
   "devDependencies": {
+    "@testing-library/react-hooks": "^8.0.1",
     "jest": "^28.1.1",
     "jest-environment-jsdom": "^28.1.1",
     "nock": "^13.2.7",

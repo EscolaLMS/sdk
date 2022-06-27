@@ -32,9 +32,16 @@ const InititalFetches = () => {
 };
 
 it("checks initial fetches", async () => {
+  /*
   await act(async () => {
-    render(<InititalFetches />);
+    try {
+      render(<InititalFetches />);
+    } catch (er) {
+      console.log(er);
+    }
   });
+  */
+  render(<InititalFetches />);
   await wait(1000); // wait for the API Response
 
   await waitFor(() => {

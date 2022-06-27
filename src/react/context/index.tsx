@@ -180,6 +180,8 @@ export const EscolaLMSContextProvider: FunctionComponent<
     return initialValues[key];
   };
 
+  //
+
   const [courses, setCourses] = useLocalStorage<
     ContextPaginatedMetaState<API.CourseListItem>
   >("lms", "courses", getDefaultData("courses"));
@@ -371,6 +373,7 @@ export const EscolaLMSContextProvider: FunctionComponent<
   }, []);
 
   useEffect(() => {
+    // TODO: remove this since it's not always needed
     getSettings().then((response) => {
       setSettings(response.data);
     });
@@ -925,7 +928,7 @@ export const EscolaLMSContextProvider: FunctionComponent<
   }, [token]);
 
   useEffect(() => {
-    fetchProfile();
+    fetchProfile().catch(() => {});
   }, [token]);
 
   const login = useCallback((body: API.LoginRequest) => {
