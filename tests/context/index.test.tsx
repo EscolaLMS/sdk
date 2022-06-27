@@ -41,6 +41,7 @@ it("checks initial fetches", async () => {
     }
   });
   */
+  await new Promise((resolve) => setTimeout(resolve, 1000));
   render(<InititalFetches />);
   await wait(1000); // wait for the API Response
 
@@ -59,6 +60,8 @@ it("checks initial fetches", async () => {
       JSON.stringify(configResponse.data)
     );
   });
+
+  await wait(1000); // wait for the API Response
 });
 
 export {}; // 👈️ if you don't have anything else to export
