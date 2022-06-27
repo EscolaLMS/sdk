@@ -19,10 +19,11 @@ const Courses = ({ filter = {} }) => {
 
   useEffect(() => {
     // TODO: test filters
+
     fetchCourses(filter);
   }, [filter]);
 
-  if (courses.loading) {
+  if (courses.loading || typeof courses.list === "undefined") {
     return <div>Loading</div>;
   }
 
