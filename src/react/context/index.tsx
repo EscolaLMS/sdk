@@ -6,6 +6,7 @@ import React, {
   useRef,
   useContext,
   useMemo,
+  PropsWithChildren,
 } from "react";
 
 import { interceptors } from "./../../services/request";
@@ -146,12 +147,16 @@ export const sortProgram: SortProgram = (lessons) => {
     }));
 };
 
-interface EscolaLMSContextProviderType {
-  children?: React.ReactElement[] | React.ReactElement;
+export interface EscolaLMSContextProviderType {
   apiUrl: string;
   defaults?: Partial<EscolaLMSContextReadConfig>;
   imagePrefix?: string;
 }
+
+/**
+ *
+ * @component
+ */
 
 export const EscolaLMSContextProvider: FunctionComponent<
   PropsWithChildren<EscolaLMSContextProviderType>

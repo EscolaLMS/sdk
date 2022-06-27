@@ -28,7 +28,7 @@ export const getImageCachePath = (
   format: string
 ) => {
   const hash = getHash(imagePath + getStringifyParams({ ...params, format }));
-  return `${prefix}/${hash}.${imagePath?.split(".")?.pop()}`;
+  return `${prefix}/${hash}.${format || imagePath?.split(".")?.pop()}`;
 };
 
 export const getImageApiPath = (
