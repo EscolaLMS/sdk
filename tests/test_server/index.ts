@@ -6,6 +6,8 @@ import settings from "./settings";
 import tags from "./tags";
 import course from "./course";
 import courses from "./courses";
+import login from "./login";
+import me from "./me";
 
 export default () => {
   const scope = nock("http://api.localhost");
@@ -15,5 +17,7 @@ export default () => {
   tags(scope).persist();
   course(scope).persist();
   courses(scope).persist();
+  login(scope).persist();
+  me(scope).persist();
   return scope;
 };

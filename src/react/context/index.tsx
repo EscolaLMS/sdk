@@ -1015,7 +1015,11 @@ export const EscolaLMSContextProvider: FunctionComponent<
 
   useEffect(() => {
     if (token) {
-      setUser((prevState) => ({ ...prevState, loading: true }));
+      setUser((prevState) => ({
+        ...prevState,
+        loading: true,
+        error: undefined,
+      }));
       getProfile(token)
         .then((response) => {
           if (response.success) {
@@ -1039,12 +1043,26 @@ export const EscolaLMSContextProvider: FunctionComponent<
   }, [token, logout]);
 
   const login = useCallback((body: API.LoginRequest) => {
-    return postLogin(body).then((response) => {
-      if (response.success) {
-        setToken(response.data.token);
-        setTokenExpireDate(response.data.expires_at);
-      }
-    });
+    return postLogin(body)
+      .then((response) => {
+        if (response.success) {
+          setToken(response.data.token);
+          setTokenExpireDate(response.data.expires_at);
+        } else {
+          setUser((prevState) =>
+            prevState
+              ? { ...prevState, error: response, loading: false }
+              : { error: response, loading: false }
+          );
+        }
+      })
+      .catch((error) => {
+        setUser((prevState) =>
+          prevState
+            ? { ...prevState, error: error, loading: false }
+            : { error: error, loading: false }
+        );
+      });
   }, []);
 
   const fetchQuestionnaires = useCallback(
