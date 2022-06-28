@@ -16,6 +16,7 @@ type fetchDataType<T> =
       >;
     }
   | {
+      id?: number | string;
       controller?: string;
       controllers?: Record<string, AbortController | null>;
       mode: "value";
@@ -37,7 +38,25 @@ export const fetchDataType = <T>(params: fetchDataType<T>) => {
     setState((prevState) => ({ ...prevState, loading: true }));
   }
   if (mode === "value") {
-    setState((prevState) => ({ ...prevState, loading: true }));
+    const { id } = params;
+
+    if (id) {
+      setState((prevState) => ({
+        ...prevState,
+        loading: true,
+        byId: prevState.byId
+          ? {
+              ...prevState.byId,
+              [id]: {
+                ...prevState.byId[id],
+                loading: true,
+              },
+            }
+          : { [id]: { loading: true } },
+      }));
+    } else {
+      setState((prevState) => ({ ...prevState, loading: true }));
+    }
   }
   if (mode === "list") {
     setState((prevState) => ({ ...prevState, loading: true }));
@@ -63,11 +82,34 @@ export const fetchDataType = <T>(params: fetchDataType<T>) => {
       }
       if (mode === "value") {
         if ((response as API.DefaultResponse<T>).success) {
-          setState({
-            loading: false,
-            value: (response as API.DefaultResponseSuccess<T>).data,
-            error: undefined,
-          });
+          const { id } = params;
+          if (id) {
+            setState((prevState) => ({
+              loading: false,
+              value: (response as API.DefaultResponseSuccess<T>).data,
+              error: undefined,
+              byId: prevState.byId
+                ? {
+                    ...prevState.byId,
+                    [id]: {
+                      ...(response as API.DefaultResponseSuccess<T>).data,
+                      loading: false,
+                    },
+                  }
+                : {
+                    [id]: {
+                      ...(response as API.DefaultResponseSuccess<T>).data,
+                      loading: false,
+                    },
+                  },
+            }));
+          } else {
+            setState({
+              loading: false,
+              value: (response as API.DefaultResponseSuccess<T>).data,
+              error: undefined,
+            });
+          }
         }
       }
       if (mode === "list") {
@@ -81,18 +123,67 @@ export const fetchDataType = <T>(params: fetchDataType<T>) => {
       }
 
       if ((response as API.DefaultResponseError).success === false) {
-        setState((prevState: any) => ({
-          ...prevState,
-          loading: false,
-          error: response,
-        }));
+        if (mode === "value" && params.id) {
+          const { id } = params;
+          setState((prevState: any) => ({
+            ...prevState,
+            loading: false,
+            error: response,
+            byId: prevState.byId
+              ? {
+                  ...prevState.byId,
+                  [id]: {
+                    ...prevState.byId[id],
+                    loading: false,
+                    error: response,
+                  },
+                }
+              : {
+                  [id]: {
+                    loading: false,
+                    error: response,
+                  },
+                },
+          }));
+        } else {
+          setState((prevState: any) => ({
+            ...prevState,
+            loading: false,
+            error: response,
+          }));
+        }
       }
     })
     .catch((error) => {
-      setState((prevState: any) => ({
-        ...prevState,
-        loading: false,
-        error: error,
-      }));
+      if (mode === "value" && params.id) {
+        const { id } = params;
+
+        setState((prevState: any) => ({
+          ...prevState,
+          loading: false,
+          error: error,
+          byId: prevState.byId
+            ? {
+                ...prevState.byId,
+                [id]: {
+                  ...prevState.byId[id],
+                  loading: false,
+                  error: error,
+                },
+              }
+            : {
+                [id]: {
+                  loading: false,
+                  error: error,
+                },
+              },
+        }));
+      } else {
+        setState((prevState: any) => ({
+          ...prevState,
+          loading: false,
+          error: error,
+        }));
+      }
     });
 };

@@ -366,22 +366,6 @@ export const EscolaLMSContextProvider: FunctionComponent<
 
   const abortControllers = useRef<Record<string, AbortController | null>>({});
 
-  /*
-  const fetchConfig = useCallback(() => {
-    return getConfig().then((resposne) => {
-      setConfig(resposne.data);
-    });
-  }, []);
-
-  const fetchSettings = useCallback(() => {
-    return getSettings().then((resposne) => {
-      console.log("setSettings", resposne.data);
-      setSettings(resposne.data);
-    });
-  }, []);
-
-  */
-
   const fetchConfig = useCallback(() => {
     return fetchDataType<API.AppConfig>({
       controllers: abortControllers.current,
@@ -484,7 +468,9 @@ export const EscolaLMSContextProvider: FunctionComponent<
         controller: `products/${JSON.stringify(filter)}`,
         mode: "paginated",
         fetchAction: getProducts(filter, {
-          signal: abortControllers.current?.products?.signal,
+          signal:
+            abortControllers.current[`products/${JSON.stringify(filter)}`]
+              ?.signal,
         }),
         setState: setProducts,
       });
@@ -515,7 +501,8 @@ export const EscolaLMSContextProvider: FunctionComponent<
       controller: `fields/${JSON.stringify(filter)}`,
       mode: "list",
       fetchAction: getFields(filter, {
-        signal: abortControllers.current?.fields?.signal,
+        signal:
+          abortControllers.current[`fields/${JSON.stringify(filter)}`]?.signal,
       }),
       setState: setFields,
     });
@@ -528,7 +515,10 @@ export const EscolaLMSContextProvider: FunctionComponent<
         controller: `stationaryevents/${JSON.stringify(filter)}`,
         mode: "list",
         fetchAction: getStationaryEvents(filter, {
-          signal: abortControllers.current?.stationaryevents?.signal,
+          signal:
+            abortControllers.current[
+              `stationaryevents/${JSON.stringify(filter)}`
+            ]?.signal,
         }),
         setState: setStationaryEvents,
       });
@@ -740,43 +730,41 @@ export const EscolaLMSContextProvider: FunctionComponent<
     [token, notifications]
   );
 
-  const fetchCourses = useCallback(
-    (filter: API.CourseParams) => {
-      return fetchDataType<API.Course>({
-        controllers: abortControllers.current,
-        controller: `courses/${JSON.stringify(filter)}`,
-        mode: "paginated",
-        fetchAction: getCourses(
-          filter,
+  const fetchCourses = useCallback((filter: API.CourseParams) => {
+    return fetchDataType<API.Course>({
+      controllers: abortControllers.current,
+      controller: `courses/${JSON.stringify(filter)}`,
+      mode: "paginated",
+      fetchAction: getCourses(
+        filter,
 
-          {
-            signal: abortControllers.current?.courses?.signal,
-          }
-        ),
-        setState: setCourses,
-      });
-    },
-    [courses]
-  );
+        {
+          signal:
+            abortControllers.current[`courses/${JSON.stringify(filter)}`]
+              ?.signal,
+        }
+      ),
+      setState: setCourses,
+    });
+  }, []);
 
-  const fetchConsultations = useCallback(
-    (filter: API.ConsultationParams) => {
-      return fetchDataType<API.Consultation>({
-        controllers: abortControllers.current,
-        controller: `consultations/${JSON.stringify(filter)}`,
-        mode: "paginated",
-        fetchAction: getConsultations(
-          filter,
+  const fetchConsultations = useCallback((filter: API.ConsultationParams) => {
+    return fetchDataType<API.Consultation>({
+      controllers: abortControllers.current,
+      controller: `consultations/${JSON.stringify(filter)}`,
+      mode: "paginated",
+      fetchAction: getConsultations(
+        filter,
 
-          {
-            signal: abortControllers.current?.consultations?.signal,
-          }
-        ),
-        setState: setConsultations,
-      });
-    },
-    [consultations]
-  );
+        {
+          signal:
+            abortControllers.current[`consultations/${JSON.stringify(filter)}`]
+              ?.signal,
+        }
+      ),
+      setState: setConsultations,
+    });
+  }, []);
 
   const changeConsultationTerm = useCallback(
     (termId: number, newDate: string) => {
@@ -801,7 +789,7 @@ export const EscolaLMSContextProvider: FunctionComponent<
           setState: setConsultations,
         })
       : Promise.reject();
-  }, [token, userConsultations]);
+  }, [token]);
 
   const bookConsultationTerm = useCallback(
     (id: number, term: string) => {
@@ -820,16 +808,13 @@ export const EscolaLMSContextProvider: FunctionComponent<
 
   const fetchConsultation = useCallback((id: number) => {
     return fetchDataType<API.Consultation>({
+      id: id,
       controllers: abortControllers.current,
       controller: `consultation`,
       mode: "value",
-      fetchAction: getConsultation(
-        id,
-
-        {
-          signal: abortControllers.current?.consultation?.signal,
-        }
-      ),
+      fetchAction: getConsultation(id, {
+        signal: abortControllers.current?.consultation?.signal,
+      }),
       setState: setConsultation,
     });
   }, []);
@@ -850,7 +835,9 @@ export const EscolaLMSContextProvider: FunctionComponent<
         filter,
 
         {
-          signal: abortControllers.current?.webinars?.signal,
+          signal:
+            abortControllers.current[`webinars/${JSON.stringify(filter)}`]
+              ?.signal,
         }
       ),
       setState: setWebinars,
@@ -866,7 +853,9 @@ export const EscolaLMSContextProvider: FunctionComponent<
         filter,
 
         {
-          signal: abortControllers.current?.events?.signal,
+          signal:
+            abortControllers.current[`events/${JSON.stringify(filter)}`]
+              ?.signal,
         }
       ),
       setState: setEvents,
@@ -901,38 +890,78 @@ export const EscolaLMSContextProvider: FunctionComponent<
     });
   }, []);
 
-  const fetchUserGroups = useCallback(
-    (params: API.UserGroupsParams) => {
-      return fetchDataType<API.UserGroup>({
-        controllers: abortControllers.current,
-        controller: `getusergroups/${JSON.stringify(params)}`,
-        mode: "paginated",
-        fetchAction: getUserGroups(params, {
-          signal: abortControllers.current?.getusergroups?.signal,
-        }),
-        setState: setUserGroups,
-      });
-    },
-    [userGroups]
-  );
+  const fetchUserGroups = useCallback((params: API.UserGroupsParams) => {
+    return fetchDataType<API.UserGroup>({
+      controllers: abortControllers.current,
+      controller: `getusergroups/${JSON.stringify(params)}`,
+      mode: "paginated",
+      fetchAction: getUserGroups(params, {
+        signal:
+          abortControllers.current[`getusergroups/${JSON.stringify(params)}`]
+            ?.signal,
+      }),
+      setState: setUserGroups,
+    });
+  }, []);
 
   const fetchCourse = useCallback((id: number) => {
-    setCourse((prevState) => ({ ...prevState, loading: true }));
+    setCourse((prevState) => ({
+      ...prevState,
+      loading: true,
+      byId: prevState.byId
+        ? {
+            ...prevState.byId,
+            [id]: {
+              ...prevState.byId[id],
+              loading: true,
+            },
+          }
+        : { [id]: { loading: true } },
+    }));
     return getCourse(id).then((response) => {
       if (response.success) {
-        setCourse({
+        const lessons = sortProgram(response.data.lessons || []);
+        setCourse((prevState) => ({
           loading: false,
           value: {
             ...response.data,
-            lessons: sortProgram(response.data.lessons || []),
+            lessons: lessons,
           },
-        });
+          byId: prevState.byId
+            ? {
+                ...prevState.byId,
+                [id]: {
+                  value: response.data,
+                  loading: false,
+                },
+              }
+            : {
+                [id]: {
+                  value: response.data,
+                  loading: false,
+                },
+              },
+        }));
       }
       if (response.success === false) {
         setCourse((prevState) => ({
           ...prevState,
           loading: false,
           error: response,
+          byId: prevState.byId
+            ? {
+                ...prevState.byId,
+                [id]: {
+                  error: response,
+                  loading: false,
+                },
+              }
+            : {
+                [id]: {
+                  error: response,
+                  loading: false,
+                },
+              },
         }));
       }
     });
@@ -986,7 +1015,11 @@ export const EscolaLMSContextProvider: FunctionComponent<
 
   useEffect(() => {
     if (token) {
-      setUser((prevState) => ({ ...prevState, loading: true }));
+      setUser((prevState) => ({
+        ...prevState,
+        loading: true,
+        error: undefined,
+      }));
       getProfile(token)
         .then((response) => {
           if (response.success) {
@@ -1010,12 +1043,26 @@ export const EscolaLMSContextProvider: FunctionComponent<
   }, [token, logout]);
 
   const login = useCallback((body: API.LoginRequest) => {
-    return postLogin(body).then((response) => {
-      if (response.success) {
-        setToken(response.data.token);
-        setTokenExpireDate(response.data.expires_at);
-      }
-    });
+    return postLogin(body)
+      .then((response) => {
+        if (response.success) {
+          setToken(response.data.token);
+          setTokenExpireDate(response.data.expires_at);
+        } else {
+          setUser((prevState) =>
+            prevState
+              ? { ...prevState, error: response, loading: false }
+              : { error: response, loading: false }
+          );
+        }
+      })
+      .catch((error) => {
+        setUser((prevState) =>
+          prevState
+            ? { ...prevState, error: error, loading: false }
+            : { error: error, loading: false }
+        );
+      });
   }, []);
 
   const fetchQuestionnaires = useCallback(
@@ -1299,7 +1346,7 @@ export const EscolaLMSContextProvider: FunctionComponent<
       }),
       setState: setPages,
     });
-  }, [pages]);
+  }, []);
 
   const fetchPage = useCallback((slug: string) => {
     return fetchDataType<API.PageListItem>({

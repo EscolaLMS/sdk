@@ -15,15 +15,11 @@ import "@testing-library/jest-dom";
 
 import fakeServer from "../test_server";
 
-const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
-
 beforeAll(() => {
   fakeServer();
 });
 
 const InititalFetches = () => {
-  // const [loading, setLoading] = useState(true);
-
   const { fetchSettings, fetchCategories, fetchConfig, fetchTags } =
     useContext(EscolaLMSContext);
 
@@ -31,6 +27,9 @@ const InititalFetches = () => {
     useContext(EscolaLMSContext);
 
   useEffect(() => {
+    fetchSettings();
+    fetchSettings();
+    fetchSettings();
     fetchSettings();
     fetchCategories();
     fetchConfig();
@@ -63,11 +62,7 @@ const InititalFetches = () => {
 
 it("checks initial fetches", async () => {
   await act(async () => {
-    try {
-      render(<InititalFetches />);
-    } catch (er) {
-      console.log(er);
-    }
+    render(<InititalFetches />);
   });
 
   await waitFor(() => {
