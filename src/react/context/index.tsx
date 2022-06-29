@@ -790,7 +790,7 @@ export const EscolaLMSContextProvider: FunctionComponent<
               signal: abortControllers.current?.userconsultations?.signal,
             }
           ),
-          setState: setConsultations,
+          setState: setUserConsultations,
         })
       : Promise.reject("noToken");
   }, [token]);
