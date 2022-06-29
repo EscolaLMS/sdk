@@ -581,12 +581,8 @@ export const EscolaLMSContextProvider: FunctionComponent<
   const fetchTutorConsultations = useCallback(() => {
     return token
       ? fetchDataType<API.AppointmentTerm>({
-          controllers: abortControllers.current,
-          controller: `tutorconsultation`,
           mode: "paginated",
-          fetchAction: getTutorConsultations(token, {
-            signal: abortControllers.current?.tutorconsultation?.signal,
-          }),
+          fetchAction: getTutorConsultations(token),
           setState: setTutorConsultations,
         })
       : Promise.reject();
@@ -776,32 +772,16 @@ export const EscolaLMSContextProvider: FunctionComponent<
   const fetchUserConsultations = useCallback(() => {
     return token
       ? fetchDataType<API.Consultation>({
-          controllers: abortControllers.current,
-          controller: `userconsultations`,
           mode: "paginated",
-          fetchAction: getUserConsultations(
-            token,
-
-            {
-              signal: abortControllers.current?.userconsultations?.signal,
-            }
-          ),
-          setState: setConsultations,
+          fetchAction: getUserConsultations(token),
+          setState: setUserConsultations,
         })
       : Promise.reject();
   }, [token]);
 
   const bookConsultationTerm = useCallback(
     (id: number, term: string) => {
-      return token
-        ? bookConsultationDate(token, id, term).then((response) => {
-            if (response.success) {
-              fetchUserConsultations();
-              return response;
-            }
-            throw Error("Error occured");
-          })
-        : Promise.reject();
+      return token ? bookConsultationDate(token, id, term) : Promise.reject();
     },
     [token]
   );
