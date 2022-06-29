@@ -71,13 +71,17 @@ export const fetchDataType = <T>(params: fetchDataType<T>) => {
 
   return fetchAction
     .then((response: unknown) => {
+      if (controllers && controller && controllers[controller]) {
+        controllers[controller] = null;
+      }
       if (mode === "paginated") {
         if ((response as API.DefaultMetaResponse<T>).success) {
-          setState({
+          setState((prevState) => ({
+            ...prevState,
             loading: false,
             list: response as API.PaginatedMetaList<T>,
             error: undefined,
-          });
+          }));
         }
       }
       if (mode === "value") {
@@ -155,6 +159,12 @@ export const fetchDataType = <T>(params: fetchDataType<T>) => {
       }
     })
     .catch((error) => {
+      if (error.name === "AbortError") {
+        if (controllers && controller && controllers[controller]) {
+          controllers[controller] = null;
+        }
+        return;
+      }
       if (mode === "value" && params.id) {
         const { id } = params;
 

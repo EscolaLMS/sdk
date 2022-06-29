@@ -8,6 +8,7 @@ import course from "./course";
 import courses from "./courses";
 import login from "./login";
 import me from "./me";
+import user_consultations from "./user_consultations";
 
 export default () => {
   const scope = nock("http://api.localhost");
@@ -19,5 +20,6 @@ export default () => {
   courses(scope).persist();
   login(scope).persist();
   me(scope).persist();
+  user_consultations(scope);
   return scope;
 };
