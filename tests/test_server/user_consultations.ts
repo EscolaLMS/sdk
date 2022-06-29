@@ -273,7 +273,7 @@ let n = 0;
 export default (scope: nock.Scope) => {
   scope
     .get("/api/consultations/me")
-    .delay(100)
+    //.delay(50)
 
     .reply(function () {
       n++;

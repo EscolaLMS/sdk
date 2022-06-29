@@ -28,9 +28,9 @@ const UserConsultations: React.FC = () => {
       <button
         data-testid="button-fetch"
         onClick={() => {
-          fetchUserConsultations() /*.then(() => console.log("1"))*/;
-          fetchUserConsultations() /*.then(() => console.log("2"))*/;
-          fetchUserConsultations() /*.then(() => console.log("3"))*/;
+          fetchUserConsultations();
+          fetchUserConsultations();
+          fetchUserConsultations();
         }}
       >
         Fetch
@@ -85,11 +85,11 @@ it("test fetching course ", async () => {
     );
   });
 
-  await waitFor(() => {
-    expect(screen.queryByText("Consultations Loaded")).toBeInTheDocument();
-  });
+  //      expect(screen.queryByText("Consultations Loaded")).toBeInTheDocument();
 
-  expect(screen.getByTestId("consultations-data")).toHaveTextContent("bar1");
+  await waitFor(() => {
+    expect(screen.getByTestId("consultations-data")).toHaveTextContent("bar1");
+  });
 
   act(() => {
     fireEvent(

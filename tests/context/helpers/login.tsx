@@ -17,7 +17,7 @@ export const Login = () => {
       {tokenExpireDate && (
         <div data-testid="user-token-expire-date">{tokenExpireDate}</div>
       )}
-      <div data-testid="user-data">{JSON.stringify(user)}</div>
+      {/*<div data-testid="user-data">{JSON.stringify(user)}</div>*/}
     </div>
   );
 };
