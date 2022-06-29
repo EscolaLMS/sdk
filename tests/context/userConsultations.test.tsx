@@ -89,7 +89,7 @@ it("test fetching course ", async () => {
     expect(screen.queryByText("Consultations Loaded")).toBeInTheDocument();
   });
 
-  expect(screen.getByTestId("consultations-data")).toHaveTextContent("bar2");
+  expect(screen.getByTestId("consultations-data")).toHaveTextContent("bar1");
 
   act(() => {
     fireEvent(

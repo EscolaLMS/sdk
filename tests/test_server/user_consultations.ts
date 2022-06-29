@@ -277,6 +277,6 @@ export default (scope: nock.Scope) => {
 
     .reply(function () {
       n++;
-      return n % 2 === 2 ? [200, response1] : [200, response2];
+      return n % 2 === 0 ? [200, response1] : [200, response2];
     });
 };
