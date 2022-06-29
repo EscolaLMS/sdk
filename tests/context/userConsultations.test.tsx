@@ -1,8 +1,7 @@
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { act } from "react-dom/test-utils";
 import { EscolaLMSContext } from "./../../src/react/context";
 import { render, waitFor, screen, fireEvent } from "../test-utils";
-import { response as courseResponse } from "../test_server/course";
 import { Login } from "./helpers/login";
 import "@testing-library/jest-dom";
 
@@ -13,14 +12,14 @@ beforeAll(() => {
 });
 
 const UserConsultations: React.FC = () => {
-  const { fetchUserConsultations, consultations } =
+  const { fetchUserConsultations, userConsultations } =
     useContext(EscolaLMSContext);
 
   return (
     <div>
       <Login />
       <div>
-        {consultations.loading
+        {userConsultations.loading
           ? "Consultations Loading"
           : "Consultations Loaded"}
       </div>
@@ -36,7 +35,7 @@ const UserConsultations: React.FC = () => {
         Fetch
       </button>
       <div data-testid="consultations-data">
-        {JSON.stringify(consultations)}
+        {JSON.stringify(userConsultations)}
       </div>
     </div>
   );
