@@ -28,9 +28,9 @@ const UserConsultations: React.FC = () => {
       <button
         data-testid="button-fetch"
         onClick={() => {
-          fetchUserConsultations();
-          //fetchUserConsultations();
-          //fetchUserConsultations();
+          fetchUserConsultations() /*.then(() => console.log("1"))*/;
+          fetchUserConsultations() /*.then(() => console.log("2"))*/;
+          fetchUserConsultations() /*.then(() => console.log("3"))*/;
         }}
       >
         Fetch
