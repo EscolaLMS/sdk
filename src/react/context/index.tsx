@@ -490,7 +490,7 @@ export const EscolaLMSContextProvider: FunctionComponent<
             }),
             setState: setProduct,
           })
-        : Promise.reject();
+        : Promise.reject("noToken");
     },
     [token]
   );
@@ -549,7 +549,7 @@ export const EscolaLMSContextProvider: FunctionComponent<
           }),
           setState: setUserWebinars,
         })
-      : Promise.reject();
+      : Promise.reject("noToken");
   }, [token]);
 
   const fetchWebinar = useCallback((id: number) => {
@@ -575,7 +575,7 @@ export const EscolaLMSContextProvider: FunctionComponent<
           }),
           setState: setUserStationaryEvents,
         })
-      : Promise.reject();
+      : Promise.reject("noToken");
   }, [token]);
 
   const fetchTutorConsultations = useCallback(() => {
@@ -589,7 +589,7 @@ export const EscolaLMSContextProvider: FunctionComponent<
           }),
           setState: setTutorConsultations,
         })
-      : Promise.reject();
+      : Promise.reject("noToken");
   }, [token]);
 
   const approveConsultationTerm = useCallback(
@@ -604,7 +604,7 @@ export const EscolaLMSContextProvider: FunctionComponent<
             }),
             setState: setTutorConsultations,
           })
-        : Promise.reject();
+        : Promise.reject("noToken");
     },
     [token]
   );
@@ -621,21 +621,23 @@ export const EscolaLMSContextProvider: FunctionComponent<
             }),
             setState: setTutorConsultations,
           })
-        : Promise.reject();
+        : Promise.reject("noToken");
     },
     [token]
   );
 
   const generateConsultationJitsy = useCallback(
     (id: number) => {
-      return token ? genereteJitsy(token, id) : Promise.reject();
+      return token ? genereteJitsy(token, id) : Promise.reject("noToken");
     },
     [token]
   );
 
   const generateWebinarJitsy = useCallback(
     (id: number) => {
-      return token ? genereteJitsyWebinar(token, id) : Promise.reject();
+      return token
+        ? genereteJitsyWebinar(token, id)
+        : Promise.reject("noToken");
     },
     [token]
   );
@@ -652,14 +654,14 @@ export const EscolaLMSContextProvider: FunctionComponent<
             }),
             setState: setCertificates,
           })
-        : Promise.reject();
+        : Promise.reject("noToken");
     },
     [token]
   );
 
   const fetchCertificate = useCallback(
     (id: number) => {
-      return token ? getCertificate(token, id) : Promise.reject();
+      return token ? getCertificate(token, id) : Promise.reject("noToken");
     },
     [token]
   );
@@ -679,7 +681,7 @@ export const EscolaLMSContextProvider: FunctionComponent<
           ),
           setState: setMattermostChannels,
         })
-      : Promise.reject();
+      : Promise.reject("noToken");
   }, [token]);
 
   const fetchNotifications = useCallback(() => {
@@ -697,7 +699,7 @@ export const EscolaLMSContextProvider: FunctionComponent<
           ),
           setState: setNotifications,
         })
-      : Promise.reject();
+      : Promise.reject("noToken");
   }, [token, notifications]);
 
   const readNotify = useCallback(
@@ -725,7 +727,7 @@ export const EscolaLMSContextProvider: FunctionComponent<
                 error: error,
               }));
             })
-        : Promise.reject();
+        : Promise.reject("noToken");
     },
     [token, notifications]
   );
@@ -768,7 +770,9 @@ export const EscolaLMSContextProvider: FunctionComponent<
 
   const changeConsultationTerm = useCallback(
     (termId: number, newDate: string) => {
-      return token ? changeTermDate(termId, newDate, token) : Promise.reject();
+      return token
+        ? changeTermDate(termId, newDate, token)
+        : Promise.reject("noToken");
     },
     [token]
   );
@@ -788,7 +792,7 @@ export const EscolaLMSContextProvider: FunctionComponent<
           ),
           setState: setConsultations,
         })
-      : Promise.reject();
+      : Promise.reject("noToken");
   }, [token]);
 
   const bookConsultationTerm = useCallback(
@@ -801,7 +805,7 @@ export const EscolaLMSContextProvider: FunctionComponent<
             }
             throw Error("Error occured");
           })
-        : Promise.reject();
+        : Promise.reject("noToken");
     },
     [token]
   );
@@ -821,7 +825,7 @@ export const EscolaLMSContextProvider: FunctionComponent<
 
   const getProductInfo = useCallback(
     (id: number) => {
-      return token ? getSingleProduct(id, token) : Promise.reject();
+      return token ? getSingleProduct(id, token) : Promise.reject("noToken");
     },
     [token]
   );
@@ -1004,7 +1008,7 @@ export const EscolaLMSContextProvider: FunctionComponent<
           }),
           setState: setUser,
         })
-      : Promise.reject();
+      : Promise.reject("noToken");
   }, [token]);
 
   useEffect(() => {
@@ -1067,7 +1071,9 @@ export const EscolaLMSContextProvider: FunctionComponent<
 
   const fetchQuestionnaires = useCallback(
     (model: string, id: number) => {
-      return token ? getQuestionnaires(token, model, id) : Promise.reject();
+      return token
+        ? getQuestionnaires(token, model, id)
+        : Promise.reject("noToken");
     },
     [token]
   );
@@ -1081,7 +1087,7 @@ export const EscolaLMSContextProvider: FunctionComponent<
     ) => {
       return token
         ? questionnaireAnswer(token, model, modelID, id, body)
-        : Promise.reject();
+        : Promise.reject("noToken");
     },
     [token]
   );
@@ -1097,13 +1103,13 @@ export const EscolaLMSContextProvider: FunctionComponent<
           }),
           setState: setCart,
         })
-      : Promise.reject();
+      : Promise.reject("noToken");
   }, [token]);
 
   const addToCart = useCallback(
     (productId: number, quantity?: number) => {
       if (!token) {
-        return Promise.reject("No token provided");
+        return Promise.reject("noToken");
       }
       setCart((prevState) => ({
         ...prevState,
@@ -1127,7 +1133,7 @@ export const EscolaLMSContextProvider: FunctionComponent<
   const addMisingProducts = useCallback(
     (products: number[]) => {
       if (!token) {
-        return Promise.reject("No token provided");
+        return Promise.reject("noToken");
       }
       setCart((prevState) => ({
         ...prevState,
@@ -1151,7 +1157,7 @@ export const EscolaLMSContextProvider: FunctionComponent<
   const removeFromCart = useCallback(
     (itemId: number) => {
       if (!token) {
-        return Promise.reject("No token provided");
+        return Promise.reject("noToken");
       }
       setCart((prevState) => ({
         ...prevState,
@@ -1189,7 +1195,7 @@ export const EscolaLMSContextProvider: FunctionComponent<
         ? postPayWithStripe(payment_method, return_url, token).then((res) => {
             console.log(res);
           })
-        : Promise.reject();
+        : Promise.reject("noToken");
     },
     [token]
   );
@@ -1205,14 +1211,14 @@ export const EscolaLMSContextProvider: FunctionComponent<
               console.log(err);
               return err;
             })
-        : Promise.reject();
+        : Promise.reject("noToken");
     },
     [token]
   );
 
   const fetchOrderInvoice = useCallback(
     (id: number) => {
-      return token ? orderInvoice(token, id) : Promise.reject();
+      return token ? orderInvoice(token, id) : Promise.reject("noToken");
     },
     [token]
   );
@@ -1247,7 +1253,7 @@ export const EscolaLMSContextProvider: FunctionComponent<
                 error: error.data,
               }));
             })
-        : Promise.reject();
+        : Promise.reject("noToken");
     },
     [token]
   );
@@ -1263,7 +1269,7 @@ export const EscolaLMSContextProvider: FunctionComponent<
           }),
           setState: setProgress,
         })
-      : Promise.reject();
+      : Promise.reject("noToken");
   }, [token]);
 
   const fetchH5P = useCallback((id: string) => {
@@ -1317,7 +1323,7 @@ export const EscolaLMSContextProvider: FunctionComponent<
             }),
             setState: setOrders,
           })
-        : Promise.reject();
+        : Promise.reject("noToken");
     },
     [token]
   );
@@ -1333,7 +1339,7 @@ export const EscolaLMSContextProvider: FunctionComponent<
           }),
           setState: setPayments,
         })
-      : Promise.reject();
+      : Promise.reject("noToken");
   }, [token]);
 
   const fetchPages = useCallback(() => {
@@ -1388,7 +1394,7 @@ export const EscolaLMSContextProvider: FunctionComponent<
                   : [],
             }));
           })
-        : Promise.reject();
+        : Promise.reject("noToken");
     },
     [token]
   );
@@ -1469,7 +1475,7 @@ export const EscolaLMSContextProvider: FunctionComponent<
               }));
             }
           })
-        : Promise.reject();
+        : Promise.reject("noToken");
     },
     [token]
   );
@@ -1496,7 +1502,7 @@ export const EscolaLMSContextProvider: FunctionComponent<
               }));
             }
           })
-        : Promise.reject();
+        : Promise.reject("noToken");
     },
     [token]
   );
@@ -1505,7 +1511,7 @@ export const EscolaLMSContextProvider: FunctionComponent<
     (topicId: number) => {
       return token
         ? putTopicPing(topicId, token).catch((err) => err)
-        : Promise.reject();
+        : Promise.reject("noToken");
     },
     [token]
   );
@@ -1632,21 +1638,19 @@ export const EscolaLMSContextProvider: FunctionComponent<
           .catch((error) => {
             console.log(error);
           })
-      : Promise.reject();
+      : Promise.reject("noToken");
   }, [token]);
 
   const changePassword = useCallback(
     (body: API.ChangePasswordRequest) => {
-      return token ? postNewPassword(token, body) : Promise.reject();
+      return token ? postNewPassword(token, body) : Promise.reject("noToken");
     },
     [token]
   );
 
   const realizeVoucher = useCallback(
     (voucher: string) => {
-      return token
-        ? postVoucher(voucher, token)
-        : Promise.reject("No token provided");
+      return token ? postVoucher(voucher, token) : Promise.reject("noToken");
     },
     [token]
   );
