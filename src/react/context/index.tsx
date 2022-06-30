@@ -16,7 +16,6 @@ import { CoursesContext } from "./courses";
 import { fetchDataType } from "./states";
 
 import {
-  course as getCourses,
   getCourse,
   getCourseProgram,
   progress as getProgress,
@@ -187,23 +186,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
 
   const getImagePrefix = () => imagePrefix;
 
-  /*
-  const getDefaultData = <K extends keyof EscolaLMSContextReadConfig>(
-    key: K
-  ): EscolaLMSContextReadConfig[K] => {
-    return initialValues[key];
-  };
-  */
-
-  //
-
   const { courses, fetchCourses } = useContext(CoursesContext);
-
-  /*
-  const [courses, setCourses] = useLocalStorage<
-    ContextPaginatedMetaState<API.CourseListItem>
-  >("lms", "courses", getDefaultData("courses", initialValues));
-  */
 
   const [consultations, setConsultations] = useLocalStorage<
     ContextPaginatedMetaState<API.Consultation>
@@ -472,14 +455,6 @@ const EscolaLMSContextProviderInner: FunctionComponent<
           list: defaults.consultations?.list,
           error: undefined,
         });
-      /*
-      defaults.courses !== null &&
-        setCourses({
-          loading: false,
-          list: defaults.courses?.list,
-          error: undefined,
-        });
-        */
       defaults.webinars !== null &&
         setWebinars({
           loading: false,
@@ -774,26 +749,6 @@ const EscolaLMSContextProviderInner: FunctionComponent<
     },
     [token, notifications]
   );
-
-  /*
-  const fetchCourses = useCallback((filter: API.CourseParams) => {
-    return fetchDataType<API.Course>({
-      controllers: abortControllers.current,
-      controller: `courses/${JSON.stringify(filter)}`,
-      mode: "paginated",
-      fetchAction: getCourses(
-        filter,
-
-        {
-          signal:
-            abortControllers.current[`courses/${JSON.stringify(filter)}`]
-              ?.signal,
-        }
-      ),
-      setState: setCourses,
-    });
-  }, []);
-  */
 
   const fetchConsultations = useCallback((filter: API.ConsultationParams) => {
     return fetchDataType<API.Consultation>({
