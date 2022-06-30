@@ -11,6 +11,8 @@ import React, {
 
 import { interceptors } from "./../../services/request";
 
+import { CoursesContext } from "./courses";
+
 import { fetchDataType } from "./states";
 
 import {
@@ -32,7 +34,7 @@ import {
   getTutorConsultations,
   getUserConsultations,
   approveConsultation,
-  genereteJitsy,
+  generateJitsy,
   rejectConsultation,
   changeTermDate,
 } from "./../../services/consultations";
@@ -44,7 +46,7 @@ import {
   getMyWebinars,
   getWebinar,
   webinars as getWebinars,
-  genereteJitsyWebinar,
+  generateJitsyWebinar,
 } from "../../services/webinars";
 import { events as getEvents } from "../../services/events";
 import {
@@ -78,7 +80,7 @@ import {
   payments as getPayments,
   useVoucher as postVoucher,
   orderInvoice,
-  addMisingProducts as postAddMisingProducts,
+  addMissingProducts as postAddMissingProducts,
 } from "./../../services/cart";
 import {
   userGroups as getUserGroups,
@@ -96,6 +98,7 @@ import {
   FontSize,
   EscolaLMSContextReadConfig,
   EscolaLMSContextConfig,
+  EscolaLMSContextAPIConfig,
   SortProgram,
 } from "./types";
 
@@ -119,6 +122,7 @@ import {
   getMyStationaryEvents,
   getStationaryEvent,
 } from "../../services/stationary_events";
+import { CoursesContextProvider } from "./courses";
 
 export const SCORMPlayer: React.FC<{
   uuid: string;
@@ -129,6 +133,13 @@ export const SCORMPlayer: React.FC<{
 
 export const EscolaLMSContext: React.Context<EscolaLMSContextConfig> =
   React.createContext(defaultConfig);
+
+export const getDefaultData = <K extends keyof EscolaLMSContextReadConfig>(
+  key: K,
+  initialValues: EscolaLMSContextReadConfig & EscolaLMSContextAPIConfig
+): EscolaLMSContextReadConfig[K] => {
+  return initialValues[key];
+};
 
 export const sortProgram: SortProgram = (lessons) => {
   return [...lessons]
@@ -159,7 +170,7 @@ export interface EscolaLMSContextProviderType {
  * @component
  */
 
-export const EscolaLMSContextProvider: FunctionComponent<
+const EscolaLMSContextProviderInner: FunctionComponent<
   PropsWithChildren<EscolaLMSContextProviderType>
 > = ({
   children,
@@ -176,84 +187,102 @@ export const EscolaLMSContextProvider: FunctionComponent<
 
   const getImagePrefix = () => imagePrefix;
 
+  /*
   const getDefaultData = <K extends keyof EscolaLMSContextReadConfig>(
     key: K
   ): EscolaLMSContextReadConfig[K] => {
     return initialValues[key];
   };
+  */
 
   //
 
+  const { courses, fetchCourses } = useContext(CoursesContext);
+
+  /*
   const [courses, setCourses] = useLocalStorage<
     ContextPaginatedMetaState<API.CourseListItem>
-  >("lms", "courses", getDefaultData("courses"));
+  >("lms", "courses", getDefaultData("courses", initialValues));
+  */
 
   const [consultations, setConsultations] = useLocalStorage<
     ContextPaginatedMetaState<API.Consultation>
-  >("lms", "consultations", getDefaultData("consultations"));
+  >("lms", "consultations", getDefaultData("consultations", initialValues));
 
   const [consultation, setConsultation] = useLocalStorage<
     ContextStateValue<API.Consultation>
-  >("lms", "consultation", getDefaultData("consultation"));
+  >("lms", "consultation", getDefaultData("consultation", initialValues));
 
   const [userConsultations, setUserConsultations] = useLocalStorage<
     ContextPaginatedMetaState<API.Consultation>
-  >("lms", "userConsultations", getDefaultData("userConsultations"));
+  >(
+    "lms",
+    "userConsultations",
+    getDefaultData("userConsultations", initialValues)
+  );
 
   const [tutorConsultations, setTutorConsultations] = useLocalStorage<
     ContextPaginatedMetaState<API.AppointmentTerm>
-  >("lms", "tutorConsultations", getDefaultData("tutorConsultations"));
+  >(
+    "lms",
+    "tutorConsultations",
+    getDefaultData("tutorConsultations", initialValues)
+  );
 
   const [webinars, setWebinars] = useLocalStorage<
     ContextListState<EscolaLms.Webinar.Models.Webinar>
-  >("lms", "webinars", getDefaultData("webinars"));
+  >("lms", "webinars", getDefaultData("webinars", initialValues));
 
   const [events, setEvents] = useLocalStorage<
     ContextPaginatedMetaState<API.Event>
-  >("lms", "events", getDefaultData("events"));
+  >("lms", "events", getDefaultData("events", initialValues));
 
   const [userGroup, setUserGroup] = useLocalStorage<
     ContextStateValue<API.UserGroup>
-  >("lms", "userGroup", getDefaultData("userGroup"));
+  >("lms", "userGroup", getDefaultData("userGroup", initialValues));
 
   const [userGroups, setUserGroups] = useLocalStorage<
     ContextPaginatedMetaState<API.UserGroup>
-  >("lms", "userGroups", getDefaultData("userGroups"));
+  >("lms", "userGroups", getDefaultData("userGroups", initialValues));
 
   const [registerableGroups, setRegisterableGroups] = useLocalStorage<
     ContextListState<API.UserGroup>
-  >("lms", "registerableGroups", getDefaultData("registerableGroups"));
+  >(
+    "lms",
+    "registerableGroups",
+    getDefaultData("registerableGroups", initialValues)
+  );
 
   const [course, setCourse] = useLocalStorage<
     ContextStateValue<API.CourseListItem>
-  >("lms", "course", getDefaultData("course"));
+  >("lms", "course", getDefaultData("course", initialValues));
 
   const [settings, setSettings] = useLocalStorage<
     ContextStateValue<API.AppSettings>
-  >("lms", "settings", getDefaultData("settings"));
+  >("lms", "settings", getDefaultData("settings", initialValues));
 
   const [config, setConfig] = useLocalStorage<ContextStateValue<API.AppConfig>>(
     "lms",
     "config",
-    getDefaultData("config")
+    getDefaultData("config", initialValues)
   );
 
   const [uniqueTags, setUniqueTags] = useLocalStorage<
     ContextListState<API.Tag>
-  >("lms", "tags", getDefaultData("uniqueTags"));
+  >("lms", "tags", getDefaultData("uniqueTags", initialValues));
 
   const [categoryTree, setCategoryTree] = useLocalStorage<
     ContextListState<API.Category>
-  >("lms", "categories", getDefaultData("categoryTree"));
+  >("lms", "categories", getDefaultData("categoryTree", initialValues));
 
   const [program, setProgram] = useLocalStorage<
     ContextStateValue<API.CourseProgram>
-  >("lms", "tags", getDefaultData("program"));
+  >("lms", "tags", getDefaultData("program", initialValues));
 
   const [cart, setCart] = useLocalStorage<ContextStateValue<API.Cart>>(
     "lms",
     "cart",
-    getDefaultData("cart")
+    getDefaultData("cart", initialValues)
   );
 
   const [token, setToken] = useLocalStorage<string | null>(
@@ -271,97 +300,109 @@ export const EscolaLMSContextProvider: FunctionComponent<
   const [user, setUser] = useLocalStorage<ContextStateValue<API.UserAsProfile>>(
     "lms",
     "user",
-    getDefaultData("user")
+    getDefaultData("user", initialValues)
   );
 
   const [progress, setProgress] = useState<
     ContextStateValue<API.CourseProgress>
-  >(getDefaultData("progress"));
+  >(getDefaultData("progress", initialValues));
 
   const [tutors, setTutors] = useLocalStorage<ContextListState<API.UserItem>>(
     "lms",
     "tutors",
-    getDefaultData("tutors")
+    getDefaultData("tutors", initialValues)
   );
 
   const [orders, setOrders] = useLocalStorage<
     ContextPaginatedMetaState<API.Order>
-  >("lms", "orders", getDefaultData("orders"));
+  >("lms", "orders", getDefaultData("orders", initialValues));
 
   const [payments, setPayments] = useLocalStorage<
     ContextPaginatedMetaState<API.Payment>
-  >("lms", "payments", getDefaultData("payments"));
+  >("lms", "payments", getDefaultData("payments", initialValues));
 
   const [certificates, setCertificates] = useLocalStorage<
     ContextPaginatedMetaState<API.Certificate>
-  >("lms", "certificates", getDefaultData("certificates"));
+  >("lms", "certificates", getDefaultData("certificates", initialValues));
 
   const [mattermostChannels, setMattermostChannels] = useLocalStorage<
     ContextStateValue<API.MattermostData>
-  >("lms", "mattermostChannels", getDefaultData("mattermostChannels"));
+  >(
+    "lms",
+    "mattermostChannels",
+    getDefaultData("mattermostChannels", initialValues)
+  );
 
   const [tutor, setTutor] = useState<ContextStateValue<API.UserItem>>(
-    getDefaultData("tutor")
+    getDefaultData("tutor", initialValues)
   );
 
   const [pages, setPages] = useLocalStorage<
     ContextPaginatedMetaState<API.PageListItem>
-  >("lms", "pages", getDefaultData("pages"));
+  >("lms", "pages", getDefaultData("pages", initialValues));
 
   const [page, setPage] = useLocalStorage<ContextStateValue<API.Page>>(
     "lms",
     "page",
-    getDefaultData("page")
+    getDefaultData("page", initialValues)
   );
 
   const [fontSize, setFontSize] = useLocalStorage<FontSize>(
     "lms",
     "fontSize",
-    getDefaultData("fontSize")
+    getDefaultData("fontSize", initialValues)
   );
 
   const [h5p, setH5P] = useLocalStorage<ContextStateValue<API.H5PObject>>(
     "lms",
     "h5p",
-    getDefaultData("h5p")
+    getDefaultData("h5p", initialValues)
   );
 
   const [notifications, setNotifications] = useLocalStorage<
     ContextListState<API.Notification>
-  >("lms", "notifications", getDefaultData("notifications"));
+  >("lms", "notifications", getDefaultData("notifications", initialValues));
 
   const [fields, setFields] = useLocalStorage<
     ContextListState<EscolaLms.ModelFields.Models.Metadata>
-  >("lms", "fields", getDefaultData("fields"));
+  >("lms", "fields", getDefaultData("fields", initialValues));
 
   const [stationaryEvents, setStationaryEvents] = useLocalStorage<
     ContextListState<EscolaLms.StationaryEvents.Models.StationaryEvent>
-  >("lms", "stationaryEvents", getDefaultData("stationaryEvents"));
+  >(
+    "lms",
+    "stationaryEvents",
+    getDefaultData("stationaryEvents", initialValues)
+  );
 
   const [stationaryEvent, setStationaryEvent] = useLocalStorage<
     ContextStateValue<EscolaLms.StationaryEvents.Models.StationaryEvent>
-  >("lms", "stationaryEvent", getDefaultData("stationaryEvent"));
+  >("lms", "stationaryEvent", getDefaultData("stationaryEvent", initialValues));
 
   const [userStationaryEvents, setUserStationaryEvents] = useLocalStorage<
     ContextListState<API.StationaryEvent>
-  >("lms", "userStationaryEvents", getDefaultData("userStationaryEvents"));
+  >(
+    "lms",
+    "userStationaryEvents",
+    getDefaultData("userStationaryEvents", initialValues)
+  );
 
   const [webinar, setWebinar] = useLocalStorage<
     ContextStateValue<EscolaLms.Webinar.Models.Webinar>
-  >("lms", "webinar", getDefaultData("webinar"));
+  >("lms", "webinar", getDefaultData("webinar", initialValues));
 
   const [userWebinars, setUserWebinars] = useLocalStorage<
     ContextListState<API.Event>
-  >("lms", "userWebinars", getDefaultData("userWebinars"));
+  >("lms", "userWebinars", getDefaultData("userWebinars", initialValues));
 
   const [products, setProducts] = useLocalStorage<
     ContextPaginatedMetaState<API.Product>
-  >("lms", "products", getDefaultData("products"));
+  >("lms", "products", getDefaultData("products", initialValues));
 
   const [product, setProduct] = useLocalStorage<ContextStateValue<API.Product>>(
     "lms",
     "product",
-    getDefaultData("product")
+    getDefaultData("product", initialValues)
   );
 
   const abortControllers = useRef<Record<string, AbortController | null>>({});
@@ -431,12 +472,14 @@ export const EscolaLMSContextProvider: FunctionComponent<
           list: defaults.consultations?.list,
           error: undefined,
         });
+      /*
       defaults.courses !== null &&
         setCourses({
           loading: false,
           list: defaults.courses?.list,
           error: undefined,
         });
+        */
       defaults.webinars !== null &&
         setWebinars({
           loading: false,
@@ -529,10 +572,10 @@ export const EscolaLMSContextProvider: FunctionComponent<
   const fetchStationaryEvent = useCallback((id: number) => {
     return fetchDataType<API.StationaryEvent>({
       controllers: abortControllers.current,
-      controller: `stationaryevent`,
+      controller: `stationaryevents`,
       mode: "value",
       fetchAction: getStationaryEvent(id, {
-        signal: abortControllers.current?.stationaryevent?.signal,
+        signal: abortControllers.current?.stationaryevents?.signal,
       }),
       setState: setStationaryEvent,
     });
@@ -628,7 +671,7 @@ export const EscolaLMSContextProvider: FunctionComponent<
 
   const generateConsultationJitsy = useCallback(
     (id: number) => {
-      return token ? genereteJitsy(token, id) : Promise.reject("noToken");
+      return token ? generateJitsy(token, id) : Promise.reject("noToken");
     },
     [token]
   );
@@ -636,7 +679,7 @@ export const EscolaLMSContextProvider: FunctionComponent<
   const generateWebinarJitsy = useCallback(
     (id: number) => {
       return token
-        ? genereteJitsyWebinar(token, id)
+        ? generateJitsyWebinar(token, id)
         : Promise.reject("noToken");
     },
     [token]
@@ -732,6 +775,7 @@ export const EscolaLMSContextProvider: FunctionComponent<
     [token, notifications]
   );
 
+  /*
   const fetchCourses = useCallback((filter: API.CourseParams) => {
     return fetchDataType<API.Course>({
       controllers: abortControllers.current,
@@ -749,6 +793,7 @@ export const EscolaLMSContextProvider: FunctionComponent<
       setState: setCourses,
     });
   }, []);
+  */
 
   const fetchConsultations = useCallback((filter: API.ConsultationParams) => {
     return fetchDataType<API.Consultation>({
@@ -1130,7 +1175,7 @@ export const EscolaLMSContextProvider: FunctionComponent<
     [fetchCart]
   );
 
-  const addMisingProducts = useCallback(
+  const addMissingProducts = useCallback(
     (products: number[]) => {
       if (!token) {
         return Promise.reject("noToken");
@@ -1139,7 +1184,7 @@ export const EscolaLMSContextProvider: FunctionComponent<
         ...prevState,
         loading: true,
       }));
-      return postAddMisingProducts(token, products)
+      return postAddMissingProducts(token, products)
         .then(() => {
           fetchCart();
         })
@@ -1766,7 +1811,7 @@ export const EscolaLMSContextProvider: FunctionComponent<
         fetchUserStationaryEvents,
         userStationaryEvents,
         fetchOrderInvoice,
-        addMisingProducts,
+        addMissingProducts,
         getImagePrefix,
         changeConsultationTerm,
         fetchProducts,
@@ -1777,5 +1822,17 @@ export const EscolaLMSContextProvider: FunctionComponent<
         {children}
       </EditorContextProvider>
     </EscolaLMSContext.Provider>
+  );
+};
+
+export const EscolaLMSContextProvider: FunctionComponent<
+  PropsWithChildren<EscolaLMSContextProviderType>
+> = ({ children, ...props }) => {
+  return (
+    <CoursesContextProvider defaults={props.defaults}>
+      <EscolaLMSContextProviderInner {...props}>
+        {children}
+      </EscolaLMSContextProviderInner>
+    </CoursesContextProvider>
   );
 };

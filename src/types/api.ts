@@ -101,37 +101,37 @@ export type Tag = {
 
 export type Course = {
   id: number;
-  description: string;
+  description: string | null;
   created_at: string;
   updated_at: string;
   title: string;
-  topic_count: number;
-  base_price: number;
+  topic_count?: number;
+  base_price?: number;
   author_id: number;
-  image_url: string;
+  image_url?: string | null;
   author: UserItem;
   authors: UserItem[];
-  lessons_count: number;
-  lessons: Lesson[];
-  language?: string;
-  subtitle?: string;
-  summary?: string;
-  image_path: string;
-  video_path?: string;
-  duration?: string;
-  video_url?: string;
+  lessons_count?: number;
+  lessons?: Lesson[];
+  language?: string | null;
+  subtitle?: string | null;
+  summary?: string | null;
+  image_path?: string | null;
+  video_path?: string | null;
+  duration?: string | null;
+  video_url?: string | null;
   categories?: Array<EscolaLms.Categories.Models.Category>;
-  tags?: Tag[] | string[];
+  tags?: Tag[] | string[] | null;
   users_count?: number;
-  level?: string;
-  scorm_sco?: SCORM_SCO;
-  scorm_id?: number;
-  scorm_sco_id?: number;
-  scorm?: SCORM;
-  target_group?: string;
+  level?: string | null;
+  scorm_sco?: SCORM_SCO | null;
+  scorm_id?: number | null;
+  scorm_sco_id?: number | null;
+  scorm?: SCORM | null;
+  target_group?: string | null;
   active_to?: string;
   active_from?: string;
-  hours_to_complete?: number;
+  hours_to_complete?: number | null;
   product?: Product;
 };
 
@@ -140,7 +140,7 @@ export type PaginatedList<Model> = {
   data: Model[];
   next_page_url: string;
   path: string;
-  per_page: number;
+  per_page: number | string;
   prev_page_url: string;
   to: number;
   total: number;
@@ -154,16 +154,18 @@ export type PaginatedMetaList<Model> = {
     next_page_url: string;
     last_page: number;
     path: string;
-    per_page: number;
-    prev_page_url: string;
+    per_page: number | string;
+    prev_page_url: string | null;
     to: number;
     total: number;
-    links: {
-      first: string;
-      last: string;
-      next: string;
-      prev: string;
-    };
+    links:
+      | {
+          first: string;
+          last: string;
+          next: string;
+          prev: string;
+        }
+      | { url: string | null; label: string; active: boolean }[];
   };
 };
 
@@ -282,6 +284,8 @@ export type Consultation = EscolaLms.Consultations.Models.Consultation & {
 };
 
 export type Product = EscolaLms.Cart.Models.Product & {
+  created_at?: string | null;
+  updated_at?: string | null;
   buyable?: boolean;
   poster_path?: string | null;
   owned?: boolean;
@@ -423,7 +427,16 @@ export type User = {
   data: UserItem;
 };
 
-export type UserItem = EscolaLms.Auth.Models.User & {
+export type UserItem = Partial<
+  Exclude<
+    EscolaLms.Auth.Models.User,
+    | "password"
+    | "remember_token"
+    | "password_reset_token"
+    | "email_verified_at"
+    | "is_active"
+  >
+> & {
   // id: number;
   // name: string;
   // first_name: string;
@@ -433,11 +446,11 @@ export type UserItem = EscolaLms.Auth.Models.User & {
   // created_at: string;
   // onboarding_completed: boolean;
   // email_verified: boolean;
-  // interests: string[];
   avatar?: string;
   // path_avatar: string | null;
   bio?: string | null;
   categories?: Category[] | null;
+  interests?: Array<EscolaLms.Categories.Models.Category> | null | never[];
 };
 
 export type UserAsProfile = Omit<UserItem, "roles"> & {
@@ -716,7 +729,7 @@ export type Event = {
   agenda?: string | null;
   duration?: string | null;
   image_path: string | null;
-  image_url: string | null;
+  image_url?: string | null;
   product?: Product | null;
   base_price?: string | null;
   status?: string;
