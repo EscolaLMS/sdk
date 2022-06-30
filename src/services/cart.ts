@@ -3,12 +3,13 @@ import * as API from "../types/api";
 import { currentTimezone } from "../utils";
 
 export async function addToCart(
+  apiUrl: string,
   productId: number,
   token: string,
   quantity?: number,
   options?: RequestOptionsInit
 ) {
-  return request<API.SuccessResponse>(`/api/cart/products`, {
+  return request<API.SuccessResponse>(`${apiUrl}/api/cart/products`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -24,11 +25,12 @@ export async function addToCart(
 }
 
 export async function removeFromCart(
+  apiUrl: string,
   itemId: number,
   token: string,
   options?: RequestOptionsInit
 ) {
-  return request<API.SuccessResponse>(`/api/cart/products/${itemId}`, {
+  return request<API.SuccessResponse>(`${apiUrl}/api/cart/products/${itemId}`, {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",
@@ -39,8 +41,12 @@ export async function removeFromCart(
   });
 }
 
-export async function cart(token: string, options?: RequestOptionsInit) {
-  return request<API.DefaultResponseSuccess<API.Cart>>(`/api/cart`, {
+export async function cart(
+  apiUrl: string,
+  token: string,
+  options?: RequestOptionsInit
+) {
+  return request<API.DefaultResponseSuccess<API.Cart>>(`${apiUrl}/api/cart`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -51,26 +57,34 @@ export async function cart(token: string, options?: RequestOptionsInit) {
   });
 }
 
-export async function addMissingProducts(token: string, products: number[]) {
-  return request<API.DefaultResponseSuccess<API.Cart>>(`/api/cart/missing`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-      "Current-timezone": currentTimezone(),
-    },
-    data: {
-      products: products,
-    },
-  });
+export async function addMissingProducts(
+  apiUrl: string,
+  token: string,
+  products: number[]
+) {
+  return request<API.DefaultResponseSuccess<API.Cart>>(
+    `${apiUrl}/api/cart/missing`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+        "Current-timezone": currentTimezone(),
+      },
+      data: {
+        products: products,
+      },
+    }
+  );
 }
 
 export async function payWithStripe(
+  apiUrl: string,
   payment_method: string,
   return_url: string,
   token: string
 ) {
-  return request<API.SuccessResponse>(`/api/cart/pay`, {
+  return request<API.SuccessResponse>(`${apiUrl}/api/cart/pay`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -86,12 +100,13 @@ export async function payWithStripe(
 }
 
 export async function payWithP24(
+  apiUrl: string,
   email: string,
   return_url: string,
   token: string,
   data?: API.InvoiceData
 ) {
-  return request<API.P24Response>(`/api/cart/pay`, {
+  return request<API.P24Response>(`${apiUrl}/api/cart/pay`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -103,11 +118,12 @@ export async function payWithP24(
 }
 
 export async function orders(
+  apiUrl: string,
   token: string,
   params?: API.PaginationParams,
   options?: RequestOptionsInit
 ) {
-  return request<API.OrderList>(`/api/orders`, {
+  return request<API.OrderList>(`${apiUrl}/api/orders`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -119,8 +135,12 @@ export async function orders(
   });
 }
 
-export async function payments(token: string, options?: RequestOptionsInit) {
-  return request<API.PaymentList>(`/api/payments`, {
+export async function payments(
+  apiUrl: string,
+  token: string,
+  options?: RequestOptionsInit
+) {
+  return request<API.PaymentList>(`${apiUrl}/api/payments`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -131,8 +151,12 @@ export async function payments(token: string, options?: RequestOptionsInit) {
   });
 }
 
-export async function useVoucher(voucher: string, token: string) {
-  return request<API.AuthResponse>("/api/cart/voucher", {
+export async function useVoucher(
+  apiUrl: string,
+  voucher: string,
+  token: string
+) {
+  return request<API.AuthResponse>(`${apiUrl}/api/cart/voucher`, {
     method: "POST",
     data: {
       code: voucher,
@@ -147,11 +171,12 @@ export async function useVoucher(voucher: string, token: string) {
 }
 
 export async function orderInvoice(
+  apiUrl: string,
   token: string,
   id: number,
   options?: RequestOptionsInit
 ) {
-  return request<any>(`/api/invoices/${id}`, {
+  return request<any>(`${apiUrl}/api/invoices/${id}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/pdf",

@@ -3,11 +3,12 @@ import * as API from "../types/api";
 import { currentTimezone } from "../utils";
 
 export async function getNotifications(
+  apiUrl: string,
   token: string,
   options?: Record<string, any>
 ) {
   return request<API.DefaultResponse<API.Notification[]>>(
-    `/api/notifications`,
+    `${apiUrl}/api/notifications`,
     {
       method: "GET",
       /* useCache: true */ useCache: false,
@@ -22,12 +23,13 @@ export async function getNotifications(
 }
 
 export async function readNotification(
+  apiUrl: string,
   id: string,
   token: string,
   options?: Record<string, any>
 ) {
   return request<API.DefaultResponse<API.Notification[]>>(
-    `/api/notifications/${id}/read`,
+    `${apiUrl}/api/notifications/${id}/read`,
     {
       method: "POST",
       /* useCache: true */ useCache: false,

@@ -3,10 +3,11 @@ import * as API from "../types/api";
 import { currentTimezone } from "../utils";
 
 export async function login(
+  apiUrl: string,
   body: API.LoginRequest,
   options?: RequestOptionsInit
 ) {
-  return request<API.LoginResponse>("/api/auth/login", {
+  return request<API.LoginResponse>(`${apiUrl}/api/auth/login`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -16,9 +17,13 @@ export async function login(
   });
 }
 
-export async function profile(token: string, options?: RequestOptionsInit) {
+export async function profile(
+  apiUrl: string,
+  token: string,
+  options?: RequestOptionsInit
+) {
   return request<API.DefaultResponse<API.UserItem & { roles: string[] }>>(
-    "/api/profile/me",
+    `${apiUrl}/api/profile/me`,
     {
       method: "GET",
       headers: {
@@ -33,11 +38,12 @@ export async function profile(token: string, options?: RequestOptionsInit) {
 }
 
 export async function register(
+  apiUrl: string,
   body: API.RegisterRequest,
   options?: RequestOptionsInit
 ) {
   return request<API.DefaultResponse<API.RegisterResponse>>(
-    "/api/auth/register",
+    `${apiUrl}/api/auth/register`,
     {
       method: "POST",
       headers: {
@@ -50,26 +56,30 @@ export async function register(
 }
 
 export async function updateProfile(
+  apiUrl: string,
   body: API.UpdateUserDetails,
   token: string
 ) {
-  return request<API.DefaultResponse<API.UserAsProfile>>("/api/profile/me", {
-    method: "PUT",
-    data: body,
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-      "Current-timezone": currentTimezone(),
-    },
-  });
+  return request<API.DefaultResponse<API.UserAsProfile>>(
+    `${apiUrl}/api/profile/me`,
+    {
+      method: "PUT",
+      data: body,
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+        "Current-timezone": currentTimezone(),
+      },
+    }
+  );
 }
 
-export async function updateAvatar(file: File, token: string) {
+export async function updateAvatar(apiUrl: string, file: File, token: string) {
   const formData = new FormData();
   formData.append("avatar", file);
   return request<API.DefaultResponse<API.UserAsProfile>>(
-    "/api/profile/upload-avatar",
+    `${apiUrl}/api/profile/upload-avatar`,
     {
       method: "POST",
       data: formData,
@@ -83,10 +93,11 @@ export async function updateAvatar(file: File, token: string) {
 }
 
 export async function forgot(
+  apiUrl: string,
   body: API.ForgotRequest,
   options?: RequestOptionsInit
 ) {
-  return request<API.AuthResponse>("/api/auth/password/forgot", {
+  return request<API.AuthResponse>(`${apiUrl}/api/auth/password/forgot`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -97,10 +108,11 @@ export async function forgot(
 }
 
 export async function reset(
+  apiUrl: string,
   body: API.ResetPasswordRequest,
   options?: RequestOptionsInit
 ) {
-  return request<API.AuthResponse>("/api/auth/password/reset", {
+  return request<API.AuthResponse>(`${apiUrl}/api/auth/password/reset`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -110,18 +122,21 @@ export async function reset(
   });
 }
 
-export async function emailVerify(id: string, hash: string) {
-  return request<API.AuthResponse>(`/api/auth/email/verify/${id}/${hash}`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+export async function emailVerify(apiUrl: string, id: string, hash: string) {
+  return request<API.AuthResponse>(
+    `${apiUrl}/api/auth/email/verify/${id}/${hash}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
 }
 
-export async function refreshToken(token: string) {
+export async function refreshToken(apiUrl: string, token: string) {
   return request<API.DefaultResponse<{ token: string; expires_at: string }>>(
-    "/api/auth/refresh",
+    `${apiUrl}/api/auth/refresh`,
     {
       method: "GET",
       headers: {

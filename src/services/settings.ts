@@ -8,16 +8,19 @@ export enum Currency {
 }
 
 /**  GET /api/courses */
-export async function settings(options?: RequestOptionsInit) {
-  return request<API.DefaultResponse<API.AppSettings>>(`/api/settings`, {
-    method: "GET",
-    ...(options || {}),
-  });
+export async function settings(apiUrl: string, options?: RequestOptionsInit) {
+  return request<API.DefaultResponse<API.AppSettings>>(
+    `${apiUrl}/api/settings`,
+    {
+      method: "GET",
+      ...(options || {}),
+    }
+  );
 }
 
 /**  GET /api/config */
-export async function config(options?: RequestOptionsInit) {
-  return request<API.DefaultResponse<API.AppConfig>>(`/api/config`, {
+export async function config(apiUrl: string, options?: RequestOptionsInit) {
+  return request<API.DefaultResponse<API.AppConfig>>(`${apiUrl}/api/config`, {
     method: "GET",
     ...(options || {}),
   });

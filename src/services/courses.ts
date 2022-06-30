@@ -30,10 +30,11 @@ export const noCompletedEventsIds: string[] = [
 
 /**  GET /api/courses */
 export async function course(
+  apiUrl: string,
   params: API.CourseParams,
   options?: RequestOptionsInit
 ) {
-  return request<API.CourseList>(`/api/courses`, {
+  return request<API.CourseList>(`${apiUrl}/api/courses`, {
     method: "GET",
     params,
     ...(options || {}),
@@ -41,21 +42,29 @@ export async function course(
 }
 
 /**  GET /api/courses/:id */
-export async function getCourse(id: number, options?: RequestOptionsInit) {
-  return request<API.DefaultResponse<API.Course>>(`/api/courses/${id}`, {
-    method: "GET",
-    ...(options || {}),
-  });
+export async function getCourse(
+  apiUrl: string,
+  id: number,
+  options?: RequestOptionsInit
+) {
+  return request<API.DefaultResponse<API.Course>>(
+    `${apiUrl}/api/courses/${id}`,
+    {
+      method: "GET",
+      ...(options || {}),
+    }
+  );
 }
 
 /**  GET /api/courses/:id */
 export async function getCourseProgram(
+  apiUrl: string,
   id: number,
   token?: string | null,
   options?: RequestOptionsInit
 ) {
   return request<API.DefaultResponse<API.CourseProgram>>(
-    `/api/courses/${id}/program`,
+    `${apiUrl}/api/courses/${id}/program`,
     {
       method: "GET",
       headers: token
@@ -72,9 +81,13 @@ export async function getCourseProgram(
   );
 }
 
-export async function progress(token: string, options?: RequestOptionsInit) {
+export async function progress(
+  apiUrl: string,
+  token: string,
+  options?: RequestOptionsInit
+) {
   return request<API.DefaultResponse<API.CourseProgress>>(
-    `/api/courses/progress`,
+    `${apiUrl}/api/courses/progress`,
     {
       method: "GET",
       headers: {
@@ -88,13 +101,14 @@ export async function progress(token: string, options?: RequestOptionsInit) {
 }
 
 export async function sendProgress(
+  apiUrl: string,
   courseId: number,
   data: API.CourseProgressItemElement[],
   token: string,
   options?: RequestOptionsInit
 ) {
   return request<API.DefaultResponse<API.CourseProgress>>(
-    `/api/courses/progress/${courseId}`,
+    `${apiUrl}/api/courses/progress/${courseId}`,
     {
       method: "PATCH",
       headers: {
@@ -110,26 +124,31 @@ export async function sendProgress(
   );
 }
 
-export async function tutors(options?: RequestOptionsInit) {
-  return request<API.TutorList>(`/api/tutors`, {
+export async function tutors(apiUrl: string, options?: RequestOptionsInit) {
+  return request<API.TutorList>(`${apiUrl}/api/tutors`, {
     method: "GET",
     ...(options || {}),
   });
 }
 
-export async function tutor(id: number, options?: RequestOptionsInit) {
-  return request<API.TutorSingle>(`/api/tutors/${id}`, {
+export async function tutor(
+  apiUrl: string,
+  id: number,
+  options?: RequestOptionsInit
+) {
+  return request<API.TutorSingle>(`${apiUrl}/api/tutors/${id}`, {
     method: "GET",
     ...(options || {}),
   });
 }
 
 export async function topicPing(
+  apiUrl: string,
   topicId: number,
   token: string,
   options?: RequestOptionsInit
 ) {
-  return request<Boolean>(`/api/courses/progress/${topicId}/ping`, {
+  return request<Boolean>(`${apiUrl}/api/courses/progress/${topicId}/ping`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
@@ -142,22 +161,26 @@ export async function topicPing(
 }
 
 export async function h5pProgress(
+  apiUrl: string,
   topicId: number,
   statementId: string,
   statement: API.IStatement,
   token: string
 ) {
-  return request<API.SuccessResponse>(`/api/courses/progress/${topicId}/h5p`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-      "Current-timezone": currentTimezone(),
-    },
+  return request<API.SuccessResponse>(
+    `${apiUrl}/api/courses/progress/${topicId}/h5p`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+        "Current-timezone": currentTimezone(),
+      },
 
-    data: {
-      event: statementId,
-      data: statement.result || {},
-    },
-  });
+      data: {
+        event: statementId,
+        data: statement.result || {},
+      },
+    }
+  );
 }

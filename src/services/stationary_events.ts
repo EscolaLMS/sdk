@@ -5,10 +5,11 @@ import { currentTimezone } from "../utils";
 
 /**  GET /api/stationary-events */
 export async function stationaryEvents(
+  apiUrl: string,
   params: API.StationaryEventsParams,
   options?: RequestOptionsInit
 ) {
-  return request<API.StationaryEventsList>(`/api/stationary-events`, {
+  return request<API.StationaryEventsList>(`${apiUrl}/api/stationary-events`, {
     method: "GET",
     params,
     ...(options || {}),
@@ -17,11 +18,12 @@ export async function stationaryEvents(
 
 /**  GET /api/stationary-events/:id */
 export async function getStationaryEvent(
+  apiUrl: string,
   id: number,
   options?: RequestOptionsInit
 ) {
   return request<API.DefaultResponse<API.StationaryEvent>>(
-    `/api/stationary-events/${id}`,
+    `${apiUrl}/api/stationary-events/${id}`,
     {
       method: "GET",
       ...(options || {}),
@@ -31,11 +33,12 @@ export async function getStationaryEvent(
 
 /**  GET /api/stationary-events/me */
 export async function getMyStationaryEvents(
+  apiUrl: string,
   token: string,
   options?: RequestOptionsInit
 ) {
   return request<API.DefaultMetaResponse<API.StationaryEvent>>(
-    `/api/stationary-events/me`,
+    `${apiUrl}/api/stationary-events/me`,
     {
       method: "GET",
       headers: {

@@ -4,11 +4,12 @@ import { currentTimezone } from "../utils";
 
 /**  GET /api/mattermost/me */
 export async function getMattermostChannels(
+  apiUrl: string,
   token: string,
   params?: API.PageParams,
   options?: RequestOptionsInit
 ) {
-  return request<API.MattermostChannelList>(`/api/mattermost/me`, {
+  return request<API.MattermostChannelList>(`${apiUrl}/api/mattermost/me`, {
     method: "GET",
     params,
     headers: {

@@ -4,10 +4,11 @@ import { currentTimezone } from "../utils";
 
 /**  GET /api/consultations */
 export async function consultations(
+  apiUrl: string,
   params: API.ConsultationParams,
   options?: RequestOptionsInit
 ) {
-  return request<API.ConsultationsList>(`/api/consultations`, {
+  return request<API.ConsultationsList>(`${apiUrl}/api/consultations`, {
     method: "GET",
     params,
     ...(options || {}),
@@ -16,11 +17,12 @@ export async function consultations(
 
 /**  GET /api/consultations/:id */
 export async function getConsultation(
+  apiUrl: string,
   id: number,
   options?: RequestOptionsInit
 ) {
   return request<API.DefaultResponse<API.Consultation>>(
-    `/api/consultations/${id}`,
+    `${apiUrl}/api/consultations/${id}`,
     {
       method: "GET",
       ...(options || {}),
@@ -30,10 +32,11 @@ export async function getConsultation(
 
 /**  GET /api/consultations/me */
 export async function getUserConsultations(
+  apiUrl: string,
   token: string,
   options?: RequestOptionsInit
 ) {
-  return request<API.ConsultationsList>(`/api/consultations/me`, {
+  return request<API.ConsultationsList>(`${apiUrl}/api/consultations/me`, {
     method: "GET",
     headers: {
       Accept: "application/json",
@@ -47,13 +50,14 @@ export async function getUserConsultations(
 
 /**  GET /api/consultations/reserve-term */
 export async function bookConsultationDate(
+  apiUrl: string,
   token: string,
   id: number,
   term: string,
   options?: RequestOptionsInit
 ) {
   return request<API.ScheduleConsultationResponse>(
-    `/api/consultations/report-term/${id}`,
+    `${apiUrl}/api/consultations/report-term/${id}`,
     {
       method: "POST",
       headers: {
@@ -72,29 +76,34 @@ export async function bookConsultationDate(
 
 /**  GET /api/consultations/my-schedule*/
 export async function getTutorConsultations(
+  apiUrl: string,
   token: string,
   options?: RequestOptionsInit
 ) {
-  return request<API.TutorConsultationList>(`/api/consultations/my-schedule`, {
-    method: "GET",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-      "Current-timezone": currentTimezone(),
-    },
-    ...(options || {}),
-  });
+  return request<API.TutorConsultationList>(
+    `${apiUrl}/api/consultations/my-schedule`,
+    {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+        "Current-timezone": currentTimezone(),
+      },
+      ...(options || {}),
+    }
+  );
 }
 
 /**  GET /api/consultations/approve-term*/
 export async function approveConsultation(
+  apiUrl: string,
   token: string,
   id: number,
   options?: RequestOptionsInit
 ) {
   return request<API.TutorConsultationList>(
-    `/api/consultations/approve-term/${id}`,
+    `${apiUrl}/api/consultations/approve-term/${id}`,
     {
       method: "GET",
       headers: {
@@ -110,12 +119,13 @@ export async function approveConsultation(
 
 /**  GET /api/consultations/reject-term*/
 export async function rejectConsultation(
+  apiUrl: string,
   token: string,
   id: number,
   options?: RequestOptionsInit
 ) {
   return request<API.TutorConsultationList>(
-    `/api/consultations/reject-term/${id}`,
+    `${apiUrl}/api/consultations/reject-term/${id}`,
     {
       method: "GET",
       headers: {
@@ -131,12 +141,13 @@ export async function rejectConsultation(
 
 /**  GET /api/consultations/generate-jitsi*/
 export async function generateJitsy(
+  apiUrl: string,
   token: string,
   id: number,
   options?: RequestOptionsInit
 ) {
   return request<API.DefaultResponse<API.JitsyData>>(
-    `/api/consultations/generate-jitsi/${id}`,
+    `${apiUrl}/api/consultations/generate-jitsi/${id}`,
     {
       method: "GET",
       headers: {
@@ -152,13 +163,14 @@ export async function generateJitsy(
 
 /**  POST /api/consultations/change-term/{termId} */
 export async function changeTermDate(
+  apiUrl: string,
   termId: number,
   newDate: string,
   token: string,
   options?: RequestOptionsInit
 ) {
   return request<API.DefaultResponse<API.Consultation>>(
-    `/api/consultations/change-term/${termId}`,
+    `${apiUrl}/api/consultations/change-term/${termId}`,
     {
       method: "POST",
       headers: {

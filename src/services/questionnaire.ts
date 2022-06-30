@@ -4,12 +4,13 @@ import { currentTimezone } from "../utils";
 
 /**  GET /api/questionnaire/stars */
 export async function questionnaireStars(
+  apiUrl: string,
   model: string,
   id: number,
   options?: RequestOptionsInit
 ) {
   return request<API.DefaultResponse<API.QuestionnaireStars>>(
-    `/api/questionnaire/stars/${model}/${id}`,
+    `${apiUrl}/api/questionnaire/stars/${model}/${id}`,
     {
       method: "GET",
       ...(options || {}),
@@ -19,13 +20,14 @@ export async function questionnaireStars(
 
 /**  GET /api/questionnaire/:model/:id */
 export async function getQuestionnaires(
+  apiUrl: string,
   token: string,
   model: string,
   id: number
 ) {
   return request<
     API.DefaultMetaResponse<EscolaLms.Questionnaire.Models.Questionnaire>
-  >(`/api/questionnaire/${model}/${id}`, {
+  >(`${apiUrl}/api/questionnaire/${model}/${id}`, {
     method: "GET",
     headers: {
       Accept: "application/json",
@@ -38,6 +40,7 @@ export async function getQuestionnaires(
 
 /**  POST /api/questionnaire/:model/:id */
 export async function questionnaireAnswer(
+  apiUrl: string,
   token: string,
   model: string,
   modelID: number,
@@ -46,7 +49,7 @@ export async function questionnaireAnswer(
 ) {
   return request<
     API.DefaultResponse<EscolaLms.Questionnaire.Models.QuestionAnswer>
-  >(`/api/questionnaire/${model}/${modelID}/${id}`, {
+  >(`${apiUrl}/api/questionnaire/${model}/${modelID}/${id}`, {
     method: "POST",
     headers: {
       Accept: "application/json",
