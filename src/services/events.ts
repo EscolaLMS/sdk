@@ -3,8 +3,12 @@ import type { RequestOptionsInit } from "umi-request";
 import * as API from "../types/api";
 
 /**  GET /api/events */
-export async function events(params: API.EventsParams, options?: RequestOptionsInit) {
-  return request<API.EventsList>(`/api/events`, {
+export async function events(
+  apiUrl: string,
+  params: API.EventsParams,
+  options?: RequestOptionsInit
+) {
+  return request<API.EventsList>(`${apiUrl}/api/events`, {
     method: "GET",
     params,
     ...(options || {}),

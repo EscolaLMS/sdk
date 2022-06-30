@@ -9,7 +9,7 @@ import React, {
   PropsWithChildren,
 } from "react";
 
-import { interceptors } from "./../../services/request";
+//import { interceptors } from "./../../services/request";
 
 import { CoursesContext } from "./courses";
 
@@ -178,7 +178,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
   imagePrefix = `${apiUrl}/storage/imgcache`,
   initialFetch = true,
 }) => {
-  interceptors(apiUrl);
+  // interceptors(apiUrl);
   const initialValues = {
     ...defaultConfig,
     ...defaults,
@@ -395,7 +395,10 @@ const EscolaLMSContextProviderInner: FunctionComponent<
       controllers: abortControllers.current,
       controller: `config`,
       mode: "value",
-      fetchAction: getConfig({
+      fetchAction: getConfig.bind(
+        null,
+        apiUrl
+      )({
         signal: abortControllers.current?.config?.signal,
       }),
       setState: setConfig,
@@ -407,7 +410,10 @@ const EscolaLMSContextProviderInner: FunctionComponent<
       controllers: abortControllers.current,
       controller: `settings`,
       mode: "value",
-      fetchAction: getSettings({
+      fetchAction: getSettings.bind(
+        null,
+        apiUrl
+      )({
         signal: abortControllers.current?.settings?.signal,
       }),
       setState: setSettings,
@@ -419,7 +425,10 @@ const EscolaLMSContextProviderInner: FunctionComponent<
       controllers: abortControllers.current,
       controller: `categories`,
       mode: "list",
-      fetchAction: getCategoryTree({
+      fetchAction: getCategoryTree.bind(
+        null,
+        apiUrl
+      )({
         signal: abortControllers.current?.categories?.signal,
       }),
       setState: setCategoryTree,
@@ -431,7 +440,10 @@ const EscolaLMSContextProviderInner: FunctionComponent<
       controllers: abortControllers.current,
       controller: `tags`,
       mode: "list",
-      fetchAction: getUniqueTags({
+      fetchAction: getUniqueTags.bind(
+        null,
+        apiUrl
+      )({
         signal: abortControllers.current?.tags?.signal,
       }),
       setState: setUniqueTags,
@@ -485,7 +497,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
         controllers: abortControllers.current,
         controller: `products/${JSON.stringify(filter)}`,
         mode: "paginated",
-        fetchAction: getProducts(filter, {
+        fetchAction: getProducts.bind(null, apiUrl)(filter, {
           signal:
             abortControllers.current[`products/${JSON.stringify(filter)}`]
               ?.signal,
@@ -503,7 +515,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
             controllers: abortControllers.current,
             controller: `product`,
             mode: "value",
-            fetchAction: getSingleProduct(id, token, {
+            fetchAction: getSingleProduct.bind(null, apiUrl)(id, token, {
               signal: abortControllers.current?.product?.signal,
             }),
             setState: setProduct,
@@ -518,7 +530,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
       controllers: abortControllers.current,
       controller: `fields/${JSON.stringify(filter)}`,
       mode: "list",
-      fetchAction: getFields(filter, {
+      fetchAction: getFields.bind(null, apiUrl)(filter, {
         signal:
           abortControllers.current[`fields/${JSON.stringify(filter)}`]?.signal,
       }),
@@ -532,7 +544,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
         controllers: abortControllers.current,
         controller: `stationaryevents/${JSON.stringify(filter)}`,
         mode: "list",
-        fetchAction: getStationaryEvents(filter, {
+        fetchAction: getStationaryEvents.bind(null, apiUrl)(filter, {
           signal:
             abortControllers.current[
               `stationaryevents/${JSON.stringify(filter)}`
@@ -549,7 +561,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
       controllers: abortControllers.current,
       controller: `stationaryevent`,
       mode: "value",
-      fetchAction: getStationaryEvent(id, {
+      fetchAction: getStationaryEvent.bind(null, apiUrl)(id, {
         signal: abortControllers.current?.stationaryevent?.signal,
       }),
       setState: setStationaryEvent,
@@ -562,7 +574,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
           controllers: abortControllers.current,
           controller: `userwebinars`,
           mode: "list",
-          fetchAction: getMyWebinars(token, {
+          fetchAction: getMyWebinars.bind(null, apiUrl)(token, {
             signal: abortControllers.current?.userwebinars?.signal,
           }),
           setState: setUserWebinars,
@@ -575,7 +587,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
       controllers: abortControllers.current,
       controller: `webinar`,
       mode: "value",
-      fetchAction: getWebinar(id, {
+      fetchAction: getWebinar.bind(null, apiUrl)(id, {
         signal: abortControllers.current?.webinar?.signal,
       }),
       setState: setWebinar,
@@ -588,7 +600,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
           controllers: abortControllers.current,
           controller: `userstationaryevents`,
           mode: "list",
-          fetchAction: getMyStationaryEvents(token, {
+          fetchAction: getMyStationaryEvents.bind(null, apiUrl)(token, {
             signal: abortControllers.current?.userstationaryevents?.signal,
           }),
           setState: setUserStationaryEvents,
@@ -602,7 +614,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
           controllers: abortControllers.current,
           controller: `tutorconsultation`,
           mode: "paginated",
-          fetchAction: getTutorConsultations(token, {
+          fetchAction: getTutorConsultations.bind(null, apiUrl)(token, {
             signal: abortControllers.current?.tutorconsultation?.signal,
           }),
           setState: setTutorConsultations,
@@ -617,7 +629,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
             controllers: abortControllers.current,
             controller: `aprovetutorterm`,
             mode: "paginated",
-            fetchAction: approveConsultation(token, id, {
+            fetchAction: approveConsultation.bind(null, apiUrl)(token, id, {
               signal: abortControllers.current?.aprovetutorterm?.signal,
             }),
             setState: setTutorConsultations,
@@ -634,7 +646,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
             controllers: abortControllers.current,
             controller: `rejectterm`,
             mode: "paginated",
-            fetchAction: rejectConsultation(token, id, {
+            fetchAction: rejectConsultation.bind(null, apiUrl)(token, id, {
               signal: abortControllers.current?.rejectterm?.signal,
             }),
             setState: setTutorConsultations,
@@ -646,7 +658,9 @@ const EscolaLMSContextProviderInner: FunctionComponent<
 
   const generateConsultationJitsy = useCallback(
     (id: number) => {
-      return token ? generateJitsy(token, id) : Promise.reject("noToken");
+      return token
+        ? generateJitsy.bind(null, apiUrl)(token, id)
+        : Promise.reject("noToken");
     },
     [token]
   );
@@ -654,7 +668,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
   const generateWebinarJitsy = useCallback(
     (id: number) => {
       return token
-        ? generateJitsyWebinar(token, id)
+        ? generateJitsyWebinar.bind(null, apiUrl)(token, id)
         : Promise.reject("noToken");
     },
     [token]
@@ -667,7 +681,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
             controllers: abortControllers.current,
             controller: `certificates/${JSON.stringify(params)}`,
             mode: "paginated",
-            fetchAction: getCertificates(token, params, {
+            fetchAction: getCertificates.bind(null, apiUrl)(token, params, {
               signal: abortControllers.current?.certificates?.signal,
             }),
             setState: setCertificates,
@@ -679,7 +693,9 @@ const EscolaLMSContextProviderInner: FunctionComponent<
 
   const fetchCertificate = useCallback(
     (id: number) => {
-      return token ? getCertificate(token, id) : Promise.reject("noToken");
+      return token
+        ? getCertificate.bind(null, apiUrl)(token, id)
+        : Promise.reject("noToken");
     },
     [token]
   );
@@ -690,7 +706,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
           controllers: abortControllers.current,
           controller: `mattermostchannels`,
           mode: "value",
-          fetchAction: getMattermostChannels(
+          fetchAction: getMattermostChannels.bind(null, apiUrl)(
             token,
             {},
             {
@@ -708,13 +724,9 @@ const EscolaLMSContextProviderInner: FunctionComponent<
           controllers: abortControllers.current,
           controller: `mattermostchannels`,
           mode: "list",
-          fetchAction: getNotifications(
-            token,
-
-            {
-              signal: abortControllers.current?.mattermostchannels?.signal,
-            }
-          ),
+          fetchAction: getNotifications.bind(null, apiUrl)(token, {
+            signal: abortControllers.current?.mattermostchannels?.signal,
+          }),
           setState: setNotifications,
         })
       : Promise.reject("noToken");
@@ -723,7 +735,8 @@ const EscolaLMSContextProviderInner: FunctionComponent<
   const readNotify = useCallback(
     (id: string) => {
       return token
-        ? readNotification(id, token)
+        ? readNotification
+            .bind(null, apiUrl)(id, token)
             .then((response) => {
               if (response.success) {
                 setNotifications((prevState) => ({
@@ -755,7 +768,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
       controllers: abortControllers.current,
       controller: `consultations/${JSON.stringify(filter)}`,
       mode: "paginated",
-      fetchAction: getConsultations(
+      fetchAction: getConsultations.bind(null, apiUrl)(
         filter,
 
         {
@@ -771,7 +784,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
   const changeConsultationTerm = useCallback(
     (termId: number, newDate: string) => {
       return token
-        ? changeTermDate(termId, newDate, token)
+        ? changeTermDate.bind(null, apiUrl)(termId, newDate, token)
         : Promise.reject("noToken");
     },
     [token]
@@ -783,7 +796,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
           controllers: abortControllers.current,
           controller: `userconsultations`,
           mode: "paginated",
-          fetchAction: getUserConsultations(
+          fetchAction: getUserConsultations.bind(null, apiUrl)(
             token,
 
             {
@@ -798,13 +811,15 @@ const EscolaLMSContextProviderInner: FunctionComponent<
   const bookConsultationTerm = useCallback(
     (id: number, term: string) => {
       return token
-        ? bookConsultationDate(token, id, term).then((response) => {
-            if (response.success) {
-              fetchUserConsultations();
-              return response;
-            }
-            throw Error("Error occured");
-          })
+        ? bookConsultationDate
+            .bind(null, apiUrl)(token, id, term)
+            .then((response) => {
+              if (response.success) {
+                fetchUserConsultations();
+                return response;
+              }
+              throw Error("Error occured");
+            })
         : Promise.reject("noToken");
     },
     [token]
@@ -816,7 +831,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
       controllers: abortControllers.current,
       controller: `consultation`,
       mode: "value",
-      fetchAction: getConsultation(id, {
+      fetchAction: getConsultation.bind(null, apiUrl)(id, {
         signal: abortControllers.current?.consultation?.signal,
       }),
       setState: setConsultation,
@@ -825,7 +840,9 @@ const EscolaLMSContextProviderInner: FunctionComponent<
 
   const getProductInfo = useCallback(
     (id: number) => {
-      return token ? getSingleProduct(id, token) : Promise.reject("noToken");
+      return token
+        ? getSingleProduct.bind(null, apiUrl)(id, token)
+        : Promise.reject("noToken");
     },
     [token]
   );
@@ -835,7 +852,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
       controllers: abortControllers.current,
       controller: `webinars/${JSON.stringify(filter)}`,
       mode: "list",
-      fetchAction: getWebinars(
+      fetchAction: getWebinars.bind(null, apiUrl)(
         filter,
 
         {
@@ -853,7 +870,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
       controllers: abortControllers.current,
       controller: `events/${JSON.stringify(filter)}`,
       mode: "paginated",
-      fetchAction: getEvents(
+      fetchAction: getEvents.bind(null, apiUrl)(
         filter,
 
         {
@@ -871,7 +888,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
       controllers: abortControllers.current,
       controller: `usergroup`,
       mode: "value",
-      fetchAction: getUserGroup(
+      fetchAction: getUserGroup.bind(null, apiUrl)(
         id,
 
         {
@@ -887,7 +904,10 @@ const EscolaLMSContextProviderInner: FunctionComponent<
       controllers: abortControllers.current,
       controller: `registablegroups`,
       mode: "list",
-      fetchAction: getRegisterableGroups({
+      fetchAction: getRegisterableGroups.bind(
+        null,
+        apiUrl
+      )({
         signal: abortControllers.current?.registablegroups?.signal,
       }),
       setState: setRegisterableGroups,
@@ -899,7 +919,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
       controllers: abortControllers.current,
       controller: `getusergroups/${JSON.stringify(params)}`,
       mode: "paginated",
-      fetchAction: getUserGroups(params, {
+      fetchAction: getUserGroups.bind(null, apiUrl)(params, {
         signal:
           abortControllers.current[`getusergroups/${JSON.stringify(params)}`]
             ?.signal,
@@ -922,53 +942,58 @@ const EscolaLMSContextProviderInner: FunctionComponent<
           }
         : { [id]: { loading: true } },
     }));
-    return getCourse(id).then((response) => {
-      if (response.success) {
-        const lessons = sortProgram(response.data.lessons || []);
-        setCourse((prevState) => ({
-          loading: false,
-          value: {
-            ...response.data,
-            lessons: lessons,
-          },
-          byId: prevState.byId
-            ? {
-                ...prevState.byId,
-                [id]: {
-                  value: response.data,
-                  loading: false,
+    return getCourse
+      .bind(
+        null,
+        apiUrl
+      )(id)
+      .then((response) => {
+        if (response.success) {
+          const lessons = sortProgram(response.data.lessons || []);
+          setCourse((prevState) => ({
+            loading: false,
+            value: {
+              ...response.data,
+              lessons: lessons,
+            },
+            byId: prevState.byId
+              ? {
+                  ...prevState.byId,
+                  [id]: {
+                    value: response.data,
+                    loading: false,
+                  },
+                }
+              : {
+                  [id]: {
+                    value: response.data,
+                    loading: false,
+                  },
                 },
-              }
-            : {
-                [id]: {
-                  value: response.data,
-                  loading: false,
+          }));
+        }
+        if (response.success === false) {
+          setCourse((prevState) => ({
+            ...prevState,
+            loading: false,
+            error: response,
+            byId: prevState.byId
+              ? {
+                  ...prevState.byId,
+                  [id]: {
+                    error: response,
+                    loading: false,
+                  },
+                }
+              : {
+                  [id]: {
+                    error: response,
+                    loading: false,
+                  },
                 },
-              },
-        }));
-      }
-      if (response.success === false) {
-        setCourse((prevState) => ({
-          ...prevState,
-          loading: false,
-          error: response,
-          byId: prevState.byId
-            ? {
-                ...prevState.byId,
-                [id]: {
-                  error: response,
-                  loading: false,
-                },
-              }
-            : {
-                [id]: {
-                  error: response,
-                  loading: false,
-                },
-              },
-        }));
-      }
-    });
+          }));
+        }
+      });
   }, []);
 
   const socialAuthorize = useCallback((token: string) => {
@@ -994,7 +1019,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
   }, []);
 
   const register = useCallback((body: API.RegisterRequest) => {
-    return postRegister(body);
+    return postRegister.bind(null, apiUrl)(body);
   }, []);
 
   const fetchProfile = useCallback(() => {
@@ -1003,7 +1028,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
           controllers: abortControllers.current,
           controller: `profile`,
           mode: "value",
-          fetchAction: getProfile(token, {
+          fetchAction: getProfile.bind(null, apiUrl)(token, {
             signal: abortControllers.current?.profile?.signal,
           }),
           setState: setUser,
@@ -1024,7 +1049,11 @@ const EscolaLMSContextProviderInner: FunctionComponent<
         loading: true,
         error: undefined,
       }));
-      getProfile(token)
+      getProfile
+        .bind(
+          null,
+          apiUrl
+        )(token)
         .then((response) => {
           if (response.success) {
             setUser({
@@ -1047,7 +1076,11 @@ const EscolaLMSContextProviderInner: FunctionComponent<
   }, [token, logout]);
 
   const login = useCallback((body: API.LoginRequest) => {
-    return postLogin(body)
+    return postLogin
+      .bind(
+        null,
+        apiUrl
+      )(body)
       .then((response) => {
         if (response.success) {
           setToken(response.data.token);
@@ -1072,7 +1105,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
   const fetchQuestionnaires = useCallback(
     (model: string, id: number) => {
       return token
-        ? getQuestionnaires(token, model, id)
+        ? getQuestionnaires.bind(null, apiUrl)(token, model, id)
         : Promise.reject("noToken");
     },
     [token]
@@ -1086,7 +1119,13 @@ const EscolaLMSContextProviderInner: FunctionComponent<
       body: Partial<EscolaLms.Questionnaire.Models.QuestionAnswer>
     ) => {
       return token
-        ? questionnaireAnswer(token, model, modelID, id, body)
+        ? questionnaireAnswer.bind(null, apiUrl)(
+            token,
+            model,
+            modelID,
+            id,
+            body
+          )
         : Promise.reject("noToken");
     },
     [token]
@@ -1098,7 +1137,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
           controllers: abortControllers.current,
           controller: `cart`,
           mode: "value",
-          fetchAction: getCart(token, {
+          fetchAction: getCart.bind(null, apiUrl)(token, {
             signal: abortControllers.current?.cart?.signal,
           }),
           setState: setCart,
@@ -1115,7 +1154,8 @@ const EscolaLMSContextProviderInner: FunctionComponent<
         ...prevState,
         loading: true,
       }));
-      return postAddToCart(productId, token, quantity)
+      return postAddToCart
+        .bind(null, apiUrl)(productId, token, quantity)
         .then(() => {
           fetchCart();
         })
@@ -1139,7 +1179,8 @@ const EscolaLMSContextProviderInner: FunctionComponent<
         ...prevState,
         loading: true,
       }));
-      return postAddMissingProducts(token, products)
+      return postAddMissingProducts
+        .bind(null, apiUrl)(token, products)
         .then(() => {
           fetchCart();
         })
@@ -1163,7 +1204,8 @@ const EscolaLMSContextProviderInner: FunctionComponent<
         ...prevState,
         loading: true,
       }));
-      return deleteRemoveFromCart(itemId, token)
+      return deleteRemoveFromCart
+        .bind(null, apiUrl)(itemId, token)
         .then((response) => {
           setCart((prevState) => ({
             ...prevState,
@@ -1192,9 +1234,11 @@ const EscolaLMSContextProviderInner: FunctionComponent<
   const payWithStripe = useCallback(
     (payment_method: string, return_url: string) => {
       return token
-        ? postPayWithStripe(payment_method, return_url, token).then((res) => {
-            console.log(res);
-          })
+        ? postPayWithStripe
+            .bind(null, apiUrl)(payment_method, return_url, token)
+            .then((res) => {
+              console.log(res);
+            })
         : Promise.reject("noToken");
     },
     [token]
@@ -1203,7 +1247,8 @@ const EscolaLMSContextProviderInner: FunctionComponent<
   const payWithP24 = useCallback(
     (email: string, return_url: string, data?: API.InvoiceData) => {
       return token
-        ? postPayWithP24(email, return_url, token, data)
+        ? postPayWithP24
+            .bind(null, apiUrl)(email, return_url, token, data)
             .then((res) => {
               return res;
             })
@@ -1218,7 +1263,9 @@ const EscolaLMSContextProviderInner: FunctionComponent<
 
   const fetchOrderInvoice = useCallback(
     (id: number) => {
-      return token ? orderInvoice(token, id) : Promise.reject("noToken");
+      return token
+        ? orderInvoice.bind(null, apiUrl)(token, id)
+        : Promise.reject("noToken");
     },
     [token]
   );
@@ -1227,7 +1274,8 @@ const EscolaLMSContextProviderInner: FunctionComponent<
     (id: number) => {
       setProgram((prevState) => ({ ...prevState, loading: true }));
       return id && token
-        ? getCourseProgram(id, token)
+        ? getCourseProgram
+            .bind(null, apiUrl)(id, token)
             .then((response) => {
               if (response.success) {
                 setProgram({
@@ -1264,7 +1312,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
           controllers: abortControllers.current,
           controller: `progress`,
           mode: "value",
-          fetchAction: getProgress(token, {
+          fetchAction: getProgress.bind(null, apiUrl)(token, {
             signal: abortControllers.current?.progress?.signal,
           }),
           setState: setProgress,
@@ -1277,7 +1325,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
       controllers: abortControllers.current,
       controller: `h5p`,
       mode: "value",
-      fetchAction: getH5p(Number(id), {
+      fetchAction: getH5p.bind(null, apiUrl)(Number(id), {
         signal: abortControllers.current?.h5p?.signal,
       }),
       setState: setH5P,
@@ -1289,7 +1337,10 @@ const EscolaLMSContextProviderInner: FunctionComponent<
       controllers: abortControllers.current,
       controller: `tutors`,
       mode: "list",
-      fetchAction: getTutors({
+      fetchAction: getTutors.bind(
+        null,
+        apiUrl
+      )({
         signal: abortControllers.current?.tutors?.signal,
       }),
       setState: setTutors,
@@ -1302,7 +1353,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
         controllers: abortControllers.current,
         controller: `tutor`,
         mode: "value",
-        fetchAction: getTutor(id, {
+        fetchAction: getTutor.bind(null, apiUrl)(id, {
           signal: abortControllers.current?.tutor?.signal,
         }),
         setState: setTutor,
@@ -1318,7 +1369,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
             controllers: abortControllers.current,
             controller: `orders/${JSON.stringify(params)}`,
             mode: "paginated",
-            fetchAction: getOrders(token, params, {
+            fetchAction: getOrders.bind(null, apiUrl)(token, params, {
               signal: abortControllers.current?.orders?.signal,
             }),
             setState: setOrders,
@@ -1334,7 +1385,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
           controllers: abortControllers.current,
           controller: "payments",
           mode: "paginated",
-          fetchAction: getPayments(token, {
+          fetchAction: getPayments.bind(null, apiUrl)(token, {
             signal: abortControllers.current?.payments?.signal,
           }),
           setState: setPayments,
@@ -1347,7 +1398,10 @@ const EscolaLMSContextProviderInner: FunctionComponent<
       controllers: abortControllers.current,
       controller: "pages",
       mode: "paginated",
-      fetchAction: getPages({
+      fetchAction: getPages.bind(
+        null,
+        apiUrl
+      )({
         signal: abortControllers.current?.pages?.signal,
       }),
       setState: setPages,
@@ -1359,7 +1413,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
       controllers: abortControllers.current,
       controller: "page",
       mode: "value",
-      fetchAction: getPage(slug, {
+      fetchAction: getPage.bind(null, apiUrl)(slug, {
         signal: abortControllers.current?.page?.signal,
       }),
       setState: setPage,
@@ -1369,31 +1423,35 @@ const EscolaLMSContextProviderInner: FunctionComponent<
   const sendProgress = useCallback(
     (courseId: number, data: API.CourseProgressItemElement[]) => {
       return token
-        ? postSendProgress(courseId, data, token).then((res) => {
-            setProgress((prevState) => ({
-              ...prevState,
-              value:
-                prevState && prevState.value
-                  ? prevState.value.map((courseProgress) => {
-                      if (courseProgress.course.id === courseId) {
-                        return {
-                          ...courseProgress,
-                          progress: courseProgress.progress.map((progress) => {
-                            const el = data.find(
-                              (item) => item.topic_id === progress.topic_id
-                            );
-                            if (el) {
-                              return el;
-                            }
-                            return progress;
-                          }),
-                        };
-                      }
-                      return courseProgress;
-                    })
-                  : [],
-            }));
-          })
+        ? postSendProgress
+            .bind(null, apiUrl)(courseId, data, token)
+            .then((res) => {
+              setProgress((prevState) => ({
+                ...prevState,
+                value:
+                  prevState && prevState.value
+                    ? prevState.value.map((courseProgress) => {
+                        if (courseProgress.course.id === courseId) {
+                          return {
+                            ...courseProgress,
+                            progress: courseProgress.progress.map(
+                              (progress) => {
+                                const el = data.find(
+                                  (item) => item.topic_id === progress.topic_id
+                                );
+                                if (el) {
+                                  return el;
+                                }
+                                return progress;
+                              }
+                            ),
+                          };
+                        }
+                        return courseProgress;
+                      })
+                    : [],
+              }));
+            })
         : Promise.reject("noToken");
     },
     [token]
@@ -1445,7 +1503,12 @@ const EscolaLMSContextProviderInner: FunctionComponent<
       }
 
       return token
-        ? postSendh5pProgress(topicId, statementId, statement, token)
+        ? postSendh5pProgress.bind(null, apiUrl)(
+            topicId,
+            statementId,
+            statement,
+            token
+          )
         : null;
     },
     [token]
@@ -1459,22 +1522,24 @@ const EscolaLMSContextProviderInner: FunctionComponent<
       }));
 
       return token
-        ? postUpdateProfile(body, token).then((res) => {
-            if (res.success === true) {
-              setUser((prevState) => ({
-                value: {
-                  ...res.data,
-                },
-                loading: false,
-              }));
-            } else if (res.success === false) {
-              setUser((prevState) => ({
-                ...prevState,
-                error: res,
-                loading: false,
-              }));
-            }
-          })
+        ? postUpdateProfile
+            .bind(null, apiUrl)(body, token)
+            .then((res) => {
+              if (res.success === true) {
+                setUser((prevState) => ({
+                  value: {
+                    ...res.data,
+                  },
+                  loading: false,
+                }));
+              } else if (res.success === false) {
+                setUser((prevState) => ({
+                  ...prevState,
+                  error: res,
+                  loading: false,
+                }));
+              }
+            })
         : Promise.reject("noToken");
     },
     [token]
@@ -1489,19 +1554,21 @@ const EscolaLMSContextProviderInner: FunctionComponent<
         };
       });
       return token
-        ? postUpdateAvatar(file, token).then((res) => {
-            if (res.success === true) {
-              setUser((prevState) => ({
-                ...prevState,
-                value: {
-                  ...res.data,
-                  avatar: res.data.avatar,
-                  path_avatar: res.data.path_avatar,
-                },
-                loading: false,
-              }));
-            }
-          })
+        ? postUpdateAvatar
+            .bind(null, apiUrl)(file, token)
+            .then((res) => {
+              if (res.success === true) {
+                setUser((prevState) => ({
+                  ...prevState,
+                  value: {
+                    ...res.data,
+                    avatar: res.data.avatar,
+                    path_avatar: res.data.path_avatar,
+                  },
+                  loading: false,
+                }));
+              }
+            })
         : Promise.reject("noToken");
     },
     [token]
@@ -1510,7 +1577,9 @@ const EscolaLMSContextProviderInner: FunctionComponent<
   const topicPing = useCallback(
     (topicId: number) => {
       return token
-        ? putTopicPing(topicId, token).catch((err) => err)
+        ? putTopicPing
+            .bind(null, apiUrl)(topicId, token)
+            .catch((err) => err)
         : Promise.reject("noToken");
     },
     [token]
@@ -1628,7 +1697,11 @@ const EscolaLMSContextProviderInner: FunctionComponent<
 
   const getRefreshedToken = useCallback(() => {
     return token
-      ? refreshToken(token)
+      ? refreshToken
+          .bind(
+            null,
+            apiUrl
+          )(token)
           .then((res) => {
             if (res.success) {
               setTokenExpireDate(res.data.expires_at);
@@ -1643,14 +1716,18 @@ const EscolaLMSContextProviderInner: FunctionComponent<
 
   const changePassword = useCallback(
     (body: API.ChangePasswordRequest) => {
-      return token ? postNewPassword(token, body) : Promise.reject("noToken");
+      return token
+        ? postNewPassword.bind(null, apiUrl)(token, body)
+        : Promise.reject("noToken");
     },
     [token]
   );
 
   const realizeVoucher = useCallback(
     (voucher: string) => {
-      return token ? postVoucher(voucher, token) : Promise.reject("noToken");
+      return token
+        ? postVoucher.bind(null, apiUrl)(voucher, token)
+        : Promise.reject("noToken");
     },
     [token]
   );
@@ -1675,8 +1752,8 @@ const EscolaLMSContextProviderInner: FunctionComponent<
         categoryTree,
         login,
         logout,
-        forgot,
-        reset,
+        forgot: forgot.bind(null, apiUrl),
+        reset: reset.bind(null, apiUrl),
         user,
         register,
         fetchCart,
@@ -1725,7 +1802,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
         fetchMattermostChannels,
         h5p,
         fetchH5P,
-        emailVerify,
+        emailVerify: emailVerify.bind(null, apiUrl),
         getRefreshedToken,
         tokenExpireDate,
         fetchConsultations,
@@ -1784,7 +1861,7 @@ export const EscolaLMSContextProvider: FunctionComponent<
   PropsWithChildren<EscolaLMSContextProviderType>
 > = ({ children, ...props }) => {
   return (
-    <CoursesContextProvider defaults={props.defaults}>
+    <CoursesContextProvider defaults={props.defaults} apiUrl={props.apiUrl}>
       <EscolaLMSContextProviderInner {...props}>
         {children}
       </EscolaLMSContextProviderInner>

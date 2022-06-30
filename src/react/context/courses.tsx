@@ -28,12 +28,13 @@ export const CoursesContext: React.Context<
 });
 
 export interface CoursesContextProviderType {
+  apiUrl: string;
   defaults?: Partial<Pick<EscolaLMSContextReadConfig, "courses">>;
 }
 
 export const CoursesContextProvider: FunctionComponent<
   PropsWithChildren<CoursesContextProviderType>
-> = ({ children, defaults }) => {
+> = ({ children, defaults, apiUrl }) => {
   const abortControllers = useRef<Record<string, AbortController | null>>({});
 
   useEffect(() => {
@@ -63,7 +64,7 @@ export const CoursesContextProvider: FunctionComponent<
       controllers: abortControllers.current,
       controller: `courses/${JSON.stringify(filter)}`,
       mode: "paginated",
-      fetchAction: getCourses(filter, {
+      fetchAction: getCourses.bind(null, apiUrl)(filter, {
         signal:
           abortControllers.current[`courses/${JSON.stringify(filter)}`]?.signal,
       }),
