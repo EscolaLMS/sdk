@@ -572,10 +572,10 @@ const EscolaLMSContextProviderInner: FunctionComponent<
   const fetchStationaryEvent = useCallback((id: number) => {
     return fetchDataType<API.StationaryEvent>({
       controllers: abortControllers.current,
-      controller: `stationaryevents`,
+      controller: `stationaryevent`,
       mode: "value",
       fetchAction: getStationaryEvent(id, {
-        signal: abortControllers.current?.stationaryevents?.signal,
+        signal: abortControllers.current?.stationaryevent?.signal,
       }),
       setState: setStationaryEvent,
     });
