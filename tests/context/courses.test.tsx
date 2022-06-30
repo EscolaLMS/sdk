@@ -1,7 +1,10 @@
 import { useContext, useEffect } from "react";
 import { act } from "react-dom/test-utils";
-import { EscolaLMSContext } from "./../../src/react/context";
-import { render, waitFor, screen } from "../test-utils";
+import {
+  EscolaLMSContext,
+  EscolaLMSContextProvider,
+} from "./../../src/react/context";
+import { render, waitFor, screen, unwrappedRender } from "../test-utils";
 import { response as coursesResponse } from "../test_server/courses";
 import "@testing-library/jest-dom";
 
@@ -14,12 +17,24 @@ beforeAll(() => {
 const getIds = (courses: { id: number }[]) =>
   courses.map((c) => c.id).join(",");
 
+const CoursesWithDefaults = () => {
+  const { courses } = useContext(EscolaLMSContext);
+
+  return (
+    <div>
+      <ul>
+        {courses.list?.data.map((course) => (
+          <li key={course.id}>{course.title}</li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
 const Courses = ({ filter = {} }) => {
   const { fetchCourses, courses } = useContext(EscolaLMSContext);
 
   useEffect(() => {
-    // TODO: test filters
-
     fetchCourses(filter);
   }, [filter]);
 
@@ -30,6 +45,9 @@ const Courses = ({ filter = {} }) => {
   return (
     <div>
       <div>Loaded</div>
+      <nav>
+        <div data-testid="page">{courses.list?.meta.current_page}</div>
+      </nav>
       <div data-testid="courses">
         {JSON.stringify(courses.list?.data, null, 1)}
       </div>
@@ -54,6 +72,45 @@ it("test fetching courses", async () => {
     [];
 
   expect(getIds(courses)).toBe(getIds(coursesResponse.data));
+});
+
+it("test fetching courses with filter", async () => {
+  const filter = { page: 3 };
+
+  await act(async () => {
+    render(<Courses filter={filter} />);
+  });
+
+  await waitFor(() => {
+    expect(screen.queryByText("Loaded")).toBeInTheDocument();
+  });
+
+  expect(screen.getByTestId("page")).toHaveTextContent(filter.page.toString());
+});
+
+it("test default params courses", async () => {
+  unwrappedRender(
+    <EscolaLMSContextProvider
+      apiUrl="http://api.localhost"
+      initialFetch={false}
+      defaults={{
+        courses: {
+          loading: false,
+          // TODO: remove this line and fix API types to match actual real responses
+          //@ts-ignore
+          list: coursesResponse,
+        },
+      }}
+    >
+      <CoursesWithDefaults />
+    </EscolaLMSContextProvider>
+  );
+
+  await waitFor(() => {
+    expect(
+      screen.queryByText(coursesResponse.data[0].title)
+    ).toBeInTheDocument();
+  });
 });
 
 export {}; // 👈️ if you don't have anything else to export

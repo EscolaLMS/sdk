@@ -130,7 +130,7 @@ export async function rejectConsultation(
 }
 
 /**  GET /api/consultations/generate-jitsi*/
-export async function genereteJitsy(
+export async function generateJitsy(
   token: string,
   id: number,
   options?: RequestOptionsInit

@@ -40,7 +40,7 @@ export async function getMyWebinars(
 }
 
 /**  GET /api/webinars/generate-jitsi*/
-export async function genereteJitsyWebinar(
+export async function generateJitsyWebinar(
   token: string,
   id: number,
   options?: RequestOptionsInit

@@ -51,7 +51,7 @@ export async function cart(token: string, options?: RequestOptionsInit) {
   });
 }
 
-export async function addMisingProducts(token: string, products: number[]) {
+export async function addMissingProducts(token: string, products: number[]) {
   return request<API.DefaultResponseSuccess<API.Cart>>(`/api/cart/missing`, {
     method: "POST",
     headers: {

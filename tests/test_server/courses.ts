@@ -946,4 +946,20 @@ export const response = {
 };
 
 export default (scope: nock.Scope) =>
-  scope.get("/api/courses").query(true).reply(200, response);
+  scope
+    .get("/api/courses")
+    .query(true)
+    .reply(function (uri, requestBody) {
+      const parsed = new URL(this.req.path, "http://example.com");
+      const page = parsed.searchParams.get("page") || "1";
+
+      return [
+        200,
+        {
+          ...response,
+          meta: { ...response.meta, current_page: parseInt(page) },
+        },
+      ];
+    });
+
+//.reply(200, response);
