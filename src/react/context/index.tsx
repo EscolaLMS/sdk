@@ -9,12 +9,8 @@ import React, {
   PropsWithChildren,
 } from "react";
 
-//import { interceptors } from "./../../services/request";
-
 import { CoursesContext } from "./courses";
-
 import { fetchDataType } from "./states";
-
 import {
   getCourse,
   getCourseProgram,
