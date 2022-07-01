@@ -49,7 +49,6 @@ import {
   config as getConfig,
 } from "./../../services/settings";
 import { uniqueTags as getUniqueTags } from "./../../services/tags";
-import { categoryTree as getCategoryTree } from "./../../services/categories";
 import { getNotifications, readNotification } from "../../services/notify";
 import { getCertificates, getCertificate } from "../../services/certificates";
 import { getMattermostChannels } from "../../services/mattermost";
@@ -118,6 +117,7 @@ import {
   getStationaryEvent,
 } from "../../services/stationary_events";
 import { CoursesContextProvider } from "./courses";
+import { CategoriesContext, CategoriesContextProvider } from "./categories";
 
 export const SCORMPlayer: React.FC<{
   uuid: string;
@@ -184,6 +184,8 @@ const EscolaLMSContextProviderInner: FunctionComponent<
 
   const { courses, fetchCourses } = useContext(CoursesContext);
 
+  const { categoryTree, fetchCategories } = useContext(CategoriesContext);
+
   const [consultations, setConsultations] = useLocalStorage<
     ContextPaginatedMetaState<API.Consultation>
   >("lms", "consultations", getDefaultData("consultations", initialValues));
@@ -249,10 +251,6 @@ const EscolaLMSContextProviderInner: FunctionComponent<
   const [uniqueTags, setUniqueTags] = useLocalStorage<
     ContextListState<API.Tag>
   >("lms", "tags", getDefaultData("uniqueTags", initialValues));
-
-  const [categoryTree, setCategoryTree] = useLocalStorage<
-    ContextListState<API.Category>
-  >("lms", "categories", getDefaultData("categoryTree", initialValues));
 
   const [program, setProgram] = useLocalStorage<
     ContextStateValue<API.CourseProgram>
@@ -416,21 +414,6 @@ const EscolaLMSContextProviderInner: FunctionComponent<
     });
   }, []);
 
-  const fetchCategories = useCallback(() => {
-    return fetchDataType<API.Category>({
-      controllers: abortControllers.current,
-      controller: `categories`,
-      mode: "list",
-      fetchAction: getCategoryTree.bind(
-        null,
-        apiUrl
-      )({
-        signal: abortControllers.current?.categories?.signal,
-      }),
-      setState: setCategoryTree,
-    });
-  }, []);
-
   const fetchTags = useCallback(() => {
     return fetchDataType<API.Tag>({
       controllers: abortControllers.current,
@@ -451,7 +434,6 @@ const EscolaLMSContextProviderInner: FunctionComponent<
       fetchSettings();
       fetchConfig();
       fetchTags();
-      fetchCategories();
     }
   }, [initialFetch]);
 
@@ -1858,9 +1840,14 @@ export const EscolaLMSContextProvider: FunctionComponent<
 > = ({ children, ...props }) => {
   return (
     <CoursesContextProvider defaults={props.defaults} apiUrl={props.apiUrl}>
-      <EscolaLMSContextProviderInner {...props}>
-        {children}
-      </EscolaLMSContextProviderInner>
+      <CategoriesContextProvider
+        defaults={props.defaults}
+        apiUrl={props.apiUrl}
+      >
+        <EscolaLMSContextProviderInner {...props}>
+          {children}
+        </EscolaLMSContextProviderInner>
+      </CategoriesContextProvider>
     </CoursesContextProvider>
   );
 };
