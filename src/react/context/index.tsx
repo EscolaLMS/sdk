@@ -47,7 +47,6 @@ import {
   settings as getSettings,
   config as getConfig,
 } from "./../../services/settings";
-import { uniqueTags as getUniqueTags } from "./../../services/tags";
 import { getNotifications, readNotification } from "../../services/notify";
 import { getCertificates, getCertificate } from "../../services/certificates";
 import { getMattermostChannels } from "../../services/mattermost";
