@@ -158,6 +158,7 @@ export interface EscolaLMSContextProviderType {
   defaults?: Partial<EscolaLMSContextReadConfig>;
   imagePrefix?: string;
   initialFetch?: boolean;
+  withH5PContext?: boolean;
 }
 
 /**
@@ -173,6 +174,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
   defaults,
   imagePrefix = `${apiUrl}/storage/imgcache`,
   initialFetch = true,
+  withH5PContext = true,
 }) => {
   // interceptors(apiUrl);
   const initialValues = {
@@ -1846,9 +1848,13 @@ const EscolaLMSContextProviderInner: FunctionComponent<
         fetchProduct,
       }}
     >
-      <EditorContextProvider url={`${apiUrl}/api/hh5p`}>
-        {children}
-      </EditorContextProvider>
+      {withH5PContext ? (
+        <EditorContextProvider url={`${apiUrl}/api/hh5p`}>
+          {children}
+        </EditorContextProvider>
+      ) : (
+        children
+      )}
     </EscolaLMSContext.Provider>
   );
 };
