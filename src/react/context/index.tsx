@@ -16,7 +16,6 @@ import {
   getCourseProgram,
   progress as getProgress,
   sendProgress as postSendProgress,
-  tutors as getTutors,
   tutor as getTutor,
   topicPing as putTopicPing,
   h5pProgress as postSendh5pProgress,
@@ -48,7 +47,6 @@ import {
   settings as getSettings,
   config as getConfig,
 } from "./../../services/settings";
-import { uniqueTags as getUniqueTags } from "./../../services/tags";
 import { getNotifications, readNotification } from "../../services/notify";
 import { getCertificates, getCertificate } from "../../services/certificates";
 import { getMattermostChannels } from "../../services/mattermost";
@@ -118,6 +116,8 @@ import {
 } from "../../services/stationary_events";
 import { CoursesContextProvider } from "./courses";
 import { CategoriesContext, CategoriesContextProvider } from "./categories";
+import { TagsContext, TagsContextProvider } from "./tags";
+import { TutorsContext, TutorsContextProvider } from "./tutors";
 
 export const SCORMPlayer: React.FC<{
   uuid: string;
@@ -185,8 +185,9 @@ const EscolaLMSContextProviderInner: FunctionComponent<
   const getImagePrefix = () => imagePrefix;
 
   const { courses, fetchCourses } = useContext(CoursesContext);
-
   const { categoryTree, fetchCategories } = useContext(CategoriesContext);
+  const { uniqueTags, fetchTags } = useContext(TagsContext);
+  const { tutors, fetchTutors } = useContext(TutorsContext);
 
   const [consultations, setConsultations] = useLocalStorage<
     ContextPaginatedMetaState<API.Consultation>
@@ -250,10 +251,6 @@ const EscolaLMSContextProviderInner: FunctionComponent<
     getDefaultData("config", initialValues)
   );
 
-  const [uniqueTags, setUniqueTags] = useLocalStorage<
-    ContextListState<API.Tag>
-  >("lms", "tags", getDefaultData("uniqueTags", initialValues));
-
   const [program, setProgram] = useLocalStorage<
     ContextStateValue<API.CourseProgram>
   >("lms", "tags", getDefaultData("program", initialValues));
@@ -285,12 +282,6 @@ const EscolaLMSContextProviderInner: FunctionComponent<
   const [progress, setProgress] = useState<
     ContextStateValue<API.CourseProgress>
   >(getDefaultData("progress", initialValues));
-
-  const [tutors, setTutors] = useLocalStorage<ContextListState<API.UserItem>>(
-    "lms",
-    "tutors",
-    getDefaultData("tutors", initialValues)
-  );
 
   const [orders, setOrders] = useLocalStorage<
     ContextPaginatedMetaState<API.Order>
@@ -416,26 +407,10 @@ const EscolaLMSContextProviderInner: FunctionComponent<
     });
   }, []);
 
-  const fetchTags = useCallback(() => {
-    return fetchDataType<API.Tag>({
-      controllers: abortControllers.current,
-      controller: `tags`,
-      mode: "list",
-      fetchAction: getUniqueTags.bind(
-        null,
-        apiUrl
-      )({
-        signal: abortControllers.current?.tags?.signal,
-      }),
-      setState: setUniqueTags,
-    });
-  }, []);
-
   useEffect(() => {
     if (initialFetch) {
       fetchSettings();
       fetchConfig();
-      fetchTags();
     }
   }, [initialFetch]);
 
@@ -1312,21 +1287,6 @@ const EscolaLMSContextProviderInner: FunctionComponent<
     });
   }, []);
 
-  const fetchTutors = useCallback(() => {
-    return fetchDataType<API.UserItem>({
-      controllers: abortControllers.current,
-      controller: `tutors`,
-      mode: "list",
-      fetchAction: getTutors.bind(
-        null,
-        apiUrl
-      )({
-        signal: abortControllers.current?.tutors?.signal,
-      }),
-      setState: setTutors,
-    });
-  }, []);
-
   const fetchTutor = useCallback(
     (id: number) => {
       return fetchDataType<API.UserItem>({
@@ -1850,9 +1810,16 @@ export const EscolaLMSContextProvider: FunctionComponent<
         defaults={props.defaults}
         apiUrl={props.apiUrl}
       >
-        <EscolaLMSContextProviderInner {...props}>
-          {children}
-        </EscolaLMSContextProviderInner>
+        <TagsContextProvider defaults={props.defaults} apiUrl={props.apiUrl}>
+          <TutorsContextProvider
+            defaults={props.defaults}
+            apiUrl={props.apiUrl}
+          >
+            <EscolaLMSContextProviderInner {...props}>
+              {children}
+            </EscolaLMSContextProviderInner>
+          </TutorsContextProvider>
+        </TagsContextProvider>
       </CategoriesContextProvider>
     </CoursesContextProvider>
   );
