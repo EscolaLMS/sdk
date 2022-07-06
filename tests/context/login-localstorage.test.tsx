@@ -4,7 +4,8 @@ import { EscolaLMSContext } from "./../../src/react/context";
 import { render, waitFor, screen, fireEvent } from "../test-utils";
 import { Login } from "./helpers/login";
 import { usePrevious } from "./helpers/usePrevious";
-
+import { generateDataResponse } from "../test_server/jwt";
+import { dataSuccess as dataSuccessResponse } from "../test_server/me";
 import "@testing-library/jest-dom";
 
 import fakeServer from "../test_server";
@@ -60,6 +61,29 @@ it("test restore data from localstorage login invalid token ", async () => {
 
   await waitFor(() => {
     expect(screen.queryByText("Logged out")).toBeInTheDocument();
+  });
+});
+
+it("test restore data from localstorage login valid token ", async () => {
+  const data = generateDataResponse(5);
+  const email = dataSuccessResponse.data.email;
+  window.localStorage.setItem(
+    "user",
+    JSON.stringify({
+      token: data.data.token,
+    })
+  );
+
+  act(() => {
+    render(<LoginRefresh />);
+  });
+
+  await waitFor(() => {
+    expect(screen.queryByText("User Loaded")).toBeInTheDocument();
+  });
+
+  await waitFor(() => {
+    expect(screen.queryByText(email)).toBeInTheDocument();
   });
 });
 
