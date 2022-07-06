@@ -7,8 +7,8 @@ import "@testing-library/jest-dom";
 
 import fakeServer from "../test_server";
 
-jest.useFakeTimers();
-jest.setTimeout(30000);
+//jest.useFakeTimers();
+//jest.setTimeout(30000);
 
 const w8 = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -61,21 +61,21 @@ it("test fetching refresh tokens ", async () => {
   });
   */
 
-  jest.runAllTimers();
+  // jest.runAllTimers();
 
   await waitFor(() => {
     expect(screen.getByTestId("tokenIncrement")).toHaveTextContent("2"); // This means that the token was refreshed 2 times
   });
 
-  jest.runAllTimers();
+  //jest.runAllTimers();
 
   await waitFor(() => {
     expect(screen.getByTestId("tokenIncrement")).toHaveTextContent("3"); // This means that the token was refreshed 2 times
   });
 
-  /*
-  jest.runAllTimers();
+  //jest.runAllTimers();
 
+  /*
   await waitFor(() => {
     expect(screen.getByTestId("tokenIncrement")).toHaveTextContent("4"); // This means that the token was refreshed 2 times
   });
