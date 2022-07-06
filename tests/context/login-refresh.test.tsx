@@ -14,10 +14,6 @@ beforeAll(() => {
   fakeServer();
 });
 
-const w8 = async (ms: number) => {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-};
-
 const LoginRefresh: React.FC = () => {
   const { tokenExpireDate } = useContext(EscolaLMSContext);
 
@@ -34,7 +30,6 @@ const LoginRefresh: React.FC = () => {
         <div data-testid="tokenExpireDate">{tokenExpireDate}</div>
       )}
       <div data-testid="tokenIncrement">{tokenIncrement}</div>
-      <button></button>
     </div>
   );
 };

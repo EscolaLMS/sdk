@@ -1,6 +1,6 @@
 import nock from "nock";
-
 import jwt from "jsonwebtoken";
+import { generateDataResponse, secretOrPublicKey } from "./jwt";
 
 export const dataSuccess = {
   success: true,
@@ -11,24 +11,6 @@ export const dataSuccess = {
     expires_at: "2022-06-28T08:52:31.000000Z",
   },
 };
-
-const secretOrPublicKey = "wellmsSuperSecret";
-
-export const generateDataResponse = (
-  expiresInSeconds: number = 5,
-  message = "Login successful"
-) => ({
-  success: true,
-  message: message,
-  data: {
-    token: jwt.sign({ foo: "bar", rnd: Math.random() }, secretOrPublicKey, {
-      expiresIn: expiresInSeconds,
-    }),
-    expires_at: new Date(
-      new Date().getTime() + expiresInSeconds * 1000
-    ).toISOString(),
-  },
-});
 
 export const dataFail = {
   message: "Invalid credentials",
@@ -50,9 +32,13 @@ export default (scope: nock.Scope) => {
     const token = this.req.headers.authorization.toString().split(" ")[1];
 
     if (token) {
-      if (jwt.verify(token, secretOrPublicKey)) {
-        const response = generateDataResponse(2, "Refresh successful");
-        return [200, response];
+      try {
+        if (jwt.verify(token, secretOrPublicKey)) {
+          const response = generateDataResponse(2, "Refresh successful");
+          return [200, response];
+        }
+      } catch (er) {
+        return [422, dataFail];
       }
     }
 
