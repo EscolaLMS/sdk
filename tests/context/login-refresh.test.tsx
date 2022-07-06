@@ -55,16 +55,14 @@ it("test fetching refresh tokens ", async () => {
     expect(screen.getByTestId("user-token-expire-date")).toBeInTheDocument();
   });
 
-  /*
-  act(async () => {
-    await w8(1000);
-  });
-  */
-
   // jest.runAllTimers();
 
   await waitFor(() => {
     expect(screen.getByTestId("tokenIncrement")).toHaveTextContent("2"); // This means that the token was refreshed 2 times
+  });
+
+  await act(async () => {
+    await w8(1000);
   });
 
   //jest.runAllTimers();
@@ -73,13 +71,15 @@ it("test fetching refresh tokens ", async () => {
     expect(screen.getByTestId("tokenIncrement")).toHaveTextContent("3"); // This means that the token was refreshed 2 times
   });
 
+  await act(async () => {
+    await w8(1000);
+  });
+
   //jest.runAllTimers();
 
-  /*
   await waitFor(() => {
     expect(screen.getByTestId("tokenIncrement")).toHaveTextContent("4"); // This means that the token was refreshed 2 times
   });
-  */
 });
 
 export {}; // 👈️ if you don't have anything else to export
