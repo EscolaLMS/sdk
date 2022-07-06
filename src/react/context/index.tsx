@@ -262,19 +262,47 @@ const EscolaLMSContextProviderInner: FunctionComponent<
   );
 
   const [token, setToken] = useLocalStorage<string | null>(
-    "lms",
+    "user",
     "token",
     null
   );
 
+  /*
   const [tokenExpireDate, setTokenExpireDate] = useLocalStorage<string | null>(
-    "lms",
+    "user",
     "tokenExpireDate",
     null
   );
+  */
+
+  const tokenExpireDate = useMemo(() => {
+    try {
+      return token
+        ? new Date(
+            JSON.parse(atob(token.split(".")[1])).exp * 1000
+          ).toISOString()
+        : null;
+    } catch (er) {
+      return null;
+    }
+  }, [token]);
+
+  useEffect(() => {
+    if (tokenExpireDate) {
+      const ms = Math.max(
+        1000,
+        new Date(tokenExpireDate).getTime() - Date.now() - 5000
+      ); // 5 seconds grace period
+
+      const t = setTimeout(() => getRefreshedToken(), ms);
+      return () => {
+        clearTimeout(t);
+      };
+    }
+  }, [tokenExpireDate]);
 
   const [user, setUser] = useLocalStorage<ContextStateValue<API.UserAsProfile>>(
-    "lms",
+    "user",
     "user",
     getDefaultData("user", initialValues)
   );
@@ -1039,7 +1067,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
       .then((response) => {
         if (response.success) {
           setToken(response.data.token);
-          setTokenExpireDate(response.data.expires_at);
+          //setTokenExpireDate(response.data.expires_at);
         } else {
           setUser((prevState) =>
             prevState
@@ -1644,7 +1672,6 @@ const EscolaLMSContextProviderInner: FunctionComponent<
           )(token)
           .then((res) => {
             if (res.success) {
-              setTokenExpireDate(res.data.expires_at);
               setToken(res.data.token);
             }
           })

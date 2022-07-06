@@ -19,7 +19,7 @@ export default () => {
   tags(scope).persist();
   course(scope).persist();
   courses(scope).persist();
-  login(scope).persist();
+  login(scope);
   me(scope).persist();
   tutors(scope).persist();
   user_consultations(scope);
