@@ -497,6 +497,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
         ? fetchDataType<API.Product>({
             controllers: abortControllers.current,
             controller: `product${id}`,
+            id,
             mode: "value",
             fetchAction: getSingleProduct.bind(null, apiUrl)(id, token, {
               signal: abortControllers.current?.[`product${id}`]?.signal,
@@ -543,6 +544,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
     return fetchDataType<API.StationaryEvent>({
       controllers: abortControllers.current,
       controller: `stationaryevent${id}`,
+      id,
       mode: "value",
       fetchAction: getStationaryEvent.bind(null, apiUrl)(id, {
         signal: abortControllers.current?.[`stationaryevent${id}`]?.signal,
@@ -569,6 +571,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
     return fetchDataType<API.Webinar>({
       controllers: abortControllers.current,
       controller: `webinar${id}`,
+      id,
       mode: "value",
       fetchAction: getWebinar.bind(null, apiUrl)(id, {
         signal: abortControllers.current?.[`webinar${id}`]?.signal,
@@ -811,7 +814,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
 
   const fetchConsultation = useCallback((id: number) => {
     return fetchDataType<API.Consultation>({
-      id: id,
+      id,
       controllers: abortControllers.current,
       controller: `consultation${id}`,
       mode: "value",
@@ -871,6 +874,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
     return fetchDataType<API.UserGroup>({
       controllers: abortControllers.current,
       controller: `usergroup${id}`,
+      id,
       mode: "value",
       fetchAction: getUserGroup.bind(null, apiUrl)(
         id,
@@ -1308,6 +1312,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
     return fetchDataType<API.H5PObject>({
       controllers: abortControllers.current,
       controller: `h5p${id}`,
+      id,
       mode: "value",
       fetchAction: getH5p.bind(null, apiUrl)(Number(id), {
         signal: abortControllers.current?.[`h5p${id}`]?.signal,
@@ -1321,6 +1326,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
       return fetchDataType<API.UserItem>({
         controllers: abortControllers.current,
         controller: `tutor${id}`,
+        id,
         mode: "value",
         fetchAction: getTutor.bind(null, apiUrl)(id, {
           signal: abortControllers.current?.[`tutor${id}`]?.signal,
