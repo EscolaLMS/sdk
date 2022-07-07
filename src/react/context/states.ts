@@ -41,19 +41,21 @@ export const fetchDataType = <T>(params: fetchDataType<T>) => {
     const { id } = params;
 
     if (id) {
-      setState((prevState) => ({
-        ...prevState,
-        loading: true,
-        byId: prevState.byId
-          ? {
-              ...prevState.byId,
-              [id]: {
-                ...prevState.byId[id],
-                loading: true,
-              },
-            }
-          : { [id]: { loading: true } },
-      }));
+      setState((prevState) => {
+        return {
+          ...prevState,
+          loading: true,
+          byId: prevState.byId
+            ? {
+                ...prevState.byId,
+                [id]: {
+                  ...prevState.byId[id],
+                  loading: true,
+                },
+              }
+            : { [id]: { loading: true } },
+        };
+      });
     } else {
       setState((prevState) => ({ ...prevState, loading: true }));
     }
@@ -88,25 +90,29 @@ export const fetchDataType = <T>(params: fetchDataType<T>) => {
         if ((response as API.DefaultResponse<T>).success) {
           const { id } = params;
           if (id) {
-            setState((prevState) => ({
-              loading: false,
-              value: (response as API.DefaultResponseSuccess<T>).data,
-              error: undefined,
-              byId: prevState.byId
-                ? {
-                    ...prevState.byId,
-                    [id]: {
-                      ...(response as API.DefaultResponseSuccess<T>).data,
-                      loading: false,
+            setState((prevState) => {
+              return {
+                loading: false,
+                value: (response as API.DefaultResponseSuccess<T>).data,
+                error: undefined,
+                byId: prevState.byId
+                  ? {
+                      ...prevState.byId,
+                      [id]: {
+                        value: (response as API.DefaultResponseSuccess<T>).data,
+                        loading: false,
+                        error: undefined,
+                      },
+                    }
+                  : {
+                      [id]: {
+                        value: (response as API.DefaultResponseSuccess<T>).data,
+                        loading: false,
+                        error: undefined,
+                      },
                     },
-                  }
-                : {
-                    [id]: {
-                      ...(response as API.DefaultResponseSuccess<T>).data,
-                      loading: false,
-                    },
-                  },
-            }));
+              };
+            });
           } else {
             setState({
               loading: false,
@@ -129,26 +135,28 @@ export const fetchDataType = <T>(params: fetchDataType<T>) => {
       if ((response as API.DefaultResponseError).success === false) {
         if (mode === "value" && params.id) {
           const { id } = params;
-          setState((prevState: any) => ({
-            ...prevState,
-            loading: false,
-            error: response,
-            byId: prevState.byId
-              ? {
-                  ...prevState.byId,
-                  [id]: {
-                    ...prevState.byId[id],
-                    loading: false,
-                    error: response,
+          setState((prevState: any) => {
+            return {
+              ...prevState,
+              loading: false,
+              error: response,
+              byId: prevState.byId
+                ? {
+                    ...prevState.byId,
+                    [id]: {
+                      ...prevState.byId[id],
+                      loading: false,
+                      error: response,
+                    },
+                  }
+                : {
+                    [id]: {
+                      loading: false,
+                      error: response,
+                    },
                   },
-                }
-              : {
-                  [id]: {
-                    loading: false,
-                    error: response,
-                  },
-                },
-          }));
+            };
+          });
         } else {
           setState((prevState: any) => ({
             ...prevState,
