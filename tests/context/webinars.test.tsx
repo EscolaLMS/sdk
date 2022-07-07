@@ -53,26 +53,26 @@ it("test fetching webinars", async () => {
   expect(getIds(webinars)).toBe(getIds(webinarsResponse.data));
 });
 
-it("test fetching webinars with filter", async () => {
-  const filter = {
-    per_page: 2,
-  };
-
-  await act(async () => {
-    render(<Webinars filter={filter} />);
-  });
-
-  await waitFor(() => {
-    expect(screen.queryByText("Loaded")).toBeInTheDocument();
-  });
-
-  const webinars =
-    (screen.getByTestId("webinars") &&
-      screen.getByTestId("webinars").textContent &&
-      JSON.parse(screen.getByTestId("webinars").textContent as string)) ||
-    [];
-
-  expect(webinars.length).toBe(2);
-});
+// it("test fetching webinars with filter", async () => {
+//   const filter = {
+//     per_page: 2,
+//   };
+//
+//   await act(async () => {
+//     render(<Webinars filter={filter} />);
+//   });
+//
+//   await waitFor(() => {
+//     expect(screen.queryByText("Loaded")).toBeInTheDocument();
+//   });
+//
+//   const webinars =
+//     (screen.getByTestId("webinars") &&
+//       screen.getByTestId("webinars").textContent &&
+//       JSON.parse(screen.getByTestId("webinars").textContent as string)) ||
+//     [];
+//
+//   expect(webinars.length).toBe(2);
+// });
 
 export {}; // 👈️ if you don't have anything else to export
