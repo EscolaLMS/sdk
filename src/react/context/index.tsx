@@ -497,6 +497,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
         ? fetchDataType<API.Product>({
             controllers: abortControllers.current,
             controller: `product${id}`,
+            id,
             mode: "value",
             fetchAction: getSingleProduct.bind(null, apiUrl)(id, token, {
               signal: abortControllers.current?.[`product${id}`]?.signal,
@@ -1321,6 +1322,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
       return fetchDataType<API.UserItem>({
         controllers: abortControllers.current,
         controller: `tutor${id}`,
+        id: id,
         mode: "value",
         fetchAction: getTutor.bind(null, apiUrl)(id, {
           signal: abortControllers.current?.[`tutor${id}`]?.signal,
