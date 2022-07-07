@@ -1,4 +1,6 @@
 import nock from "nock";
+import { generateDataResponse, secretOrPublicKey } from "./jwt";
+import jwt from "jsonwebtoken";
 
 export const dataSuccess = {
   success: true,
@@ -188,8 +190,18 @@ export const dataFail = {
 };
 
 export default (scope: nock.Scope) =>
-  scope.get("/api/profile/me").reply((uri, requestBody) => {
-    return [200, dataSuccess];
-    // TODO test unauthorized access
+  scope.get("/api/profile/me").reply(function (uri, requestBody) {
+    const token = this.req.headers.authorization.toString().split(" ")[1];
+
+    if (token) {
+      try {
+        if (jwt.verify(token, secretOrPublicKey)) {
+          return [200, dataSuccess];
+        }
+      } catch (err) {
+        return [422, dataFail];
+      }
+    }
+
     return [422, dataFail];
   });
