@@ -544,6 +544,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
     return fetchDataType<API.StationaryEvent>({
       controllers: abortControllers.current,
       controller: `stationaryevent${id}`,
+      id,
       mode: "value",
       fetchAction: getStationaryEvent.bind(null, apiUrl)(id, {
         signal: abortControllers.current?.[`stationaryevent${id}`]?.signal,
@@ -570,6 +571,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
     return fetchDataType<API.Webinar>({
       controllers: abortControllers.current,
       controller: `webinar${id}`,
+      id,
       mode: "value",
       fetchAction: getWebinar.bind(null, apiUrl)(id, {
         signal: abortControllers.current?.[`webinar${id}`]?.signal,
@@ -872,6 +874,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
     return fetchDataType<API.UserGroup>({
       controllers: abortControllers.current,
       controller: `usergroup${id}`,
+      id,
       mode: "value",
       fetchAction: getUserGroup.bind(null, apiUrl)(
         id,
@@ -1309,6 +1312,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
     return fetchDataType<API.H5PObject>({
       controllers: abortControllers.current,
       controller: `h5p${id}`,
+      id,
       mode: "value",
       fetchAction: getH5p.bind(null, apiUrl)(Number(id), {
         signal: abortControllers.current?.[`h5p${id}`]?.signal,
