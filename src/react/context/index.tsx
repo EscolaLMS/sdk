@@ -265,19 +265,47 @@ const EscolaLMSContextProviderInner: FunctionComponent<
   );
 
   const [token, setToken] = useLocalStorage<string | null>(
-    "lms",
+    "user",
     "token",
     null
   );
 
+  /*
   const [tokenExpireDate, setTokenExpireDate] = useLocalStorage<string | null>(
-    "lms",
+    "user",
     "tokenExpireDate",
     null
   );
+  */
+
+  const tokenExpireDate = useMemo(() => {
+    try {
+      return token
+        ? new Date(
+            JSON.parse(atob(token.split(".")[1])).exp * 1000
+          ).toISOString()
+        : null;
+    } catch (er) {
+      return null;
+    }
+  }, [token]);
+
+  useEffect(() => {
+    if (tokenExpireDate) {
+      const ms = Math.max(
+        1000,
+        new Date(tokenExpireDate).getTime() - Date.now() - 5000
+      ); // 5 seconds grace period
+
+      const t = setTimeout(() => getRefreshedToken(), ms);
+      return () => {
+        clearTimeout(t);
+      };
+    }
+  }, [tokenExpireDate]);
 
   const [user, setUser] = useLocalStorage<ContextStateValue<API.UserAsProfile>>(
-    "lms",
+    "user",
     "user",
     getDefaultData("user", initialValues)
   );
@@ -439,10 +467,10 @@ const EscolaLMSContextProviderInner: FunctionComponent<
       return token
         ? fetchDataType<API.Product>({
             controllers: abortControllers.current,
-            controller: `product`,
+            controller: `product${id}`,
             mode: "value",
             fetchAction: getSingleProduct.bind(null, apiUrl)(id, token, {
-              signal: abortControllers.current?.product?.signal,
+              signal: abortControllers.current?.[`product${id}`]?.signal,
             }),
             setState: setProduct,
           })
@@ -485,10 +513,10 @@ const EscolaLMSContextProviderInner: FunctionComponent<
   const fetchStationaryEvent = useCallback((id: number) => {
     return fetchDataType<API.StationaryEvent>({
       controllers: abortControllers.current,
-      controller: `stationaryevent`,
+      controller: `stationaryevent${id}`,
       mode: "value",
       fetchAction: getStationaryEvent.bind(null, apiUrl)(id, {
-        signal: abortControllers.current?.stationaryevent?.signal,
+        signal: abortControllers.current?.[`stationaryevent${id}`]?.signal,
       }),
       setState: setStationaryEvent,
     });
@@ -541,10 +569,11 @@ const EscolaLMSContextProviderInner: FunctionComponent<
       return token
         ? fetchDataType<API.AppointmentTerm>({
             controllers: abortControllers.current,
-            controller: `aprovetutorterm`,
+            controller: `aprovetutorterm${id}`,
             mode: "paginated",
             fetchAction: approveConsultation.bind(null, apiUrl)(token, id, {
-              signal: abortControllers.current?.aprovetutorterm?.signal,
+              signal:
+                abortControllers.current?.[`aprovetutorterm${id}`]?.signal,
             }),
             setState: setTutorConsultations,
           })
@@ -558,10 +587,10 @@ const EscolaLMSContextProviderInner: FunctionComponent<
       return token
         ? fetchDataType<API.AppointmentTerm>({
             controllers: abortControllers.current,
-            controller: `rejectterm`,
+            controller: `rejectterm${id}`,
             mode: "paginated",
             fetchAction: rejectConsultation.bind(null, apiUrl)(token, id, {
-              signal: abortControllers.current?.rejectterm?.signal,
+              signal: abortControllers.current?.[`rejectterm${id}`]?.signal,
             }),
             setState: setTutorConsultations,
           })
@@ -725,10 +754,10 @@ const EscolaLMSContextProviderInner: FunctionComponent<
     return fetchDataType<API.Consultation>({
       id: id,
       controllers: abortControllers.current,
-      controller: `consultation`,
+      controller: `consultation${id}`,
       mode: "value",
       fetchAction: getConsultation.bind(null, apiUrl)(id, {
-        signal: abortControllers.current?.consultation?.signal,
+        signal: abortControllers.current?.[`consultation${id}`]?.signal,
       }),
       setState: setConsultation,
     });
@@ -764,13 +793,13 @@ const EscolaLMSContextProviderInner: FunctionComponent<
   const fetchUserGroup = useCallback((id: number) => {
     return fetchDataType<API.UserGroup>({
       controllers: abortControllers.current,
-      controller: `usergroup`,
+      controller: `usergroup${id}`,
       mode: "value",
       fetchAction: getUserGroup.bind(null, apiUrl)(
         id,
 
         {
-          signal: abortControllers.current?.usergroup?.signal,
+          signal: abortControllers.current?.[`usergroup${id}`]?.signal,
         }
       ),
       setState: setUserGroup,
@@ -962,7 +991,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
       .then((response) => {
         if (response.success) {
           setToken(response.data.token);
-          setTokenExpireDate(response.data.expires_at);
+          //setTokenExpireDate(response.data.expires_at);
         } else {
           setUser((prevState) =>
             prevState
@@ -1202,10 +1231,10 @@ const EscolaLMSContextProviderInner: FunctionComponent<
     (id: number) => {
       return fetchDataType<API.UserItem>({
         controllers: abortControllers.current,
-        controller: `tutor`,
+        controller: `tutor${id}`,
         mode: "value",
         fetchAction: getTutor.bind(null, apiUrl)(id, {
-          signal: abortControllers.current?.tutor?.signal,
+          signal: abortControllers.current?.[`tutor${id}`]?.signal,
         }),
         setState: setTutor,
       });
@@ -1528,7 +1557,6 @@ const EscolaLMSContextProviderInner: FunctionComponent<
           )(token)
           .then((res) => {
             if (res.success) {
-              setTokenExpireDate(res.data.expires_at);
               setToken(res.data.token);
             }
           })

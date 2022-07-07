@@ -4,19 +4,15 @@ class LocalStorageMock {
   constructor() {
     this.store = {};
   }
-
   clear() {
     this.store = {};
   }
-
   getItem(key) {
     return this.store[key] || null;
   }
-
   setItem(key, value) {
     this.store[key] = value;
   }
-
   removeItem(key) {
     delete this.store[key];
   }
@@ -33,15 +29,12 @@ let localStorageMock = (function () {
     getItem(key) {
       return store.get(key);
     },
-
     setItem: function (key, value) {
       store.set(key, value);
     },
-
     clear: function () {
       store = new Map();
     },
-
     removeItem: function (key) {
       store.delete(key);
     },
