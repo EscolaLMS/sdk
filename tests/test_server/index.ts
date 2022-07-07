@@ -10,6 +10,7 @@ import login from "./login";
 import me from "./me";
 import user_consultations from "./user_consultations";
 import tutors from "./tutors";
+import pages from "./pages";
 import webinars from "./webinars";
 
 export default () => {
@@ -25,5 +26,6 @@ export default () => {
   tutors(scope).persist();
   webinars(scope).persist();
   user_consultations(scope);
+  pages(scope);
   return scope;
 };

@@ -26,7 +26,7 @@ export function useLocalStorage<T>(
       const item = window.localStorage.getItem(storeKey);
       const store = item ? JSON.parse(item) : {};
       store[key] = valueToStore;
-      setStoredValue(valueToStore);
+      setStoredValue(value);
       window.localStorage.setItem(storeKey, JSON.stringify(store));
     } catch (error) {
       console.log(error);
