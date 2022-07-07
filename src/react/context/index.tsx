@@ -36,12 +36,7 @@ import {
   products as getProducts,
   getSingleProduct,
 } from "../../services/products";
-import {
-  getMyWebinars,
-  getWebinar,
-  webinars as getWebinars,
-  generateJitsyWebinar,
-} from "../../services/webinars";
+import { getMyWebinars, generateJitsyWebinar } from "../../services/webinars";
 import { events as getEvents } from "../../services/events";
 import {
   settings as getSettings,
@@ -61,7 +56,6 @@ import {
   emailVerify,
   refreshToken,
 } from "./../../services/auth";
-import { pages as getPages, page as getPage } from "./../../services/pages";
 import {
   cart as getCart,
   addToCart as postAddToCart,
@@ -82,7 +76,7 @@ import {
 import { useLocalStorage } from "../hooks/useLocalStorage";
 import { EditorContextProvider } from "@escolalms/h5p-react";
 import * as API from "./../../types/api";
-import { getH5p } from "../../services/h5p";
+
 import {
   ContextPaginatedMetaState,
   ContextListState,
@@ -118,6 +112,16 @@ import { CoursesContextProvider } from "./courses";
 import { CategoriesContext, CategoriesContextProvider } from "./categories";
 import { TagsContext, TagsContextProvider } from "./tags";
 import { TutorsContext, TutorsContextProvider } from "./tutors";
+import { WebinarsContext, WebinarsContextProvider } from "./webinars";
+import { WebinarContext, WebinarContextProvider } from "./webinar";
+import { H5pContext, H5pContextProvider } from "./h5p";
+import { PagesContext, PagesContextProvider } from "./pages";
+import { PageContext, PageContextProvider } from "./page";
+
+import {
+  ConsultationsContext,
+  ConsultationsContextProvider,
+} from "./consultations";
 
 export const SCORMPlayer: React.FC<{
   uuid: string;
@@ -188,10 +192,13 @@ const EscolaLMSContextProviderInner: FunctionComponent<
   const { categoryTree, fetchCategories } = useContext(CategoriesContext);
   const { uniqueTags, fetchTags } = useContext(TagsContext);
   const { tutors, fetchTutors } = useContext(TutorsContext);
-
-  const [consultations, setConsultations] = useLocalStorage<
-    ContextPaginatedMetaState<API.Consultation>
-  >("lms", "consultations", getDefaultData("consultations", initialValues));
+  const { webinars, fetchWebinars } = useContext(WebinarsContext);
+  const { webinar, fetchWebinar } = useContext(WebinarContext);
+  const { h5p, fetchH5P } = useContext(H5pContext);
+  const { consultations, fetchConsultations } =
+    useContext(ConsultationsContext);
+  const { pages, fetchPages } = useContext(PagesContext);
+  const { page, fetchPage } = useContext(PageContext);
 
   const [consultation, setConsultation] = useLocalStorage<
     ContextStateValue<API.Consultation>
@@ -212,10 +219,6 @@ const EscolaLMSContextProviderInner: FunctionComponent<
     "tutorConsultations",
     getDefaultData("tutorConsultations", initialValues)
   );
-
-  const [webinars, setWebinars] = useLocalStorage<
-    ContextListState<EscolaLms.Webinar.Models.Webinar>
-  >("lms", "webinars", getDefaultData("webinars", initialValues));
 
   const [events, setEvents] = useLocalStorage<
     ContextPaginatedMetaState<API.Event>
@@ -335,26 +338,10 @@ const EscolaLMSContextProviderInner: FunctionComponent<
     getDefaultData("tutor", initialValues)
   );
 
-  const [pages, setPages] = useLocalStorage<
-    ContextPaginatedMetaState<API.PageListItem>
-  >("lms", "pages", getDefaultData("pages", initialValues));
-
-  const [page, setPage] = useLocalStorage<ContextStateValue<API.Page>>(
-    "lms",
-    "page",
-    getDefaultData("page", initialValues)
-  );
-
   const [fontSize, setFontSize] = useLocalStorage<FontSize>(
     "lms",
     "fontSize",
     getDefaultData("fontSize", initialValues)
-  );
-
-  const [h5p, setH5P] = useLocalStorage<ContextStateValue<API.H5PObject>>(
-    "lms",
-    "h5p",
-    getDefaultData("h5p", initialValues)
   );
 
   const [notifications, setNotifications] = useLocalStorage<
@@ -384,10 +371,6 @@ const EscolaLMSContextProviderInner: FunctionComponent<
     "userStationaryEvents",
     getDefaultData("userStationaryEvents", initialValues)
   );
-
-  const [webinar, setWebinar] = useLocalStorage<
-    ContextStateValue<EscolaLms.Webinar.Models.Webinar>
-  >("lms", "webinar", getDefaultData("webinar", initialValues));
 
   const [userWebinars, setUserWebinars] = useLocalStorage<
     ContextListState<API.Event>
@@ -444,18 +427,6 @@ const EscolaLMSContextProviderInner: FunctionComponent<
 
   useEffect(() => {
     if (defaults) {
-      defaults.consultation !== null &&
-        setConsultations({
-          loading: false,
-          list: defaults.consultations?.list,
-          error: undefined,
-        });
-      defaults.webinars !== null &&
-        setWebinars({
-          loading: false,
-          list: defaults.webinars?.list,
-          error: undefined,
-        });
       defaults.stationaryEvents !== null &&
         setStationaryEvents({
           loading: false,
@@ -566,19 +537,6 @@ const EscolaLMSContextProviderInner: FunctionComponent<
         })
       : Promise.reject("noToken");
   }, [token]);
-
-  const fetchWebinar = useCallback((id: number) => {
-    return fetchDataType<API.Webinar>({
-      controllers: abortControllers.current,
-      controller: `webinar${id}`,
-      id,
-      mode: "value",
-      fetchAction: getWebinar.bind(null, apiUrl)(id, {
-        signal: abortControllers.current?.[`webinar${id}`]?.signal,
-      }),
-      setState: setWebinar,
-    });
-  }, []);
 
   const fetchUserStationaryEvents = useCallback(() => {
     return token
@@ -750,24 +708,6 @@ const EscolaLMSContextProviderInner: FunctionComponent<
     [token, notifications]
   );
 
-  const fetchConsultations = useCallback((filter: API.ConsultationParams) => {
-    return fetchDataType<API.Consultation>({
-      controllers: abortControllers.current,
-      controller: `consultations/${JSON.stringify(filter)}`,
-      mode: "paginated",
-      fetchAction: getConsultations.bind(null, apiUrl)(
-        filter,
-
-        {
-          signal:
-            abortControllers.current[`consultations/${JSON.stringify(filter)}`]
-              ?.signal,
-        }
-      ),
-      setState: setConsultations,
-    });
-  }, []);
-
   const changeConsultationTerm = useCallback(
     (termId: number, newDate: string) => {
       return token
@@ -833,24 +773,6 @@ const EscolaLMSContextProviderInner: FunctionComponent<
     },
     [token]
   );
-
-  const fetchWebinars = useCallback((filter: API.WebinarParams) => {
-    return fetchDataType<EscolaLms.Webinar.Models.Webinar>({
-      controllers: abortControllers.current,
-      controller: `webinars/${JSON.stringify(filter)}`,
-      mode: "list",
-      fetchAction: getWebinars.bind(null, apiUrl)(
-        filter,
-
-        {
-          signal:
-            abortControllers.current[`webinars/${JSON.stringify(filter)}`]
-              ?.signal,
-        }
-      ),
-      setState: setWebinars,
-    });
-  }, []);
 
   const fetchEvents = useCallback((filter: API.EventsParams) => {
     return fetchDataType<API.Event>({
@@ -1308,19 +1230,6 @@ const EscolaLMSContextProviderInner: FunctionComponent<
       : Promise.reject("noToken");
   }, [token]);
 
-  const fetchH5P = useCallback((id: string) => {
-    return fetchDataType<API.H5PObject>({
-      controllers: abortControllers.current,
-      controller: `h5p${id}`,
-      id,
-      mode: "value",
-      fetchAction: getH5p.bind(null, apiUrl)(Number(id), {
-        signal: abortControllers.current?.[`h5p${id}`]?.signal,
-      }),
-      setState: setH5P,
-    });
-  }, []);
-
   const fetchTutor = useCallback(
     (id: number) => {
       return fetchDataType<API.UserItem>({
@@ -1367,34 +1276,6 @@ const EscolaLMSContextProviderInner: FunctionComponent<
         })
       : Promise.reject("noToken");
   }, [token]);
-
-  const fetchPages = useCallback(() => {
-    return fetchDataType<API.PageListItem>({
-      controllers: abortControllers.current,
-      controller: "pages",
-      mode: "paginated",
-      fetchAction: getPages.bind(
-        null,
-        apiUrl
-      )({
-        signal: abortControllers.current?.pages?.signal,
-      }),
-      setState: setPages,
-    });
-  }, []);
-
-  const fetchPage = useCallback((slug: string) => {
-    return fetchDataType<API.PageListItem>({
-      controllers: abortControllers.current,
-      controller: `page${slug}`,
-      id: slug,
-      mode: "value",
-      fetchAction: getPage.bind(null, apiUrl)(slug, {
-        signal: abortControllers.current?.[`page${slug}`]?.signal,
-      }),
-      setState: setPage,
-    });
-  }, []);
 
   const sendProgress = useCallback(
     (courseId: number, data: API.CourseProgressItemElement[]) => {
@@ -1850,9 +1731,39 @@ export const EscolaLMSContextProvider: FunctionComponent<
             defaults={props.defaults}
             apiUrl={props.apiUrl}
           >
-            <EscolaLMSContextProviderInner {...props}>
-              {children}
-            </EscolaLMSContextProviderInner>
+            <WebinarsContextProvider
+              defaults={props.defaults}
+              apiUrl={props.apiUrl}
+            >
+              <WebinarContextProvider
+                defaults={props.defaults}
+                apiUrl={props.apiUrl}
+              >
+                <H5pContextProvider
+                  defaults={props.defaults}
+                  apiUrl={props.apiUrl}
+                >
+                  <ConsultationsContextProvider
+                    defaults={props.defaults}
+                    apiUrl={props.apiUrl}
+                  >
+                    <PagesContextProvider
+                      defaults={props.defaults}
+                      apiUrl={props.apiUrl}
+                    >
+                      <PageContextProvider
+                        defaults={props.defaults}
+                        apiUrl={props.apiUrl}
+                      >
+                        <EscolaLMSContextProviderInner {...props}>
+                          {children}
+                        </EscolaLMSContextProviderInner>
+                      </PageContextProvider>
+                    </PagesContextProvider>
+                  </ConsultationsContextProvider>
+                </H5pContextProvider>
+              </WebinarContextProvider>
+            </WebinarsContextProvider>
           </TutorsContextProvider>
         </TagsContextProvider>
       </CategoriesContextProvider>

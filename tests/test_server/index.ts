@@ -11,6 +11,7 @@ import me from "./me";
 import user_consultations from "./user_consultations";
 import tutors from "./tutors";
 import pages from "./pages";
+import webinars from "./webinars";
 
 export default () => {
   const scope = nock("http://api.localhost");
@@ -23,6 +24,7 @@ export default () => {
   login(scope);
   me(scope).persist();
   tutors(scope).persist();
+  webinars(scope).persist();
   user_consultations(scope);
   pages(scope);
   return scope;
