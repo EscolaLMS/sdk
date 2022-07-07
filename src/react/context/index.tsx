@@ -814,7 +814,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
 
   const fetchConsultation = useCallback((id: number) => {
     return fetchDataType<API.Consultation>({
-      id: id,
+      id,
       controllers: abortControllers.current,
       controller: `consultation${id}`,
       mode: "value",
@@ -1326,7 +1326,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
       return fetchDataType<API.UserItem>({
         controllers: abortControllers.current,
         controller: `tutor${id}`,
-        id: id,
+        id,
         mode: "value",
         fetchAction: getTutor.bind(null, apiUrl)(id, {
           signal: abortControllers.current?.[`tutor${id}`]?.signal,
