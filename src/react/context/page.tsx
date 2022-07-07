@@ -49,10 +49,11 @@ export const PageContextProvider: FunctionComponent<
   const fetchPage = useCallback((slug: string) => {
     return fetchDataType<API.PageListItem>({
       controllers: abortControllers.current,
-      controller: "page",
+      controller: `page${slug}`,
+      id: slug,
       mode: "value",
       fetchAction: getPage.bind(null, apiUrl)(slug, {
-        signal: abortControllers.current?.page?.signal,
+        signal: abortControllers.current?.[`page${slug}`]?.signal,
       }),
       setState: setPage,
     });

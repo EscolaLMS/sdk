@@ -48,10 +48,11 @@ export const WebinarContextProvider: FunctionComponent<
   const fetchWebinar = useCallback((id: number) => {
     return fetchDataType<API.Webinar>({
       controllers: abortControllers.current,
-      controller: `webinar`,
+      controller: `webinar${id}`,
+      id,
       mode: "value",
       fetchAction: getWebinar.bind(null, apiUrl)(id, {
-        signal: abortControllers.current?.webinar?.signal,
+        signal: abortControllers.current?.[`webinar${id}`]?.signal,
       }),
       setState: setWebinar,
     });

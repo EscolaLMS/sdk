@@ -68,8 +68,8 @@ export const WebinarsContextProvider: FunctionComponent<
 
         {
           signal:
-            abortControllers.current[`webinars/${JSON.stringify(filter)}`]
-              ?.signal,
+          abortControllers.current[`webinars/${JSON.stringify(filter)}`]
+            ?.signal,
         }
       ),
       setState: setWebinars,
