@@ -42,8 +42,6 @@ const Pages = () => {
     return n;
   }, [page]);
 
-  console.log(page);
-
   return (
     <div>
       <p>{page.loading ? "Page Loading" : "Page Loaded"}</p>

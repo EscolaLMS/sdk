@@ -630,7 +630,10 @@ const EscolaLMSContextProviderInner: FunctionComponent<
             controller: `certificates/${JSON.stringify(params)}`,
             mode: "paginated",
             fetchAction: getCertificates.bind(null, apiUrl)(token, params, {
-              signal: abortControllers.current?.certificates?.signal,
+              signal:
+                abortControllers.current[
+                  `certificates/${JSON.stringify(params)}`
+                ]?.signal,
             }),
             setState: setCertificates,
           })
@@ -1218,7 +1221,9 @@ const EscolaLMSContextProviderInner: FunctionComponent<
             controller: `orders/${JSON.stringify(params)}`,
             mode: "paginated",
             fetchAction: getOrders.bind(null, apiUrl)(token, params, {
-              signal: abortControllers.current?.orders?.signal,
+              signal:
+                abortControllers.current[`orders/${JSON.stringify(params)}`]
+                  ?.signal,
             }),
             setState: setOrders,
           })
@@ -1257,13 +1262,13 @@ const EscolaLMSContextProviderInner: FunctionComponent<
   }, []);
 
   const fetchPage = useCallback((slug: string) => {
-    console.log("fetch pahge", slug);
     return fetchDataType<API.PageListItem>({
       controllers: abortControllers.current,
-      controller: "page",
+      controller: `page${slug}`,
+      id: slug,
       mode: "value",
       fetchAction: getPage.bind(null, apiUrl)(slug, {
-        signal: abortControllers.current?.page?.signal,
+        signal: abortControllers.current?.[`page${slug}`]?.signal,
       }),
       setState: setPage,
     });
