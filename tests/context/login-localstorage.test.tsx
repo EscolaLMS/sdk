@@ -41,7 +41,6 @@ const LoginRefresh: React.FC = () => {
 };
 
 it("test restore data from localstorage login invalid token ", async () => {
-  console.log("invalid token, should fail");
   window.localStorage.setItem(
     "user",
     JSON.stringify({
@@ -69,8 +68,6 @@ it("test restore data from localstorage login invalid token ", async () => {
   });
 });
 
-/*
-
 it("test restore data from localstorage login valid token ", async () => {
   const data = generateDataResponse(5);
   const email = dataSuccessResponse.data.email;
@@ -93,7 +90,5 @@ it("test restore data from localstorage login valid token ", async () => {
     expect(screen.queryByText(email)).toBeInTheDocument();
   });
 });
-
-*/
 
 export {}; // 👈️ if you don't have anything else to export
