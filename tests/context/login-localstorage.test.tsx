@@ -20,10 +20,14 @@ beforeAll(() => {
 const LoginRefresh: React.FC = () => {
   const { user } = useContext(EscolaLMSContext);
 
+  const [userHasBeenLoggedOut, setUserHasBeenLoggedOut] = useState(false);
+
   const prevUser = usePrevious(user);
 
-  const userHasBeenLoggedOut = useMemo(() => {
-    return prevUser && prevUser.value && !user.value;
+  useEffect(() => {
+    if (prevUser && prevUser.value && !user.value) {
+      setUserHasBeenLoggedOut(true);
+    }
   }, [prevUser, user]);
 
   return (
