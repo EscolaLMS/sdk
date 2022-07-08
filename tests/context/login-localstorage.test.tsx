@@ -24,8 +24,6 @@ const LoginRefresh: React.FC = () => {
 
   const prevUser = usePrevious(user);
 
-  // console.log(user.value, prevUser?.value);
-
   useEffect(() => {
     if (prevUser && prevUser.value && !user.value) {
       setUserHasBeenLoggedOut(true);

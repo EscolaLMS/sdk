@@ -960,43 +960,6 @@ const EscolaLMSContextProviderInner: FunctionComponent<
     });
   }, [token, logout]);
 
-  /*
-
-  useEffect(() => {
-    if (token) {
-      setUser((prevState) => ({
-        ...prevState,
-        loading: true,
-        error: undefined,
-      }));
-      getProfile
-        .bind(
-          null,
-          apiUrl
-        )(token)
-        .then((response) => {
-          if (response.success) {
-            setUser({
-              loading: false,
-              value: response.data,
-            });
-          }
-          if (response.success === false) {
-            setUser((prevState) => ({
-              ...prevState,
-              loading: false,
-              error: response,
-            }));
-          }
-        })
-        .catch(() => {
-          logout();
-        });
-    }
-  }, [token, logout]);
-
-  */
-
   const login = useCallback((body: API.LoginRequest) => {
     return postLogin
       .bind(
