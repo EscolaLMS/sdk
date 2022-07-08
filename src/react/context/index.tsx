@@ -952,6 +952,8 @@ const EscolaLMSContextProviderInner: FunctionComponent<
     });
   }, [token, logout]);
 
+  /*
+
   useEffect(() => {
     if (token) {
       setUser((prevState) => ({
@@ -984,6 +986,8 @@ const EscolaLMSContextProviderInner: FunctionComponent<
         });
     }
   }, [token, logout]);
+
+  */
 
   const login = useCallback((body: API.LoginRequest) => {
     return postLogin
