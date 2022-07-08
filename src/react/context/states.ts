@@ -171,7 +171,6 @@ export const fetchDataType = <T>(params: fetchDataType<T>): Promise<void> => {
             error: response,
           }));
         }
-        return Promise.reject("error");
       }
     })
     .catch((error) => {
