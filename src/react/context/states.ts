@@ -14,6 +14,7 @@ type fetchDataType<T> =
       setState: React.Dispatch<
         React.SetStateAction<ContextPaginatedMetaState<T>>
       >;
+      onError?: (error: API.DefaultResponseError | any) => void;
     }
   | {
       id?: number | string;
@@ -22,6 +23,7 @@ type fetchDataType<T> =
       mode: "value";
       fetchAction: Promise<API.DefaultResponse<T>>;
       setState: React.Dispatch<React.SetStateAction<ContextStateValue<T>>>;
+      onError?: (error: API.DefaultResponseError | any) => void;
     }
   | {
       controller?: string;
@@ -29,10 +31,12 @@ type fetchDataType<T> =
       mode: "list";
       fetchAction: Promise<API.DefaultResponse<T[]>>;
       setState: React.Dispatch<React.SetStateAction<ContextListState<T>>>;
+      onError?: (error: API.DefaultResponseError | any) => void;
     };
 
-export const fetchDataType = <T>(params: fetchDataType<T>) => {
-  const { setState, fetchAction, mode, controller, controllers } = params;
+export const fetchDataType = <T>(params: fetchDataType<T>): Promise<void> => {
+  const { setState, fetchAction, mode, controller, controllers, onError } =
+    params;
 
   if (mode === "paginated") {
     setState((prevState) => ({ ...prevState, loading: true }));
@@ -133,6 +137,9 @@ export const fetchDataType = <T>(params: fetchDataType<T>) => {
       }
 
       if ((response as API.DefaultResponseError).success === false) {
+        if (onError) {
+          onError(response as API.DefaultResponseError);
+        }
         if (mode === "value" && params.id) {
           const { id } = params;
           setState((prevState: any) => {
@@ -164,6 +171,7 @@ export const fetchDataType = <T>(params: fetchDataType<T>) => {
             error: response,
           }));
         }
+        return Promise.reject("error");
       }
     })
     .catch((error) => {
@@ -173,6 +181,11 @@ export const fetchDataType = <T>(params: fetchDataType<T>) => {
         }
         return;
       }
+
+      if (onError) {
+        onError(error);
+      }
+
       if (mode === "value" && params.id) {
         const { id } = params;
 

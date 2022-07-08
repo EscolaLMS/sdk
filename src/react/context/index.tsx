@@ -932,22 +932,30 @@ const EscolaLMSContextProviderInner: FunctionComponent<
     return postRegister.bind(null, apiUrl)(body);
   }, []);
 
-  const fetchProfile = useCallback(() => {
-    return token
-      ? fetchDataType<API.UserAsProfile>({
-          controllers: abortControllers.current,
-          controller: `profile`,
-          mode: "value",
-          fetchAction: getProfile.bind(null, apiUrl)(token, {
-            signal: abortControllers.current?.profile?.signal,
-          }),
-          setState: setUser,
-        })
-      : Promise.reject("noToken");
-  }, [token]);
+  const fetchProfile = useCallback(
+    (onError?: (error: API.DefaultResponseError | any) => void) => {
+      return token
+        ? fetchDataType<API.UserAsProfile>({
+            onError,
+            controllers: abortControllers.current,
+            controller: `profile`,
+            mode: "value",
+            fetchAction: getProfile.bind(null, apiUrl)(token, {
+              signal: abortControllers.current?.profile?.signal,
+            }),
+            setState: setUser,
+          })
+        : Promise.reject("noToken");
+    },
+    [token]
+  );
 
   useEffect(() => {
-    fetchProfile().catch(() => {
+    fetchProfile((error) => {
+      // TODO check for error codes, since this might be a problem,
+      // eg you update profile with wrong picture this should result in logout///
+      logout();
+    }).catch(() => {
       logout();
     });
   }, [token, logout]);
