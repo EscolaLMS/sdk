@@ -5,11 +5,16 @@ export const registerDataSuccess = {
   message: "Registered",
 };
 
-export const dataFail = {
+const dataFail = {
   message: "The given data was invalid.",
   errors: {
     email: ["The email has already been taken."],
   },
+};
+
+export const forgotDataSuccess = {
+  message: "Password reset email sent",
+  success: true,
 };
 
 const isEmptyObject = (obj: object) =>
@@ -37,5 +42,16 @@ export default (scope: nock.Scope) => {
     }
 
     return [422, dataFail];
+  });
+
+  scope.post("/api/auth/password/forgot").reply((uri, requestBody) => {
+    if (
+      typeof requestBody === "object" &&
+      requestBody.email &&
+      requestBody.return_url
+    ) {
+      return [200, forgotDataSuccess];
+    }
+    return [422];
   });
 };
