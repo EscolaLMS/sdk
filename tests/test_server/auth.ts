@@ -1,4 +1,5 @@
 import nock from "nock";
+import { dataSuccess } from "./me";
 
 export const registerDataSuccess = {
   success: true,
@@ -51,6 +52,13 @@ export default (scope: nock.Scope) => {
       requestBody.return_url
     ) {
       return [200, forgotDataSuccess];
+    }
+    return [422];
+  });
+
+  scope.put("/api/profile/me").reply((uri, requestBody) => {
+    if (typeof requestBody === "object") {
+      return [200, dataSuccess];
     }
     return [422];
   });

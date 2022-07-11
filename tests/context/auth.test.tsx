@@ -2,12 +2,14 @@ import React, { useContext, useState } from "react";
 import { act } from "react-dom/test-utils";
 import { EscolaLMSContext } from "./../../src/react/context";
 import { render, fireEvent, waitFor, screen } from "../test-utils";
-
+import { Login } from "./helpers/login";
 import "@testing-library/jest-dom";
 
 import fakeServer from "../test_server";
 
 import { registerDataSuccess } from "../test_server/auth";
+import { generateDataResponse } from "../test_server/jwt";
+import { dataSuccess } from "../test_server/me";
 
 beforeAll(() => {
   fakeServer();
@@ -99,6 +101,44 @@ const Forgot = () => {
   );
 };
 
+const UpdateProfile = () => {
+  const { updateProfile, user } = useContext(EscolaLMSContext);
+
+  return (
+    <div>
+      <Login />
+
+      <button
+        data-testid="update-profile"
+        onClick={() =>
+          updateProfile({
+            first_name: "Admin",
+            last_name: "Kowalski",
+            age: 30,
+            gender: 1,
+            country: "Poland",
+            city: "TestCity",
+            street: "TestStreet",
+            postcode: "00-000",
+            phone: "55544455",
+          })
+        }
+      >
+        Update profile
+      </button>
+      <div data-testid="user-loading">
+        {user.loading ? "Loading" : "Loaded"}
+      </div>
+      {user.error && <div data-testid="user-error">Error</div>}
+      {user.value && (
+        <div data-testid="user-name">
+          {user.value.first_name} {user.value.last_name}
+        </div>
+      )}
+    </div>
+  );
+};
+
 it("checks register logic", async () => {
   render(<Register />);
 
@@ -176,6 +216,44 @@ it("checks forgot logic", async () => {
   await waitFor(() => {
     expect(screen.queryByText("Error")).not.toBeInTheDocument();
   });
+});
+
+it("checks profile update logic", async () => {
+  const data = generateDataResponse(5);
+
+  window.localStorage.setItem(
+    "user",
+    JSON.stringify({
+      token: data.data.token,
+    })
+  );
+  act(() => {
+    render(<UpdateProfile />);
+  });
+
+  await waitFor(() => {
+    expect(screen.queryByText("Loaded")).toBeInTheDocument();
+  });
+
+  act(() => {
+    fireEvent(
+      screen.getByTestId("update-profile"),
+      new MouseEvent("click", {
+        bubbles: true,
+        cancelable: true,
+      })
+    );
+  });
+
+  await waitFor(() => {
+    expect(screen.queryByText("Error")).not.toBeInTheDocument();
+  });
+
+  await waitFor(() => {
+    expect(screen.queryByText("Loaded")).toBeInTheDocument();
+  });
+
+  expect(screen.getByTestId("user-name")).toHaveTextContent("Admin Kowalski");
 });
 
 export {}; // 👈️ if you don't have anything else to export
