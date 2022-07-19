@@ -20,7 +20,6 @@ import {
   topicPing as putTopicPing,
   h5pProgress as postSendh5pProgress,
 } from "./../../services/courses";
-import { changePassword as postNewPassword } from "../../services/profile";
 import {
   bookConsultationDate,
   consultations as getConsultations,
@@ -45,17 +44,8 @@ import {
 import { getNotifications, readNotification } from "../../services/notify";
 import { getCertificates, getCertificate } from "../../services/certificates";
 import { getMattermostChannels } from "../../services/mattermost";
-import {
-  login as postLogin,
-  profile as getProfile,
-  register as postRegister,
-  updateProfile as postUpdateProfile,
-  updateAvatar as postUpdateAvatar,
-  forgot,
-  reset,
-  emailVerify,
-  refreshToken,
-} from "./../../services/auth";
+
+import { pages as getPages, page as getPage } from "./../../services/pages";
 import {
   cart as getCart,
   addToCart as postAddToCart,
@@ -122,6 +112,7 @@ import {
   ConsultationsContext,
   ConsultationsContextProvider,
 } from "./consultations";
+import { UserContext, UserContextProvider } from "./user";
 
 export const SCORMPlayer: React.FC<{
   uuid: string;
@@ -187,6 +178,23 @@ const EscolaLMSContextProviderInner: FunctionComponent<
   };
 
   const getImagePrefix = () => imagePrefix;
+
+  const {
+    token,
+    user,
+    socialAuthorize,
+    changePassword,
+    login,
+    logout: logoutUser,
+    forgot,
+    reset,
+    updateProfile,
+    updateAvatar,
+    getRefreshedToken,
+    emailVerify,
+    tokenExpireDate,
+    register,
+  } = useContext(UserContext);
 
   const { courses, fetchCourses } = useContext(CoursesContext);
   const { categoryTree, fetchCategories } = useContext(CategoriesContext);
@@ -262,52 +270,6 @@ const EscolaLMSContextProviderInner: FunctionComponent<
     "lms",
     "cart",
     getDefaultData("cart", initialValues)
-  );
-
-  const [token, setToken] = useLocalStorage<string | null>(
-    "user",
-    "token",
-    null
-  );
-
-  /*
-  const [tokenExpireDate, setTokenExpireDate] = useLocalStorage<string | null>(
-    "user",
-    "tokenExpireDate",
-    null
-  );
-  */
-
-  const tokenExpireDate = useMemo(() => {
-    try {
-      return token
-        ? new Date(
-            JSON.parse(atob(token.split(".")[1])).exp * 1000
-          ).toISOString()
-        : null;
-    } catch (er) {
-      return null;
-    }
-  }, [token]);
-
-  useEffect(() => {
-    if (tokenExpireDate) {
-      const ms = Math.max(
-        1000,
-        new Date(tokenExpireDate).getTime() - Date.now() - 5000
-      ); // 5 seconds grace period
-
-      const t = setTimeout(() => getRefreshedToken(), ms);
-      return () => {
-        clearTimeout(t);
-      };
-    }
-  }, [tokenExpireDate]);
-
-  const [user, setUser] = useLocalStorage<ContextStateValue<API.UserAsProfile>>(
-    "user",
-    "user",
-    getDefaultData("user", initialValues)
   );
 
   const [progress, setProgress] = useState<
@@ -627,7 +589,10 @@ const EscolaLMSContextProviderInner: FunctionComponent<
             controller: `certificates/${JSON.stringify(params)}`,
             mode: "paginated",
             fetchAction: getCertificates.bind(null, apiUrl)(token, params, {
-              signal: abortControllers.current?.certificates?.signal,
+              signal:
+                abortControllers.current[
+                  `certificates/${JSON.stringify(params)}`
+                ]?.signal,
             }),
             setState: setCertificates,
           })
@@ -906,85 +871,22 @@ const EscolaLMSContextProviderInner: FunctionComponent<
       });
   }, []);
 
-  const socialAuthorize = useCallback((token: string) => {
-    setToken(token);
-  }, []);
-
   const resetState = useCallback(() => {
-    setToken(null);
+    logoutUser();
 
-    setUser(defaultConfig.user);
     setProgram(defaultConfig.program);
     setCart(defaultConfig.cart);
     setCertificates(defaultConfig.certificates);
     setNotifications(defaultConfig.notifications);
     setMattermostChannels(defaultConfig.mattermostChannels);
-  }, []);
+  }, [logoutUser]);
 
   const logout = useCallback(() => {
+    // TODO this should be composition of contexts
     // API Call here to destroy token
     resetState();
 
     return Promise.resolve();
-  }, []);
-
-  const register = useCallback((body: API.RegisterRequest) => {
-    return postRegister.bind(null, apiUrl)(body);
-  }, []);
-
-  const fetchProfile = useCallback(
-    (onError?: (error: API.DefaultResponseError | any) => void) => {
-      return token
-        ? fetchDataType<API.UserAsProfile>({
-            onError,
-            controllers: abortControllers.current,
-            controller: `profile`,
-            mode: "value",
-            fetchAction: getProfile.bind(null, apiUrl)(token, {
-              signal: abortControllers.current?.profile?.signal,
-            }),
-            setState: setUser,
-          })
-        : Promise.reject("noToken");
-    },
-    [token]
-  );
-
-  useEffect(() => {
-    fetchProfile((error) => {
-      // TODO check for error codes, since this might be a problem,
-      // eg you update profile with wrong picture this should result in logout///
-      logout();
-    }).catch(() => {
-      logout();
-    });
-  }, [token, logout]);
-
-  const login = useCallback((body: API.LoginRequest) => {
-    return postLogin
-      .bind(
-        null,
-        apiUrl
-      )(body)
-      .then((response) => {
-        if (response.success) {
-          setToken(response.data.token);
-          //setTokenExpireDate(response.data.expires_at);
-        } else {
-          setUser((prevState) =>
-            prevState
-              ? { ...prevState, error: response, loading: false }
-              : { error: response, loading: false }
-          );
-        }
-      })
-      .catch((error) => {
-        setUser((prevState) =>
-          prevState
-            ? { ...prevState, error: error, loading: false }
-            : { error: error, loading: false }
-        );
-      });
   }, []);
 
   const fetchQuestionnaires = useCallback(
@@ -1229,7 +1131,9 @@ const EscolaLMSContextProviderInner: FunctionComponent<
             controller: `orders/${JSON.stringify(params)}`,
             mode: "paginated",
             fetchAction: getOrders.bind(null, apiUrl)(token, params, {
-              signal: abortControllers.current?.orders?.signal,
+              signal:
+                abortControllers.current[`orders/${JSON.stringify(params)}`]
+                  ?.signal,
             }),
             setState: setOrders,
           })
@@ -1342,66 +1246,6 @@ const EscolaLMSContextProviderInner: FunctionComponent<
             token
           )
         : null;
-    },
-    [token]
-  );
-
-  const updateProfile = useCallback(
-    (body: API.UpdateUserDetails) => {
-      setUser((prevState) => ({
-        ...prevState,
-        loading: true,
-      }));
-
-      return token
-        ? postUpdateProfile
-            .bind(null, apiUrl)(body, token)
-            .then((res) => {
-              if (res.success === true) {
-                setUser((prevState) => ({
-                  value: {
-                    ...res.data,
-                  },
-                  loading: false,
-                }));
-              } else if (res.success === false) {
-                setUser((prevState) => ({
-                  ...prevState,
-                  error: res,
-                  loading: false,
-                }));
-              }
-            })
-        : Promise.reject("noToken");
-    },
-    [token]
-  );
-
-  const updateAvatar = useCallback(
-    (file: File) => {
-      setUser((prevState) => {
-        return {
-          ...prevState,
-          loading: true,
-        };
-      });
-      return token
-        ? postUpdateAvatar
-            .bind(null, apiUrl)(file, token)
-            .then((res) => {
-              if (res.success === true) {
-                setUser((prevState) => ({
-                  ...prevState,
-                  value: {
-                    ...res.data,
-                    avatar: res.data.avatar,
-                    path_avatar: res.data.path_avatar,
-                  },
-                  loading: false,
-                }));
-              }
-            })
-        : Promise.reject("noToken");
     },
     [token]
   );
@@ -1527,33 +1371,6 @@ const EscolaLMSContextProviderInner: FunctionComponent<
     [fontSize]
   );
 
-  const getRefreshedToken = useCallback(() => {
-    return token
-      ? refreshToken
-          .bind(
-            null,
-            apiUrl
-          )(token)
-          .then((res) => {
-            if (res.success) {
-              setToken(res.data.token);
-            }
-          })
-          .catch((error) => {
-            console.log(error);
-          })
-      : Promise.reject("noToken");
-  }, [token]);
-
-  const changePassword = useCallback(
-    (body: API.ChangePasswordRequest) => {
-      return token
-        ? postNewPassword.bind(null, apiUrl)(token, body)
-        : Promise.reject("noToken");
-    },
-    [token]
-  );
-
   const realizeVoucher = useCallback(
     (voucher: string) => {
       return token
@@ -1583,8 +1400,8 @@ const EscolaLMSContextProviderInner: FunctionComponent<
         categoryTree,
         login,
         logout,
-        forgot: forgot.bind(null, apiUrl),
-        reset: reset.bind(null, apiUrl),
+        forgot,
+        reset,
         user,
         register,
         fetchCart,
@@ -1633,7 +1450,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
         fetchMattermostChannels,
         h5p,
         fetchH5P,
-        emailVerify: emailVerify.bind(null, apiUrl),
+        emailVerify,
         getRefreshedToken,
         tokenExpireDate,
         fetchConsultations,
@@ -1695,53 +1512,32 @@ const EscolaLMSContextProviderInner: FunctionComponent<
 export const EscolaLMSContextProvider: FunctionComponent<
   PropsWithChildren<EscolaLMSContextProviderType>
 > = ({ children, ...props }) => {
+  const contextProps = { defaults: props.defaults, apiUrl: props.apiUrl };
   return (
-    <CoursesContextProvider defaults={props.defaults} apiUrl={props.apiUrl}>
-      <CategoriesContextProvider
-        defaults={props.defaults}
-        apiUrl={props.apiUrl}
-      >
-        <TagsContextProvider defaults={props.defaults} apiUrl={props.apiUrl}>
-          <TutorsContextProvider
-            defaults={props.defaults}
-            apiUrl={props.apiUrl}
-          >
-            <WebinarsContextProvider
-              defaults={props.defaults}
-              apiUrl={props.apiUrl}
-            >
-              <WebinarContextProvider
-                defaults={props.defaults}
-                apiUrl={props.apiUrl}
-              >
-                <H5pContextProvider
-                  defaults={props.defaults}
-                  apiUrl={props.apiUrl}
-                >
-                  <ConsultationsContextProvider
-                    defaults={props.defaults}
-                    apiUrl={props.apiUrl}
-                  >
-                    <PagesContextProvider
-                      defaults={props.defaults}
-                      apiUrl={props.apiUrl}
-                    >
-                      <PageContextProvider
-                        defaults={props.defaults}
-                        apiUrl={props.apiUrl}
-                      >
-                        <EscolaLMSContextProviderInner {...props}>
-                          {children}
-                        </EscolaLMSContextProviderInner>
-                      </PageContextProvider>
-                    </PagesContextProvider>
-                  </ConsultationsContextProvider>
-                </H5pContextProvider>
-              </WebinarContextProvider>
-            </WebinarsContextProvider>
-          </TutorsContextProvider>
-        </TagsContextProvider>
-      </CategoriesContextProvider>
-    </CoursesContextProvider>
+    <UserContextProvider {...contextProps}>
+      <CoursesContextProvider {...contextProps}>
+        <CategoriesContextProvider {...contextProps}>
+          <TagsContextProvider {...contextProps}>
+            <TutorsContextProvider {...contextProps}>
+              <WebinarsContextProvider {...contextProps}>
+                <WebinarContextProvider {...contextProps}>
+                  <H5pContextProvider {...contextProps}>
+                    <ConsultationsContextProvider {...contextProps}>
+                      <PagesContextProvider {...contextProps}>
+                        <PageContextProvider {...contextProps}>
+                          <EscolaLMSContextProviderInner {...props}>
+                            {children}
+                          </EscolaLMSContextProviderInner>
+                        </PageContextProvider>
+                      </PagesContextProvider>
+                    </ConsultationsContextProvider>
+                  </H5pContextProvider>
+                </WebinarContextProvider>
+              </WebinarsContextProvider>
+            </TutorsContextProvider>
+          </TagsContextProvider>
+        </CategoriesContextProvider>
+      </CoursesContextProvider>
+    </UserContextProvider>
   );
 };
