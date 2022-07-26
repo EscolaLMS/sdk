@@ -101,10 +101,11 @@ it("test fetching pages", async () => {
   await waitFor(() => {
     expect(screen.queryByText("Page Loaded")).toBeInTheDocument();
   });
-
-  expect(screen.getByTestId("loadedPages")).toHaveTextContent(
-    pagesResponse.data.length.toString()
-  );
+  await waitFor(() => {
+    expect(screen.getByTestId("loadedPages")).toHaveTextContent(
+      pagesResponse.data.length.toString()
+    );
+  });
 
   await waitFor(() => {
     pagesResponse.data.map((page) =>
