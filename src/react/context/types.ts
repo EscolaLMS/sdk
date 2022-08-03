@@ -145,7 +145,7 @@ export interface EscolaLMSContextAPIConfig {
   socialAuthorize: (token: string) => void;
   fetchNotifications: () => Promise<void>;
   readNotify: (id: string) => Promise<void>;
-  fetchH5P: (id: string) => void;
+  fetchH5P: (uuid: string) => void;
   getRefreshedToken: () => Promise<void>;
   fetchConsultations: (filter: API.ConsultationParams) => Promise<void>;
   fetchConsultation: (id: number) => Promise<void>;
