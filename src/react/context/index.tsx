@@ -64,7 +64,6 @@ import {
   registerableGroups as getRegisterableGroups,
 } from "./../../services/user_groups";
 import { useLocalStorage } from "../hooks/useLocalStorage";
-import { EditorContextProvider } from "@escolalms/h5p-react";
 import * as API from "./../../types/api";
 
 import {
