@@ -64,7 +64,6 @@ import {
   registerableGroups as getRegisterableGroups,
 } from "./../../services/user_groups";
 import { useLocalStorage } from "../hooks/useLocalStorage";
-import { EditorContextProvider } from "@escolalms/h5p-react";
 import * as API from "./../../types/api";
 
 import {
@@ -153,7 +152,6 @@ export interface EscolaLMSContextProviderType {
   defaults?: Partial<EscolaLMSContextReadConfig>;
   imagePrefix?: string;
   initialFetch?: boolean;
-  withH5PContext?: boolean;
 }
 
 /**
@@ -169,7 +167,6 @@ const EscolaLMSContextProviderInner: FunctionComponent<
   defaults,
   imagePrefix = `${apiUrl}/storage/imgcache`,
   initialFetch = true,
-  withH5PContext = true,
 }) => {
   // interceptors(apiUrl);
   const initialValues = {
@@ -1498,13 +1495,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
         fetchProduct,
       }}
     >
-      {withH5PContext ? (
-        <EditorContextProvider url={`${apiUrl}/api/hh5p`}>
-          {children}
-        </EditorContextProvider>
-      ) : (
-        children
-      )}
+      {children}
     </EscolaLMSContext.Provider>
   );
 };

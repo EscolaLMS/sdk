@@ -3,14 +3,13 @@ import * as API from "../types/api";
 
 export async function getH5p(
   apiUrl: string,
-  id: number,
+  uuid: string,
   options?: RequestOptionsInit
 ) {
   return request<API.DefaultResponse<API.H5PObject>>(
-    `${apiUrl}/api/hh5p/content/${id}`,
+    `${apiUrl}/api/hh5p/content/${uuid}`,
     {
       method: "GET",
-      /* useCache: true */ useCache: false,
       ...(options || {}),
     }
   );

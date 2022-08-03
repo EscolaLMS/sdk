@@ -44,14 +44,14 @@ export const H5pContextProvider: FunctionComponent<
     })
   );
 
-  const fetchH5P = useCallback((id: string) => {
+  const fetchH5P = useCallback((uuid: string) => {
     return fetchDataType<API.H5PObject>({
       controllers: abortControllers.current,
-      controller: `h5p${id}`,
-      id,
+      controller: `h5p${uuid}`,
+      id: uuid,
       mode: "value",
-      fetchAction: getH5p.bind(null, apiUrl)(Number(id), {
-        signal: abortControllers.current?.[`h5p${id}`]?.signal,
+      fetchAction: getH5p.bind(null, apiUrl)(uuid, {
+        signal: abortControllers.current?.[`h5p${uuid}`]?.signal,
       }),
       setState: setH5P,
     });

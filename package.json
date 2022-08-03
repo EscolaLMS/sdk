@@ -3,7 +3,6 @@
   "version": "0.3.10",
   "private": false,
   "dependencies": {
-    "@escolalms/h5p-react": "^0.2.3",
     "@escolalms/ts-models": "^0",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.3.0",
