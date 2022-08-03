@@ -565,7 +565,9 @@ export type TopicImage = TopicBase & {
 
 export type TopicH5P = TopicBase & {
   topicable_type: TopicType.H5P;
-  topicable: TopicableBase;
+  topicable: TopicableBase & {
+    content: H5PContent;
+  };
 };
 
 export type TopicPdf = TopicBase & {

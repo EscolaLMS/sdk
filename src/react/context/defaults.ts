@@ -389,7 +389,7 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
   h5p: {
     loading: false,
   },
-  fetchH5P: (id: string) => Promise.reject(),
+  fetchH5P: (uuid: string) => Promise.reject(),
   fetchConsultations: () => Promise.reject(),
   fetchConsultation: (id: number) => Promise.reject(),
   fetchUserConsultations: () => Promise.reject(),
