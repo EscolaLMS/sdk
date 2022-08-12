@@ -23,7 +23,8 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           
-      - run: git add .npmrc  && git commit -am ".npmrc ${{github.ref_name}"   
+      - run: git add .npmrc  
+      - run: git commit -am ".npmrc ${{github.ref_name}}"   
       - run: git push
 
 
