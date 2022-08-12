@@ -640,6 +640,7 @@ export type H5PLibrary = {
 
 export type H5PContent = {
   id: number;
+  uuid: string;
   created_at: string;
   updated_at: string;
   user_id: string | number;
