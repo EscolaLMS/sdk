@@ -577,7 +577,7 @@ export type TopicPdf = TopicBase & {
   };
 };
 
-type TopicScorm = TopicBase & {
+export type TopicScorm = TopicBase & {
   topicable_type: TopicType.Scorm;
   topicable: TopicableBase & {
     uuid: string;
