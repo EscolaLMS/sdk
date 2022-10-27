@@ -43,6 +43,7 @@ type UserContextType = Pick<
   | "logout"
   | "forgot"
   | "reset"
+  | "fetchProfile"
   | "updateProfile"
   | "updateAvatar"
   | "getRefreshedToken"
@@ -59,6 +60,7 @@ export const UserContext: React.Context<UserContextType> =
     logout: defaultConfig.logout,
     forgot: defaultConfig.forgot,
     reset: defaultConfig.reset,
+    fetchProfile: defaultConfig.fetchProfile,
     updateProfile: defaultConfig.updateProfile,
     updateAvatar: defaultConfig.updateAvatar,
     getRefreshedToken: defaultConfig.getRefreshedToken,
@@ -331,6 +333,7 @@ export const UserContextProvider: FunctionComponent<
         logout,
         forgot: forgot.bind(null, apiUrl),
         reset: reset.bind(null, apiUrl),
+        fetchProfile,
         updateProfile,
         updateAvatar,
         getRefreshedToken,
