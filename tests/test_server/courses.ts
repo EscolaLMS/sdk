@@ -945,6 +945,55 @@ export const response = {
   message: "Courses retrieved successfully",
 };
 
+export const filteredCoursesResponse = {
+  ...response,
+  meta: {
+    current_page: 3,
+    first_page_url: "http://api-stage.escolalms.com/api/courses?page=1",
+    from: 13,
+    last_page: 4,
+    last_page_url: "http://api-stage.escolalms.com/api/courses?page=4",
+    links: [
+      {
+        url: "http://api-stage.escolalms.com/api/courses?page=2",
+        label: "&laquo; Previous",
+        active: false,
+      },
+      {
+        url: "http://api-stage.escolalms.com/api/courses?page=1",
+        label: "1",
+        active: true,
+      },
+      {
+        url: "http://api-stage.escolalms.com/api/courses?page=2",
+        label: "2",
+        active: false,
+      },
+      {
+        url: "http://api-stage.escolalms.com/api/courses?page=3",
+        label: "3",
+        active: false,
+      },
+      {
+        url: "http://api-stage.escolalms.com/api/courses?page=4",
+        label: "4",
+        active: false,
+      },
+      {
+        url: "http://api-stage.escolalms.com/api/courses?page=4",
+        label: "Next &raquo;",
+        active: false,
+      },
+    ],
+    next_page_url: "http://api-stage.escolalms.com/api/courses?page=4",
+    path: "http://api-stage.escolalms.com/api/courses",
+    per_page: "6",
+    prev_page_url: "http://api-stage.escolalms.com/api/courses?page=2",
+    to: 18,
+    total: 21,
+  },
+};
+
 export default (scope: nock.Scope) =>
   scope
     .get("/api/courses")
