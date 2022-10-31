@@ -4,8 +4,11 @@ import {
   EscolaLMSContext,
   EscolaLMSContextProvider,
 } from "./../../src/react/context";
-import { render, waitFor, screen, unwrappedRender } from "../test-utils";
-import { response as coursesResponse } from "../test_server/courses";
+import { waitFor, screen, unwrappedRender } from "../test-utils";
+import {
+  response as coursesResponse,
+  filteredCoursesResponse,
+} from "../test_server/courses";
 import "@testing-library/jest-dom";
 
 import fakeServer from "../test_server";
@@ -35,7 +38,7 @@ const Courses = ({ filter = {} }) => {
   const { fetchCourses, courses } = useContext(EscolaLMSContext);
 
   useEffect(() => {
-    fetchCourses(filter);
+    !courses && fetchCourses(filter);
   }, [filter]);
 
   if (courses.loading || typeof courses.list === "undefined") {
@@ -58,7 +61,22 @@ const Courses = ({ filter = {} }) => {
 it("test fetching courses", async () => {
   await act(async () => {
     const filter = {};
-    render(<Courses filter={filter} />);
+    unwrappedRender(
+      <EscolaLMSContextProvider
+        apiUrl="http://api.localhost"
+        initialFetch={false}
+        defaults={{
+          courses: {
+            loading: false,
+            // TODO: remove this line and fix API types to match actual real responses
+            //@ts-ignore
+            list: coursesResponse,
+          },
+        }}
+      >
+        <Courses filter={filter} />
+      </EscolaLMSContextProvider>
+    );
   });
 
   await waitFor(() => {
@@ -78,7 +96,22 @@ it("test fetching courses with filter", async () => {
   const filter = { page: 3 };
 
   await act(async () => {
-    render(<Courses filter={filter} />);
+    unwrappedRender(
+      <EscolaLMSContextProvider
+        apiUrl="http://api.localhost"
+        initialFetch={false}
+        defaults={{
+          courses: {
+            loading: false,
+            // TODO: remove this line and fix API types to match actual real responses
+            //@ts-ignore
+            list: filteredCoursesResponse,
+          },
+        }}
+      >
+        <Courses filter={filter} />
+      </EscolaLMSContextProvider>
+    );
   });
 
   await waitFor(() => {
