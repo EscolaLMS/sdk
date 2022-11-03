@@ -1058,35 +1058,33 @@ const EscolaLMSContextProviderInner: FunctionComponent<
   const fetchProgram = useCallback(
     (id: number) => {
       setProgram((prevState) => ({ ...prevState, loading: true }));
-      return id && token
-        ? getCourseProgram
-            .bind(null, apiUrl)(id, token)
-            .then((response) => {
-              if (response.success) {
-                setProgram({
-                  loading: false,
-                  value: {
-                    ...response.data,
-                    lessons: sortProgram(response.data.lessons),
-                  },
-                });
-              }
-              if (response.success === false) {
-                setProgram((prevState) => ({
-                  ...prevState,
-                  loading: false,
-                  error: response,
-                }));
-              }
-            })
-            .catch((error) => {
-              setProgram((prevState) => ({
-                ...prevState,
-                loading: false,
-                error: error.data,
-              }));
-            })
-        : Promise.reject("noToken");
+      return getCourseProgram
+        .bind(null, apiUrl)(id, token)
+        .then((response) => {
+          if (response.success) {
+            setProgram({
+              loading: false,
+              value: {
+                ...response.data,
+                lessons: sortProgram(response.data.lessons),
+              },
+            });
+          }
+          if (response.success === false) {
+            setProgram((prevState) => ({
+              ...prevState,
+              loading: false,
+              error: response,
+            }));
+          }
+        })
+        .catch((error) => {
+          setProgram((prevState) => ({
+            ...prevState,
+            loading: false,
+            error: error.data,
+          }));
+        });
     },
     [token]
   );
