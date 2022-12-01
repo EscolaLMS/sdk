@@ -806,9 +806,12 @@ export enum CourseProgressItemElementStatus {
 export type CourseProgressItem = {
   categories: CategoryListItem[];
   course: Course;
+  start_date?: Date;
   finish_date?: Date;
-  progress: CourseProgressItemElement[];
+  deadline?: Date | null;
   total_spent_time?: number;
+  progress: CourseProgressItemElement[];
+  tags: Tag[];
 };
 
 export type Order = {
