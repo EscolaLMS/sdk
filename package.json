@@ -1,6 +1,6 @@
 {
   "name": "@escolalms/sdk",
-  "version": "0.3.2",
+  "version": "0.3.3-fix",
   "private": false,
   "dependencies": {
     "@escolalms/h5p-react": "^0.2.3",

@@ -1533,7 +1533,7 @@ export const EscolaLMSContextProvider: FunctionComponent<
           course.progress.length;
         acc.finishedTopics = acc.finishedTopics.concat(
           course.progress
-            .filter((item) => item.status !== 0)
+            .filter((item) => item.status === 1)
             .map((item) => item.topic_id)
         );
         return acc;
