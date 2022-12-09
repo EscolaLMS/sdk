@@ -1206,7 +1206,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
         sendProgress(Number(courseId), [
           {
             topic_id: topicId,
-            status: 1,
+            status: API.CourseProgressItemElementStatus.COMPLETE,
           },
         ]);
       }
@@ -1228,7 +1228,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
           sendProgress(Number(courseId), [
             {
               topic_id: topicId,
-              status: 1,
+              status: API.CourseProgressItemElementStatus.COMPLETE,
             },
           ]);
         }
@@ -1274,7 +1274,10 @@ const EscolaLMSContextProviderInner: FunctionComponent<
           course.progress.length;
         acc.finishedTopics = acc.finishedTopics.concat(
           course.progress
-            .filter((item) => item.status !== 0)
+            .filter(
+              (item) =>
+                item.status === API.CourseProgressItemElementStatus.COMPLETE
+            )
             .map((item) => item.topic_id)
         );
         return acc;
