@@ -1,6 +1,6 @@
 {
   "name": "@escolalms/sdk",
-  "version": "0.3.3-fix.2",
+  "version": "0.4.10",
   "private": false,
   "dependencies": {
     "@escolalms/ts-models": "^0",
