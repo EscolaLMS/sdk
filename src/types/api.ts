@@ -118,6 +118,7 @@ export type Course = {
   summary?: string;
   image_path: string;
   video_path?: string;
+  poster_path?: string;
   duration?: string;
   video_url?: string;
   categories?: Array<EscolaLms.Categories.Models.Category>;
