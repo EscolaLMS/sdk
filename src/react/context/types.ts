@@ -149,7 +149,7 @@ export interface EscolaLMSContextAPIConfig {
   getRefreshedToken: () => Promise<void>;
   fetchConsultations: (filter: API.ConsultationParams) => Promise<void>;
   fetchConsultation: (id: number) => Promise<void>;
-  fetchUserConsultations: () => Promise<void>;
+  fetchUserConsultations: (params?: API.OptionalPagination) => Promise<void>;
   fetchFields: (filter: API.FieldsParams) => Promise<void>;
   fetchStationaryEvents: (filter: API.StationaryEventsParams) => Promise<void>;
   fetchStationaryEvent: (id: number) => Promise<void>;

@@ -323,6 +323,8 @@ export type PaginationParams = {
   per_page?: number;
 };
 
+export type OptionalPagination = API.PaginationParams & { paginate: boolean };
+
 export type PageParams = {
   current?: number;
   pageSize?: number;

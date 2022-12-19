@@ -777,23 +777,23 @@ export const EscolaLMSContextProvider: FunctionComponent<
     [token]
   );
 
-  const fetchUserConsultations = useCallback(() => {
-    return token
-      ? fetchDataType<API.Consultation>({
-          controllers: abortControllers.current,
-          controller: `userconsultations`,
-          mode: "paginated",
-          fetchAction: getUserConsultations(
-            token,
-
-            {
+  const fetchUserConsultations = useCallback(
+    (params?: API.OptionalPagination) => {
+      return token
+        ? fetchDataType<API.Consultation>({
+            controllers: abortControllers.current,
+            controller: `userconsultations`,
+            mode: "paginated",
+            fetchAction: getUserConsultations(token, {
               signal: abortControllers.current?.userconsultations?.signal,
-            }
-          ),
-          setState: setUserConsultations,
-        })
-      : Promise.reject("noToken");
-  }, [token]);
+              params,
+            }),
+            setState: setUserConsultations,
+          })
+        : Promise.reject("noToken");
+    },
+    [token]
+  );
 
   const bookConsultationTerm = useCallback(
     (id: number, term: string) => {
