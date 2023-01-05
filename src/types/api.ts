@@ -1031,6 +1031,7 @@ export type JitsyConfig = {
     email: string;
   };
   jwt: string;
+  app_id: string;
 };
 
 export type JitsyData = {
