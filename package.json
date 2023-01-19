@@ -12,6 +12,7 @@
   },
   "scripts": {
     "lib": "tsc --noEmit false --outDir lib --module commonjs",
+    "lib-linked": "yarn && yarn lib && rm -rf node_modules",
     "test": "jest",
     "test-trace": "DEBUG=nock.* node --unhandled-rejections=strict --trace-warnings ./node_modules/.bin/jest "
   },
