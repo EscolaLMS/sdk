@@ -148,6 +148,30 @@ export const sortProgram: SortProgram = (lessons) => {
     }));
 };
 
+export const getCalcCourseProgress = (
+  courseId: number,
+  progress: ContextStateValue<API.CourseProgress>,
+  courseProgressDetails: ContextStateValue<API.CourseProgressDetails>
+) => {
+  if (
+    courseProgressDetails &&
+    courseProgressDetails.byId &&
+    courseProgressDetails.byId[Number(courseId)] &&
+    courseProgressDetails.byId[Number(courseId)].value
+  ) {
+    return courseProgressDetails.byId[Number(courseId)].value;
+  }
+  return (
+    progress &&
+    progress.value &&
+    progress.value.find(
+      (courseProgress: API.CourseProgressItem) =>
+        courseProgress.course.id === Number(courseId)
+    )?.progress
+  );
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+};
+
 export interface EscolaLMSContextProviderType {
   apiUrl: string;
   defaults?: Partial<EscolaLMSContextReadConfig>;
@@ -1280,12 +1304,28 @@ const EscolaLMSContextProviderInner: FunctionComponent<
         statementCategory &&
         statementCategory[0].id.includes(guessTheAnswer)
       ) {
-        sendProgress(Number(courseId), [
-          {
-            topic_id: topicId,
-            status: API.CourseProgressItemElementStatus.COMPLETE,
-          },
-        ]);
+        const pr = getCalcCourseProgress(
+          Number(courseId),
+          progress,
+          courseProgressDetails
+        );
+        sendProgress(
+          Number(courseId),
+          pr?.map((prItem) => {
+            if (prItem.topic_id === topicId) {
+              return {
+                ...prItem,
+                status: API.CourseProgressItemElementStatus.COMPLETE,
+              };
+            }
+            return prItem;
+          }) || [
+            {
+              topic_id: topicId,
+              status: API.CourseProgressItemElementStatus.COMPLETE,
+            },
+          ]
+        );
       }
 
       if (blackList.includes(statementId)) {
@@ -1302,12 +1342,28 @@ const EscolaLMSContextProviderInner: FunctionComponent<
             result &&
             result?.score?.max === result?.score?.raw)
         ) {
-          sendProgress(Number(courseId), [
-            {
-              topic_id: topicId,
-              status: API.CourseProgressItemElementStatus.COMPLETE,
-            },
-          ]);
+          const pr = getCalcCourseProgress(
+            Number(courseId),
+            progress,
+            courseProgressDetails
+          );
+          sendProgress(
+            Number(courseId),
+            pr?.map((prItem) => {
+              if (prItem.topic_id === topicId) {
+                return {
+                  ...prItem,
+                  status: API.CourseProgressItemElementStatus.COMPLETE,
+                };
+              }
+              return prItem;
+            }) || [
+              {
+                topic_id: topicId,
+                status: API.CourseProgressItemElementStatus.COMPLETE,
+              },
+            ]
+          );
         }
       }
 
@@ -1320,7 +1376,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
           )
         : null;
     },
-    [token]
+    [token, progress, courseProgressDetails]
   );
 
   const topicPing = useCallback(
