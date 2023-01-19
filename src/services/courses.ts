@@ -127,7 +127,7 @@ export async function sendProgress(
   token: string,
   options?: RequestOptionsInit
 ) {
-  return request<API.DefaultResponse<API.CourseProgress>>(
+  return request<API.DefaultResponse<API.CourseProgressDetails>>(
     `${apiUrl}/api/courses/progress/${courseId}`,
     {
       method: "PATCH",
