@@ -100,6 +100,26 @@ export async function progress(
   );
 }
 
+export async function courseProgress(
+  apiUrl: string,
+  courseId: number,
+  token: string,
+  options?: RequestOptionsInit
+) {
+  return request<API.DefaultResponse<API.CourseProgressItem>>(
+    `${apiUrl}/api/courses/progress/${courseId}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+        "Current-timezone": currentTimezone(),
+      },
+      ...(options || {}),
+    }
+  );
+}
+
 export async function sendProgress(
   apiUrl: string,
   courseId: number,

@@ -115,6 +115,7 @@ export interface EscolaLMSContextAPIConfig {
     data?: API.InvoiceData
   ) => Promise<void>;
   fetchProgress: () => Promise<void>;
+  fetchCourseProgress: (courseId: number) => Promise<void>;
   sendProgress: (
     courseId: number,
     data: API.CourseProgressItemElement[]

@@ -19,6 +19,7 @@ import {
   tutor as getTutor,
   topicPing as putTopicPing,
   h5pProgress as postSendh5pProgress,
+  courseProgress as getCourseProgress,
 } from "./../../services/courses";
 import {
   bookConsultationDate,
@@ -1103,6 +1104,66 @@ const EscolaLMSContextProviderInner: FunctionComponent<
       : Promise.reject("noToken");
   }, [token]);
 
+  const fetchCourseProgress = useCallback((id: number) => {
+    if (!token) {
+      return Promise.reject("noToken");
+    }
+    setProgress((prevState) => ({
+      ...prevState,
+      byId: prevState.byId
+        ? {
+            ...prevState.byId,
+            [id]: {
+              ...prevState.byId[id],
+              loading: true,
+            },
+          }
+        : { [id]: { loading: true } },
+    }));
+    return getCourseProgress
+      .bind(null, apiUrl)(id, token)
+      .then((response) => {
+        if (response.success) {
+          setProgress((prevState) => ({
+            ...prevState,
+            byId: prevState.byId
+              ? {
+                  ...prevState.byId,
+                  [id]: {
+                    value: [response.data],
+                    loading: false,
+                  },
+                }
+              : {
+                  [id]: {
+                    value: [response.data],
+                    loading: false,
+                  },
+                },
+          }));
+        }
+        if (response.success === false) {
+          setProgress((prevState) => ({
+            ...prevState,
+            byId: prevState.byId
+              ? {
+                  ...prevState.byId,
+                  [id]: {
+                    error: response,
+                    loading: false,
+                  },
+                }
+              : {
+                  [id]: {
+                    error: response,
+                    loading: false,
+                  },
+                },
+          }));
+        }
+      });
+  }, []);
+
   const fetchTutor = useCallback(
     (id: number) => {
       return fetchDataType<API.UserItem>({
@@ -1409,6 +1470,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
         cart,
         payWithStripe,
         fetchProgress,
+        fetchCourseProgress,
         progress,
         sendProgress,
         fetchTutors,
