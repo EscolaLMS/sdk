@@ -1225,6 +1225,16 @@ const EscolaLMSContextProviderInner: FunctionComponent<
         ? postSendProgress
             .bind(null, apiUrl)(courseId, data, token)
             .then((res) => {
+              setCourseProgressDetails((prevState) => ({
+                ...prevState,
+                byId: {
+                  ...prevState.byId,
+                  [courseId]: {
+                    loading: false,
+                    value: data,
+                  },
+                },
+              }));
               setProgress((prevState) => ({
                 ...prevState,
                 value:
