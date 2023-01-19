@@ -55,6 +55,7 @@ export interface EscolaLMSContextReadConfig {
   user: ContextStateValue<API.UserAsProfile>;
   cart: ContextStateValue<API.Cart>;
   progress: ContextStateValue<API.CourseProgress>;
+  courseProgressDetails: ContextStateValue<API.CourseProgressDetails>;
   tutors: ContextListState<API.UserItem>;
   tutor: ContextStateValue<API.UserItem>;
   orders: ContextPaginatedMetaState<API.Order>;

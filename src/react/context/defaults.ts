@@ -106,7 +106,10 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
     Promise.reject(),
   fetchProgress: () => Promise.reject(),
   fetchCourseProgress: (id: number) => Promise.reject(),
-
+  courseProgressDetails: {
+    loading: false,
+    byId: {},
+  },
   progress: {
     loading: false,
     value: [],
@@ -329,6 +332,10 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
     Promise.reject(),
   fetchProgress: () => Promise.reject(),
   fetchCourseProgress: (id) => Promise.reject(),
+  courseProgressDetails: {
+    loading: false,
+    byId: {},
+  },
   progress: {
     loading: false,
     value: [],
