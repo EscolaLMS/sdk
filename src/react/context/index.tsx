@@ -1253,12 +1253,18 @@ const EscolaLMSContextProviderInner: FunctionComponent<
                 ...prevState,
                 byId: {
                   ...prevState.byId,
-                  [courseId]: {
-                    loading: false,
-                    value: data,
-                  },
+                  [courseId]: res.success
+                    ? {
+                        loading: false,
+                        value: res.data,
+                      }
+                    : {
+                        loading: false,
+                        error: res,
+                      },
                 },
               }));
+
               setProgress((prevState) => ({
                 ...prevState,
                 value:
