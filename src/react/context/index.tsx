@@ -275,6 +275,10 @@ const EscolaLMSContextProviderInner: FunctionComponent<
     ContextStateValue<API.CourseProgress>
   >(getDefaultData("progress", initialValues));
 
+  const [courseProgressDetails, setCourseProgressDetails] = useState<
+    ContextStateValue<API.CourseProgressDetails>
+  >(getDefaultData("courseProgressDetails", initialValues));
+
   const [orders, setOrders] = useLocalStorage<
     ContextPaginatedMetaState<API.Order>
   >("lms", "orders", getDefaultData("orders", initialValues));
@@ -1108,7 +1112,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
     if (!token) {
       return Promise.reject("noToken");
     }
-    setProgress((prevState) => ({
+    setCourseProgressDetails((prevState) => ({
       ...prevState,
       byId: prevState.byId
         ? {
@@ -1124,27 +1128,29 @@ const EscolaLMSContextProviderInner: FunctionComponent<
       .bind(null, apiUrl)(id, token)
       .then((response) => {
         if (response.success) {
-          setProgress((prevState) => ({
+          setCourseProgressDetails((prevState) => ({
             ...prevState,
+            loading: false,
             byId: prevState.byId
               ? {
                   ...prevState.byId,
                   [id]: {
-                    value: [response.data],
+                    value: response.data,
                     loading: false,
                   },
                 }
               : {
                   [id]: {
-                    value: [response.data],
+                    value: response.data,
                     loading: false,
                   },
                 },
           }));
         }
         if (response.success === false) {
-          setProgress((prevState) => ({
+          setCourseProgressDetails((prevState) => ({
             ...prevState,
+            loading: false,
             byId: prevState.byId
               ? {
                   ...prevState.byId,
@@ -1348,8 +1354,16 @@ const EscolaLMSContextProviderInner: FunctionComponent<
   }, [progress]);
 
   const topicIsFinished = useCallback(
-    (topicId: number) =>
-      progressMap && progressMap.finishedTopics.includes(topicId),
+    (topicId: number) => {
+      if (progressMap && progressMap.finishedTopics.includes(topicId)) {
+        return true;
+      }
+
+      // fetch by
+
+      return false;
+    },
+
     [progressMap]
   );
 
@@ -1472,6 +1486,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
         fetchProgress,
         fetchCourseProgress,
         progress,
+        courseProgressDetails,
         sendProgress,
         fetchTutors,
         tutors,

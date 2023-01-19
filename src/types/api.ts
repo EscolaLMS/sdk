@@ -836,6 +836,7 @@ export type Order = {
 };
 
 export type CourseProgress = CourseProgressItem[];
+export type CourseProgressDetails = CourseProgressItemElement[];
 
 export type Payment = {
   amount: number;

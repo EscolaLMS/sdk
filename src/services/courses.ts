@@ -106,7 +106,7 @@ export async function courseProgress(
   token: string,
   options?: RequestOptionsInit
 ) {
-  return request<API.DefaultResponse<API.CourseProgressItem>>(
+  return request<API.DefaultResponse<API.CourseProgressDetails>>(
     `${apiUrl}/api/courses/progress/${courseId}`,
     {
       method: "GET",
