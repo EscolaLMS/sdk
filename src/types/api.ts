@@ -475,7 +475,7 @@ export type Lesson = {
   title: string;
   course_id: number;
   updated_at?: string;
-  order?: number;
+  order: number;
   duration: string;
   summary?: string;
   topics?: Topic[];
@@ -489,7 +489,7 @@ export type TopicBase = {
   topicable_id: number;
   created_at: string;
   updated_at?: string;
-  order?: number;
+  order: number;
   value?: any;
   isNew?: boolean;
   preview?: boolean;
