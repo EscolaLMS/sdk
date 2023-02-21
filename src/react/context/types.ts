@@ -82,6 +82,7 @@ export interface EscolaLMSContextReadConfig {
   products: ContextPaginatedMetaState<API.Product>;
   product: ContextStateValue<API.Product>;
   userStationaryEvents: ContextListState<API.StationaryEvent>;
+  tasks: ContextPaginatedMetaState<API.Task>;
 }
 
 export interface EscolaLMSContextAPIConfig {
@@ -203,6 +204,7 @@ export interface EscolaLMSContextAPIConfig {
     termId: number,
     newDate: string
   ) => Promise<API.DefaultResponse<object>>;
+  fetchTasks: (filter: API.TaskParams) => Promise<void>;
 }
 export type EscolaLMSContextConfig = EscolaLMSContextReadConfig &
   EscolaLMSContextAPIConfig;

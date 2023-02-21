@@ -13,6 +13,7 @@ import tutors from "./tutors";
 import pages from "./pages";
 import auth from "./auth";
 import webinars from "./webinars";
+import tasks from "./tasks";
 
 export default () => {
   const scope = nock("http://api.localhost");
@@ -29,5 +30,6 @@ export default () => {
   user_consultations(scope);
   pages(scope);
   auth(scope);
+  tasks(scope);
   return scope;
 };
