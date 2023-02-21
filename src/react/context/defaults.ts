@@ -34,6 +34,7 @@ export const attempted: API.IEvent = "http://adlnet.gov/expapi/verbs/attempted";
 export const guessTheAnswer: API.IEventException = "GuessTheAnswer";
 export const questionSet: API.IEventException = "QuestionSet";
 
+/** TODO this should be divide into each file and just imported here and merged into one object   */
 export const defaultReadConfig: EscolaLMSContextConfig = {
   apiUrl: "",
 
@@ -250,6 +251,10 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
   },
   fetchOrderInvoice: (id: number) => Promise.reject(id),
   changeConsultationTerm: (termId: number, newDate: string) => Promise.reject(),
+  tasks: {
+    loading: false,
+  },
+  fetchTasks: (filter: API.TaskParams) => Promise.reject(),
 };
 
 export const defaultApiConfig: EscolaLMSContextConfig = {
@@ -477,6 +482,10 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
   },
   fetchOrderInvoice: (id: number) => Promise.reject(id),
   changeConsultationTerm: (termId: number, newDate: string) => Promise.reject(),
+  tasks: {
+    loading: false,
+  },
+  fetchTasks: (filter: API.TaskParams) => Promise.reject(),
 };
 
 export const defaultConfig = Object.assign(

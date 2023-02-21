@@ -1074,3 +1074,29 @@ export type InvoiceData = {
   client_company?: string;
   client_taxid?: string;
 };
+
+export type TasksList = DefaultMetaResponse<Task>;
+
+export type TaskRelatedType =
+  | "EscolaLMS\\Courses\\Course"
+  | "EscolaLMS\\Courses\\Topic"
+  | "EscolaLMS\\Courses\\Lesson";
+
+export type TaskNote = {
+  note: string;
+};
+
+type AbstractTask = EscolaLms.Tasks.Models.Task & {
+  title: string;
+  due_date?: string;
+  notes?: TaskNote[];
+};
+
+export type Task =
+  | AbstractTask
+  | (AbstractTask & {
+      related_type: TaskRelatedType;
+      related_id: number;
+    });
+
+export type TaskParams = PageParams;

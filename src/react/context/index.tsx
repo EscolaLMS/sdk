@@ -113,6 +113,7 @@ import {
   ConsultationsContextProvider,
 } from "./consultations";
 import { UserContext, UserContextProvider } from "./user";
+import { TasksContext, TasksContextProvider } from "./tasks";
 
 export const SCORMPlayer: React.FC<{
   uuid: string;
@@ -230,6 +231,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
     useContext(ConsultationsContext);
   const { pages, fetchPages } = useContext(PagesContext);
   const { page, fetchPage } = useContext(PageContext);
+  const { tasks, fetchTasks } = useContext(TasksContext);
 
   const [consultation, setConsultation] = useLocalStorage<
     ContextStateValue<API.Consultation>
@@ -1645,6 +1647,8 @@ const EscolaLMSContextProviderInner: FunctionComponent<
         changeConsultationTerm,
         fetchProducts,
         fetchProduct,
+        tasks,
+        fetchTasks,
       }}
     >
       {children}
@@ -1657,30 +1661,32 @@ export const EscolaLMSContextProvider: FunctionComponent<
 > = ({ children, ...props }) => {
   const contextProps = { defaults: props.defaults, apiUrl: props.apiUrl };
   return (
-    <UserContextProvider {...contextProps}>
-      <CoursesContextProvider {...contextProps}>
-        <CategoriesContextProvider {...contextProps}>
-          <TagsContextProvider {...contextProps}>
-            <TutorsContextProvider {...contextProps}>
-              <WebinarsContextProvider {...contextProps}>
-                <WebinarContextProvider {...contextProps}>
-                  <H5pContextProvider {...contextProps}>
-                    <ConsultationsContextProvider {...contextProps}>
-                      <PagesContextProvider {...contextProps}>
-                        <PageContextProvider {...contextProps}>
-                          <EscolaLMSContextProviderInner {...props}>
-                            {children}
-                          </EscolaLMSContextProviderInner>
-                        </PageContextProvider>
-                      </PagesContextProvider>
-                    </ConsultationsContextProvider>
-                  </H5pContextProvider>
-                </WebinarContextProvider>
-              </WebinarsContextProvider>
-            </TutorsContextProvider>
-          </TagsContextProvider>
-        </CategoriesContextProvider>
-      </CoursesContextProvider>
-    </UserContextProvider>
+    <TasksContextProvider {...contextProps}>
+      <UserContextProvider {...contextProps}>
+        <CoursesContextProvider {...contextProps}>
+          <CategoriesContextProvider {...contextProps}>
+            <TagsContextProvider {...contextProps}>
+              <TutorsContextProvider {...contextProps}>
+                <WebinarsContextProvider {...contextProps}>
+                  <WebinarContextProvider {...contextProps}>
+                    <H5pContextProvider {...contextProps}>
+                      <ConsultationsContextProvider {...contextProps}>
+                        <PagesContextProvider {...contextProps}>
+                          <PageContextProvider {...contextProps}>
+                            <EscolaLMSContextProviderInner {...props}>
+                              {children}
+                            </EscolaLMSContextProviderInner>
+                          </PageContextProvider>
+                        </PagesContextProvider>
+                      </ConsultationsContextProvider>
+                    </H5pContextProvider>
+                  </WebinarContextProvider>
+                </WebinarsContextProvider>
+              </TutorsContextProvider>
+            </TagsContextProvider>
+          </CategoriesContextProvider>
+        </CoursesContextProvider>
+      </UserContextProvider>
+    </TasksContextProvider>
   );
 };
