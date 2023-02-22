@@ -132,8 +132,6 @@ export const getDefaultData = <K extends keyof EscolaLMSContextReadConfig>(
   return initialValues[key];
 };
 
-console.log('im in the index yo!!!');
-
 export const sortProgram: SortProgram = (lessons) => {
   return [...lessons]
     .sort((lessonA, lessonB) =>
