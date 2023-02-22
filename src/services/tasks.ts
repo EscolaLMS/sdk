@@ -1,16 +1,23 @@
-import request, { RequestOptionsInit } from "umi-request";
-import * as API from "../types/api";
-import { currentTimezone } from "../utils";
+import request, { RequestOptionsInit } from 'umi-request';
+import * as API from '../types/api';
+import { currentTimezone } from '../utils';
 
 /**  GET /api/tasks */
 export async function tasks(
   apiUrl: string,
+  token: string,
   params: API.TaskParams,
   options?: RequestOptionsInit
 ) {
   return request<API.TasksList>(`${apiUrl}/api/tasks`, {
-    method: "GET",
+    method: 'GET',
     params,
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+      'Current-timezone': currentTimezone(),
+    },
     ...(options || {}),
   });
 }
@@ -18,11 +25,18 @@ export async function tasks(
 /**  GET /api/tasks/:id */
 export async function getTask(
   apiUrl: string,
+  token: string,
   id: number,
   options?: RequestOptionsInit
 ) {
   return request<API.DefaultResponse<API.Task>>(`${apiUrl}/api/tasks/${id}`, {
-    method: "GET",
+    method: 'GET',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+      'Current-timezone': currentTimezone(),
+    },
     ...(options || {}),
   });
 }
@@ -30,17 +44,17 @@ export async function getTask(
 /** POST /api/task */
 export async function createTask(
   apiUrl: string,
-  body: EscolaLms.Tasks.Http.Requests.CreateTaskRequest,
-  token: string
+  token: string,
+  body: EscolaLms.Tasks.Http.Requests.CreateTaskRequest
 ) {
   return request<API.DefaultResponse<API.Task>>(`${apiUrl}/api/tasks`, {
-    method: "POST",
+    method: 'POST',
     data: body,
     headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
-      "Current-timezone": currentTimezone(),
+      'Current-timezone': currentTimezone(),
     },
   });
 }

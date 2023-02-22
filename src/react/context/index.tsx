@@ -1661,32 +1661,32 @@ export const EscolaLMSContextProvider: FunctionComponent<
 > = ({ children, ...props }) => {
   const contextProps = { defaults: props.defaults, apiUrl: props.apiUrl };
   return (
-    <TasksContextProvider {...contextProps}>
-      <UserContextProvider {...contextProps}>
-        <CoursesContextProvider {...contextProps}>
-          <CategoriesContextProvider {...contextProps}>
-            <TagsContextProvider {...contextProps}>
-              <TutorsContextProvider {...contextProps}>
-                <WebinarsContextProvider {...contextProps}>
-                  <WebinarContextProvider {...contextProps}>
-                    <H5pContextProvider {...contextProps}>
-                      <ConsultationsContextProvider {...contextProps}>
-                        <PagesContextProvider {...contextProps}>
-                          <PageContextProvider {...contextProps}>
+    <UserContextProvider {...contextProps}>
+      <CoursesContextProvider {...contextProps}>
+        <CategoriesContextProvider {...contextProps}>
+          <TagsContextProvider {...contextProps}>
+            <TutorsContextProvider {...contextProps}>
+              <WebinarsContextProvider {...contextProps}>
+                <WebinarContextProvider {...contextProps}>
+                  <H5pContextProvider {...contextProps}>
+                    <ConsultationsContextProvider {...contextProps}>
+                      <PagesContextProvider {...contextProps}>
+                        <PageContextProvider {...contextProps}>
+                          <TasksContextProvider {...contextProps}>
                             <EscolaLMSContextProviderInner {...props}>
                               {children}
                             </EscolaLMSContextProviderInner>
-                          </PageContextProvider>
-                        </PagesContextProvider>
-                      </ConsultationsContextProvider>
-                    </H5pContextProvider>
-                  </WebinarContextProvider>
-                </WebinarsContextProvider>
-              </TutorsContextProvider>
-            </TagsContextProvider>
-          </CategoriesContextProvider>
-        </CoursesContextProvider>
-      </UserContextProvider>
-    </TasksContextProvider>
+                          </TasksContextProvider>
+                        </PageContextProvider>
+                      </PagesContextProvider>
+                    </ConsultationsContextProvider>
+                  </H5pContextProvider>
+                </WebinarContextProvider>
+              </WebinarsContextProvider>
+            </TutorsContextProvider>
+          </TagsContextProvider>
+        </CategoriesContextProvider>
+      </CoursesContextProvider>
+    </UserContextProvider>
   );
 };

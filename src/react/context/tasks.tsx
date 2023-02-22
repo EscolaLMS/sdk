@@ -5,23 +5,25 @@ import {
   useCallback,
   useRef,
   useEffect,
-} from "react";
+  useContext,
+} from 'react';
 import {
   EscolaLMSContextConfig,
   EscolaLMSContextReadConfig,
   ContextPaginatedMetaState,
-} from "./types";
-import { defaultConfig } from "./defaults";
-import { fetchDataType } from "./states";
+} from './types';
+import { defaultConfig } from './defaults';
+import { fetchDataType } from './states';
 
-import { useLocalStorage } from "../hooks/useLocalStorage";
-import * as API from "./../../types/api";
-import { getDefaultData } from "./index";
+import { useLocalStorage } from '../hooks/useLocalStorage';
+import * as API from './../../types/api';
+import { getDefaultData } from './index';
 
-import { tasks as getTasks } from "./../../services/tasks";
+import { tasks as getTasks } from './../../services/tasks';
+import { UserContext } from './user';
 
 export const TasksContext: React.Context<
-  Pick<EscolaLMSContextConfig, "tasks" | "fetchTasks">
+  Pick<EscolaLMSContextConfig, 'tasks' | 'fetchTasks'>
 > = createContext({
   tasks: defaultConfig.tasks,
   fetchTasks: defaultConfig.fetchTasks,
@@ -29,13 +31,16 @@ export const TasksContext: React.Context<
 
 export interface TasksContextProviderType {
   apiUrl: string;
-  defaults?: Partial<Pick<EscolaLMSContextReadConfig, "tasks">>;
+  defaults?: Partial<Pick<EscolaLMSContextReadConfig, 'tasks'>>;
 }
 
 export const TasksContextProvider: FunctionComponent<
   PropsWithChildren<TasksContextProviderType>
 > = ({ children, defaults, apiUrl }) => {
   const abortControllers = useRef<Record<string, AbortController | null>>({});
+
+  const { token } = useContext(UserContext);
+  console.log('token', token);
 
   useEffect(() => {
     if (defaults) {
@@ -51,26 +56,32 @@ export const TasksContextProvider: FunctionComponent<
   const [tasks, setTasks] = useLocalStorage<
     ContextPaginatedMetaState<API.Task>
   >(
-    "lms",
-    "tasks",
-    getDefaultData("tasks", {
+    'lms',
+    'tasks',
+    getDefaultData('tasks', {
       ...defaultConfig,
       ...defaults,
     })
   );
 
-  const fetchTasks = useCallback((filter: API.TaskParams) => {
-    return fetchDataType<API.Task>({
-      controllers: abortControllers.current,
-      controller: `tasks/${JSON.stringify(filter)}`,
-      mode: "paginated",
-      fetchAction: getTasks.bind(null, apiUrl)(filter, {
-        signal:
-          abortControllers.current[`tasks/${JSON.stringify(filter)}`]?.signal,
-      }),
-      setState: setTasks,
-    });
-  }, []);
+  const fetchTasks = useCallback(
+    (filter: API.TaskParams) => {
+      return token
+        ? fetchDataType<API.Task>({
+            controllers: abortControllers.current,
+            controller: `tasks/${JSON.stringify(filter)}`,
+            mode: 'paginated',
+            fetchAction: getTasks.bind(null, apiUrl)(token, filter, {
+              signal:
+                abortControllers.current[`tasks/${JSON.stringify(filter)}`]
+                  ?.signal,
+            }),
+            setState: setTasks,
+          })
+        : Promise.reject('noToken');
+    },
+    [token]
+  );
 
   return (
     <TasksContext.Provider
