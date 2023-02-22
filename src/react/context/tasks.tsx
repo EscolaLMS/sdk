@@ -40,7 +40,6 @@ export const TasksContextProvider: FunctionComponent<
   const abortControllers = useRef<Record<string, AbortController | null>>({});
 
   const { token } = useContext(UserContext);
-  console.log('token', token);
 
   useEffect(() => {
     if (defaults) {
@@ -65,7 +64,7 @@ export const TasksContextProvider: FunctionComponent<
   );
 
   const fetchTasks = useCallback(
-    (filter: API.TaskParams) => {
+    (filter: API.TaskParams = { current: 0, pageSize: 25 }) => {
       return token
         ? fetchDataType<API.Task>({
             controllers: abortControllers.current,
