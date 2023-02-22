@@ -19,14 +19,23 @@ import { useLocalStorage } from '../hooks/useLocalStorage';
 import * as API from './../../types/api';
 import { getDefaultData } from './index';
 
-import { tasks as getTasks } from './../../services/tasks';
+import {
+  tasks as getTasks,
+  createTask,
+  deleteTask as deleteTaskCall,
+} from './../../services/tasks';
 import { UserContext } from './user';
 
 export const TasksContext: React.Context<
-  Pick<EscolaLMSContextConfig, 'tasks' | 'fetchTasks'>
+  Pick<
+    EscolaLMSContextConfig,
+    'tasks' | 'fetchTasks' | 'addTask' | 'deleteTask'
+  >
 > = createContext({
   tasks: defaultConfig.tasks,
   fetchTasks: defaultConfig.fetchTasks,
+  addTask: defaultConfig.addTask,
+  deleteTask: defaultConfig.deleteTask,
 });
 
 export interface TasksContextProviderType {
@@ -82,11 +91,33 @@ export const TasksContextProvider: FunctionComponent<
     [token]
   );
 
+  const addTask = useCallback(
+    (data: EscolaLms.Tasks.Http.Requests.CreateTaskRequest) => {
+      return token
+        ? createTask(apiUrl, token, data)
+        : Promise.reject('noToken');
+    },
+    [token]
+  );
+
+  const deleteTask = useCallback(
+    (id: number) => {
+      // TODO: remove task on list and byID once it fine
+      // TODO: what about error ?
+      return token
+        ? deleteTaskCall(apiUrl, token, id)
+        : Promise.reject('noToken');
+    },
+    [token]
+  );
+
   return (
     <TasksContext.Provider
       value={{
         tasks,
         fetchTasks,
+        addTask,
+        deleteTask,
       }}
     >
       {children}

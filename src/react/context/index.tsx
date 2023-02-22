@@ -114,6 +114,7 @@ import {
 } from './consultations';
 import { UserContext, UserContextProvider } from './user';
 import { TasksContext, TasksContextProvider } from './tasks';
+import { TaskContext, TaskContextProvider } from './task';
 
 export const SCORMPlayer: React.FC<{
   uuid: string;
@@ -231,7 +232,8 @@ const EscolaLMSContextProviderInner: FunctionComponent<
     useContext(ConsultationsContext);
   const { pages, fetchPages } = useContext(PagesContext);
   const { page, fetchPage } = useContext(PageContext);
-  const { tasks, fetchTasks } = useContext(TasksContext);
+  const { tasks, fetchTasks, addTask, deleteTask } = useContext(TasksContext);
+  const { task, fetchTask, updateTask } = useContext(TaskContext);
 
   const [consultation, setConsultation] = useLocalStorage<
     ContextStateValue<API.Consultation>
@@ -1649,6 +1651,11 @@ const EscolaLMSContextProviderInner: FunctionComponent<
         fetchProduct,
         tasks,
         fetchTasks,
+        addTask,
+        deleteTask,
+        task,
+        fetchTask,
+        updateTask,
       }}
     >
       {children}
@@ -1673,9 +1680,11 @@ export const EscolaLMSContextProvider: FunctionComponent<
                       <PagesContextProvider {...contextProps}>
                         <PageContextProvider {...contextProps}>
                           <TasksContextProvider {...contextProps}>
-                            <EscolaLMSContextProviderInner {...props}>
-                              {children}
-                            </EscolaLMSContextProviderInner>
+                            <TaskContextProvider {...contextProps}>
+                              <EscolaLMSContextProviderInner {...props}>
+                                {children}
+                              </EscolaLMSContextProviderInner>
+                            </TaskContextProvider>
                           </TasksContextProvider>
                         </PageContextProvider>
                       </PagesContextProvider>

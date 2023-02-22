@@ -1,4 +1,4 @@
-import * as API from "./../../types/api";
+import * as API from './../../types/api';
 
 export interface ContextState<T> {
   loading: boolean;
@@ -83,6 +83,7 @@ export interface EscolaLMSContextReadConfig {
   product: ContextStateValue<API.Product>;
   userStationaryEvents: ContextListState<API.StationaryEvent>;
   tasks: ContextPaginatedMetaState<API.Task>;
+  task: ContextStateValue<API.Task>;
 }
 
 export interface EscolaLMSContextAPIConfig {
@@ -163,7 +164,7 @@ export interface EscolaLMSContextAPIConfig {
   ) => Promise<API.ScheduleConsultationResponse>;
   fetchProducts: (
     filter: API.PageParams &
-      API.PaginationParams & { type?: string; "tags[]"?: string }
+      API.PaginationParams & { type?: string; 'tags[]'?: string }
   ) => Promise<void>;
   fetchProduct: (id: number) => Promise<void>;
   getProductInfo: (id: number) => Promise<API.DefaultResponse<API.Product>>;
@@ -205,6 +206,15 @@ export interface EscolaLMSContextAPIConfig {
     newDate: string
   ) => Promise<API.DefaultResponse<object>>;
   fetchTasks: (filter: API.TaskParams) => Promise<void>;
+  addTask: (
+    data: EscolaLms.Tasks.Http.Requests.CreateTaskRequest
+  ) => Promise<API.DefaultResponse<API.Task>>;
+  deleteTask: (id: number) => Promise<API.DefaultResponse<API.Task>>;
+  fetchTask: (id: number) => Promise<void>;
+  updateTask: (
+    id: number,
+    data: EscolaLms.Tasks.Http.Requests.UpdateTaskRequest
+  ) => Promise<API.DefaultResponse<API.Task>>;
 }
 export type EscolaLMSContextConfig = EscolaLMSContextReadConfig &
   EscolaLMSContextAPIConfig;
