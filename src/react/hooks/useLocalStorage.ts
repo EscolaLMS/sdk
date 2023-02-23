@@ -1,23 +1,42 @@
-import { useState } from "react";
+import { useEffect, useState } from 'react';
+
+function getInitialValue<T>(
+  storeKey: string,
+  key: string,
+  initialValue: T,
+  preferInitialValue: boolean
+) {
+  try {
+    const item = window.localStorage.getItem(storeKey);
+    if (item === null) {
+      return initialValue;
+    }
+    const store = JSON.parse(item);
+    if (preferInitialValue) {
+      return initialValue;
+    }
+    return store[key] ? store[key] : initialValue;
+  } catch (error) {
+    return initialValue;
+  }
+}
 
 // Hook
 export function useLocalStorage<T>(
   storeKey: string,
   key: string,
-  initialValue: T
+  initialValue: T,
+  ssrHydration: boolean = false
 ) {
-  const [storedValue, setStoredValue] = useState<T>(() => {
-    try {
-      const item = window.localStorage.getItem(storeKey);
-      if (item === null) {
-        return initialValue;
-      }
-      const store = JSON.parse(item);
-      return store[key] ? store[key] : initialValue;
-    } catch (error) {
-      return initialValue;
+  const [storedValue, setStoredValue] = useState<T>(() =>
+    getInitialValue(storeKey, key, initialValue, ssrHydration)
+  );
+
+  useEffect(() => {
+    if (ssrHydration) {
+      setValue(getInitialValue(storeKey, key, initialValue, false));
     }
-  });
+  }, [ssrHydration]);
 
   const setValue = (value: T | ((val: T) => T)) => {
     try {

@@ -4,21 +4,21 @@ import React, {
   PropsWithChildren,
   useCallback,
   useRef,
-} from "react";
+} from 'react';
 import {
   EscolaLMSContextConfig,
   EscolaLMSContextReadConfig,
   ContextStateValue,
-} from "./types";
-import { defaultConfig } from "./defaults";
-import { fetchDataType } from "./states";
-import { useLocalStorage } from "../hooks/useLocalStorage";
-import * as API from "./../../types/api";
-import { getDefaultData } from "./index";
-import { getWebinar } from "./../../services/webinars";
+} from './types';
+import { defaultConfig } from './defaults';
+import { fetchDataType } from './states';
+import { useLocalStorage } from '../hooks/useLocalStorage';
+import * as API from './../../types/api';
+import { getDefaultData } from './index';
+import { getWebinar } from './../../services/webinars';
 
 export const WebinarContext: React.Context<
-  Pick<EscolaLMSContextConfig, "webinar" | "fetchWebinar">
+  Pick<EscolaLMSContextConfig, 'webinar' | 'fetchWebinar'>
 > = createContext({
   webinar: defaultConfig.webinar,
   fetchWebinar: defaultConfig.fetchWebinar,
@@ -26,23 +26,25 @@ export const WebinarContext: React.Context<
 
 export interface WebinarContextProviderType {
   apiUrl: string;
-  defaults?: Partial<Pick<EscolaLMSContextReadConfig, "webinar">>;
+  defaults?: Partial<Pick<EscolaLMSContextReadConfig, 'webinar'>>;
+  ssrHydration?: boolean;
 }
 
 export const WebinarContextProvider: FunctionComponent<
   PropsWithChildren<WebinarContextProviderType>
-> = ({ children, defaults, apiUrl }) => {
+> = ({ children, defaults, apiUrl, ssrHydration }) => {
   const abortControllers = useRef<Record<string, AbortController | null>>({});
 
   const [webinar, setWebinar] = useLocalStorage<
     ContextStateValue<EscolaLms.Webinar.Models.Webinar>
   >(
-    "lms",
-    "webinar",
-    getDefaultData("webinar", {
+    'lms',
+    'webinar',
+    getDefaultData('webinar', {
       ...defaultConfig,
       ...defaults,
-    })
+    }),
+    ssrHydration
   );
 
   const fetchWebinar = useCallback((id: number) => {
@@ -50,7 +52,7 @@ export const WebinarContextProvider: FunctionComponent<
       controllers: abortControllers.current,
       controller: `webinar${id}`,
       id,
-      mode: "value",
+      mode: 'value',
       fetchAction: getWebinar.bind(null, apiUrl)(id, {
         signal: abortControllers.current?.[`webinar${id}`]?.signal,
       }),

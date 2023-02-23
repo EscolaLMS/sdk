@@ -33,11 +33,12 @@ export const TaskContext: React.Context<
 export interface TaskContextProviderType {
   apiUrl: string;
   defaults?: Partial<Pick<EscolaLMSContextReadConfig, 'task'>>;
+  ssrHydration?: boolean;
 }
 
 export const TaskContextProvider: FunctionComponent<
   PropsWithChildren<TaskContextProviderType>
-> = ({ children, defaults, apiUrl }) => {
+> = ({ children, defaults, apiUrl, ssrHydration }) => {
   const { token } = useContext(UserContext);
 
   const abortControllers = useRef<Record<string, AbortController | null>>({});
@@ -48,7 +49,8 @@ export const TaskContextProvider: FunctionComponent<
     getDefaultData('task', {
       ...defaultConfig,
       ...defaults,
-    })
+    }),
+    ssrHydration
   );
 
   const fetchTask = useCallback(
@@ -70,6 +72,8 @@ export const TaskContextProvider: FunctionComponent<
   );
 
   const updateTask = useCallback(
+    // TODO: update task on list and byID once it fine
+    // TODO: what about error ?
     (id: number, data: EscolaLms.Tasks.Http.Requests.UpdateTaskRequest) => {
       return token
         ? postUpdateTask(apiUrl, token, id, data)

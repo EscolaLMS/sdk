@@ -5,22 +5,22 @@ import React, {
   useCallback,
   useRef,
   useEffect,
-} from "react";
+} from 'react';
 import {
   EscolaLMSContextConfig,
   EscolaLMSContextReadConfig,
   ContextListState,
-} from "./types";
-import { defaultConfig } from "./defaults";
-import { fetchDataType } from "./states";
+} from './types';
+import { defaultConfig } from './defaults';
+import { fetchDataType } from './states';
 
-import { useLocalStorage } from "../hooks/useLocalStorage";
-import * as API from "./../../types/api";
-import { getDefaultData } from "./index";
-import { webinars as getWebinars } from "./../../services/webinars";
+import { useLocalStorage } from '../hooks/useLocalStorage';
+import * as API from './../../types/api';
+import { getDefaultData } from './index';
+import { webinars as getWebinars } from './../../services/webinars';
 
 export const WebinarsContext: React.Context<
-  Pick<EscolaLMSContextConfig, "webinars" | "fetchWebinars">
+  Pick<EscolaLMSContextConfig, 'webinars' | 'fetchWebinars'>
 > = createContext({
   webinars: defaultConfig.webinars,
   fetchWebinars: defaultConfig.fetchWebinars,
@@ -28,12 +28,13 @@ export const WebinarsContext: React.Context<
 
 export interface WebinarsContextProviderType {
   apiUrl: string;
-  defaults?: Partial<Pick<EscolaLMSContextReadConfig, "webinars">>;
+  defaults?: Partial<Pick<EscolaLMSContextReadConfig, 'webinars'>>;
+  ssrHydration?: boolean;
 }
 
 export const WebinarsContextProvider: FunctionComponent<
   PropsWithChildren<WebinarsContextProviderType>
-> = ({ children, defaults, apiUrl }) => {
+> = ({ children, defaults, apiUrl, ssrHydration }) => {
   const abortControllers = useRef<Record<string, AbortController | null>>({});
 
   useEffect(() => {
@@ -50,26 +51,27 @@ export const WebinarsContextProvider: FunctionComponent<
   const [webinars, setWebinars] = useLocalStorage<
     ContextListState<EscolaLms.Webinar.Models.Webinar>
   >(
-    "lms",
-    "webinars",
-    getDefaultData("webinars", {
+    'lms',
+    'webinars',
+    getDefaultData('webinars', {
       ...defaultConfig,
       ...defaults,
-    })
+    }),
+    ssrHydration
   );
 
   const fetchWebinars = useCallback((filter: API.WebinarParams) => {
     return fetchDataType<EscolaLms.Webinar.Models.Webinar>({
       controllers: abortControllers.current,
       controller: `webinars/${JSON.stringify(filter)}`,
-      mode: "list",
+      mode: 'list',
       fetchAction: getWebinars.bind(null, apiUrl)(
         filter,
 
         {
           signal:
-          abortControllers.current[`webinars/${JSON.stringify(filter)}`]
-            ?.signal,
+            abortControllers.current[`webinars/${JSON.stringify(filter)}`]
+              ?.signal,
         }
       ),
       setState: setWebinars,

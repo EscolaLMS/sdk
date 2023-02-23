@@ -41,11 +41,12 @@ export const TasksContext: React.Context<
 export interface TasksContextProviderType {
   apiUrl: string;
   defaults?: Partial<Pick<EscolaLMSContextReadConfig, 'tasks'>>;
+  ssrHydration?: boolean;
 }
 
 export const TasksContextProvider: FunctionComponent<
   PropsWithChildren<TasksContextProviderType>
-> = ({ children, defaults, apiUrl }) => {
+> = ({ children, defaults, apiUrl, ssrHydration }) => {
   const abortControllers = useRef<Record<string, AbortController | null>>({});
 
   const { token } = useContext(UserContext);
@@ -69,7 +70,8 @@ export const TasksContextProvider: FunctionComponent<
     getDefaultData('tasks', {
       ...defaultConfig,
       ...defaults,
-    })
+    }),
+    ssrHydration
   );
 
   const fetchTasks = useCallback(

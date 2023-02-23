@@ -5,22 +5,22 @@ import React, {
   useCallback,
   useRef,
   useEffect,
-} from "react";
+} from 'react';
 import {
   EscolaLMSContextConfig,
   EscolaLMSContextReadConfig,
   ContextListState,
-} from "./types";
-import { defaultConfig } from "./defaults";
-import { fetchDataType } from "./states";
+} from './types';
+import { defaultConfig } from './defaults';
+import { fetchDataType } from './states';
 
-import { useLocalStorage } from "../hooks/useLocalStorage";
-import * as API from "./../../types/api";
-import { getDefaultData } from "./index";
-import { tutors as getTutors } from "./../../services/courses";
+import { useLocalStorage } from '../hooks/useLocalStorage';
+import * as API from './../../types/api';
+import { getDefaultData } from './index';
+import { tutors as getTutors } from './../../services/courses';
 
 export const TutorsContext: React.Context<
-  Pick<EscolaLMSContextConfig, "tutors" | "fetchTutors">
+  Pick<EscolaLMSContextConfig, 'tutors' | 'fetchTutors'>
 > = createContext({
   tutors: defaultConfig.tutors,
   fetchTutors: defaultConfig.fetchTutors,
@@ -28,12 +28,13 @@ export const TutorsContext: React.Context<
 
 export interface TutorsContextProviderType {
   apiUrl: string;
-  defaults?: Partial<Pick<EscolaLMSContextReadConfig, "tutors">>;
+  defaults?: Partial<Pick<EscolaLMSContextReadConfig, 'tutors'>>;
+  ssrHydration?: boolean;
 }
 
 export const TutorsContextProvider: FunctionComponent<
   PropsWithChildren<TutorsContextProviderType>
-> = ({ children, defaults, apiUrl }) => {
+> = ({ children, defaults, apiUrl, ssrHydration }) => {
   const abortControllers = useRef<Record<string, AbortController | null>>({});
 
   useEffect(() => {
@@ -48,19 +49,20 @@ export const TutorsContextProvider: FunctionComponent<
   }, [defaults]);
 
   const [tutors, setTutors] = useLocalStorage<ContextListState<API.UserItem>>(
-    "lms",
-    "tutors",
-    getDefaultData("tutors", {
+    'lms',
+    'tutors',
+    getDefaultData('tutors', {
       ...defaultConfig,
       ...defaults,
-    })
+    }),
+    ssrHydration
   );
 
   const fetchTutors = useCallback(() => {
     return fetchDataType<API.UserItem>({
       controllers: abortControllers.current,
       controller: `tutors`,
-      mode: "list",
+      mode: 'list',
       fetchAction: getTutors.bind(
         null,
         apiUrl

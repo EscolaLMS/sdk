@@ -73,11 +73,12 @@ export const UserContext: React.Context<UserContextType> =
 export interface UserContextProviderType {
   apiUrl: string;
   defaults?: Partial<Pick<EscolaLMSContextReadConfig, 'user'>>;
+  ssrHydration?: boolean;
 }
 
 export const UserContextProvider: FunctionComponent<
   PropsWithChildren<UserContextProviderType>
-> = ({ children, defaults, apiUrl }) => {
+> = ({ children, defaults, apiUrl, ssrHydration }) => {
   const abortControllers = useRef<Record<string, AbortController | null>>({});
 
   useEffect(() => {
@@ -92,7 +93,7 @@ export const UserContextProvider: FunctionComponent<
   }, [defaults]);
 
   const [token, setToken] = useLocalStorage<string | null>(
-    'user',
+    'user_token',
     'token',
     null
   );
@@ -103,7 +104,8 @@ export const UserContextProvider: FunctionComponent<
     getDefaultData('user', {
       ...defaultConfig,
       ...defaults,
-    })
+    }),
+    ssrHydration
   );
 
   const logout = useCallback(() => {
