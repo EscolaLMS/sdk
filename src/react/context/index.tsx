@@ -235,7 +235,8 @@ const EscolaLMSContextProviderInner: FunctionComponent<
   const { pages, fetchPages } = useContext(PagesContext);
   const { page, fetchPage } = useContext(PageContext);
   const { tasks, fetchTasks, addTask, deleteTask } = useContext(TasksContext);
-  const { task, fetchTask, updateTask } = useContext(TaskContext);
+  const { task, fetchTask, updateTask, updateTaskStatus } =
+    useContext(TaskContext);
 
   const [consultation, setConsultation] = useLocalStorage<
     ContextStateValue<API.Consultation>
@@ -957,6 +958,10 @@ const EscolaLMSContextProviderInner: FunctionComponent<
     setCertificates(defaultConfig.certificates);
     setNotifications(defaultConfig.notifications);
     setMattermostChannels(defaultConfig.mattermostChannels);
+
+    localStorage.removeItem('user');
+    localStorage.removeItem('user_token');
+    localStorage.removeItem('lms');
   }, [logoutUser]);
 
   const logout = useCallback(() => {
@@ -1703,6 +1708,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
         task,
         fetchTask,
         updateTask,
+        updateTaskStatus,
       }}
     >
       {children}

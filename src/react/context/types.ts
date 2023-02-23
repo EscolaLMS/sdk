@@ -215,6 +215,10 @@ export interface EscolaLMSContextAPIConfig {
     id: number,
     data: EscolaLms.Tasks.Http.Requests.UpdateTaskRequest
   ) => Promise<API.DefaultResponse<API.Task>>;
+  updateTaskStatus: (
+    id: number,
+    done: boolean
+  ) => Promise<API.DefaultResponse<API.Task>>;
 }
 export type EscolaLMSContextConfig = EscolaLMSContextReadConfig &
   EscolaLMSContextAPIConfig;

@@ -266,6 +266,7 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
     id: number,
     data: EscolaLms.Tasks.Http.Requests.UpdateTaskRequest
   ) => Promise.reject(),
+  updateTaskStatus: (id: number, done: boolean) => Promise.reject(id),
 };
 
 export const defaultApiConfig: EscolaLMSContextConfig = {
@@ -507,7 +508,8 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
   updateTask: (
     id: number,
     data: EscolaLms.Tasks.Http.Requests.UpdateTaskRequest
-  ) => Promise.reject(),
+  ) => Promise.reject(id),
+  updateTaskStatus: (id: number, done: boolean) => Promise.reject(id),
 };
 
 export const defaultConfig = Object.assign(

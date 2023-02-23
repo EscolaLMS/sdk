@@ -19,15 +19,24 @@ import { fetchDataType } from './states';
 import { useLocalStorage } from '../hooks/useLocalStorage';
 import * as API from './../../types/api';
 import { getDefaultData } from './index';
-import { getTask, updateTask as postUpdateTask } from './../../services/tasks';
+import {
+  getTask,
+  updateTask as postUpdateTask,
+  completeTask,
+  incompleteTask,
+} from './../../services/tasks';
 import { UserContext } from './user';
 
 export const TaskContext: React.Context<
-  Pick<EscolaLMSContextConfig, 'task' | 'fetchTask' | 'updateTask'>
+  Pick<
+    EscolaLMSContextConfig,
+    'task' | 'fetchTask' | 'updateTask' | 'updateTaskStatus'
+  >
 > = createContext({
   task: defaultConfig.task,
   fetchTask: defaultConfig.fetchTask,
   updateTask: defaultConfig.updateTask,
+  updateTaskStatus: defaultConfig.updateTaskStatus,
 });
 
 export interface TaskContextProviderType {
@@ -82,12 +91,27 @@ export const TaskContextProvider: FunctionComponent<
     [token]
   );
 
+  const updateTaskStatus = useCallback(
+    // TODO: update task on list and byID once it fine
+    // TODO: what about error ?
+    (id: number, done: boolean = true) => {
+      if (!token) {
+        return Promise.reject('noToken');
+      }
+      return done
+        ? completeTask(apiUrl, token, id)
+        : incompleteTask(apiUrl, token, id);
+    },
+    [token]
+  );
+
   return (
     <TaskContext.Provider
       value={{
         task,
         fetchTask,
         updateTask,
+        updateTaskStatus,
       }}
     >
       {children}
