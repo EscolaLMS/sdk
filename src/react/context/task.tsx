@@ -19,25 +19,35 @@ import { fetchDataType } from './states';
 import { useLocalStorage } from '../hooks/useLocalStorage';
 import * as API from './../../types/api';
 import { getDefaultData } from './index';
-import { getTask, updateTask as postUpdateTask } from './../../services/tasks';
+import {
+  getTask,
+  updateTask as postUpdateTask,
+  completeTask,
+  incompleteTask,
+} from './../../services/tasks';
 import { UserContext } from './user';
 
 export const TaskContext: React.Context<
-  Pick<EscolaLMSContextConfig, 'task' | 'fetchTask' | 'updateTask'>
+  Pick<
+    EscolaLMSContextConfig,
+    'task' | 'fetchTask' | 'updateTask' | 'updateTaskStatus'
+  >
 > = createContext({
   task: defaultConfig.task,
   fetchTask: defaultConfig.fetchTask,
   updateTask: defaultConfig.updateTask,
+  updateTaskStatus: defaultConfig.updateTaskStatus,
 });
 
 export interface TaskContextProviderType {
   apiUrl: string;
   defaults?: Partial<Pick<EscolaLMSContextReadConfig, 'task'>>;
+  ssrHydration?: boolean;
 }
 
 export const TaskContextProvider: FunctionComponent<
   PropsWithChildren<TaskContextProviderType>
-> = ({ children, defaults, apiUrl }) => {
+> = ({ children, defaults, apiUrl, ssrHydration }) => {
   const { token } = useContext(UserContext);
 
   const abortControllers = useRef<Record<string, AbortController | null>>({});
@@ -48,7 +58,8 @@ export const TaskContextProvider: FunctionComponent<
     getDefaultData('task', {
       ...defaultConfig,
       ...defaults,
-    })
+    }),
+    ssrHydration
   );
 
   const fetchTask = useCallback(
@@ -70,10 +81,26 @@ export const TaskContextProvider: FunctionComponent<
   );
 
   const updateTask = useCallback(
+    // TODO: update task on list and byID once it fine
+    // TODO: what about error ?
     (id: number, data: EscolaLms.Tasks.Http.Requests.UpdateTaskRequest) => {
       return token
         ? postUpdateTask(apiUrl, token, id, data)
         : Promise.reject('noToken');
+    },
+    [token]
+  );
+
+  const updateTaskStatus = useCallback(
+    // TODO: update task on list and byID once it fine
+    // TODO: what about error ?
+    (id: number, done: boolean = true) => {
+      if (!token) {
+        return Promise.reject('noToken');
+      }
+      return done
+        ? completeTask(apiUrl, token, id)
+        : incompleteTask(apiUrl, token, id);
     },
     [token]
   );
@@ -84,6 +111,7 @@ export const TaskContextProvider: FunctionComponent<
         task,
         fetchTask,
         updateTask,
+        updateTaskStatus,
       }}
     >
       {children}

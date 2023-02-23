@@ -1,15 +1,15 @@
-import React, { useContext, useState } from "react";
-import { act } from "react-dom/test-utils";
-import { EscolaLMSContext } from "./../../src/react/context";
-import { render, fireEvent, waitFor, screen } from "../test-utils";
-import { Login } from "./helpers/login";
-import "@testing-library/jest-dom";
+import React, { useContext, useState } from 'react';
+import { act } from 'react-dom/test-utils';
+import { EscolaLMSContext } from './../../src/react/context';
+import { render, fireEvent, waitFor, screen } from '../test-utils';
+import { Login } from './helpers/login';
+import '@testing-library/jest-dom';
 
-import fakeServer from "../test_server";
+import fakeServer from '../test_server';
 
-import { registerDataSuccess } from "../test_server/auth";
-import { generateDataResponse } from "../test_server/jwt";
-import { dataSuccess } from "../test_server/me";
+import { registerDataSuccess } from '../test_server/auth';
+import { generateDataResponse } from '../test_server/jwt';
+import { dataSuccess } from '../test_server/me';
 
 beforeAll(() => {
   fakeServer();
@@ -27,12 +27,12 @@ const Register = () => {
         onClick={() => [
           setLoading(true),
           register({
-            first_name: "test",
-            last_name: "test",
-            email: "test2@test.pl",
-            password: "Test1234!",
-            password_confirmation: "Test1234!",
-            return_url: "https://demo-stage.escolalms.com",
+            first_name: 'test',
+            last_name: 'test',
+            email: 'test2@test.pl',
+            password: 'Test1234!',
+            password_confirmation: 'Test1234!',
+            return_url: 'https://demo-stage.escolalms.com',
           }).then(() => [setResponse({ success: true }), setLoading(false)]),
         ]}
       >
@@ -43,19 +43,19 @@ const Register = () => {
         onClick={() => [
           setLoading(true),
           register({
-            first_name: "test",
-            last_name: "test",
-            email: "test@test.pl",
-            password: "Test1234!",
-            password_confirmation: "Test1234!",
-            return_url: "https://demo-stage.escolalms.com",
+            first_name: 'test',
+            last_name: 'test',
+            email: 'test@test.pl',
+            password: 'Test1234!',
+            password_confirmation: 'Test1234!',
+            return_url: 'https://demo-stage.escolalms.com',
           }).catch(() => [setResponse({ success: false }), setLoading(false)]),
         ]}
       >
         Register email taken
       </button>
 
-      <div data-testid="register-loading">{loading ? "Loading" : "Loaded"}</div>
+      <div data-testid="register-loading">{loading ? 'Loading' : 'Loaded'}</div>
       {!response.success && <div data-testid="register-error">Error</div>}
       {response.success && <div data-testid="register-success">Registered</div>}
     </div>
@@ -69,14 +69,14 @@ const Forgot = () => {
 
   return (
     <div>
-      <div data-testid="forgot-loading">{loading ? "Loading" : "Loaded"}</div>
+      <div data-testid="forgot-loading">{loading ? 'Loading' : 'Loaded'}</div>
       <button
         data-testid="button-valid"
         onClick={() => [
           setLoading(true),
           forgot({
-            email: "test@test.pl",
-            return_url: "https://demo-stage.escolalms.com",
+            email: 'test@test.pl',
+            return_url: 'https://demo-stage.escolalms.com',
           })
             .then((response) => {
               if (response.success) {
@@ -112,22 +112,22 @@ const UpdateProfile = () => {
         data-testid="update-profile"
         onClick={() =>
           updateProfile({
-            first_name: "Admin",
-            last_name: "Kowalski",
+            first_name: 'Admin',
+            last_name: 'Kowalski',
             age: 30,
             gender: 1,
-            country: "Poland",
-            city: "TestCity",
-            street: "TestStreet",
-            postcode: "00-000",
-            phone: "55544455",
+            country: 'Poland',
+            city: 'TestCity',
+            street: 'TestStreet',
+            postcode: '00-000',
+            phone: '55544455',
           })
         }
       >
         Update profile
       </button>
       <div data-testid="user-loading">
-        {user.loading ? "Loading" : "Loaded"}
+        {user.loading ? 'Loading' : 'Loaded'}
       </div>
       {user.error && <div data-testid="user-error">Error</div>}
       {user.value && (
@@ -139,17 +139,17 @@ const UpdateProfile = () => {
   );
 };
 
-it("checks register logic", async () => {
+it('checks register logic', async () => {
   render(<Register />);
 
   await waitFor(() => {
-    expect(screen.queryByText("Loaded")).toBeInTheDocument();
+    expect(screen.queryByText('Loaded')).toBeInTheDocument();
   });
 
   act(() => {
     fireEvent(
-      screen.getByTestId("button-invalid"),
-      new MouseEvent("click", {
+      screen.getByTestId('button-invalid'),
+      new MouseEvent('click', {
         bubbles: true,
         cancelable: true,
       })
@@ -157,17 +157,17 @@ it("checks register logic", async () => {
   });
 
   await waitFor(() => {
-    expect(screen.queryByText("Loaded")).toBeInTheDocument();
+    expect(screen.queryByText('Loaded')).toBeInTheDocument();
   });
 
   await waitFor(() => {
-    expect(screen.queryByText("Error")).toBeInTheDocument();
+    expect(screen.queryByText('Error')).toBeInTheDocument();
   });
 
   act(() => {
     fireEvent(
-      screen.getByTestId("button-valid"),
-      new MouseEvent("click", {
+      screen.getByTestId('button-valid'),
+      new MouseEvent('click', {
         bubbles: true,
         cancelable: true,
       })
@@ -175,30 +175,30 @@ it("checks register logic", async () => {
   });
 
   await waitFor(() => {
-    expect(screen.queryByText("Error")).not.toBeInTheDocument();
+    expect(screen.queryByText('Error')).not.toBeInTheDocument();
   });
 
   await waitFor(() => {
-    expect(screen.queryByText("Loaded")).toBeInTheDocument();
+    expect(screen.queryByText('Loaded')).toBeInTheDocument();
   });
 
-  expect(screen.getByTestId("register-success")).toHaveTextContent(
+  expect(screen.getByTestId('register-success')).toHaveTextContent(
     registerDataSuccess.message
   );
 });
 
 // reset password test on forgot action
-it("checks forgot logic", async () => {
+it('checks forgot logic', async () => {
   render(<Forgot />);
 
   await waitFor(() => {
-    expect(screen.queryByText("Loaded")).toBeInTheDocument();
+    expect(screen.queryByText('Loaded')).toBeInTheDocument();
   });
 
   act(() => {
     fireEvent(
-      screen.getByTestId("button-valid"),
-      new MouseEvent("click", {
+      screen.getByTestId('button-valid'),
+      new MouseEvent('click', {
         bubbles: true,
         cancelable: true,
       })
@@ -206,23 +206,23 @@ it("checks forgot logic", async () => {
   });
 
   await waitFor(() => {
-    expect(screen.queryByText("Loaded")).toBeInTheDocument();
+    expect(screen.queryByText('Loaded')).toBeInTheDocument();
   });
 
   await waitFor(() => {
-    expect(screen.queryByText("Password reset email sent")).toBeInTheDocument();
+    expect(screen.queryByText('Password reset email sent')).toBeInTheDocument();
   });
 
   await waitFor(() => {
-    expect(screen.queryByText("Error")).not.toBeInTheDocument();
+    expect(screen.queryByText('Error')).not.toBeInTheDocument();
   });
 });
 
-it("checks profile update logic", async () => {
+it('checks profile update logic', async () => {
   const data = generateDataResponse(5);
 
   window.localStorage.setItem(
-    "user",
+    'user_token',
     JSON.stringify({
       token: data.data.token,
     })
@@ -232,13 +232,13 @@ it("checks profile update logic", async () => {
   });
 
   await waitFor(() => {
-    expect(screen.queryByText("Loaded")).toBeInTheDocument();
+    expect(screen.queryByText('Loaded')).toBeInTheDocument();
   });
 
   act(() => {
     fireEvent(
-      screen.getByTestId("update-profile"),
-      new MouseEvent("click", {
+      screen.getByTestId('update-profile'),
+      new MouseEvent('click', {
         bubbles: true,
         cancelable: true,
       })
@@ -246,14 +246,14 @@ it("checks profile update logic", async () => {
   });
 
   await waitFor(() => {
-    expect(screen.queryByText("Error")).not.toBeInTheDocument();
+    expect(screen.queryByText('Error')).not.toBeInTheDocument();
   });
 
   await waitFor(() => {
-    expect(screen.queryByText("Loaded")).toBeInTheDocument();
+    expect(screen.queryByText('Loaded')).toBeInTheDocument();
   });
 
-  expect(screen.getByTestId("user-name")).toHaveTextContent("Admin Kowalski");
+  expect(screen.getByTestId('user-name')).toHaveTextContent('Admin Kowalski');
 });
 
 export {}; // 👈️ if you don't have anything else to export
