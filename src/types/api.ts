@@ -1,42 +1,42 @@
-import { API } from "..";
+import { API } from '..';
 
 export enum TopicType {
-  Unselected = "",
-  RichText = "EscolaLms\\TopicTypes\\Models\\TopicContent\\RichText",
-  OEmbed = "EscolaLms\\TopicTypes\\Models\\TopicContent\\OEmbed",
-  Audio = "EscolaLms\\TopicTypes\\Models\\TopicContent\\Audio",
-  Video = "EscolaLms\\TopicTypes\\Models\\TopicContent\\Video",
-  H5P = "EscolaLms\\TopicTypes\\Models\\TopicContent\\H5P",
-  Image = "EscolaLms\\TopicTypes\\Models\\TopicContent\\Image",
-  Pdf = "EscolaLms\\TopicTypes\\Models\\TopicContent\\PDF",
-  Scorm = "EscolaLms\\TopicTypes\\Models\\TopicContent\\ScormSco",
+  Unselected = '',
+  RichText = 'EscolaLms\\TopicTypes\\Models\\TopicContent\\RichText',
+  OEmbed = 'EscolaLms\\TopicTypes\\Models\\TopicContent\\OEmbed',
+  Audio = 'EscolaLms\\TopicTypes\\Models\\TopicContent\\Audio',
+  Video = 'EscolaLms\\TopicTypes\\Models\\TopicContent\\Video',
+  H5P = 'EscolaLms\\TopicTypes\\Models\\TopicContent\\H5P',
+  Image = 'EscolaLms\\TopicTypes\\Models\\TopicContent\\Image',
+  Pdf = 'EscolaLms\\TopicTypes\\Models\\TopicContent\\PDF',
+  Scorm = 'EscolaLms\\TopicTypes\\Models\\TopicContent\\ScormSco',
 }
 
 export enum PaymentStatusType {
-  NEW = "new",
-  PAID = "paid",
-  CANCELLED = "cancelled",
+  NEW = 'new',
+  PAID = 'paid',
+  CANCELLED = 'cancelled',
 }
 
 export type IEvent =
-  | "http://adlnet.gov/expapi/verbs/experienced"
-  | "http://adlnet.gov/expapi/verbs/attended"
-  | "http://adlnet.gov/expapi/verbs/attempted"
-  | "http://adlnet.gov/expapi/verbs/completed"
-  | "http://adlnet.gov/expapi/verbs/passed"
-  | "http://adlnet.gov/expapi/verbs/failed"
-  | "http://adlnet.gov/expapi/verbs/answered"
-  | "http://adlnet.gov/expapi/verbs/interacted"
-  | "http://adlnet.gov/expapi/verbs/imported"
-  | "http://adlnet.gov/expapi/verbs/created"
-  | "http://adlnet.gov/expapi/verbs/shared"
-  | "http://adlnet.gov/expapi/verbs/voided"
-  | "http://activitystrea.ms/schema/1.0/consume"
-  | "http://adlnet.gov/expapi/verbs/mastered";
+  | 'http://adlnet.gov/expapi/verbs/experienced'
+  | 'http://adlnet.gov/expapi/verbs/attended'
+  | 'http://adlnet.gov/expapi/verbs/attempted'
+  | 'http://adlnet.gov/expapi/verbs/completed'
+  | 'http://adlnet.gov/expapi/verbs/passed'
+  | 'http://adlnet.gov/expapi/verbs/failed'
+  | 'http://adlnet.gov/expapi/verbs/answered'
+  | 'http://adlnet.gov/expapi/verbs/interacted'
+  | 'http://adlnet.gov/expapi/verbs/imported'
+  | 'http://adlnet.gov/expapi/verbs/created'
+  | 'http://adlnet.gov/expapi/verbs/shared'
+  | 'http://adlnet.gov/expapi/verbs/voided'
+  | 'http://activitystrea.ms/schema/1.0/consume'
+  | 'http://adlnet.gov/expapi/verbs/mastered';
 
 export type IStatementCategory = {
   id: string;
-  objectType: "string";
+  objectType: 'string';
 };
 
 export type IScore = {
@@ -67,9 +67,9 @@ export type IStatement = {
 };
 
 export type IEventException =
-  | "GuessTheAnswer"
-  | "Questionnaire"
-  | "QuestionSet";
+  | 'GuessTheAnswer'
+  | 'Questionnaire'
+  | 'QuestionSet';
 
 export type Category = {
   id: number;
@@ -270,7 +270,7 @@ export type UserGroupList = DefaultMetaResponse<UserGroup>;
 
 export type Consultation = EscolaLms.Consultations.Models.Consultation & {
   product?: Product;
-  executed_status?: null | "reported" | "not_reported" | "reject" | "approved";
+  executed_status?: null | 'reported' | 'not_reported' | 'reject' | 'approved';
   executed_at?: string;
   consultation_term_id?: number;
   is_ended?: boolean;
@@ -321,7 +321,7 @@ export type CartItem = EscolaLms.Cart.Models.CartItem & {
 
 export type PaginationParams = {
   order_by?: string;
-  order?: "ASC" | "DESC";
+  order?: 'ASC' | 'DESC';
   page?: number;
   per_page?: number;
 };
@@ -430,11 +430,11 @@ export type User = {
 export type UserItem = Partial<
   Exclude<
     EscolaLms.Auth.Models.User,
-    | "password"
-    | "remember_token"
-    | "password_reset_token"
-    | "email_verified_at"
-    | "is_active"
+    | 'password'
+    | 'remember_token'
+    | 'password_reset_token'
+    | 'email_verified_at'
+    | 'is_active'
   >
 > & {
   // id: number;
@@ -453,7 +453,7 @@ export type UserItem = Partial<
   interests?: Array<EscolaLms.Categories.Models.Category> | null | never[];
 };
 
-export type UserAsProfile = Omit<UserItem, "roles"> & {
+export type UserAsProfile = Omit<UserItem, 'roles'> & {
   roles: string[];
 };
 
@@ -469,7 +469,7 @@ export type UpdateUserDetails = {
   phone?: string;
 };
 
-export type Lesson = {
+export type Lesson = EscolaLms.Courses.Models.Lesson & {
   id: number;
   created_at: string;
   title: string;
@@ -749,7 +749,7 @@ export type SCORM = {
   id: number;
   resource_type: null;
   resource_id: number;
-  version: "scorm_12" | "scorm_2004";
+  version: 'scorm_12' | 'scorm_2004';
   hash_name: string;
   origin_file: string;
   origin_file_mime: string;
@@ -869,8 +869,8 @@ export type UserGroupsParams = {
 };
 
 export enum EventTypes {
-  OrderPaid = "EscolaLms\\Cart\\Events\\OrderPaid",
-  UserLogged = "EscolaLms\\Auth\\Events\\UserLogged",
+  OrderPaid = 'EscolaLms\\Cart\\Events\\OrderPaid',
+  UserLogged = 'EscolaLms\\Auth\\Events\\UserLogged',
 }
 
 export type Notification = {
@@ -1078,9 +1078,9 @@ export type InvoiceData = {
 export type TasksList = DefaultMetaResponse<Task>;
 
 export type TaskRelatedType =
-  | "EscolaLMS\\Courses\\Course"
-  | "EscolaLMS\\Courses\\Topic"
-  | "EscolaLMS\\Courses\\Lesson";
+  | 'EscolaLMS\\Courses\\Course'
+  | 'EscolaLMS\\Courses\\Topic'
+  | 'EscolaLMS\\Courses\\Lesson';
 
 export type TaskNote = {
   note: string;

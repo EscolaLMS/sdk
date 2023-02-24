@@ -1140,22 +1140,60 @@ const EscolaLMSContextProviderInner: FunctionComponent<
     [token]
   );
 
+  // TODO move this do separate file/context
+
   const fetchProgram = useCallback(
     (id: number) => {
-      setProgram((prevState) => ({ ...prevState, loading: true }));
+      setProgram((prevState) => ({
+        ...prevState,
+        loading: true,
+        byId: prevState.byId
+          ? {
+              ...prevState.byId,
+              [id]: {
+                ...prevState.byId[id],
+                loading: true,
+              },
+            }
+          : { [id]: { loading: true } },
+      }));
       return getCourseProgram
         .bind(null, apiUrl)(id, token)
         .then((response) => {
           if (response.success) {
-            setProgram({
+            const sortedLessons = sortProgram(response.data.lessons);
+            setProgram((prevState) => ({
               loading: false,
               value: {
                 ...response.data,
-                lessons: sortProgram(response.data.lessons),
+                lessons: sortedLessons,
               },
-            });
+              byId: prevState.byId
+                ? {
+                    ...prevState.byId,
+                    [id]: {
+                      value: {
+                        ...response.data,
+                        lessons: sortedLessons,
+                      },
+                      loading: false,
+                      error: undefined,
+                    },
+                  }
+                : {
+                    [id]: {
+                      value: {
+                        ...response.data,
+                        lessons: sortedLessons,
+                      },
+                      loading: false,
+                      error: undefined,
+                    },
+                  },
+            }));
           }
           if (response.success === false) {
+            // TODO add errors to by id or just move this to starndard context like everyother stufff
             setProgram((prevState) => ({
               ...prevState,
               loading: false,
