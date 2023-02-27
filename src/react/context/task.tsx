@@ -25,18 +25,32 @@ import {
   completeTask,
   incompleteTask,
 } from './../../services/tasks';
+import {
+  createTaskNote as postCreateTaskNote,
+  updateTaskNote as patchUpdateTaskNote,
+  deleteTaskNote as deleteDeleteTaskNote,
+} from '../../services/task_notes';
 import { UserContext } from './user';
 
 export const TaskContext: React.Context<
   Pick<
     EscolaLMSContextConfig,
-    'task' | 'fetchTask' | 'updateTask' | 'updateTaskStatus'
+    | 'task'
+    | 'fetchTask'
+    | 'updateTask'
+    | 'updateTaskStatus'
+    | 'createTaskNote'
+    | 'updateTaskNote'
+    | 'deleteTaskNote'
   >
 > = createContext({
   task: defaultConfig.task,
   fetchTask: defaultConfig.fetchTask,
   updateTask: defaultConfig.updateTask,
   updateTaskStatus: defaultConfig.updateTaskStatus,
+  createTaskNote: defaultConfig.createTaskNote,
+  updateTaskNote: defaultConfig.updateTaskNote,
+  deleteTaskNote: defaultConfig.deleteTaskNote,
 });
 
 export interface TaskContextProviderType {
@@ -105,6 +119,48 @@ export const TaskContextProvider: FunctionComponent<
     [token]
   );
 
+  const createTaskNote = useCallback(
+    // TODO: update task on list and byID once it fine
+    // TODO: what about error ?
+    (id: number, note: string) => {
+      if (!token) {
+        return Promise.reject('noToken');
+      }
+      return postCreateTaskNote(apiUrl, token, {
+        task_id: id,
+        note,
+      });
+    },
+    [token]
+  );
+
+  const updateTaskNote = useCallback(
+    // TODO: update task on list and byID once it fine
+    // TODO: what about error ?
+    (taskId: number, taskNoteId: number, note: string) => {
+      if (!token) {
+        return Promise.reject('noToken');
+      }
+      return patchUpdateTaskNote(apiUrl, token, taskNoteId, {
+        task_id: taskId,
+        note,
+      });
+    },
+    [token]
+  );
+
+  const deleteTaskNote = useCallback(
+    // TODO: update task on list and byID once it fine
+    // TODO: what about error ?
+    (taskNoteId: number) => {
+      if (!token) {
+        return Promise.reject('noToken');
+      }
+      return deleteDeleteTaskNote(apiUrl, token, taskNoteId);
+    },
+    [token]
+  );
+
   return (
     <TaskContext.Provider
       value={{
@@ -112,6 +168,9 @@ export const TaskContextProvider: FunctionComponent<
         fetchTask,
         updateTask,
         updateTaskStatus,
+        createTaskNote,
+        updateTaskNote,
+        deleteTaskNote,
       }}
     >
       {children}

@@ -267,6 +267,10 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
     data: EscolaLms.Tasks.Http.Requests.UpdateTaskRequest
   ) => Promise.reject(),
   updateTaskStatus: (id: number, done: boolean) => Promise.reject(id),
+  createTaskNote: (id: number, note: string) => Promise.reject(id),
+  updateTaskNote: (id: number, taskNoteId: number, note: string) =>
+    Promise.reject(id),
+  deleteTaskNote: (taskNoteId: number) => Promise.reject(taskNoteId),
 };
 
 export const defaultApiConfig: EscolaLMSContextConfig = {
@@ -510,6 +514,10 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
     data: EscolaLms.Tasks.Http.Requests.UpdateTaskRequest
   ) => Promise.reject(id),
   updateTaskStatus: (id: number, done: boolean) => Promise.reject(id),
+  createTaskNote: (id: number, note: string) => Promise.reject(id),
+  updateTaskNote: (id: number, taskNoteId: number, note: string) =>
+    Promise.reject(id),
+  deleteTaskNote: (taskNoteId: number) => Promise.reject(taskNoteId),
 };
 
 export const defaultConfig = Object.assign(

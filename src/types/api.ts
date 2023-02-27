@@ -1082,7 +1082,7 @@ export type TaskRelatedType =
   | 'EscolaLMS\\Courses\\Topic'
   | 'EscolaLMS\\Courses\\Lesson';
 
-export type TaskNote = {
+export type TaskNote = EscolaLms.Tasks.Models.TaskNote & {
   note: string;
 };
 
