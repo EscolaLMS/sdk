@@ -235,8 +235,15 @@ const EscolaLMSContextProviderInner: FunctionComponent<
   const { pages, fetchPages } = useContext(PagesContext);
   const { page, fetchPage } = useContext(PageContext);
   const { tasks, fetchTasks, addTask, deleteTask } = useContext(TasksContext);
-  const { task, fetchTask, updateTask, updateTaskStatus } =
-    useContext(TaskContext);
+  const {
+    task,
+    fetchTask,
+    updateTask,
+    updateTaskStatus,
+    createTaskNote,
+    updateTaskNote,
+    deleteTaskNote,
+  } = useContext(TaskContext);
 
   const [consultation, setConsultation] = useLocalStorage<
     ContextStateValue<API.Consultation>
@@ -1747,6 +1754,9 @@ const EscolaLMSContextProviderInner: FunctionComponent<
         fetchTask,
         updateTask,
         updateTaskStatus,
+        createTaskNote,
+        updateTaskNote,
+        deleteTaskNote,
       }}
     >
       {children}

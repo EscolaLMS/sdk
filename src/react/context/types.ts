@@ -219,6 +219,19 @@ export interface EscolaLMSContextAPIConfig {
     id: number,
     done: boolean
   ) => Promise<API.DefaultResponse<API.Task>>;
+
+  createTaskNote: (
+    id: number,
+    note: string
+  ) => Promise<API.DefaultResponse<API.TaskNote>>;
+  updateTaskNote: (
+    id: number,
+    taskNoteId: number,
+    note: string
+  ) => Promise<API.DefaultResponse<API.TaskNote>>;
+  deleteTaskNote: (
+    taskNoteId: number
+  ) => Promise<API.DefaultResponse<API.TaskNote>>;
 }
 export type EscolaLMSContextConfig = EscolaLMSContextReadConfig &
   EscolaLMSContextAPIConfig;
