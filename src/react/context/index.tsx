@@ -115,7 +115,10 @@ import {
 import { UserContext, UserContextProvider } from './user';
 import { TasksContext, TasksContextProvider } from './tasks';
 import { TaskContext, TaskContextProvider } from './task';
-import { CourseAccessContext } from './course_access';
+import {
+  CourseAccessContext,
+  CourseAccessContextProvider,
+} from './course_access';
 
 export const SCORMPlayer: React.FC<{
   uuid: string;
@@ -1798,13 +1801,15 @@ export const EscolaLMSContextProvider: FunctionComponent<
                     <ConsultationsContextProvider {...contextProps}>
                       <PagesContextProvider {...contextProps}>
                         <PageContextProvider {...contextProps}>
-                          <TasksContextProvider {...contextProps}>
-                            <TaskContextProvider {...contextProps}>
-                              <EscolaLMSContextProviderInner {...props}>
-                                {children}
-                              </EscolaLMSContextProviderInner>
-                            </TaskContextProvider>
-                          </TasksContextProvider>
+                          <CourseAccessContextProvider {...contextProps}>
+                            <TasksContextProvider {...contextProps}>
+                              <TaskContextProvider {...contextProps}>
+                                <EscolaLMSContextProviderInner {...props}>
+                                  {children}
+                                </EscolaLMSContextProviderInner>
+                              </TaskContextProvider>
+                            </TasksContextProvider>
+                          </CourseAccessContextProvider>
                         </PageContextProvider>
                       </PagesContextProvider>
                     </ConsultationsContextProvider>
