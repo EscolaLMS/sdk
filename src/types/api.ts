@@ -171,7 +171,7 @@ export type PaginatedMetaList<Model> = {
 
 export type PaginatedListParams = {
   current_page: number;
-  total: number;
+  total?: number;
   per_page: number;
 };
 
@@ -1100,3 +1100,19 @@ export type Task =
     });
 
 export type TaskParams = PageParams;
+
+export type CourseAccessEnquiryList = DefaultMetaResponse<CourseAccessEnquiry>;
+
+export type CourseAccessEnquiry =
+  EscolaLms.CourseAccess.Models.CourseAccessEnquiry & {
+    data?: object;
+  };
+
+export type CourseAccessEnquiryStatus = 'pending' | 'approved';
+
+export type CourseAccessEnquiryListParams =
+  EscolaLms.CourseAccess.Http.Requests.ListCourseAccessEnquiryRequest &
+    PaginatedListParams & {
+      course_id?: number;
+      status?: CourseAccessEnquiryStatus;
+    };
