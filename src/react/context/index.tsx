@@ -115,6 +115,7 @@ import {
 import { UserContext, UserContextProvider } from './user';
 import { TasksContext, TasksContextProvider } from './tasks';
 import { TaskContext, TaskContextProvider } from './task';
+import { CourseAccessContext } from './course_access';
 
 export const SCORMPlayer: React.FC<{
   uuid: string;
@@ -244,6 +245,13 @@ const EscolaLMSContextProviderInner: FunctionComponent<
     updateTaskNote,
     deleteTaskNote,
   } = useContext(TaskContext);
+
+  const {
+    courseAccess,
+    fetchCourseAccess,
+    addCourseAccess,
+    deleteCourseAccess,
+  } = useContext(CourseAccessContext);
 
   const [consultation, setConsultation] = useLocalStorage<
     ContextStateValue<API.Consultation>
@@ -1746,6 +1754,12 @@ const EscolaLMSContextProviderInner: FunctionComponent<
         changeConsultationTerm,
         fetchProducts,
         fetchProduct,
+
+        courseAccess,
+        fetchCourseAccess,
+        addCourseAccess,
+        deleteCourseAccess,
+
         tasks,
         fetchTasks,
         addTask,

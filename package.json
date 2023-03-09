@@ -3,7 +3,7 @@
   "version": "0.4.35",
   "private": false,
   "dependencies": {
-    "@escolalms/ts-models": "^0.0.29",
+    "@escolalms/ts-models": "^0.0.30",
     "jssha": "^3.2.0",
     "react": "^17||^18",
     "react-dom": "^17||^18",

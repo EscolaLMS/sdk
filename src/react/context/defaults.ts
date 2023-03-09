@@ -255,6 +255,14 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
     loading: false,
   },
   fetchTasks: (filter: API.TaskParams) => Promise.reject(),
+  courseAccess: {
+    loading: false,
+  },
+  fetchCourseAccess: (filter?: API.CourseAccessEnquiryListParams) =>
+    Promise.reject(),
+  addCourseAccess: (data: API.CourseAccessEnquiryCreateRequest) =>
+    Promise.reject(),
+  deleteCourseAccess: (id: number) => Promise.reject(),
   task: {
     loading: false,
   },
@@ -502,6 +510,16 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
     loading: false,
   },
   fetchTasks: (filter: API.TaskParams) => Promise.reject(),
+
+  courseAccess: {
+    loading: false,
+  },
+  fetchCourseAccess: (filter?: API.CourseAccessEnquiryListParams) =>
+    Promise.reject(),
+  deleteCourseAccess: (id: number) => Promise.reject(),
+  addCourseAccess: (data: API.CourseAccessEnquiryCreateRequest) =>
+    Promise.reject(),
+
   task: {
     loading: false,
   },

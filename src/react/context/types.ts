@@ -84,6 +84,7 @@ export interface EscolaLMSContextReadConfig {
   userStationaryEvents: ContextListState<API.StationaryEvent>;
   tasks: ContextPaginatedMetaState<API.Task>;
   task: ContextStateValue<API.Task>;
+  courseAccess: ContextPaginatedMetaState<API.CourseAccessEnquiry>;
 }
 
 export interface EscolaLMSContextAPIConfig {
@@ -206,6 +207,17 @@ export interface EscolaLMSContextAPIConfig {
     newDate: string
   ) => Promise<API.DefaultResponse<object>>;
   fetchTasks: (filter: API.TaskParams) => Promise<void>;
+  fetchCourseAccess: (
+    filter?: API.CourseAccessEnquiryListParams
+  ) => Promise<void>;
+
+  addCourseAccess: (
+    data: API.CourseAccessEnquiryCreateRequest
+  ) => Promise<API.DefaultResponse<API.CourseAccessEnquiry>>;
+  deleteCourseAccess: (
+    id: number
+  ) => Promise<API.DefaultResponse<API.CourseAccessEnquiry>>;
+
   addTask: (
     data: EscolaLms.Tasks.Http.Requests.CreateTaskRequest
   ) => Promise<API.DefaultResponse<API.Task>>;
