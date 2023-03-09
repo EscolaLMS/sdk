@@ -212,10 +212,8 @@ export interface EscolaLMSContextAPIConfig {
   ) => Promise<void>;
 
   addCourseAccess: (
-    data: EscolaLms.CourseAccess.Http.Requests.CreateCourseAccessEnquiryApiRequest & {
-      data: object;
-    }
-  ) => Promise<API.DefaultResponse<API.Task>>;
+    data: API.CourseAccessEnquiryCreateRequest
+  ) => Promise<API.DefaultResponse<API.CourseAccessEnquiry>>;
   deleteCourseAccess: (
     id: number
   ) => Promise<API.DefaultResponse<API.CourseAccessEnquiry>>;

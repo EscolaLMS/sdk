@@ -51,9 +51,7 @@ export async function deleteCourseAccess(
 export async function createCourseAccess(
   apiUrl: string,
   token: string,
-  body: EscolaLms.CourseAccess.Http.Requests.CreateCourseAccessEnquiryApiRequest & {
-    data?: object;
-  },
+  body: API.CourseAccessEnquiryCreateRequest,
   options?: RequestOptionsInit
 ) {
   return request<API.DefaultResponse<API.CourseAccessEnquiry>>(

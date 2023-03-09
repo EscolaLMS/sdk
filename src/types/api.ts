@@ -1116,3 +1116,8 @@ export type CourseAccessEnquiryListParams =
       course_id?: number;
       status?: CourseAccessEnquiryStatus;
     };
+
+export type CourseAccessEnquiryCreateRequest =
+  EscolaLms.CourseAccess.Http.Requests.CreateCourseAccessEnquiryApiRequest & {
+    data?: object;
+  };

@@ -103,11 +103,7 @@ export const CourseAccessContextProvider: FunctionComponent<
   );
 
   const addCourseAccess = useCallback(
-    (
-      data: EscolaLms.CourseAccess.Http.Requests.CreateCourseAccessEnquiryApiRequest & {
-        data?: object;
-      }
-    ) => {
+    (data: API.CourseAccessEnquiryCreateRequest) => {
       return token
         ? createCourseAccess(apiUrl, token, data)
         : Promise.reject('noToken');
