@@ -208,7 +208,7 @@ export interface EscolaLMSContextAPIConfig {
   ) => Promise<API.DefaultResponse<object>>;
   fetchTasks: (filter: API.TaskParams) => Promise<void>;
   fetchCourseAccess: (
-    filter: API.CourseAccessEnquiryListParams
+    filter?: API.CourseAccessEnquiryListParams
   ) => Promise<void>;
 
   addCourseAccess: (
