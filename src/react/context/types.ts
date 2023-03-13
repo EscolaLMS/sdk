@@ -42,6 +42,7 @@ export enum FontSize {
 }
 
 export interface EscolaLMSContextReadConfig {
+  token?: string | null;
   courses: ContextPaginatedMetaState<API.CourseListItem>;
   userGroup: ContextStateValue<API.UserGroup>;
   userGroups: ContextPaginatedMetaState<API.UserGroup>;

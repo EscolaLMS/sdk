@@ -369,6 +369,7 @@ export type FieldsParams = {
 export type LoginRequest = {
   email: string;
   password: string;
+  remember_me?: 1 | 0;
 };
 
 export type LoginResponse = DefaultResponse<{

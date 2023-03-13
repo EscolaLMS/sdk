@@ -1641,6 +1641,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
   return (
     <EscolaLMSContext.Provider
       value={{
+        token,
         apiUrl,
         courses,
         course,

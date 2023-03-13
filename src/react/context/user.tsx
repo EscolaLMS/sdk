@@ -72,7 +72,7 @@ export const UserContext: React.Context<UserContextType> =
 
 export interface UserContextProviderType {
   apiUrl: string;
-  defaults?: Partial<Pick<EscolaLMSContextReadConfig, 'user'>>;
+  defaults?: Partial<Pick<EscolaLMSContextReadConfig, 'user' | 'token'>>;
   ssrHydration?: boolean;
 }
 
@@ -95,7 +95,7 @@ export const UserContextProvider: FunctionComponent<
   const [token, setToken] = useLocalStorage<string | null>(
     'user_token',
     'token',
-    null
+    defaults?.token ?? null
   );
 
   const [user, setUser] = useLocalStorage<ContextStateValue<API.UserAsProfile>>(
