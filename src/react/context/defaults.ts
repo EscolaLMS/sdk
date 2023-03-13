@@ -280,10 +280,6 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
     data: API.ConsultationsAccessEnquiryUpdateRequest
   ) => Promise.reject(),
 
-  task: {
-    loading: false,
-  },
-
   fetchTask: (id: number) => Promise.reject(),
   deleteTask: (id: number) => Promise.reject(),
   addTask: (data: EscolaLms.Tasks.Http.Requests.CreateTaskRequest) =>
