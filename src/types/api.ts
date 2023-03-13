@@ -369,6 +369,7 @@ export type FieldsParams = {
 export type LoginRequest = {
   email: string;
   password: string;
+  remember_me?: 1 | 0;
 };
 
 export type LoginResponse = DefaultResponse<{
@@ -383,7 +384,7 @@ export type RegisterRequest = {
   first_name: string;
   last_name: string;
   return_url: string;
-};
+} & Record<string, string | number | boolean>;
 
 export type RegisterResponse =
   | {
@@ -467,7 +468,7 @@ export type UpdateUserDetails = {
   street?: string;
   postcode?: string;
   phone?: string;
-};
+} & Record<string, string | number | boolean>;
 
 export type Lesson = EscolaLms.Courses.Models.Lesson & {
   id: number;
