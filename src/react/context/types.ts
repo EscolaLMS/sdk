@@ -86,6 +86,7 @@ export interface EscolaLMSContextReadConfig {
   tasks: ContextPaginatedMetaState<API.Task>;
   task: ContextStateValue<API.Task>;
   courseAccess: ContextPaginatedMetaState<API.CourseAccessEnquiry>;
+  consultationAccess: ContextPaginatedMetaState<API.ConsultationsAccessEnquiry>;
 }
 
 export interface EscolaLMSContextAPIConfig {
@@ -211,13 +212,26 @@ export interface EscolaLMSContextAPIConfig {
   fetchCourseAccess: (
     filter?: API.CourseAccessEnquiryListParams
   ) => Promise<void>;
-
   addCourseAccess: (
     data: API.CourseAccessEnquiryCreateRequest
   ) => Promise<API.DefaultResponse<API.CourseAccessEnquiry>>;
   deleteCourseAccess: (
     id: number
   ) => Promise<API.DefaultResponse<API.CourseAccessEnquiry>>;
+
+  fetchConsultationAccess: (
+    filter?: API.CourseAccessEnquiryListParams
+  ) => Promise<void>;
+  addConsultationAccess: (
+    data: API.ConsultationsAccessEnquiryCreateRequest
+  ) => Promise<API.DefaultResponse<API.ConsultationsAccessEnquiry>>;
+  deleteConsultationAccess: (
+    id: number
+  ) => Promise<API.DefaultResponse<API.ConsultationsAccessEnquiry>>;
+  updateConsultationAccess: (
+    id: number,
+    data: API.ConsultationsAccessEnquiryUpdateRequest
+  ) => Promise<API.DefaultResponse<API.ConsultationsAccessEnquiry>>;
 
   addTask: (
     data: EscolaLms.Tasks.Http.Requests.CreateTaskRequest
