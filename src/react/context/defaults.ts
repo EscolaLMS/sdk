@@ -266,6 +266,24 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
   task: {
     loading: false,
   },
+
+  consultationAccess: {
+    loading: false,
+  },
+  fetchConsultationAccess: (filter?: API.CourseAccessEnquiryListParams) =>
+    Promise.reject(),
+  addConsultationAccess: (data: API.ConsultationsAccessEnquiryCreateRequest) =>
+    Promise.reject(),
+  deleteConsultationAccess: (id: number) => Promise.reject(),
+  updateConsultationAccess: (
+    id: number,
+    data: API.ConsultationsAccessEnquiryUpdateRequest
+  ) => Promise.reject(),
+
+  task: {
+    loading: false,
+  },
+
   fetchTask: (id: number) => Promise.reject(),
   deleteTask: (id: number) => Promise.reject(),
   addTask: (data: EscolaLms.Tasks.Http.Requests.CreateTaskRequest) =>
@@ -519,6 +537,19 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
   deleteCourseAccess: (id: number) => Promise.reject(),
   addCourseAccess: (data: API.CourseAccessEnquiryCreateRequest) =>
     Promise.reject(),
+
+  consultationAccess: {
+    loading: false,
+  },
+  fetchConsultationAccess: (filter?: API.ConsultationsAccessEnquiryParams) =>
+    Promise.reject(),
+  deleteConsultationAccess: (id: number) => Promise.reject(),
+  addConsultationAccess: (data: API.ConsultationsAccessEnquiryCreateRequest) =>
+    Promise.reject(),
+  updateConsultationAccess: (
+    id: number,
+    data: API.ConsultationsAccessEnquiryUpdateRequest
+  ) => Promise.reject(),
 
   task: {
     loading: false,

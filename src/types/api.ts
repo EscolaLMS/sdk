@@ -1122,3 +1122,28 @@ export type CourseAccessEnquiryCreateRequest =
   EscolaLms.CourseAccess.Http.Requests.CreateCourseAccessEnquiryApiRequest & {
     data?: object;
   };
+
+export type ConsultationsAccessEnquiry =
+  EscolaLms.ConsultationAccess.Models.ConsultationAccessEnquiry;
+
+export type ConsultationsAccessEnquiryTerm =
+  EscolaLms.ConsultationAccess.Models.ConsultationAccessEnquiryProposedTerm;
+
+export type ConsultationsAccessEnquiryParams =
+  EscolaLms.ConsultationAccess.Http.Requests.ListConsultationAccessEnquiryRequest &
+    PaginatedListParams;
+
+export type ConsultationsAccessEnquiryList =
+  DefaultMetaResponse<ConsultationsAccessEnquiry>;
+
+export type ConsultationsAccessEnquiryCreateRequest =
+  EscolaLms.ConsultationAccess.Http.Requests.CreateConsultationAccessEnquiryRequest & {
+    description?: string;
+  };
+
+export type ConsultationsAccessEnquiryUpdateRequest = Omit<
+  EscolaLms.ConsultationAccess.Http.Requests.CreateConsultationAccessEnquiryRequest,
+  'consultation_id'
+> & {
+  description?: string;
+};

@@ -119,6 +119,10 @@ import {
   CourseAccessContext,
   CourseAccessContextProvider,
 } from './course_access';
+import {
+  ConsultationAccessContext,
+  ConsultationAccessContextProvider,
+} from './consultations_access';
 
 export const SCORMPlayer: React.FC<{
   uuid: string;
@@ -255,6 +259,14 @@ const EscolaLMSContextProviderInner: FunctionComponent<
     addCourseAccess,
     deleteCourseAccess,
   } = useContext(CourseAccessContext);
+
+  const {
+    consultationAccess,
+    fetchConsultationAccess,
+    addConsultationAccess,
+    deleteConsultationAccess,
+    updateConsultationAccess,
+  } = useContext(ConsultationAccessContext);
 
   const [consultation, setConsultation] = useLocalStorage<
     ContextStateValue<API.Consultation>
@@ -1764,6 +1776,12 @@ const EscolaLMSContextProviderInner: FunctionComponent<
         addCourseAccess,
         deleteCourseAccess,
 
+        consultationAccess,
+        fetchConsultationAccess,
+        addConsultationAccess,
+        deleteConsultationAccess,
+        updateConsultationAccess,
+
         tasks,
         fetchTasks,
         addTask,
@@ -1802,15 +1820,17 @@ export const EscolaLMSContextProvider: FunctionComponent<
                     <ConsultationsContextProvider {...contextProps}>
                       <PagesContextProvider {...contextProps}>
                         <PageContextProvider {...contextProps}>
-                          <CourseAccessContextProvider {...contextProps}>
-                            <TasksContextProvider {...contextProps}>
-                              <TaskContextProvider {...contextProps}>
-                                <EscolaLMSContextProviderInner {...props}>
-                                  {children}
-                                </EscolaLMSContextProviderInner>
-                              </TaskContextProvider>
-                            </TasksContextProvider>
-                          </CourseAccessContextProvider>
+                          <ConsultationAccessContextProvider {...contextProps}>
+                            <CourseAccessContextProvider {...contextProps}>
+                              <TasksContextProvider {...contextProps}>
+                                <TaskContextProvider {...contextProps}>
+                                  <EscolaLMSContextProviderInner {...props}>
+                                    {children}
+                                  </EscolaLMSContextProviderInner>
+                                </TaskContextProvider>
+                              </TasksContextProvider>
+                            </CourseAccessContextProvider>
+                          </ConsultationAccessContextProvider>
                         </PageContextProvider>
                       </PagesContextProvider>
                     </ConsultationsContextProvider>
