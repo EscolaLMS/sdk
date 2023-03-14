@@ -262,6 +262,8 @@ const EscolaLMSContextProviderInner: FunctionComponent<
     fetchCourseAccess,
     addCourseAccess,
     deleteCourseAccess,
+    myCourses,
+    fetchMyCourses,
   } = useContext(CourseAccessContext);
 
   const {
@@ -1727,6 +1729,8 @@ const EscolaLMSContextProviderInner: FunctionComponent<
         fetchCourseAccess,
         addCourseAccess,
         deleteCourseAccess,
+        myCourses,
+        fetchMyCourses,
 
         consultationAccess,
         fetchConsultationAccess,

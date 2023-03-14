@@ -25,6 +25,23 @@ export async function courseAccess(
   );
 }
 
+export async function myCourses(
+  apiUrl: string,
+  token: string,
+  options?: RequestOptionsInit
+) {
+  return request<API.DefaultResponse<number[]>>(`${apiUrl}/api/courses/my`, {
+    method: 'GET',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+      'Current-timezone': currentTimezone(),
+    },
+    ...(options || {}),
+  });
+}
+
 /**  DELETE /api/course-access-enquiries/:id */
 export async function deleteCourseAccess(
   apiUrl: string,
