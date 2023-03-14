@@ -8,20 +8,17 @@ export async function getNotifications(
   params: API.PageParams & API.PaginationParams = { per_page: 15, page: 1 },
   options?: Record<string, any>
 ) {
-  return request<API.DefaultResponse<API.Notification[]>>(
-    `${apiUrl}/api/notifications`,
-    {
-      method: 'GET',
-      params,
-      /* useCache: true */ useCache: false,
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-        'Current-timezone': currentTimezone(),
-      },
-      ...(options || {}),
-    }
-  );
+  return request<API.NotificationList>(`${apiUrl}/api/notifications`, {
+    method: 'GET',
+    params,
+    /* useCache: true */ useCache: false,
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+      'Current-timezone': currentTimezone(),
+    },
+    ...(options || {}),
+  });
 }
 
 export async function readNotification(

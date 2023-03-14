@@ -66,7 +66,7 @@ export interface EscolaLMSContextReadConfig {
   pages: ContextPaginatedMetaState<API.PageListItem>;
   page: ContextStateValue<API.Page>;
   fontSize: FontSize;
-  notifications: ContextListState<API.Notification>;
+  notifications: ContextPaginatedMetaState<API.Notification>;
   h5p: ContextStateValue<API.H5PObject>;
   tokenExpireDate?: string | null;
   consultations: ContextPaginatedMetaState<API.Consultation>;
@@ -151,7 +151,7 @@ export interface EscolaLMSContextAPIConfig {
   courseProgress: (courseId: number) => number;
   fontSizeToggle: (bigger: boolean) => void;
   socialAuthorize: (token: string) => void;
-  fetchNotifications: () => Promise<void>;
+  fetchNotifications: (filter?: API.PaginationParams) => Promise<void>;
   readNotify: (id: string) => Promise<void>;
   fetchH5P: (uuid: string) => void;
   getRefreshedToken: () => Promise<void>;

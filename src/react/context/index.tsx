@@ -123,6 +123,10 @@ import {
   ConsultationAccessContext,
   ConsultationAccessContextProvider,
 } from './consultations_access';
+import {
+  NotificationsContext,
+  NotificationsContextProvider,
+} from './notifications';
 
 export const SCORMPlayer: React.FC<{
   uuid: string;
@@ -268,6 +272,9 @@ const EscolaLMSContextProviderInner: FunctionComponent<
     updateConsultationAccess,
   } = useContext(ConsultationAccessContext);
 
+  const { notifications, fetchNotifications, readNotify } =
+    useContext(NotificationsContext);
+
   const [consultation, setConsultation] = useLocalStorage<
     ContextStateValue<API.Consultation>
   >(
@@ -394,15 +401,6 @@ const EscolaLMSContextProviderInner: FunctionComponent<
     'lms',
     'fontSize',
     getDefaultData('fontSize', initialValues),
-    ssrHydration
-  );
-
-  const [notifications, setNotifications] = useLocalStorage<
-    ContextListState<API.Notification>
-  >(
-    'lms',
-    'notifications',
-    getDefaultData('notifications', initialValues),
     ssrHydration
   );
 
@@ -737,57 +735,6 @@ const EscolaLMSContextProviderInner: FunctionComponent<
       : Promise.reject('noToken');
   }, [token]);
 
-  const fetchNotifications = useCallback(
-    (params?: API.PaginationParams) => {
-      return token
-        ? fetchDataType<API.Notification>({
-            controllers: abortControllers.current,
-            controller: `notifications/${JSON.stringify(params)}`,
-            mode: 'list',
-            fetchAction: getNotifications.bind(null, apiUrl)(token, params, {
-              signal:
-                abortControllers.current[
-                  `notifications/${JSON.stringify(params)}`
-                ]?.signal,
-            }),
-            setState: setNotifications,
-          })
-        : Promise.reject('noToken');
-    },
-    [token, notifications]
-  );
-
-  const readNotify = useCallback(
-    (id: string) => {
-      return token
-        ? readNotification
-            .bind(null, apiUrl)(id, token)
-            .then((response) => {
-              if (response.success) {
-                setNotifications((prevState) => ({
-                  ...prevState,
-                  list:
-                    prevState && prevState.list
-                      ? prevState.list.filter(
-                          (item: API.Notification) => item.id !== id
-                        )
-                      : [],
-                  loading: false,
-                }));
-              }
-            })
-            .catch((error) => {
-              setNotifications((prevState) => ({
-                ...prevState,
-                loading: false,
-                error: error,
-              }));
-            })
-        : Promise.reject('noToken');
-    },
-    [token, notifications]
-  );
-
   const changeConsultationTerm = useCallback(
     (termId: number, newDate: string) => {
       return token
@@ -992,7 +939,6 @@ const EscolaLMSContextProviderInner: FunctionComponent<
     setProgram(defaultConfig.program);
     setCart(defaultConfig.cart);
     setCertificates(defaultConfig.certificates);
-    setNotifications(defaultConfig.notifications);
     setMattermostChannels(defaultConfig.mattermostChannels);
 
     localStorage.removeItem('user');
@@ -1827,15 +1773,17 @@ export const EscolaLMSContextProvider: FunctionComponent<
                       <PagesContextProvider {...contextProps}>
                         <PageContextProvider {...contextProps}>
                           <ConsultationAccessContextProvider {...contextProps}>
-                            <CourseAccessContextProvider {...contextProps}>
-                              <TasksContextProvider {...contextProps}>
-                                <TaskContextProvider {...contextProps}>
-                                  <EscolaLMSContextProviderInner {...props}>
-                                    {children}
-                                  </EscolaLMSContextProviderInner>
-                                </TaskContextProvider>
-                              </TasksContextProvider>
-                            </CourseAccessContextProvider>
+                            <NotificationsContextProvider {...contextProps}>
+                              <CourseAccessContextProvider {...contextProps}>
+                                <TasksContextProvider {...contextProps}>
+                                  <TaskContextProvider {...contextProps}>
+                                    <EscolaLMSContextProviderInner {...props}>
+                                      {children}
+                                    </EscolaLMSContextProviderInner>
+                                  </TaskContextProvider>
+                                </TasksContextProvider>
+                              </CourseAccessContextProvider>
+                            </NotificationsContextProvider>
                           </ConsultationAccessContextProvider>
                         </PageContextProvider>
                       </PagesContextProvider>

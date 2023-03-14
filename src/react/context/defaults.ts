@@ -168,9 +168,8 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
   socialAuthorize: (token: string) => Promise.reject(),
   notifications: {
     loading: false,
-    list: [],
   },
-  fetchNotifications: () => Promise.reject(),
+  fetchNotifications: (params?: API.PaginationParams) => Promise.reject(),
   readNotify: (id: string) => Promise.reject(),
   h5p: {
     loading: false,
@@ -437,9 +436,8 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
   socialAuthorize: (token: string) => Promise.reject(),
   notifications: {
     loading: false,
-    list: [],
   },
-  fetchNotifications: () => Promise.reject(),
+  fetchNotifications: (params?: API.PaginationParams) => Promise.reject(),
   readNotify: (id: string) => Promise.reject(),
   h5p: {
     loading: false,
