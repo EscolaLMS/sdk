@@ -737,19 +737,25 @@ const EscolaLMSContextProviderInner: FunctionComponent<
       : Promise.reject('noToken');
   }, [token]);
 
-  const fetchNotifications = useCallback(() => {
-    return token
-      ? fetchDataType<API.Notification>({
-          controllers: abortControllers.current,
-          controller: `mattermostchannels`,
-          mode: 'list',
-          fetchAction: getNotifications.bind(null, apiUrl)(token, {
-            signal: abortControllers.current?.mattermostchannels?.signal,
-          }),
-          setState: setNotifications,
-        })
-      : Promise.reject('noToken');
-  }, [token, notifications]);
+  const fetchNotifications = useCallback(
+    (params?: API.PaginationParams) => {
+      return token
+        ? fetchDataType<API.Notification>({
+            controllers: abortControllers.current,
+            controller: `notifications/${JSON.stringify(params)}`,
+            mode: 'list',
+            fetchAction: getNotifications.bind(null, apiUrl)(token, params, {
+              signal:
+                abortControllers.current[
+                  `notifications/${JSON.stringify(params)}`
+                ]?.signal,
+            }),
+            setState: setNotifications,
+          })
+        : Promise.reject('noToken');
+    },
+    [token, notifications]
+  );
 
   const readNotify = useCallback(
     (id: string) => {
