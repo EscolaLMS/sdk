@@ -11,6 +11,7 @@ import {
   EscolaLMSContextConfig,
   EscolaLMSContextReadConfig,
   ContextPaginatedMetaState,
+  ContextStateValue,
 } from './types';
 import { defaultConfig } from './defaults';
 import { fetchDataType } from './states';
@@ -23,6 +24,7 @@ import {
   courseAccess as getCourseAccess,
   createCourseAccess,
   deleteCourseAccess as deleteCourseAccessCall,
+  myCourses as getMyCourses,
 } from './../../services/course_access';
 import { UserContext } from './user';
 
@@ -33,12 +35,16 @@ export const CourseAccessContext: React.Context<
     | 'fetchCourseAccess'
     | 'addCourseAccess'
     | 'deleteCourseAccess'
+    | 'myCourses'
+    | 'fetchMyCourses'
   >
 > = createContext({
   courseAccess: defaultConfig.courseAccess,
   fetchCourseAccess: defaultConfig.fetchCourseAccess,
   addCourseAccess: defaultConfig.addCourseAccess,
   deleteCourseAccess: defaultConfig.deleteCourseAccess,
+  myCourses: defaultConfig.myCourses,
+  fetchMyCourses: defaultConfig.fetchMyCourses,
 });
 
 export interface CourseAccessContextProviderType {
@@ -76,6 +82,38 @@ export const CourseAccessContextProvider: FunctionComponent<
     }),
     ssrHydration
   );
+
+  const [myCourses, setMyCourses] = useLocalStorage<
+    ContextStateValue<number[]>
+  >(
+    'lms',
+    'myCourses',
+    getDefaultData('myCourses', {
+      ...defaultConfig,
+      ...defaults,
+    }),
+    ssrHydration
+  );
+
+  const fetchMyCourses = useCallback(() => {
+    return token
+      ? getMyCourses(apiUrl, token).then((response) => {
+          if (response.success) {
+            setMyCourses((prevState) => ({
+              value: response.data,
+              loading: false,
+              error: undefined,
+            }));
+          } else {
+            setMyCourses((prevState) => ({
+              ...prevState,
+              loading: false,
+              error: response,
+            }));
+          }
+        })
+      : Promise.reject('noToken');
+  }, [token]);
 
   const fetchCourseAccess = useCallback(
     (
@@ -129,6 +167,8 @@ export const CourseAccessContextProvider: FunctionComponent<
         fetchCourseAccess,
         addCourseAccess,
         deleteCourseAccess,
+        myCourses,
+        fetchMyCourses,
       }}
     >
       {children}

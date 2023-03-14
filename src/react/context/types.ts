@@ -86,6 +86,7 @@ export interface EscolaLMSContextReadConfig {
   tasks: ContextPaginatedMetaState<API.Task>;
   task: ContextStateValue<API.Task>;
   courseAccess: ContextPaginatedMetaState<API.CourseAccessEnquiry>;
+  myCourses: ContextStateValue<number[]>;
   consultationAccess: ContextPaginatedMetaState<API.ConsultationsAccessEnquiry>;
 }
 
@@ -212,6 +213,7 @@ export interface EscolaLMSContextAPIConfig {
   fetchCourseAccess: (
     filter?: API.CourseAccessEnquiryListParams
   ) => Promise<void>;
+  fetchMyCourses: () => Promise<void>;
   addCourseAccess: (
     data: API.CourseAccessEnquiryCreateRequest
   ) => Promise<API.DefaultResponse<API.CourseAccessEnquiry>>;

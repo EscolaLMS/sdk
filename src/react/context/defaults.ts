@@ -257,6 +257,11 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
   courseAccess: {
     loading: false,
   },
+  myCourses: {
+    loading: false,
+    value: [],
+  },
+  fetchMyCourses: () => Promise.reject(),
   fetchCourseAccess: (filter?: API.CourseAccessEnquiryListParams) =>
     Promise.reject(),
   addCourseAccess: (data: API.CourseAccessEnquiryCreateRequest) =>
@@ -296,7 +301,11 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
 
 export const defaultApiConfig: EscolaLMSContextConfig = {
   apiUrl: '',
-
+  myCourses: {
+    loading: false,
+    value: [],
+  },
+  fetchMyCourses: () => Promise.reject(),
   getImagePrefix: () => '',
   courses: {
     loading: false,
