@@ -151,7 +151,7 @@ export interface EscolaLMSContextAPIConfig {
   courseProgress: (courseId: number) => number;
   fontSizeToggle: (bigger: boolean) => void;
   socialAuthorize: (token: string) => void;
-  fetchNotifications: () => Promise<void>;
+  fetchNotifications: (filter?: API.PaginationParams) => Promise<void>;
   readNotify: (id: string) => Promise<void>;
   fetchH5P: (uuid: string) => void;
   getRefreshedToken: () => Promise<void>;

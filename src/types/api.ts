@@ -886,6 +886,8 @@ export type Notification = {
   event: EventTypes;
 };
 
+export type NotificationList = DefaultMetaResponse<Notification>;
+
 // TODO:update fields with nulls
 
 export type Certificate = {

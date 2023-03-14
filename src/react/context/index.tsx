@@ -123,7 +123,10 @@ import {
   ConsultationAccessContext,
   ConsultationAccessContextProvider,
 } from './consultations_access';
-import { NotificationsContext } from './notifications';
+import {
+  NotificationsContext,
+  NotificationsContextProvider,
+} from './notifications';
 
 export const SCORMPlayer: React.FC<{
   uuid: string;
@@ -1770,15 +1773,17 @@ export const EscolaLMSContextProvider: FunctionComponent<
                       <PagesContextProvider {...contextProps}>
                         <PageContextProvider {...contextProps}>
                           <ConsultationAccessContextProvider {...contextProps}>
-                            <CourseAccessContextProvider {...contextProps}>
-                              <TasksContextProvider {...contextProps}>
-                                <TaskContextProvider {...contextProps}>
-                                  <EscolaLMSContextProviderInner {...props}>
-                                    {children}
-                                  </EscolaLMSContextProviderInner>
-                                </TaskContextProvider>
-                              </TasksContextProvider>
-                            </CourseAccessContextProvider>
+                            <NotificationsContextProvider {...contextProps}>
+                              <CourseAccessContextProvider {...contextProps}>
+                                <TasksContextProvider {...contextProps}>
+                                  <TaskContextProvider {...contextProps}>
+                                    <EscolaLMSContextProviderInner {...props}>
+                                      {children}
+                                    </EscolaLMSContextProviderInner>
+                                  </TaskContextProvider>
+                                </TasksContextProvider>
+                              </CourseAccessContextProvider>
+                            </NotificationsContextProvider>
                           </ConsultationAccessContextProvider>
                         </PageContextProvider>
                       </PagesContextProvider>
