@@ -168,7 +168,6 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
   socialAuthorize: (token: string) => Promise.reject(),
   notifications: {
     loading: false,
-    list: [],
   },
   fetchNotifications: (params?: API.PaginationParams) => Promise.reject(),
   readNotify: (id: string) => Promise.reject(),
