@@ -66,7 +66,7 @@ export interface EscolaLMSContextReadConfig {
   pages: ContextPaginatedMetaState<API.PageListItem>;
   page: ContextStateValue<API.Page>;
   fontSize: FontSize;
-  notifications: ContextListState<API.Notification>;
+  notifications: ContextPaginatedMetaState<API.Notification>;
   h5p: ContextStateValue<API.H5PObject>;
   tokenExpireDate?: string | null;
   consultations: ContextPaginatedMetaState<API.Consultation>;
