@@ -468,7 +468,7 @@ export type UpdateUserDetails = {
   street?: string;
   postcode?: string;
   phone?: string;
-} & Record<string, string | number | boolean>;
+} & Record<string, string | number | boolean | null>;
 
 export type Lesson = Omit<EscolaLms.Courses.Models.Lesson, 'topics'> & {
   id: number;
@@ -1148,4 +1148,8 @@ export type ConsultationsAccessEnquiryUpdateRequest = Omit<
   'consultation_id'
 > & {
   description?: string;
+};
+
+export type Metadata = Omit<EscolaLms.ModelFields.Models.Metadata, 'rules'> & {
+  rules: string | string[] | null;
 };

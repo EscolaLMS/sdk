@@ -407,7 +407,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
   );
 
   const [fields, setFields] = useLocalStorage<
-    ContextListState<EscolaLms.ModelFields.Models.Metadata>
+    ContextListState<API.Metadata>
   >('lms', 'fields', getDefaultData('fields', initialValues), ssrHydration);
 
   const [stationaryEvents, setStationaryEvents] = useLocalStorage<
@@ -552,7 +552,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
   );
 
   const fetchFields = useCallback((filter: API.FieldsParams) => {
-    return fetchDataType<EscolaLms.ModelFields.Models.Metadata>({
+    return fetchDataType<API.Metadata>({
       controllers: abortControllers.current,
       controller: `fields/${JSON.stringify(filter)}`,
       mode: 'list',
