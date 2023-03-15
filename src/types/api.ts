@@ -470,7 +470,7 @@ export type UpdateUserDetails = {
   phone?: string;
 } & Record<string, string | number | boolean>;
 
-export type Lesson = EscolaLms.Courses.Models.Lesson & {
+export type Lesson = Omit<EscolaLms.Courses.Models.Lesson, 'topics'> & {
   id: number;
   created_at: string;
   title: string;
