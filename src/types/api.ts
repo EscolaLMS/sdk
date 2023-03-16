@@ -10,7 +10,7 @@ export enum TopicType {
   Image = 'EscolaLms\\TopicTypes\\Models\\TopicContent\\Image',
   Pdf = 'EscolaLms\\TopicTypes\\Models\\TopicContent\\PDF',
   Scorm = 'EscolaLms\\TopicTypes\\Models\\TopicContent\\ScormSco',
-  Project = 'EscolaLms\\TopicTypes\\Models\\TopicContent\\Project',
+  Project = 'EscolaLms\\TopicTypeProject\\Models\\Project',
 }
 
 export enum PaymentStatusType {
