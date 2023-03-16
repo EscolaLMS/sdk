@@ -10,6 +10,7 @@ export enum TopicType {
   Image = 'EscolaLms\\TopicTypes\\Models\\TopicContent\\Image',
   Pdf = 'EscolaLms\\TopicTypes\\Models\\TopicContent\\PDF',
   Scorm = 'EscolaLms\\TopicTypes\\Models\\TopicContent\\ScormSco',
+  Project = 'EscolaLms\\TopicTypes\\Models\\TopicContent\\Project',
 }
 
 export enum PaymentStatusType {
@@ -585,6 +586,11 @@ export type TopicScorm = TopicBase & {
   };
 };
 
+export type TopicProject = TopicBase & {
+  topicable_type: TopicType.Project
+  topicable: TopicableBase
+}
+
 export type TopicUnselected = TopicBase & {
   topicable_type?: TopicType.Unselected;
   topicable?: never;
@@ -599,7 +605,8 @@ export type Topic =
   | TopicH5P
   | TopicImage
   | TopicPdf
-  | TopicScorm;
+  | TopicScorm
+  | TopicProject;
 
 export type TopicNotEmpty =
   | TopicRichText
@@ -609,7 +616,8 @@ export type TopicNotEmpty =
   | TopicH5P
   | TopicImage
   | TopicPdf
-  | TopicScorm;
+  | TopicScorm
+  | TopicProject;
 
 export type CourseProgram = Course & {
   lessons: Lesson[];
