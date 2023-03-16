@@ -10,7 +10,7 @@ export async function fields(
   },
   options?: RequestOptionsInit
 ) {
-  return request<API.DefaultResponse<EscolaLms.ModelFields.Models.Metadata[]>>(
+  return request<API.DefaultResponse<API.Metadata[]>>(
     `${apiUrl}/api/model-fields`,
     {
       method: "GET",

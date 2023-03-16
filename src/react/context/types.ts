@@ -71,7 +71,7 @@ export interface EscolaLMSContextReadConfig {
   tokenExpireDate?: string | null;
   consultations: ContextPaginatedMetaState<API.Consultation>;
   consultation: ContextStateValue<API.Consultation>;
-  fields: ContextListState<EscolaLms.ModelFields.Models.Metadata>;
+  fields: ContextListState<API.Metadata>;
   stationaryEvents: ContextListState<EscolaLms.StationaryEvents.Models.StationaryEvent>;
   userConsultations: ContextPaginatedMetaState<API.Consultation>;
   webinars: ContextListState<API.Webinar>;
