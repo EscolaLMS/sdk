@@ -365,7 +365,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
 
   const [program, setProgram] = useLocalStorage<
     ContextStateValue<API.CourseProgram>
-  >('lms', 'tags', getDefaultData('program', initialValues), ssrHydration);
+  >('lms', 'program', getDefaultData('program', initialValues), ssrHydration);
 
   const [cart, setCart] = useLocalStorage<ContextStateValue<API.Cart>>(
     'lms',
