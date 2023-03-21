@@ -128,6 +128,11 @@ import {
   NotificationsContextProvider,
 } from './notifications';
 
+import {
+  BookmarkNotesContext,
+  BookmarkNotesContextProvider,
+} from './bookmark_notes';
+
 export const SCORMPlayer: React.FC<{
   uuid: string;
 }> = ({ uuid }) => {
@@ -256,6 +261,14 @@ const EscolaLMSContextProviderInner: FunctionComponent<
     updateTaskNote,
     deleteTaskNote,
   } = useContext(TaskContext);
+
+  const {
+    bookmarkNotes,
+    createBookmarkNote,
+    updateBookmarkNote,
+    deleteBookmarkNote,
+    fetchBookmarkNotes,
+  } = useContext(BookmarkNotesContext);
 
   const {
     courseAccess,
@@ -406,9 +419,12 @@ const EscolaLMSContextProviderInner: FunctionComponent<
     ssrHydration
   );
 
-  const [fields, setFields] = useLocalStorage<
-    ContextListState<API.Metadata>
-  >('lms', 'fields', getDefaultData('fields', initialValues), ssrHydration);
+  const [fields, setFields] = useLocalStorage<ContextListState<API.Metadata>>(
+    'lms',
+    'fields',
+    getDefaultData('fields', initialValues),
+    ssrHydration
+  );
 
   const [stationaryEvents, setStationaryEvents] = useLocalStorage<
     ContextListState<EscolaLms.StationaryEvents.Models.StationaryEvent>
@@ -1525,6 +1541,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
     [progressMap]
   );
 
+  // TODO: this should be refactored, since lessons are not flat structure any more
   const getNextPrevTopic = useCallback(
     (topicId: number, next: boolean = true) => {
       const lesson: API.Lesson | undefined = program.value?.lessons.find(
@@ -1749,6 +1766,12 @@ const EscolaLMSContextProviderInner: FunctionComponent<
         createTaskNote,
         updateTaskNote,
         deleteTaskNote,
+
+        bookmarkNotes,
+        createBookmarkNote,
+        updateBookmarkNote,
+        deleteBookmarkNote,
+        fetchBookmarkNotes,
       }}
     >
       {children}
@@ -1764,6 +1787,7 @@ export const EscolaLMSContextProvider: FunctionComponent<
     apiUrl: props.apiUrl,
     ssrHydration: props.ssrHydration,
   };
+  // TODO this should be replaced with some smart component pipeping eg https://github.com/LSafer/react-pipeline/blob/master/src/index.tsx
   return (
     <UserContextProvider {...contextProps}>
       <CoursesContextProvider {...contextProps}>
@@ -1781,9 +1805,13 @@ export const EscolaLMSContextProvider: FunctionComponent<
                               <CourseAccessContextProvider {...contextProps}>
                                 <TasksContextProvider {...contextProps}>
                                   <TaskContextProvider {...contextProps}>
-                                    <EscolaLMSContextProviderInner {...props}>
-                                      {children}
-                                    </EscolaLMSContextProviderInner>
+                                    <BookmarkNotesContextProvider
+                                      {...contextProps}
+                                    >
+                                      <EscolaLMSContextProviderInner {...props}>
+                                        {children}
+                                      </EscolaLMSContextProviderInner>
+                                    </BookmarkNotesContextProvider>
                                   </TaskContextProvider>
                                 </TasksContextProvider>
                               </CourseAccessContextProvider>

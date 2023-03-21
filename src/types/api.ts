@@ -587,9 +587,9 @@ export type TopicScorm = TopicBase & {
 };
 
 export type TopicProject = TopicBase & {
-  topicable_type: TopicType.Project
-  topicable: TopicableBase
-}
+  topicable_type: TopicType.Project;
+  topicable: TopicableBase;
+};
 
 export type TopicUnselected = TopicBase & {
   topicable_type?: TopicType.Unselected;
@@ -1161,3 +1161,17 @@ export type ConsultationsAccessEnquiryUpdateRequest = Omit<
 export type Metadata = Omit<EscolaLms.ModelFields.Models.Metadata, 'rules'> & {
   rules: string | string[] | null;
 };
+
+export type BookmarkNoteList = DefaultMetaResponse<BookmarkNote>;
+
+export type BookmarkNote = EscolaLms.Bookmarks.Models.Bookmark;
+
+export type BookmarkNoteParams =
+  EscolaLms.Bookmarks.Http.Requests.ListBookmarkRequest &
+    PaginationParams & {
+      order_by?: 'created_at' | 'id' | 'value';
+      order?: 'ASC' | 'DESC';
+      has_value?: boolean | 1 | 0;
+      bookmarkable_id?: number;
+      bookmarkable_type?: string;
+    };

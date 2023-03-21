@@ -88,6 +88,7 @@ export interface EscolaLMSContextReadConfig {
   courseAccess: ContextPaginatedMetaState<API.CourseAccessEnquiry>;
   myCourses: ContextStateValue<number[]>;
   consultationAccess: ContextPaginatedMetaState<API.ConsultationsAccessEnquiry>;
+  bookmarkNotes: ContextPaginatedMetaState<API.BookmarkNote>;
 }
 
 export interface EscolaLMSContextAPIConfig {
@@ -261,6 +262,18 @@ export interface EscolaLMSContextAPIConfig {
   deleteTaskNote: (
     taskNoteId: number
   ) => Promise<API.DefaultResponse<API.TaskNote>>;
+
+  fetchBookmarkNotes: (filter?: API.BookmarkNoteParams) => Promise<void>;
+  createBookmarkNote: (
+    body: EscolaLms.Bookmarks.Http.Requests.CreateBookmarkRequest
+  ) => Promise<API.DefaultResponse<API.BookmarkNote>>;
+  updateBookmarkNote: (
+    id: number,
+    body: EscolaLms.Bookmarks.Http.Requests.UpdateBookmarkRequest
+  ) => Promise<API.DefaultResponse<API.BookmarkNote>>;
+  deleteBookmarkNote: (
+    id: number
+  ) => Promise<API.DefaultResponse<API.BookmarkNote>>;
 }
 export type EscolaLMSContextConfig = EscolaLMSContextReadConfig &
   EscolaLMSContextAPIConfig;

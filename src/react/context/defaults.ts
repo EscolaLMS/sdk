@@ -297,6 +297,19 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
   updateTaskNote: (id: number, taskNoteId: number, note: string) =>
     Promise.reject(id),
   deleteTaskNote: (taskNoteId: number) => Promise.reject(taskNoteId),
+
+  bookmarkNotes: {
+    loading: false,
+  },
+  fetchBookmarkNotes: (filter?: API.BookmarkNoteParams) => Promise.reject(),
+  createBookmarkNote: (
+    body: EscolaLms.Bookmarks.Http.Requests.CreateBookmarkRequest
+  ) => Promise.reject(),
+  updateBookmarkNote: (
+    id: number,
+    body: EscolaLms.Bookmarks.Http.Requests.UpdateBookmarkRequest
+  ) => Promise.reject(id),
+  deleteBookmarkNote: (id: number) => Promise.reject(id),
 };
 
 export const defaultApiConfig: EscolaLMSContextConfig = {
@@ -570,6 +583,19 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
   updateTaskNote: (id: number, taskNoteId: number, note: string) =>
     Promise.reject(id),
   deleteTaskNote: (taskNoteId: number) => Promise.reject(taskNoteId),
+
+  bookmarkNotes: {
+    loading: false,
+  },
+  fetchBookmarkNotes: (filter?: API.BookmarkNoteParams) => Promise.reject(),
+  createBookmarkNote: (
+    body: EscolaLms.Bookmarks.Http.Requests.CreateBookmarkRequest
+  ) => Promise.reject(),
+  updateBookmarkNote: (
+    id: number,
+    body: EscolaLms.Bookmarks.Http.Requests.UpdateBookmarkRequest
+  ) => Promise.reject(id),
+  deleteBookmarkNote: (id: number) => Promise.reject(id),
 };
 
 export const defaultConfig = Object.assign(
