@@ -487,6 +487,7 @@ export type Lesson = Omit<EscolaLms.Courses.Models.Lesson, 'topics'> & {
 export type TopicBase = {
   id: number;
   lesson_id: number;
+  duration?: string;
   title: string;
   topicable_id: number;
   created_at: string;
