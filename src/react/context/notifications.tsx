@@ -4,7 +4,6 @@ import {
   PropsWithChildren,
   useCallback,
   useRef,
-  useEffect,
   useContext,
 } from 'react';
 import {
@@ -15,7 +14,11 @@ import {
 import { defaultConfig } from './defaults';
 import { fetchDataType } from './states';
 
-import { getNotifications, readNotification } from '../../services/notify';
+import {
+  getNotifications,
+  readNotification,
+  readAll as postReadAll,
+} from '../../services/notify';
 
 import { useLocalStorage } from '../hooks/useLocalStorage';
 import * as API from './../../types/api';
@@ -26,12 +29,16 @@ import { UserContext } from './user';
 export const NotificationsContext: React.Context<
   Pick<
     EscolaLMSContextConfig,
-    'notifications' | 'fetchNotifications' | 'readNotify'
+    | 'notifications'
+    | 'fetchNotifications'
+    | 'readNotify'
+    | 'readAllNotifications'
   >
 > = createContext({
   notifications: defaultConfig.notifications,
   fetchNotifications: defaultConfig.fetchNotifications,
   readNotify: defaultConfig.readNotify,
+  readAllNotifications: defaultConfig.readAllNotifications,
 });
 
 export interface NotificationsContextProviderType {
@@ -119,9 +126,54 @@ export const NotificationsContextProvider: FunctionComponent<
     [token, notifications]
   );
 
+  const readAllNotifications = useCallback(() => {
+    return token
+      ? postReadAll
+          .bind(
+            null,
+            apiUrl
+          )(token)
+          .then((response) => {
+            if (response.success) {
+              setNotifications((prevState) => ({
+                ...prevState,
+                list: {
+                  data: [],
+                  meta: {
+                    current_page: 0,
+                    next_page_url: '',
+                    last_page: 0,
+                    path: '',
+                    per_page: 25,
+                    prev_page_url: null,
+                    to: 0,
+                    total: 0,
+                    links: {
+                      first: '',
+                      last: '',
+                      next: '',
+                      prev: '',
+                    },
+                  },
+                },
+                loading: false,
+              }));
+            }
+          })
+          .catch((error) => {
+            setNotifications((prevState) => ({
+              ...prevState,
+              loading: false,
+              error: error,
+            }));
+          })
+      : Promise.reject('noToken');
+  }, [token, notifications]);
+
   return (
     <NotificationsContext.Provider
       value={{
+        readAllNotifications,
         notifications,
         fetchNotifications,
         readNotify,

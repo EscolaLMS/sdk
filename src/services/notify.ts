@@ -41,3 +41,23 @@ export async function readNotification(
     }
   );
 }
+
+export async function readAll(
+  apiUrl: string,
+  token: string,
+  options?: Record<string, any>
+) {
+  return request<API.DefaultResponse<API.Notification[]>>(
+    `${apiUrl}/api/notifications/read-all`,
+    {
+      method: 'POST',
+      /* useCache: true */ useCache: false,
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+        'Current-timezone': currentTimezone(),
+      },
+      ...(options || {}),
+    }
+  );
+}

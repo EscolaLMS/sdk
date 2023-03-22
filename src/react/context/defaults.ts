@@ -170,6 +170,7 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
     loading: false,
   },
   fetchNotifications: (params?: API.PaginationParams) => Promise.reject(),
+  readAllNotifications: () => Promise.reject(),
   readNotify: (id: string) => Promise.reject(),
   h5p: {
     loading: false,
@@ -461,6 +462,7 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
   },
   fetchNotifications: (params?: API.PaginationParams) => Promise.reject(),
   readNotify: (id: string) => Promise.reject(),
+  readAllNotifications: () => Promise.reject(),
   h5p: {
     loading: false,
   },
