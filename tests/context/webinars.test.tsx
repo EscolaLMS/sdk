@@ -14,8 +14,7 @@ beforeAll(() => {
   fakeServer();
 });
 
-const getIds = (webinars: { id: number }[]) =>
-  webinars.map((w) => w.id).join(",");
+const getIds = (webinars: number[]) => webinars.join(",");
 
 const Webinars = ({ filter = {} }) => {
   const { webinars, fetchWebinars } = useContext(EscolaLMSContext);
@@ -31,7 +30,13 @@ const Webinars = ({ filter = {} }) => {
   return (
     <div>
       <div>Loaded</div>
-      <div data-testid="webinars">{JSON.stringify(webinars.list, null, 1)}</div>
+      <div data-testid="webinars">
+        {JSON.stringify(
+          webinars.list.data.map(({ id }) => id),
+          null,
+          1
+        )}
+      </div>
     </div>
   );
 };
@@ -50,7 +55,9 @@ it("test fetching webinars", async () => {
       JSON.parse(screen.getByTestId("webinars").textContent as string)) ||
     [];
 
-  expect(getIds(webinars)).toBe(getIds(webinarsResponse.data));
+  expect(getIds(webinars)).toBe(
+    getIds(webinarsResponse.data.map((res) => res.id))
+  );
 });
 
 // it("test fetching webinars with filter", async () => {
