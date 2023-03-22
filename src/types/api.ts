@@ -11,6 +11,7 @@ export enum TopicType {
   Pdf = 'EscolaLms\\TopicTypes\\Models\\TopicContent\\PDF',
   Scorm = 'EscolaLms\\TopicTypes\\Models\\TopicContent\\ScormSco',
   Project = 'EscolaLms\\TopicTypeProject\\Models\\Project',
+  GiftQuiz = 'EscolaLms\\TopicTypeGift\\Models\\GiftQuiz',
 }
 
 export enum PaymentStatusType {
@@ -590,6 +591,14 @@ export type TopicScorm = TopicBase & {
 export type TopicProject = TopicBase & {
   topicable_type: TopicType.Project;
   topicable: TopicableBase;
+};
+
+export type TopicQuiz = TopicBase & {
+  topicable_type: TopicType.GiftQuiz;
+  topicable: TopicableBase & {
+    max_attempts?: number | null;
+    max_execution_time?: number | null;
+  };
 };
 
 export type TopicUnselected = TopicBase & {
@@ -1176,3 +1185,74 @@ export type BookmarkNoteParams =
       bookmarkable_id?: number;
       bookmarkable_type?: string;
     };
+
+export enum QuestionType {
+  MULTIPLE_CHOICE = 'multiple_choice',
+  MULTIPLE_CHOICE_WITH_MULTIPLE_RIGHT_ANSWERS = 'multiple_choice_with_multiple_right_answers',
+  TRUE_FALSE = 'true_false',
+  SHORT_ANSWERS = 'short_answers',
+  MATCHING = 'matching',
+  NUMERICAL_QUESTION = 'numerical_question',
+  ESSAY = 'essay',
+  DESCRIPTION = 'description',
+}
+
+type QuizQuestionBase = {
+  id: number;
+  options: unknown[];
+  question: string;
+  score: number;
+  title: string;
+  type: QuestionType;
+};
+
+// TODO all types have different options
+export type QuizQuestion_MultipleChoice = QuizQuestionBase & {
+  options: unknown[];
+  type: QuestionType.MULTIPLE_CHOICE;
+};
+export type QuizQuestion_MultipleChoiceWithMultipleRightAnswers =
+  QuizQuestionBase & {
+    options: unknown[];
+    type: QuestionType.MULTIPLE_CHOICE_WITH_MULTIPLE_RIGHT_ANSWERS;
+  };
+export type QuizQuestion_TrueFalse = QuizQuestionBase & {
+  options: unknown[];
+  type: QuestionType.TRUE_FALSE;
+};
+export type QuizQuestion_ShortAnswers = QuizQuestionBase & {
+  options: unknown[];
+  type: QuestionType.SHORT_ANSWERS;
+};
+export type QuizQuestion_Matching = QuizQuestionBase & {
+  options: unknown[];
+  type: QuestionType.MATCHING;
+};
+export type QuizQuestion_NumericalQuestion = QuizQuestionBase & {
+  options: unknown[];
+  type: QuestionType.NUMERICAL_QUESTION;
+};
+export type QuizQuestion_Essay = QuizQuestionBase & {
+  options: unknown[];
+  type: QuestionType.ESSAY;
+};
+export type QuizQuestion_Description = QuizQuestionBase & {
+  options: unknown[];
+  type: QuestionType.DESCRIPTION;
+};
+
+export type QuizQuestion =
+  | QuizQuestion_MultipleChoice
+  | QuizQuestion_MultipleChoiceWithMultipleRightAnswers
+  | QuizQuestion_TrueFalse
+  | QuizQuestion_ShortAnswers
+  | QuizQuestion_Matching
+  | QuizQuestion_NumericalQuestion
+  | QuizQuestion_Essay
+  | QuizQuestion_Description;
+
+export type QuizAttempt = EscolaLms.TopicTypeGift.Models.QuizAttempt & {
+  max_score: number;
+  questions: QuizQuestion[];
+  result_score: number;
+};
