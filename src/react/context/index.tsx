@@ -287,8 +287,12 @@ const EscolaLMSContextProviderInner: FunctionComponent<
     updateConsultationAccess,
   } = useContext(ConsultationAccessContext);
 
-  const { notifications, fetchNotifications, readNotify } =
-    useContext(NotificationsContext);
+  const {
+    notifications,
+    fetchNotifications,
+    readNotify,
+    readAllNotifications,
+  } = useContext(NotificationsContext);
 
   const [consultation, setConsultation] = useLocalStorage<
     ContextStateValue<API.Consultation>
@@ -1688,6 +1692,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
         notifications,
         fetchNotifications,
         readNotify,
+        readAllNotifications,
         certificates,
         fetchCertificates,
         fetchCertificate,

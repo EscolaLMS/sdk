@@ -74,7 +74,7 @@ export interface EscolaLMSContextReadConfig {
   fields: ContextListState<API.Metadata>;
   stationaryEvents: ContextPaginatedMetaState<API.StationaryEvent>;
   userConsultations: ContextPaginatedMetaState<API.Consultation>;
-  webinars: ContextListState<API.Webinar>;
+  webinars: ContextPaginatedMetaState<API.Webinar>;
   tutorConsultations: ContextPaginatedMetaState<API.AppointmentTerm>;
   events: ContextPaginatedMetaState<API.Event>;
   webinar: ContextStateValue<API.Webinar>;
@@ -155,6 +155,7 @@ export interface EscolaLMSContextAPIConfig {
   socialAuthorize: (token: string) => void;
   fetchNotifications: (filter?: API.PaginationParams) => Promise<void>;
   readNotify: (id: string) => Promise<void>;
+  readAllNotifications: () => Promise<void>;
   fetchH5P: (uuid: string) => void;
   getRefreshedToken: () => Promise<void>;
   fetchConsultations: (filter: API.ConsultationParams) => Promise<void>;

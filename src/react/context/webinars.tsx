@@ -10,6 +10,7 @@ import {
   EscolaLMSContextConfig,
   EscolaLMSContextReadConfig,
   ContextListState,
+  ContextPaginatedMetaState,
 } from './types';
 import { defaultConfig } from './defaults';
 import { fetchDataType } from './states';
@@ -49,7 +50,7 @@ export const WebinarsContextProvider: FunctionComponent<
   }, [defaults]);
 
   const [webinars, setWebinars] = useLocalStorage<
-    ContextListState<EscolaLms.Webinar.Models.Webinar>
+  ContextPaginatedMetaState<EscolaLms.Webinar.Models.Webinar>
   >(
     'lms',
     'webinars',
@@ -64,7 +65,7 @@ export const WebinarsContextProvider: FunctionComponent<
     return fetchDataType<EscolaLms.Webinar.Models.Webinar>({
       controllers: abortControllers.current,
       controller: `webinars/${JSON.stringify(filter)}`,
-      mode: 'list',
+      mode: "paginated",
       fetchAction: getWebinars.bind(null, apiUrl)(
         filter,
 
