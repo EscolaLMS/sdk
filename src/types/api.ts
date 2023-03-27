@@ -1206,14 +1206,13 @@ type QuizQuestionBase = {
   type: QuestionType;
 };
 
-// TODO all types have different options
 export type QuizQuestion_MultipleChoice = QuizQuestionBase & {
-  options: unknown[];
+  options: { answers: string[] };
   type: QuestionType.MULTIPLE_CHOICE;
 };
 export type QuizQuestion_MultipleChoiceWithMultipleRightAnswers =
   QuizQuestionBase & {
-    options: unknown[];
+    options: { answers: string[] };
     type: QuestionType.MULTIPLE_CHOICE_WITH_MULTIPLE_RIGHT_ANSWERS;
   };
 export type QuizQuestion_TrueFalse = QuizQuestionBase & {
@@ -1225,7 +1224,10 @@ export type QuizQuestion_ShortAnswers = QuizQuestionBase & {
   type: QuestionType.SHORT_ANSWERS;
 };
 export type QuizQuestion_Matching = QuizQuestionBase & {
-  options: unknown[];
+  options: {
+    "sub_questions": string[],
+    "sub_answers": string[]
+  };
   type: QuestionType.MATCHING;
 };
 export type QuizQuestion_NumericalQuestion = QuizQuestionBase & {
