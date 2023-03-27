@@ -616,7 +616,8 @@ export type Topic =
   | TopicImage
   | TopicPdf
   | TopicScorm
-  | TopicProject;
+  | TopicProject
+  | TopicQuiz;
 
 export type TopicNotEmpty =
   | TopicRichText
@@ -627,7 +628,8 @@ export type TopicNotEmpty =
   | TopicImage
   | TopicPdf
   | TopicScorm
-  | TopicProject;
+  | TopicProject
+  | TopicQuiz;
 
 export type CourseProgram = Course & {
   lessons: Lesson[];
