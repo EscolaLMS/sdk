@@ -431,7 +431,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
   );
 
   const [stationaryEvents, setStationaryEvents] = useLocalStorage<
-    ContextListState<EscolaLms.StationaryEvents.Models.StationaryEvent>
+    ContextPaginatedMetaState<API.StationaryEvent>
   >(
     'lms',
     'stationaryEvents',
@@ -589,7 +589,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
       return fetchDataType<API.StationaryEvent>({
         controllers: abortControllers.current,
         controller: `stationaryevents/${JSON.stringify(filter)}`,
-        mode: 'list',
+        mode: 'paginated',
         fetchAction: getStationaryEvents.bind(null, apiUrl)(filter, {
           signal:
             abortControllers.current[
