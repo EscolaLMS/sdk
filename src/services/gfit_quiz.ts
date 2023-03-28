@@ -46,3 +46,24 @@ export async function quizAnswer(
     }
   );
 }
+
+export async function quizFinish(
+  apiUrl: string,
+  token: string,
+  id: number | string,
+  options?: RequestOptionsInit
+) {
+  return request<API.DefaultResponse<API.QuizAttempt>>(
+    `${apiUrl}/api/quiz-attempts/${id}/end`,
+    {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+        'Current-timezone': currentTimezone(),
+      },
+      ...(options || {}),
+    }
+  );
+}
