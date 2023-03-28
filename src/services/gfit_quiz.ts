@@ -53,7 +53,7 @@ export async function getQuizAttempts(
   params: API.QuizAttemptsParams,
   options?: RequestOptionsInit
 ) {
-  return request<API.DefaultResponse<API.QuizAttempt>>(
+  return request<API.DefaultMetaResponse<API.QuizAttempt>>(
     `${apiUrl}/api/quiz-attempts`,
     {
       method: 'GET',
