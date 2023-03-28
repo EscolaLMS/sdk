@@ -47,7 +47,7 @@ export async function quizAnswer(
   );
 }
 
-export async function quizFinish(
+export async function quizAttemptFinish(
   apiUrl: string,
   token: string,
   id: number | string,
