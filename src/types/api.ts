@@ -368,6 +368,9 @@ export type FieldsParams = {
   class_type: string;
 };
 
+export type QuizAttemptsParams = PageParams &
+  PaginationParams & { topic_gift_quiz_id: number };
+
 export type LoginRequest = {
   email: string;
   password: string;
@@ -1226,8 +1229,8 @@ export type QuizQuestion_ShortAnswers = QuizQuestionBase & {
 };
 export type QuizQuestion_Matching = QuizQuestionBase & {
   options: {
-    "sub_questions": string[],
-    "sub_answers": string[]
+    sub_questions: string[];
+    sub_answers: string[];
   };
   type: QuestionType.MATCHING;
 };
