@@ -1201,7 +1201,6 @@ export enum QuestionType {
 
 type QuizQuestionBase = {
   id: number;
-  options: unknown[];
   question: string;
   score: number;
   title: string;
