@@ -46,3 +46,65 @@ export async function quizAnswer(
     }
   );
 }
+
+export async function getQuizAttempts(
+  apiUrl: string,
+  token: string,
+  params: API.QuizAttemptsParams,
+  options?: RequestOptionsInit
+) {
+  return request<API.DefaultMetaResponse<API.QuizAttempt>>(
+    `${apiUrl}/api/quiz-attempts`,
+    {
+      method: 'GET',
+      params,
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+        'Current-timezone': currentTimezone(),
+      },
+      ...(options || {}),
+    }
+  );
+}
+
+export async function getQuizAttempt(
+  apiUrl: string,
+  token: string,
+  id: number | string,
+  options?: RequestOptionsInit
+) {
+  return request<API.DefaultResponse<API.QuizAttempt>>(
+    `${apiUrl}/api/quiz-attempts/${id}`,
+    {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+        'Current-timezone': currentTimezone(),
+      },
+      ...(options || {}),
+    }
+  );
+}
+
+export async function quizAttemptFinish(
+  apiUrl: string,
+  token: string,
+  id: number | string,
+  options?: RequestOptionsInit
+) {
+  return request<API.DefaultResponse<API.QuizAttempt>>(
+    `${apiUrl}/api/quiz-attempts/${id}/end`,
+    {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+        'Current-timezone': currentTimezone(),
+      },
+      ...(options || {}),
+    }
+  );
+}
