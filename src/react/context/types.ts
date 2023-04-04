@@ -191,6 +191,7 @@ export interface EscolaLMSContextAPIConfig {
   ) => Promise<API.DefaultResponse<API.JitsyData>>;
   fetchUserWebinars: () => Promise<void>;
   realizeVoucher: (voucher: string) => Promise<API.AuthResponse>;
+  removeVoucher: () => Promise<API.AuthResponse>;
   fetchQuestionnaires: (
     model: string,
     id: number
