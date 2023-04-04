@@ -151,7 +151,7 @@ export async function payments(
   });
 }
 
-export async function useVoucher(
+export async function addVoucher(
   apiUrl: string,
   voucher: string,
   token: string
@@ -161,6 +161,21 @@ export async function useVoucher(
     data: {
       code: voucher,
     },
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+      "Current-timezone": currentTimezone(),
+    },
+  });
+}
+
+export async function removeVoucher(
+  apiUrl: string,
+  token: string
+) {
+  return request<API.AuthResponse>(`${apiUrl}/api/cart/voucher`, {
+    method: "DELETE",
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",

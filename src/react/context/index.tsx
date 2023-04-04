@@ -55,7 +55,8 @@ import {
   payWithP24 as postPayWithP24,
   orders as getOrders,
   payments as getPayments,
-  useVoucher as postVoucher,
+  addVoucher as postVoucher,
+  removeVoucher as deleteVoucher,
   orderInvoice,
   addMissingProducts as postAddMissingProducts,
 } from './../../services/cart';
@@ -1619,7 +1620,16 @@ const EscolaLMSContextProviderInner: FunctionComponent<
   const realizeVoucher = useCallback(
     (voucher: string) => {
       return token
-        ? postVoucher.bind(null, apiUrl)(voucher, token)
+        ? postVoucher.bind(null, apiUrl)(voucher, token).finally(() => fetchCart())
+        : Promise.reject('noToken');
+    },
+    [token]
+  );
+
+  const removeVoucher = useCallback(
+    () => {
+      return token
+        ? deleteVoucher.bind(null, apiUrl)(token).finally(() => fetchCart())
         : Promise.reject('noToken');
     },
     [token]
@@ -1734,6 +1744,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
         fetchUserWebinars,
         generateWebinarJitsy,
         realizeVoucher,
+        removeVoucher,
         products,
         product,
         fetchQuestionnaires,
