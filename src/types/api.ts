@@ -1353,3 +1353,21 @@ export type QuizAttempt = EscolaLms.TopicTypeGift.Models.QuizAttempt & {
   questions: QuizQuestion[];
   result_score: number;
 };
+
+export type ProjectParams = PaginationParams & {
+  course_id: number;
+  topic_id: number;
+}
+
+export interface AddProjectBody {
+  topic_id: string;
+  file: File
+}
+
+export interface ProjectFile {
+  id: number;
+  created_at: Date | string;
+  file_url: string;
+  topic_id: number;
+  user_id: number;
+}
