@@ -34,7 +34,7 @@ export async function fetchProjects(
   { per_page, page, ...params }: API.ProjectParams,
   options?: RequestOptionsInit
 ) {
-  return request<API.DefaultMetaResponse<API.ProjectFile[]>>(
+  return request<API.DefaultMetaResponse<API.ProjectFile>>(
     `${apiUrl}/api/topic-project-solutions`,
     {
       method: "GET",
