@@ -350,6 +350,7 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
   logout: () => Promise.reject(),
   settings: {
     loading: false,
+    value: [],
   },
   fetchSettings: () => Promise.reject(),
   config: {
