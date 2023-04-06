@@ -11,8 +11,7 @@ beforeAll(() => {
   fakeServer();
 });
 
-const getIds = (tutors: { id: number }[]) =>
-  tutors.map((t) => t.id).join(",");
+const getIds = (tutors: { id: number }[]) => tutors.map((t) => t.id).join(",");
 
 const Tutors = () => {
   const { tutors, fetchTutors } = useContext(EscolaLMSContext);
@@ -28,29 +27,29 @@ const Tutors = () => {
   return (
     <div>
       <div>Loaded</div>
-      <div data-testid="tutors">
-        {JSON.stringify(tutors.list, null, 1)}
-      </div>
+      <div data-testid="tutors">{JSON.stringify(tutors.list, null, 1)}</div>
     </div>
   );
-}
+};
 
 it("test fetching tutors", async () => {
   await act(async () => {
-    render(<Tutors/>);
+    render(<Tutors />);
   });
 
   await waitFor(() => {
     expect(screen.queryByText("Loaded")).toBeInTheDocument();
   });
 
-  const tutors =
-    (screen.getByTestId("tutors") &&
-      screen.getByTestId("tutors").textContent &&
-      JSON.parse(screen.getByTestId("tutors").textContent as string)) ||
-    [];
+  await waitFor(() => {
+    const tutors =
+      (screen.getByTestId("tutors") &&
+        screen.getByTestId("tutors").textContent &&
+        JSON.parse(screen.getByTestId("tutors").textContent as string)) ||
+      [];
 
-  expect(getIds(tutors)).toBe(getIds(tutorsResponse.data));
+    expect(getIds(tutors)).toBe(getIds(tutorsResponse.data));
+  });
 });
 
 export {}; // 👈️ if you don't have anything else to export

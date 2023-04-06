@@ -6,35 +6,35 @@ import {
   useRef,
   useEffect,
   useContext,
-} from 'react';
+} from "react";
 import {
   EscolaLMSContextConfig,
   EscolaLMSContextReadConfig,
   ContextPaginatedMetaState,
-} from './types';
-import { defaultConfig } from './defaults';
-import { fetchDataType } from './states';
+} from "./types";
+import { defaultConfig } from "./defaults";
+import { fetchDataType } from "./states";
 
-import { useLocalStorage } from '../hooks/useLocalStorage';
-import * as API from './../../types/api';
-import { getDefaultData } from './index';
+import { useLocalStorage } from "../hooks/useLocalStorage";
+import * as API from "./../../types/api";
+import { getDefaultData } from "./index";
 
 import {
   bookmarkNotes as getBookmarkNotes,
   createBookmarkNote as postCreateBookmarkNote,
   deleteBookmarkNote as deleteDeleteBookmarkNote,
   updateBookmarkNote as patchUpdateBookmarkNote,
-} from './../../services/bookmarks_notes';
-import { UserContext } from './user';
+} from "./../../services/bookmarks_notes";
+import { UserContext } from "./user";
 
 export const BookmarkNotesContext: React.Context<
   Pick<
     EscolaLMSContextConfig,
-    | 'bookmarkNotes'
-    | 'fetchBookmarkNotes'
-    | 'createBookmarkNote'
-    | 'deleteBookmarkNote'
-    | 'updateBookmarkNote'
+    | "bookmarkNotes"
+    | "fetchBookmarkNotes"
+    | "createBookmarkNote"
+    | "deleteBookmarkNote"
+    | "updateBookmarkNote"
   >
 > = createContext({
   bookmarkNotes: defaultConfig.bookmarkNotes,
@@ -46,7 +46,7 @@ export const BookmarkNotesContext: React.Context<
 
 export interface BookmarkNotesContextProviderType {
   apiUrl: string;
-  defaults?: Partial<Pick<EscolaLMSContextReadConfig, 'bookmarkNotes'>>;
+  defaults?: Partial<Pick<EscolaLMSContextReadConfig, "bookmarkNotes">>;
   ssrHydration?: boolean;
 }
 
@@ -71,9 +71,9 @@ export const BookmarkNotesContextProvider: FunctionComponent<
   const [bookmarkNotes, setBookmarkNotes] = useLocalStorage<
     ContextPaginatedMetaState<API.BookmarkNote>
   >(
-    'lms',
-    'bookmarkNotes',
-    getDefaultData('bookmarkNotes', {
+    "lms",
+    "bookmarkNotes",
+    getDefaultData("bookmarkNotes", {
       ...defaultConfig,
       ...defaults,
     }),
@@ -86,7 +86,7 @@ export const BookmarkNotesContextProvider: FunctionComponent<
         ? fetchDataType<API.BookmarkNote>({
             controllers: abortControllers.current,
             controller: `bookmarkNotes/${JSON.stringify(filter)}`,
-            mode: 'paginated',
+            mode: "paginated",
             fetchAction: getBookmarkNotes.bind(null, apiUrl)(token, filter, {
               signal:
                 abortControllers.current[
@@ -95,7 +95,7 @@ export const BookmarkNotesContextProvider: FunctionComponent<
             }),
             setState: setBookmarkNotes,
           })
-        : Promise.reject('noToken');
+        : Promise.reject("noToken");
     },
     [token]
   );
@@ -104,7 +104,7 @@ export const BookmarkNotesContextProvider: FunctionComponent<
     (data: EscolaLms.Bookmarks.Http.Requests.CreateBookmarkRequest) => {
       return token
         ? postCreateBookmarkNote(apiUrl, token, data)
-        : Promise.reject('noToken');
+        : Promise.reject("noToken");
     },
     [token]
   );
@@ -115,7 +115,7 @@ export const BookmarkNotesContextProvider: FunctionComponent<
       // TODO: what about error ?
       return token
         ? deleteDeleteBookmarkNote(apiUrl, token, id)
-        : Promise.reject('noToken');
+        : Promise.reject("noToken");
     },
     [token]
   );
@@ -129,7 +129,7 @@ export const BookmarkNotesContextProvider: FunctionComponent<
       // TODO: what about error ?
       return token
         ? patchUpdateBookmarkNote(apiUrl, token, id, data)
-        : Promise.reject('noToken');
+        : Promise.reject("noToken");
     },
     [token]
   );

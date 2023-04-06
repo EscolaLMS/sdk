@@ -52,10 +52,10 @@ const InititalFetches = () => {
   return (
     <div>
       <div>Loaded</div>
-      <div data-testid="settings">{JSON.stringify(settings)}</div>
-      <div data-testid="categoryTree">{JSON.stringify(categoryTree)}</div>
-      <div data-testid="config">{JSON.stringify(config)}</div>
-      <div data-testid="tags">{JSON.stringify(uniqueTags)}</div>
+      <div data-testid="settings">{JSON.stringify(settings.value)}</div>
+      <div data-testid="categoryTree">{JSON.stringify(categoryTree.list)}</div>
+      <div data-testid="config">{JSON.stringify(config.value)}</div>
+      <div data-testid="tags">{JSON.stringify(uniqueTags.list)}</div>
     </div>
   );
 };
@@ -69,18 +69,28 @@ it("checks initial fetches", async () => {
     expect(screen.queryByText("Loaded")).toBeInTheDocument();
   });
 
-  expect(screen.getByTestId("settings")).toHaveTextContent(
-    JSON.stringify(settingsResponse.data)
-  );
-  expect(screen.getByTestId("categoryTree")).toHaveTextContent(
-    JSON.stringify(categoriesResponse.data)
-  );
-  expect(screen.getByTestId("config")).toHaveTextContent(
-    JSON.stringify(configResponse.data)
-  );
-  expect(screen.getByTestId("tags")).toHaveTextContent(
-    JSON.stringify(tagsResponse.data)
-  );
+  await waitFor(() => {
+    expect(screen.getByTestId("settings")).toHaveTextContent(
+      JSON.stringify(settingsResponse.data)
+    );
+  });
+  await waitFor(() => {
+    expect(screen.getByTestId("categoryTree")).toHaveTextContent(
+      JSON.stringify(categoriesResponse.data)
+    );
+  });
+
+  await waitFor(() => {
+    expect(screen.getByTestId("config")).toHaveTextContent(
+      JSON.stringify(configResponse.data)
+    );
+  });
+
+  await waitFor(() => {
+    expect(screen.getByTestId("tags")).toHaveTextContent(
+      JSON.stringify(tagsResponse.data)
+    );
+  });
 });
 
 export {}; // 👈️ if you don't have anything else to export
