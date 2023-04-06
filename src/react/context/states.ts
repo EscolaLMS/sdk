@@ -1,15 +1,15 @@
-import * as API from './../../types/api';
+import * as API from "./../../types/api";
 import {
   ContextListState,
   ContextPaginatedMetaState,
   ContextStateValue,
-} from './types';
+} from "./types";
 
 type fetchDataType<T> =
   | {
       controller?: string;
       controllers?: Record<string, AbortController | null>;
-      mode: 'paginated';
+      mode: "paginated";
       fetchAction: Promise<API.DefaultMetaResponse<T>>;
       setState: React.Dispatch<
         React.SetStateAction<ContextPaginatedMetaState<T>>
@@ -20,7 +20,7 @@ type fetchDataType<T> =
       id?: number | string;
       controller?: string;
       controllers?: Record<string, AbortController | null>;
-      mode: 'value';
+      mode: "value";
       fetchAction: Promise<API.DefaultResponse<T>>;
       setState: React.Dispatch<React.SetStateAction<ContextStateValue<T>>>;
       onError?: (error: API.DefaultResponseError | any) => void;
@@ -28,60 +28,31 @@ type fetchDataType<T> =
   | {
       controller?: string;
       controllers?: Record<string, AbortController | null>;
-      mode: 'list';
+      mode: "list";
       fetchAction: Promise<API.DefaultResponse<T[]>>;
       setState: React.Dispatch<React.SetStateAction<ContextListState<T>>>;
       onError?: (error: API.DefaultResponseError | any) => void;
     };
 
-export const fetchDataType = <T>(params: fetchDataType<T>): Promise<void> => {
+export function fetchDataType<T>(
+  params: fetchDataType<T> & { mode: "paginated" }
+): Promise<API.DefaultMetaResponse<T>>;
+export function fetchDataType<T>(
+  params: fetchDataType<T> & { mode: "value" | "list" }
+): Promise<API.DefaultResponse<T>>;
+
+export async function fetchDataType<T>(params: fetchDataType<T>) {
   const { setState, fetchAction, mode, controller, controllers, onError } =
     params;
 
-  if (mode === 'paginated') {
+  if (mode === "paginated") {
     setState((prevState) => ({ ...prevState, loading: true }));
-  }
-  if (mode === 'value') {
-    const { id } = params;
 
-    if (id) {
-      setState((prevState) => {
-        return {
-          ...prevState,
-          loading: true,
-          byId: prevState.byId
-            ? {
-                ...prevState.byId,
-                [id]: {
-                  ...prevState.byId[id],
-                  loading: true,
-                },
-              }
-            : { [id]: { loading: true } },
-        };
-      });
-    } else {
-      setState((prevState) => ({ ...prevState, loading: true }));
-    }
-  }
-  if (mode === 'list') {
-    setState((prevState) => ({ ...prevState, loading: true }));
-  }
+    try {
+      const response = await fetchAction;
 
-  if (controller && controllers) {
-    if (controllers[controller]) {
-      controllers[controller]?.abort();
-    }
-    controllers[controller] = new AbortController();
-  }
-
-  return fetchAction
-    .then((response: unknown) => {
-      if (controllers && controller && controllers[controller]) {
-        controllers[controller] = null;
-      }
-      if (mode === 'paginated') {
-        if ((response as API.DefaultMetaResponse<T>).success) {
+      if (mode === "paginated") {
+        if (response.success) {
           setState((prevState) => ({
             ...prevState,
             loading: false,
@@ -90,102 +61,75 @@ export const fetchDataType = <T>(params: fetchDataType<T>): Promise<void> => {
           }));
         }
       }
-      if (mode === 'value') {
-        if ((response as API.DefaultResponse<T>).success) {
-          const { id } = params;
-          if (id) {
-            setState((prevState) => {
-              return {
-                loading: false,
-                value: (response as API.DefaultResponseSuccess<T>).data,
-                error: undefined,
-                byId: prevState.byId
-                  ? {
-                      ...prevState.byId,
-                      [id]: {
-                        value: (response as API.DefaultResponseSuccess<T>).data,
-                        loading: false,
-                        error: undefined,
-                      },
-                    }
-                  : {
-                      [id]: {
-                        value: (response as API.DefaultResponseSuccess<T>).data,
-                        loading: false,
-                        error: undefined,
-                      },
-                    },
-              };
-            });
-          } else {
-            setState({
-              loading: false,
-              value: (response as API.DefaultResponseSuccess<T>).data,
-              error: undefined,
-            });
-          }
-        }
-      }
-      if (mode === 'list') {
-        if ((response as API.DefaultResponse<T>).success) {
-          setState({
-            loading: false,
-            list: (response as API.DefaultResponseSuccess<T[]>).data,
-            error: undefined,
-          });
-        }
-      }
 
-      if ((response as API.DefaultResponseError).success === false) {
-        if (onError) {
-          onError(response as API.DefaultResponseError);
-        }
-        if (mode === 'value' && params.id) {
-          const { id } = params;
-          setState((prevState: any) => {
-            return {
-              ...prevState,
-              loading: false,
-              error: response,
-              byId: prevState.byId
-                ? {
-                    ...prevState.byId,
-                    [id]: {
-                      ...prevState.byId[id],
-                      loading: false,
-                      error: response,
-                    },
-                  }
-                : {
-                    [id]: {
-                      loading: false,
-                      error: response,
-                    },
-                  },
-            };
-          });
-        } else {
-          setState((prevState: any) => ({
-            ...prevState,
-            loading: false,
-            error: response,
-          }));
-        }
-      }
-    })
-    .catch((error) => {
-      if (error.name === 'AbortError') {
+      return response;
+    } catch (error: any) {
+      if (error.name === "AbortError") {
         if (controllers && controller && controllers[controller]) {
           controllers[controller] = null;
         }
-        return;
+        return error;
       }
 
       if (onError) {
         onError(error);
       }
 
-      if (mode === 'value' && params.id) {
+      setState((prevState: any) => ({
+        ...prevState,
+        loading: false,
+        error: error,
+      }));
+
+      return error;
+    }
+  }
+
+  if (mode === "value") {
+    try {
+      const response = await fetchAction;
+
+      if (response.success) {
+        const { id } = params;
+
+        if (id) {
+          setState((prevState) => {
+            return {
+              loading: false,
+              value: response.data,
+              error: undefined,
+              byId: prevState.byId
+                ? {
+                    ...prevState.byId,
+                    [id]: {
+                      value: response.data,
+                      loading: false,
+                      error: undefined,
+                    },
+                  }
+                : {
+                    [id]: {
+                      value: response.data,
+                      loading: false,
+                      error: undefined,
+                    },
+                  },
+            };
+          });
+
+          return response;
+        } else {
+          setState({
+            loading: false,
+            value: response.data,
+            error: undefined,
+          });
+
+          return response;
+        }
+      }
+    } catch (error) {
+      if (params.id) {
         const { id } = params;
 
         setState((prevState: any) => ({
@@ -215,5 +159,45 @@ export const fetchDataType = <T>(params: fetchDataType<T>): Promise<void> => {
           error: error,
         }));
       }
-    });
-};
+
+      return error;
+    }
+  }
+
+  if (mode === "list") {
+    try {
+      const response = await fetchAction;
+
+      if (response.success) {
+        setState({
+          loading: false,
+          list: response.data,
+          error: undefined,
+        });
+
+        return response;
+      }
+    } catch (error: any) {
+      if (error.name === "AbortError") {
+        if (controllers && controller && controllers[controller]) {
+          controllers[controller] = null;
+        }
+        return;
+      }
+
+      if (onError) {
+        onError(error);
+      }
+
+      setState((prevState: any) => ({
+        ...prevState,
+        loading: false,
+        error: error,
+      }));
+
+      return error;
+    }
+  }
+
+  return undefined;
+}

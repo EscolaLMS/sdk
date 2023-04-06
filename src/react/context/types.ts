@@ -1,4 +1,4 @@
-import * as API from './../../types/api';
+import * as API from "./../../types/api";
 
 export interface ContextState<T> {
   loading: boolean;
@@ -94,16 +94,49 @@ export interface EscolaLMSContextReadConfig {
 export interface EscolaLMSContextAPIConfig {
   apiUrl: string;
   getImagePrefix: () => string;
-  fetchCourses: (filter: API.CourseParams) => Promise<void>;
-  fetchUserGroup: (id: number) => Promise<void>;
-  fetchUserGroups: (params: API.UserGroupsParams) => Promise<void>;
-  fetchRegisterableGroups: () => Promise<void>;
+  fetchCourses: (
+    filter: API.CourseParams
+  ) => Promise<API.DefaultMetaResponse<API.Course>>;
+
+  fetchUserGroup: (
+    id: number
+  ) => Promise<
+    | void
+    | API.DefaultResponse<API.UserGroup>
+    | API.DefaultMetaResponse<API.UserGroup>
+  >;
+  fetchUserGroups: (
+    params: API.UserGroupsParams
+  ) => Promise<
+    | void
+    | API.DefaultResponse<API.UserGroup>
+    | API.DefaultMetaResponse<API.UserGroup>
+  >;
+  fetchRegisterableGroups: () => Promise<
+    | void
+    | API.DefaultResponse<API.UserGroup>
+    | API.DefaultMetaResponse<API.UserGroup>
+  >;
   fetchCourse: (id: number) => Promise<void>;
   fetchProgram: (id: number) => Promise<void>;
-  fetchConfig: () => Promise<void>;
-  fetchSettings: () => Promise<void>;
-  fetchCategories: () => Promise<void>;
-  fetchTags: () => Promise<void>;
+  fetchConfig: () => Promise<
+    | void
+    | API.DefaultResponse<API.AppConfig>
+    | API.DefaultMetaResponse<API.AppConfig>
+  >;
+  fetchSettings: () => Promise<
+    | void
+    | API.DefaultResponse<API.AppSettings>
+    | API.DefaultMetaResponse<API.AppSettings>
+  >;
+  fetchCategories: () => Promise<
+    | void
+    | API.DefaultResponse<API.Category>
+    | API.DefaultMetaResponse<API.Category>
+  >;
+  fetchTags: () => Promise<
+    void | API.DefaultResponse<API.Tag> | API.DefaultMetaResponse<API.Tag>
+  >;
   login: (body: API.LoginRequest) => Promise<void>;
   logout: () => Promise<void>;
   register: (
@@ -115,14 +148,20 @@ export interface EscolaLMSContextAPIConfig {
   addToCart: (id: number, quantity?: number) => Promise<void>;
   addMissingProducts: (products: number[]) => Promise<void>;
   removeFromCart: (courseId: number) => Promise<void>;
-  fetchCart: () => Promise<void>;
+  fetchCart: () => Promise<
+    void | API.DefaultResponse<API.Cart> | API.DefaultMetaResponse<API.Cart>
+  >;
   payWithStripe: (payment_method: string, return_url: string) => Promise<void>;
   payWithP24: (
     email: string,
     return_url: string,
     data?: API.InvoiceData
   ) => Promise<void>;
-  fetchProgress: () => Promise<void>;
+  fetchProgress: () => Promise<
+    | void
+    | API.DefaultResponse<API.CourseProgress>
+    | API.DefaultMetaResponse<API.CourseProgress>
+  >;
   fetchCourseProgress: (courseId: number) => Promise<void>;
   sendProgress: (
     courseId: number,
@@ -133,18 +172,56 @@ export interface EscolaLMSContextAPIConfig {
     topicId: number,
     statement: API.IStatement
   ) => Promise<API.SuccessResponse> | null;
-  fetchTutors: () => Promise<void>;
-  fetchTutor: (id: number) => Promise<void>;
-  fetchOrders: (params?: API.PaginationParams) => Promise<void>;
-  fetchPayments: () => Promise<void>;
-  fetchProfile: () => Promise<void>;
-  fetchCertificates: (params?: API.PaginationParams) => Promise<void>;
+  fetchTutors: () => Promise<
+    | void
+    | API.DefaultResponse<API.UserItem>
+    | API.DefaultMetaResponse<API.UserItem>
+  >;
+  fetchTutor: (
+    id: number
+  ) => Promise<
+    | void
+    | API.DefaultResponse<API.UserItem>
+    | API.DefaultMetaResponse<API.UserItem>
+  >;
+  fetchOrders: (
+    params?: API.PaginationParams
+  ) => Promise<
+    void | API.DefaultResponse<API.Order> | API.DefaultMetaResponse<API.Order>
+  >;
+  fetchPayments: () => Promise<
+    | void
+    | API.DefaultResponse<API.Payment>
+    | API.DefaultMetaResponse<API.Payment>
+  >;
+  fetchProfile: () => Promise<
+    | void
+    | API.DefaultResponse<API.UserAsProfile>
+    | API.DefaultMetaResponse<API.UserAsProfile>
+  >;
+  fetchCertificates: (
+    params?: API.PaginationParams
+  ) => Promise<
+    | void
+    | API.DefaultResponse<API.Certificate>
+    | API.DefaultMetaResponse<API.Certificate>
+  >;
   fetchCertificate: (
     id: number
   ) => Promise<API.DefaultResponse<API.Certificate>>;
-  fetchMattermostChannels: () => Promise<void>;
-  fetchPages: () => Promise<void>;
-  fetchPage: (slug: string) => Promise<void>;
+  fetchMattermostChannels: () => Promise<
+    | void
+    | API.DefaultResponse<API.MattermostData>
+    | API.DefaultMetaResponse<API.MattermostData>
+  >;
+  fetchPages: () => Promise<
+    void | API.DefaultResponse<API.Page> | API.DefaultMetaResponse<API.Page>
+  >;
+  fetchPage: (
+    slug: string
+  ) => Promise<
+    void | API.DefaultResponse<API.Page> | API.DefaultMetaResponse<API.Page>
+  >;
   updateProfile: (data: API.UpdateUserDetails) => Promise<void>;
   updateAvatar: (avatar: File) => Promise<void>;
   topicPing: (topicId: number) => Promise<Boolean>;
@@ -153,33 +230,115 @@ export interface EscolaLMSContextAPIConfig {
   courseProgress: (courseId: number) => number;
   fontSizeToggle: (bigger: boolean) => void;
   socialAuthorize: (token: string) => void;
-  fetchNotifications: (filter?: API.PaginationParams) => Promise<void>;
+  fetchNotifications: (
+    filter?: API.PaginationParams
+  ) => Promise<
+    | void
+    | API.DefaultResponse<API.Notification>
+    | API.DefaultMetaResponse<API.Notification>
+  >;
   readNotify: (id: string) => Promise<void>;
   readAllNotifications: () => Promise<void>;
   fetchH5P: (uuid: string) => void;
   getRefreshedToken: () => Promise<void>;
-  fetchConsultations: (filter: API.ConsultationParams) => Promise<void>;
-  fetchConsultation: (id: number) => Promise<void>;
-  fetchUserConsultations: () => Promise<void>;
-  fetchFields: (filter: API.FieldsParams) => Promise<void>;
-  fetchStationaryEvents: (filter: API.StationaryEventsParams) => Promise<void>;
-  fetchStationaryEvent: (id: number) => Promise<void>;
+  fetchConsultations: (
+    filter: API.ConsultationParams
+  ) => Promise<
+    | void
+    | API.DefaultResponse<API.Consultation>
+    | API.DefaultMetaResponse<API.Consultation>
+  >;
+  fetchConsultation: (
+    id: number
+  ) => Promise<
+    | void
+    | API.DefaultResponse<API.Consultation>
+    | API.DefaultMetaResponse<API.Consultation>
+  >;
+  fetchUserConsultations: () => Promise<
+    | void
+    | API.DefaultResponse<API.Consultation>
+    | API.DefaultMetaResponse<API.Consultation>
+  >;
+  fetchFields: (
+    filter: API.FieldsParams
+  ) => Promise<
+    | void
+    | API.DefaultResponse<API.Metadata>
+    | API.DefaultMetaResponse<API.Metadata>
+  >;
+  fetchStationaryEvents: (
+    filter: API.StationaryEventsParams
+  ) => Promise<
+    | void
+    | API.DefaultResponse<API.StationaryEvent>
+    | API.DefaultMetaResponse<API.StationaryEvent>
+  >;
+  fetchStationaryEvent: (
+    id: number
+  ) => Promise<
+    | void
+    | API.DefaultResponse<API.StationaryEvent>
+    | API.DefaultMetaResponse<API.StationaryEvent>
+  >;
   bookConsultationTerm: (
     id: number,
     term: string
   ) => Promise<API.ScheduleConsultationResponse>;
   fetchProducts: (
     filter: API.PageParams &
-      API.PaginationParams & { type?: string; 'tags[]'?: string }
-  ) => Promise<void>;
-  fetchProduct: (id: number) => Promise<void>;
+      API.PaginationParams & { type?: string; "tags[]"?: string }
+  ) => Promise<
+    | void
+    | API.DefaultResponse<API.Product>
+    | API.DefaultMetaResponse<API.Product>
+  >;
+  fetchProduct: (
+    id: number
+  ) => Promise<
+    | void
+    | API.DefaultResponse<API.Product>
+    | API.DefaultMetaResponse<API.Product>
+  >;
   getProductInfo: (id: number) => Promise<API.DefaultResponse<API.Product>>;
-  fetchWebinars: (filter: API.WebinarParams) => Promise<void>;
-  fetchWebinar: (id: number) => Promise<void>;
-  fetchEvents: (filter: API.EventsParams) => Promise<void>;
-  fetchTutorConsultations: () => Promise<void>;
-  approveConsultationTerm: (consultation: number) => Promise<void>;
-  rejectConsultationTerm: (consultation: number) => Promise<void>;
+  fetchWebinars: (
+    filter: API.WebinarParams
+  ) => Promise<
+    | void
+    | API.DefaultResponse<API.Webinar>
+    | API.DefaultMetaResponse<API.Webinar>
+  >;
+  fetchWebinar: (
+    id: number
+  ) => Promise<
+    | void
+    | API.DefaultResponse<API.Webinar>
+    | API.DefaultMetaResponse<API.Webinar>
+  >;
+  fetchEvents: (
+    filter: API.EventsParams
+  ) => Promise<
+    void | API.DefaultResponse<API.Event> | API.DefaultMetaResponse<API.Event>
+  >;
+  fetchTutorConsultations: () => Promise<
+    | void
+    | API.DefaultResponse<API.AppointmentTerm>
+    | API.DefaultMetaResponse<API.AppointmentTerm>
+  >;
+  approveConsultationTerm: (
+    consultation: number
+  ) => Promise<
+    | void
+    | API.DefaultResponse<API.AppointmentTerm>
+    | API.DefaultMetaResponse<API.AppointmentTerm>
+  >;
+  rejectConsultationTerm: (
+    consultation: number
+  ) => Promise<
+    | void
+    | API.DefaultResponse<API.AppointmentTerm>
+    | API.DefaultMetaResponse<API.AppointmentTerm>
+  >;
   changePassword: (
     body: API.ChangePasswordRequest
   ) => Promise<API.AuthResponse>;
@@ -189,7 +348,9 @@ export interface EscolaLMSContextAPIConfig {
   generateWebinarJitsy: (
     webinarId: number
   ) => Promise<API.DefaultResponse<API.JitsyData>>;
-  fetchUserWebinars: () => Promise<void>;
+  fetchUserWebinars: () => Promise<
+    void | API.DefaultResponse<API.Event> | API.DefaultMetaResponse<API.Event>
+  >;
   realizeVoucher: (voucher: string) => Promise<API.AuthResponse>;
   removeVoucher: () => Promise<API.AuthResponse>;
   fetchQuestionnaires: (
@@ -206,16 +367,28 @@ export interface EscolaLMSContextAPIConfig {
   ) => Promise<
     API.DefaultResponse<EscolaLms.Questionnaire.Models.QuestionAnswer>
   >;
-  fetchUserStationaryEvents: () => Promise<void>;
+  fetchUserStationaryEvents: () => Promise<
+    | void
+    | API.DefaultResponse<API.StationaryEvent>
+    | API.DefaultMetaResponse<API.StationaryEvent>
+  >;
   fetchOrderInvoice: (id: number) => Promise<Blob>;
   changeConsultationTerm: (
     termId: number,
     newDate: string
   ) => Promise<API.DefaultResponse<object>>;
-  fetchTasks: (filter: API.TaskParams) => Promise<void>;
+  fetchTasks: (
+    filter: API.TaskParams
+  ) => Promise<
+    void | API.DefaultResponse<API.Task> | API.DefaultMetaResponse<API.Task>
+  >;
   fetchCourseAccess: (
     filter?: API.CourseAccessEnquiryListParams
-  ) => Promise<void>;
+  ) => Promise<
+    | void
+    | API.DefaultResponse<API.CourseAccessEnquiry>
+    | API.DefaultMetaResponse<API.CourseAccessEnquiry>
+  >;
   fetchMyCourses: () => Promise<void>;
   addCourseAccess: (
     data: API.CourseAccessEnquiryCreateRequest
@@ -226,7 +399,11 @@ export interface EscolaLMSContextAPIConfig {
 
   fetchConsultationAccess: (
     filter?: API.CourseAccessEnquiryListParams
-  ) => Promise<void>;
+  ) => Promise<
+    | void
+    | API.DefaultResponse<API.ConsultationsAccessEnquiry>
+    | API.DefaultMetaResponse<API.ConsultationsAccessEnquiry>
+  >;
   addConsultationAccess: (
     data: API.ConsultationsAccessEnquiryCreateRequest
   ) => Promise<API.DefaultResponse<API.ConsultationsAccessEnquiry>>;
@@ -242,7 +419,11 @@ export interface EscolaLMSContextAPIConfig {
     data: EscolaLms.Tasks.Http.Requests.CreateTaskRequest
   ) => Promise<API.DefaultResponse<API.Task>>;
   deleteTask: (id: number) => Promise<API.DefaultResponse<API.Task>>;
-  fetchTask: (id: number) => Promise<void>;
+  fetchTask: (
+    id: number
+  ) => Promise<
+    void | API.DefaultResponse<API.Task> | API.DefaultMetaResponse<API.Task>
+  >;
   updateTask: (
     id: number,
     data: EscolaLms.Tasks.Http.Requests.UpdateTaskRequest
@@ -265,7 +446,13 @@ export interface EscolaLMSContextAPIConfig {
     taskNoteId: number
   ) => Promise<API.DefaultResponse<API.TaskNote>>;
 
-  fetchBookmarkNotes: (filter?: API.BookmarkNoteParams) => Promise<void>;
+  fetchBookmarkNotes: (
+    filter?: API.BookmarkNoteParams
+  ) => Promise<
+    | void
+    | API.DefaultResponse<API.BookmarkNote>
+    | API.DefaultMetaResponse<API.BookmarkNote>
+  >;
   createBookmarkNote: (
     body: EscolaLms.Bookmarks.Http.Requests.CreateBookmarkRequest
   ) => Promise<API.DefaultResponse<API.BookmarkNote>>;
