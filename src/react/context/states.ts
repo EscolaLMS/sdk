@@ -86,12 +86,32 @@ export async function fetchDataType<T>(params: fetchDataType<T>) {
   }
 
   if (mode === "value") {
+    const { id } = params;
+
+    id
+      ? setState((prevState) => ({
+          ...prevState,
+          loading: true,
+          byId: prevState.byId
+            ? {
+                ...prevState.byId,
+                [id]: prevState.byId[id]
+                  ? { ...prevState.byId[id], loading: true }
+                  : { loading: true },
+              }
+            : {
+                [id]: {
+                  loading: true,
+                  error: undefined,
+                },
+              },
+        }))
+      : setState((prevState) => ({ ...prevState, loading: true }));
+
     try {
       const response = await fetchAction;
 
       if (response.success) {
-        const { id } = params;
-
         if (id) {
           setState((prevState) => {
             return {
@@ -165,6 +185,7 @@ export async function fetchDataType<T>(params: fetchDataType<T>) {
   }
 
   if (mode === "list") {
+    setState((prevState) => ({ ...prevState, loading: true }));
     try {
       const response = await fetchAction;
 
