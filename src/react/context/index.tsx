@@ -803,10 +803,6 @@ const EscolaLMSContextProviderInner: FunctionComponent<
   );
 
   const fetchConsultation = useCallback((id: number) => {
-    setConsultation({
-      ...consultation,
-      loading: true,
-    });
     return fetchDataType<API.Consultation>({
       id,
       controllers: abortControllers.current,
