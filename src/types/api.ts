@@ -1,44 +1,44 @@
-import { API } from '..';
+import { API } from "..";
 
 export enum TopicType {
-  Unselected = '',
-  RichText = 'EscolaLms\\TopicTypes\\Models\\TopicContent\\RichText',
-  OEmbed = 'EscolaLms\\TopicTypes\\Models\\TopicContent\\OEmbed',
-  Audio = 'EscolaLms\\TopicTypes\\Models\\TopicContent\\Audio',
-  Video = 'EscolaLms\\TopicTypes\\Models\\TopicContent\\Video',
-  H5P = 'EscolaLms\\TopicTypes\\Models\\TopicContent\\H5P',
-  Image = 'EscolaLms\\TopicTypes\\Models\\TopicContent\\Image',
-  Pdf = 'EscolaLms\\TopicTypes\\Models\\TopicContent\\PDF',
-  Scorm = 'EscolaLms\\TopicTypes\\Models\\TopicContent\\ScormSco',
-  Project = 'EscolaLms\\TopicTypeProject\\Models\\Project',
-  GiftQuiz = 'EscolaLms\\TopicTypeGift\\Models\\GiftQuiz',
+  Unselected = "",
+  RichText = "EscolaLms\\TopicTypes\\Models\\TopicContent\\RichText",
+  OEmbed = "EscolaLms\\TopicTypes\\Models\\TopicContent\\OEmbed",
+  Audio = "EscolaLms\\TopicTypes\\Models\\TopicContent\\Audio",
+  Video = "EscolaLms\\TopicTypes\\Models\\TopicContent\\Video",
+  H5P = "EscolaLms\\TopicTypes\\Models\\TopicContent\\H5P",
+  Image = "EscolaLms\\TopicTypes\\Models\\TopicContent\\Image",
+  Pdf = "EscolaLms\\TopicTypes\\Models\\TopicContent\\PDF",
+  Scorm = "EscolaLms\\TopicTypes\\Models\\TopicContent\\ScormSco",
+  Project = "EscolaLms\\TopicTypeProject\\Models\\Project",
+  GiftQuiz = "EscolaLms\\TopicTypeGift\\Models\\GiftQuiz",
 }
 
 export enum PaymentStatusType {
-  NEW = 'new',
-  PAID = 'paid',
-  CANCELLED = 'cancelled',
+  NEW = "new",
+  PAID = "paid",
+  CANCELLED = "cancelled",
 }
 
 export type IEvent =
-  | 'http://adlnet.gov/expapi/verbs/experienced'
-  | 'http://adlnet.gov/expapi/verbs/attended'
-  | 'http://adlnet.gov/expapi/verbs/attempted'
-  | 'http://adlnet.gov/expapi/verbs/completed'
-  | 'http://adlnet.gov/expapi/verbs/passed'
-  | 'http://adlnet.gov/expapi/verbs/failed'
-  | 'http://adlnet.gov/expapi/verbs/answered'
-  | 'http://adlnet.gov/expapi/verbs/interacted'
-  | 'http://adlnet.gov/expapi/verbs/imported'
-  | 'http://adlnet.gov/expapi/verbs/created'
-  | 'http://adlnet.gov/expapi/verbs/shared'
-  | 'http://adlnet.gov/expapi/verbs/voided'
-  | 'http://activitystrea.ms/schema/1.0/consume'
-  | 'http://adlnet.gov/expapi/verbs/mastered';
+  | "http://adlnet.gov/expapi/verbs/experienced"
+  | "http://adlnet.gov/expapi/verbs/attended"
+  | "http://adlnet.gov/expapi/verbs/attempted"
+  | "http://adlnet.gov/expapi/verbs/completed"
+  | "http://adlnet.gov/expapi/verbs/passed"
+  | "http://adlnet.gov/expapi/verbs/failed"
+  | "http://adlnet.gov/expapi/verbs/answered"
+  | "http://adlnet.gov/expapi/verbs/interacted"
+  | "http://adlnet.gov/expapi/verbs/imported"
+  | "http://adlnet.gov/expapi/verbs/created"
+  | "http://adlnet.gov/expapi/verbs/shared"
+  | "http://adlnet.gov/expapi/verbs/voided"
+  | "http://activitystrea.ms/schema/1.0/consume"
+  | "http://adlnet.gov/expapi/verbs/mastered";
 
 export type IStatementCategory = {
   id: string;
-  objectType: 'string';
+  objectType: "string";
 };
 
 export type IScore = {
@@ -69,9 +69,9 @@ export type IStatement = {
 };
 
 export type IEventException =
-  | 'GuessTheAnswer'
-  | 'Questionnaire'
-  | 'QuestionSet';
+  | "GuessTheAnswer"
+  | "Questionnaire"
+  | "QuestionSet";
 
 export type Category = {
   id: number;
@@ -161,13 +161,13 @@ export type PaginatedMetaList<Model> = {
     to: number;
     total: number;
     links:
-    | {
-      first: string;
-      last: string;
-      next: string;
-      prev: string;
-    }
-    | { url: string | null; label: string; active: boolean }[];
+      | {
+          first: string;
+          last: string;
+          next: string;
+          prev: string;
+        }
+      | { url: string | null; label: string; active: boolean }[];
   };
 };
 
@@ -206,9 +206,9 @@ export type DataResponse<Model> =
 
 export type DefaultMetaResponse<Model> =
   | (PaginatedMetaList<Model> & {
-    message: string;
-    success: true;
-  })
+      message: string;
+      success: true;
+    })
   | DefaultResponseError;
 
 export type RawResponse<Model> = Model | DefaultResponseError;
@@ -272,16 +272,16 @@ export type UserGroupList = DefaultMetaResponse<UserGroup>;
 
 export type Consultation = EscolaLms.Consultations.Models.Consultation & {
   product?: Product;
-  executed_status?: null | 'reported' | 'not_reported' | 'reject' | 'approved';
+  executed_status?: null | "reported" | "not_reported" | "reject" | "approved";
   executed_at?: string;
   consultation_term_id?: number;
   is_ended?: boolean;
   is_started?: boolean;
   in_coming?: boolean;
   author: User & { categories: Category[] } & Record<
-    string,
-    string | number | boolean
-  >;
+      string,
+      string | number | boolean
+    >;
   busy_terms: string[];
 };
 
@@ -323,7 +323,7 @@ export type CartItem = EscolaLms.Cart.Models.CartItem & {
 
 export type PaginationParams = {
   order_by?: string;
-  order?: 'ASC' | 'DESC';
+  order?: "ASC" | "DESC";
   page?: number;
   per_page?: number;
 };
@@ -393,16 +393,16 @@ export type RegisterRequest = {
 
 export type RegisterResponse =
   | {
-    success: true;
-    token: string;
-  }
+      success: true;
+      token: string;
+    }
   | DefaultResponseError;
 
 export type ScheduleConsultationResponse =
   | {
-    success: true;
-    message: string;
-  }
+      success: true;
+      message: string;
+    }
   | DefaultResponseError;
 
 export type ForgotRequest = {
@@ -412,9 +412,9 @@ export type ForgotRequest = {
 
 export type AuthResponse =
   | {
-    message: string;
-    success: boolean;
-  }
+      message: string;
+      success: boolean;
+    }
   | DefaultResponseError;
 
 export type ResetPasswordRequest = {
@@ -436,11 +436,11 @@ export type User = {
 export type UserItem = Partial<
   Exclude<
     EscolaLms.Auth.Models.User,
-    | 'password'
-    | 'remember_token'
-    | 'password_reset_token'
-    | 'email_verified_at'
-    | 'is_active'
+    | "password"
+    | "remember_token"
+    | "password_reset_token"
+    | "email_verified_at"
+    | "is_active"
   >
 > & {
   // id: number;
@@ -459,7 +459,7 @@ export type UserItem = Partial<
   interests?: Array<EscolaLms.Categories.Models.Category> | null | never[];
 };
 
-export type UserAsProfile = Omit<UserItem, 'roles'> & {
+export type UserAsProfile = Omit<UserItem, "roles"> & {
   roles: string[];
 };
 
@@ -475,7 +475,12 @@ export type UpdateUserDetails = {
   phone?: string;
 } & Record<string, string | number | boolean | null>;
 
-export type Lesson = Omit<EscolaLms.Courses.Models.Lesson, 'topics'> & {
+export interface CompleteSocialAuth {
+  email: string;
+  return_url: string;
+}
+
+export type Lesson = Omit<EscolaLms.Courses.Models.Lesson, "topics"> & {
   id: number;
   created_at: string;
   title: string;
@@ -773,7 +778,7 @@ export type SCORM = {
   id: number;
   resource_type: null;
   resource_id: number;
-  version: 'scorm_12' | 'scorm_2004';
+  version: "scorm_12" | "scorm_2004";
   hash_name: string;
   origin_file: string;
   origin_file_mime: string;
@@ -898,7 +903,7 @@ export type UserGroupsParams = {
 };
 
 export enum EventTypes {
-  UserLogged = 'EscolaLms\\Auth\\Events\\UserLogged',
+  UserLogged = "EscolaLms\\Auth\\Events\\UserLogged",
   StationaryEventAssigned = "EscolaLms\\StationaryEvents\\Events\\StationaryEventAssigned",
   StationaryEventUnassigned = "EscolaLms\\StationaryEvents\\Events\\StationaryEventUnassigned",
   StationaryEventAuthorAssigned = "EscolaLms\\StationaryEvents\\Events\\StationaryEventAuthorAssigned",
@@ -976,7 +981,7 @@ export type ConsultationTerm = {
   updated_at: string;
   user: UserItem;
   user_id: number;
-}
+};
 
 export type Notification = {
   id: string;
@@ -984,10 +989,10 @@ export type Notification = {
   notifiable_type: string;
   notifiable_id: number;
   data: {
-    stationaryEvent?: StationaryEvent,
-    productable?: ProductItems,
-    product?: ProductItems,
-    order?: Order,
+    stationaryEvent?: StationaryEvent;
+    productable?: ProductItems;
+    product?: ProductItems;
+    order?: Order;
     payment?: Payment;
     course?: Course;
     topicContent?: TopicableBase;
@@ -1195,9 +1200,9 @@ export type InvoiceData = {
 export type TasksList = DefaultMetaResponse<Task>;
 
 export type TaskRelatedType =
-  | 'EscolaLMS\\Courses\\Course'
-  | 'EscolaLMS\\Courses\\Topic'
-  | 'EscolaLMS\\Courses\\Lesson';
+  | "EscolaLMS\\Courses\\Course"
+  | "EscolaLMS\\Courses\\Topic"
+  | "EscolaLMS\\Courses\\Lesson";
 
 export type TaskNote = EscolaLms.Tasks.Models.TaskNote & {
   note: string;
@@ -1212,9 +1217,9 @@ type AbstractTask = EscolaLms.Tasks.Models.Task & {
 export type Task =
   | AbstractTask
   | (AbstractTask & {
-    related_type: TaskRelatedType;
-    related_id: number;
-  });
+      related_type: TaskRelatedType;
+      related_id: number;
+    });
 
 export type TaskParams = PageParams;
 
@@ -1225,14 +1230,14 @@ export type CourseAccessEnquiry =
     data?: object;
   };
 
-export type CourseAccessEnquiryStatus = 'pending' | 'approved';
+export type CourseAccessEnquiryStatus = "pending" | "approved";
 
 export type CourseAccessEnquiryListParams =
   EscolaLms.CourseAccess.Http.Requests.ListCourseAccessEnquiryRequest &
-  PaginatedListParams & {
-    course_id?: number;
-    status?: CourseAccessEnquiryStatus;
-  };
+    PaginatedListParams & {
+      course_id?: number;
+      status?: CourseAccessEnquiryStatus;
+    };
 
 export type CourseAccessEnquiryCreateRequest =
   EscolaLms.CourseAccess.Http.Requests.CreateCourseAccessEnquiryApiRequest & {
@@ -1247,7 +1252,7 @@ export type ConsultationsAccessEnquiryTerm =
 
 export type ConsultationsAccessEnquiryParams =
   EscolaLms.ConsultationAccess.Http.Requests.ListConsultationAccessEnquiryRequest &
-  PaginatedListParams;
+    PaginatedListParams;
 
 export type ConsultationsAccessEnquiryList =
   DefaultMetaResponse<ConsultationsAccessEnquiry>;
@@ -1259,12 +1264,12 @@ export type ConsultationsAccessEnquiryCreateRequest =
 
 export type ConsultationsAccessEnquiryUpdateRequest = Omit<
   EscolaLms.ConsultationAccess.Http.Requests.CreateConsultationAccessEnquiryRequest,
-  'consultation_id'
+  "consultation_id"
 > & {
   description?: string;
 };
 
-export type Metadata = Omit<EscolaLms.ModelFields.Models.Metadata, 'rules'> & {
+export type Metadata = Omit<EscolaLms.ModelFields.Models.Metadata, "rules"> & {
   rules: string | string[] | null;
 };
 
@@ -1274,23 +1279,23 @@ export type BookmarkNote = EscolaLms.Bookmarks.Models.Bookmark;
 
 export type BookmarkNoteParams =
   EscolaLms.Bookmarks.Http.Requests.ListBookmarkRequest &
-  PaginationParams & {
-    order_by?: 'created_at' | 'id' | 'value';
-    order?: 'ASC' | 'DESC';
-    has_value?: boolean | 1 | 0;
-    bookmarkable_id?: number;
-    bookmarkable_type?: string;
-  };
+    PaginationParams & {
+      order_by?: "created_at" | "id" | "value";
+      order?: "ASC" | "DESC";
+      has_value?: boolean | 1 | 0;
+      bookmarkable_id?: number;
+      bookmarkable_type?: string;
+    };
 
 export enum QuestionType {
-  MULTIPLE_CHOICE = 'multiple_choice',
-  MULTIPLE_CHOICE_WITH_MULTIPLE_RIGHT_ANSWERS = 'multiple_choice_with_multiple_right_answers',
-  TRUE_FALSE = 'true_false',
-  SHORT_ANSWERS = 'short_answers',
-  MATCHING = 'matching',
-  NUMERICAL_QUESTION = 'numerical_question',
-  ESSAY = 'essay',
-  DESCRIPTION = 'description',
+  MULTIPLE_CHOICE = "multiple_choice",
+  MULTIPLE_CHOICE_WITH_MULTIPLE_RIGHT_ANSWERS = "multiple_choice_with_multiple_right_answers",
+  TRUE_FALSE = "true_false",
+  SHORT_ANSWERS = "short_answers",
+  MATCHING = "matching",
+  NUMERICAL_QUESTION = "numerical_question",
+  ESSAY = "essay",
+  DESCRIPTION = "description",
 }
 
 type QuizQuestionBase = {
@@ -1357,11 +1362,11 @@ export type QuizAttempt = EscolaLms.TopicTypeGift.Models.QuizAttempt & {
 export type ProjectParams = PaginationParams & {
   course_id: number;
   topic_id: number;
-}
+};
 
 export interface AddProjectBody {
   topic_id: string;
-  file: File
+  file: File;
 }
 
 export interface ProjectFile {

@@ -147,3 +147,22 @@ export async function refreshToken(apiUrl: string, token: string) {
     }
   );
 }
+
+export async function completeSocialAuth(
+  apiUrl: string,
+  token: string,
+  body: API.CompleteSocialAuth
+) {
+  return request<API.DefaultResponse<undefined>>(
+    `${apiUrl}/api/auth/social/complete/${token}`,
+    {
+      method: "POST",
+      data: body,
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        "Current-timezone": currentTimezone(),
+      },
+    }
+  );
+}
