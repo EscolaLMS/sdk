@@ -1,7 +1,7 @@
-import request from 'umi-request';
-import type { RequestOptionsInit } from 'umi-request';
-import * as API from '../types/api';
-import { currentTimezone } from '../utils';
+import request from "umi-request";
+import type { RequestOptionsInit } from "umi-request";
+import * as API from "../types/api";
+import { currentTimezone } from "../utils";
 
 export async function quizAttempt(
   apiUrl: string,
@@ -12,13 +12,13 @@ export async function quizAttempt(
   return request<API.DefaultResponse<API.QuizAttempt>>(
     `${apiUrl}/api/quiz-attempts`,
     {
-      method: 'POST',
+      method: "POST",
       data: body,
       headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
+        Accept: "application/json",
+        "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
-        'Current-timezone': currentTimezone(),
+        "Current-timezone": currentTimezone(),
       },
       ...(options || {}),
     }
@@ -34,13 +34,13 @@ export async function quizAnswer(
   return request<API.DefaultResponse<API.QuizAttempt>>(
     `${apiUrl}/api/quiz-answers`,
     {
-      method: 'POST',
+      method: "POST",
       data: body,
       headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
+        Accept: "application/json",
+        "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
-        'Current-timezone': currentTimezone(),
+        "Current-timezone": currentTimezone(),
       },
       ...(options || {}),
     }
@@ -56,12 +56,12 @@ export async function getQuizAttempts(
   return request<API.DefaultMetaResponse<API.QuizAttempt>>(
     `${apiUrl}/api/quiz-attempts`,
     {
-      method: 'GET',
+      method: "GET",
       params,
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
-        'Current-timezone': currentTimezone(),
+        "Current-timezone": currentTimezone(),
       },
       ...(options || {}),
     }
@@ -77,11 +77,11 @@ export async function getQuizAttempt(
   return request<API.DefaultResponse<API.QuizAttempt>>(
     `${apiUrl}/api/quiz-attempts/${id}`,
     {
-      method: 'GET',
+      method: "GET",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
-        'Current-timezone': currentTimezone(),
+        "Current-timezone": currentTimezone(),
       },
       ...(options || {}),
     }
@@ -97,12 +97,12 @@ export async function quizAttemptFinish(
   return request<API.DefaultResponse<API.QuizAttempt>>(
     `${apiUrl}/api/quiz-attempts/${id}/end`,
     {
-      method: 'POST',
+      method: "POST",
       headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
+        Accept: "application/json",
+        "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
-        'Current-timezone': currentTimezone(),
+        "Current-timezone": currentTimezone(),
       },
       ...(options || {}),
     }

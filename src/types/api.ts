@@ -161,13 +161,13 @@ export type PaginatedMetaList<Model> = {
     to: number;
     total: number;
     links:
-    | {
-      first: string;
-      last: string;
-      next: string;
-      prev: string;
-    }
-    | { url: string | null; label: string; active: boolean }[];
+      | {
+          first: string;
+          last: string;
+          next: string;
+          prev: string;
+        }
+      | { url: string | null; label: string; active: boolean }[];
   };
 };
 
@@ -206,9 +206,9 @@ export type DataResponse<Model> =
 
 export type DefaultMetaResponse<Model> =
   | (PaginatedMetaList<Model> & {
-    message: string;
-    success: true;
-  })
+      message: string;
+      success: true;
+    })
   | DefaultResponseError;
 
 export type RawResponse<Model> = Model | DefaultResponseError;
@@ -279,9 +279,9 @@ export type Consultation = EscolaLms.Consultations.Models.Consultation & {
   is_started?: boolean;
   in_coming?: boolean;
   author: User & { categories: Category[] } & Record<
-    string,
-    string | number | boolean
-  >;
+      string,
+      string | number | boolean
+    >;
   busy_terms: string[];
 };
 
@@ -393,16 +393,16 @@ export type RegisterRequest = {
 
 export type RegisterResponse =
   | {
-    success: true;
-    token: string;
-  }
+      success: true;
+      token: string;
+    }
   | DefaultResponseError;
 
 export type ScheduleConsultationResponse =
   | {
-    success: true;
-    message: string;
-  }
+      success: true;
+      message: string;
+    }
   | DefaultResponseError;
 
 export type ForgotRequest = {
@@ -412,9 +412,9 @@ export type ForgotRequest = {
 
 export type AuthResponse =
   | {
-    message: string;
-    success: boolean;
-  }
+      message: string;
+      success: boolean;
+    }
   | DefaultResponseError;
 
 export type ResetPasswordRequest = {
@@ -1226,9 +1226,9 @@ type AbstractTask = EscolaLms.Tasks.Models.Task & {
 export type Task =
   | AbstractTask
   | (AbstractTask & {
-    related_type: TaskRelatedType;
-    related_id: number;
-  });
+      related_type: TaskRelatedType;
+      related_id: number;
+    });
 
 export type TaskParams = PageParams;
 
@@ -1243,10 +1243,10 @@ export type CourseAccessEnquiryStatus = "pending" | "approved";
 
 export type CourseAccessEnquiryListParams =
   EscolaLms.CourseAccess.Http.Requests.ListCourseAccessEnquiryRequest &
-  PaginatedListParams & {
-    course_id?: number;
-    status?: CourseAccessEnquiryStatus;
-  };
+    PaginatedListParams & {
+      course_id?: number;
+      status?: CourseAccessEnquiryStatus;
+    };
 
 export type CourseAccessEnquiryCreateRequest =
   EscolaLms.CourseAccess.Http.Requests.CreateCourseAccessEnquiryApiRequest & {
@@ -1261,7 +1261,7 @@ export type ConsultationsAccessEnquiryTerm =
 
 export type ConsultationsAccessEnquiryParams =
   EscolaLms.ConsultationAccess.Http.Requests.ListConsultationAccessEnquiryRequest &
-  PaginatedListParams;
+    PaginatedListParams;
 
 export type ConsultationsAccessEnquiryList =
   DefaultMetaResponse<ConsultationsAccessEnquiry>;
@@ -1288,13 +1288,13 @@ export type BookmarkNote = EscolaLms.Bookmarks.Models.Bookmark;
 
 export type BookmarkNoteParams =
   EscolaLms.Bookmarks.Http.Requests.ListBookmarkRequest &
-  PaginationParams & {
-    order_by?: "created_at" | "id" | "value";
-    order?: "ASC" | "DESC";
-    has_value?: boolean | 1 | 0;
-    bookmarkable_id?: number;
-    bookmarkable_type?: string;
-  };
+    PaginationParams & {
+      order_by?: "created_at" | "id" | "value";
+      order?: "ASC" | "DESC";
+      has_value?: boolean | 1 | 0;
+      bookmarkable_id?: number;
+      bookmarkable_type?: string;
+    };
 
 export enum QuestionType {
   MULTIPLE_CHOICE = "multiple_choice",

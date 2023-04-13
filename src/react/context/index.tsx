@@ -7,10 +7,10 @@ import React, {
   useContext,
   useMemo,
   PropsWithChildren,
-} from 'react';
+} from "react";
 
-import { CoursesContext } from './courses';
-import { fetchDataType } from './states';
+import { CoursesContext } from "./courses";
+import { fetchDataType } from "./states";
 import {
   getCourse,
   getCourseProgram,
@@ -20,7 +20,7 @@ import {
   topicPing as putTopicPing,
   h5pProgress as postSendh5pProgress,
   courseProgress as getCourseProgress,
-} from './../../services/courses';
+} from "./../../services/courses";
 import {
   bookConsultationDate,
   consultations as getConsultations,
@@ -31,22 +31,22 @@ import {
   generateJitsy,
   rejectConsultation,
   changeTermDate,
-} from './../../services/consultations';
+} from "./../../services/consultations";
 import {
   products as getProducts,
   getSingleProduct,
-} from '../../services/products';
-import { getMyWebinars, generateJitsyWebinar } from '../../services/webinars';
-import { events as getEvents } from '../../services/events';
+} from "../../services/products";
+import { getMyWebinars, generateJitsyWebinar } from "../../services/webinars";
+import { events as getEvents } from "../../services/events";
 import {
   settings as getSettings,
   config as getConfig,
-} from './../../services/settings';
-import { getNotifications, readNotification } from '../../services/notify';
-import { getCertificates, getCertificate } from '../../services/certificates';
-import { getMattermostChannels } from '../../services/mattermost';
+} from "./../../services/settings";
+import { getNotifications, readNotification } from "../../services/notify";
+import { getCertificates, getCertificate } from "../../services/certificates";
+import { getMattermostChannels } from "../../services/mattermost";
 
-import { pages as getPages, page as getPage } from './../../services/pages';
+import { pages as getPages, page as getPage } from "./../../services/pages";
 import {
   cart as getCart,
   addToCart as postAddToCart,
@@ -59,14 +59,14 @@ import {
   removeVoucher as deleteVoucher,
   orderInvoice,
   addMissingProducts as postAddMissingProducts,
-} from './../../services/cart';
+} from "./../../services/cart";
 import {
   userGroups as getUserGroups,
   userGroup as getUserGroup,
   registerableGroups as getRegisterableGroups,
-} from './../../services/user_groups';
-import { useLocalStorage } from '../hooks/useLocalStorage';
-import * as API from './../../types/api';
+} from "./../../services/user_groups";
+import { useLocalStorage } from "../hooks/useLocalStorage";
+import * as API from "./../../types/api";
 
 import {
   ContextPaginatedMetaState,
@@ -77,7 +77,7 @@ import {
   EscolaLMSContextConfig,
   EscolaLMSContextAPIConfig,
   SortProgram,
-} from './types';
+} from "./types";
 
 import {
   defaultConfig,
@@ -86,53 +86,53 @@ import {
   blackList,
   completed,
   questionSet,
-} from './defaults';
+} from "./defaults";
 
-import { fields as getFields } from '../../services/fields';
+import { fields as getFields } from "../../services/fields";
 
 import {
   getQuestionnaires,
   questionnaireAnswer,
-} from '../../services/questionnaire';
+} from "../../services/questionnaire";
 import {
   stationaryEvents as getStationaryEvents,
   getMyStationaryEvents,
   getStationaryEvent,
-} from '../../services/stationary_events';
-import { CoursesContextProvider } from './courses';
-import { CategoriesContext, CategoriesContextProvider } from './categories';
-import { TagsContext, TagsContextProvider } from './tags';
-import { TutorsContext, TutorsContextProvider } from './tutors';
-import { WebinarsContext, WebinarsContextProvider } from './webinars';
-import { WebinarContext, WebinarContextProvider } from './webinar';
-import { H5pContext, H5pContextProvider } from './h5p';
-import { PagesContext, PagesContextProvider } from './pages';
-import { PageContext, PageContextProvider } from './page';
+} from "../../services/stationary_events";
+import { CoursesContextProvider } from "./courses";
+import { CategoriesContext, CategoriesContextProvider } from "./categories";
+import { TagsContext, TagsContextProvider } from "./tags";
+import { TutorsContext, TutorsContextProvider } from "./tutors";
+import { WebinarsContext, WebinarsContextProvider } from "./webinars";
+import { WebinarContext, WebinarContextProvider } from "./webinar";
+import { H5pContext, H5pContextProvider } from "./h5p";
+import { PagesContext, PagesContextProvider } from "./pages";
+import { PageContext, PageContextProvider } from "./page";
 
 import {
   ConsultationsContext,
   ConsultationsContextProvider,
-} from './consultations';
-import { UserContext, UserContextProvider } from './user';
-import { TasksContext, TasksContextProvider } from './tasks';
-import { TaskContext, TaskContextProvider } from './task';
+} from "./consultations";
+import { UserContext, UserContextProvider } from "./user";
+import { TasksContext, TasksContextProvider } from "./tasks";
+import { TaskContext, TaskContextProvider } from "./task";
 import {
   CourseAccessContext,
   CourseAccessContextProvider,
-} from './course_access';
+} from "./course_access";
 import {
   ConsultationAccessContext,
   ConsultationAccessContextProvider,
-} from './consultations_access';
+} from "./consultations_access";
 import {
   NotificationsContext,
   NotificationsContextProvider,
-} from './notifications';
+} from "./notifications";
 
 import {
   BookmarkNotesContext,
   BookmarkNotesContextProvider,
-} from './bookmark_notes';
+} from "./bookmark_notes";
 
 export const SCORMPlayer: React.FC<{
   uuid: string;
@@ -154,14 +154,14 @@ export const getDefaultData = <K extends keyof EscolaLMSContextReadConfig>(
 export const sortProgram: SortProgram = (lessons) => {
   return [...lessons]
     .sort((lessonA, lessonB) =>
-      typeof lessonA.order === 'number' && typeof lessonB.order === 'number'
+      typeof lessonA.order === "number" && typeof lessonB.order === "number"
         ? lessonA.order - lessonB.order
         : 0
     )
     .map((lesson) => ({
       ...lesson,
       topics: [...(lesson.topics || [])].sort((topicA, topicB) =>
-        typeof topicA.order === 'number' && typeof topicB.order === 'number'
+        typeof topicA.order === "number" && typeof topicB.order === "number"
           ? topicA.order - topicB.order
           : 0
       ),
@@ -298,183 +298,183 @@ const EscolaLMSContextProviderInner: FunctionComponent<
   const [consultation, setConsultation] = useLocalStorage<
     ContextStateValue<API.Consultation>
   >(
-    'lms',
-    'consultation',
-    getDefaultData('consultation', initialValues),
+    "lms",
+    "consultation",
+    getDefaultData("consultation", initialValues),
     ssrHydration
   );
 
   const [userConsultations, setUserConsultations] = useLocalStorage<
     ContextPaginatedMetaState<API.Consultation>
   >(
-    'lms',
-    'userConsultations',
-    getDefaultData('userConsultations', initialValues),
+    "lms",
+    "userConsultations",
+    getDefaultData("userConsultations", initialValues),
     ssrHydration
   );
 
   const [tutorConsultations, setTutorConsultations] = useLocalStorage<
     ContextPaginatedMetaState<API.AppointmentTerm>
   >(
-    'lms',
-    'tutorConsultations',
-    getDefaultData('tutorConsultations', initialValues),
+    "lms",
+    "tutorConsultations",
+    getDefaultData("tutorConsultations", initialValues),
     ssrHydration
   );
 
   const [events, setEvents] = useLocalStorage<
     ContextPaginatedMetaState<API.Event>
-  >('lms', 'events', getDefaultData('events', initialValues), ssrHydration);
+  >("lms", "events", getDefaultData("events", initialValues), ssrHydration);
 
   const [userGroup, setUserGroup] = useLocalStorage<
     ContextStateValue<API.UserGroup>
   >(
-    'lms',
-    'userGroup',
-    getDefaultData('userGroup', initialValues),
+    "lms",
+    "userGroup",
+    getDefaultData("userGroup", initialValues),
     ssrHydration
   );
 
   const [userGroups, setUserGroups] = useLocalStorage<
     ContextPaginatedMetaState<API.UserGroup>
   >(
-    'lms',
-    'userGroups',
-    getDefaultData('userGroups', initialValues),
+    "lms",
+    "userGroups",
+    getDefaultData("userGroups", initialValues),
     ssrHydration
   );
 
   const [registerableGroups, setRegisterableGroups] = useLocalStorage<
     ContextListState<API.UserGroup>
   >(
-    'lms',
-    'registerableGroups',
-    getDefaultData('registerableGroups', initialValues),
+    "lms",
+    "registerableGroups",
+    getDefaultData("registerableGroups", initialValues),
     ssrHydration
   );
 
   const [course, setCourse] = useLocalStorage<
     ContextStateValue<API.CourseListItem>
-  >('lms', 'course', getDefaultData('course', initialValues), ssrHydration);
+  >("lms", "course", getDefaultData("course", initialValues), ssrHydration);
 
   const [settings, setSettings] = useLocalStorage<
     ContextStateValue<API.AppSettings>
-  >('lms', 'settings', getDefaultData('settings', initialValues), ssrHydration);
+  >("lms", "settings", getDefaultData("settings", initialValues), ssrHydration);
 
   const [config, setConfig] = useLocalStorage<ContextStateValue<API.AppConfig>>(
-    'lms',
-    'config',
-    getDefaultData('config', initialValues),
+    "lms",
+    "config",
+    getDefaultData("config", initialValues),
     ssrHydration
   );
 
   const [program, setProgram] = useLocalStorage<
     ContextStateValue<API.CourseProgram>
-  >('lms', 'program', getDefaultData('program', initialValues), ssrHydration);
+  >("lms", "program", getDefaultData("program", initialValues), ssrHydration);
 
   const [cart, setCart] = useLocalStorage<ContextStateValue<API.Cart>>(
-    'lms',
-    'cart',
-    getDefaultData('cart', initialValues),
+    "lms",
+    "cart",
+    getDefaultData("cart", initialValues),
     ssrHydration
   );
 
   const [progress, setProgress] = useState<
     ContextStateValue<API.CourseProgress>
-  >(getDefaultData('progress', initialValues));
+  >(getDefaultData("progress", initialValues));
 
   const [courseProgressDetails, setCourseProgressDetails] = useState<
     ContextStateValue<API.CourseProgressDetails>
-  >(getDefaultData('courseProgressDetails', initialValues));
+  >(getDefaultData("courseProgressDetails", initialValues));
 
   const [orders, setOrders] = useLocalStorage<
     ContextPaginatedMetaState<API.Order>
-  >('lms', 'orders', getDefaultData('orders', initialValues), ssrHydration);
+  >("lms", "orders", getDefaultData("orders", initialValues), ssrHydration);
 
   const [payments, setPayments] = useLocalStorage<
     ContextPaginatedMetaState<API.Payment>
-  >('lms', 'payments', getDefaultData('payments', initialValues), ssrHydration);
+  >("lms", "payments", getDefaultData("payments", initialValues), ssrHydration);
 
   const [certificates, setCertificates] = useLocalStorage<
     ContextPaginatedMetaState<API.Certificate>
   >(
-    'lms',
-    'certificates',
-    getDefaultData('certificates', initialValues),
+    "lms",
+    "certificates",
+    getDefaultData("certificates", initialValues),
     ssrHydration
   );
 
   const [mattermostChannels, setMattermostChannels] = useLocalStorage<
     ContextStateValue<API.MattermostData>
   >(
-    'lms',
-    'mattermostChannels',
-    getDefaultData('mattermostChannels', initialValues),
+    "lms",
+    "mattermostChannels",
+    getDefaultData("mattermostChannels", initialValues),
     ssrHydration
   );
 
   const [tutor, setTutor] = useState<ContextStateValue<API.UserItem>>(
-    getDefaultData('tutor', initialValues)
+    getDefaultData("tutor", initialValues)
   );
 
   const [fontSize, setFontSize] = useLocalStorage<FontSize>(
-    'lms',
-    'fontSize',
-    getDefaultData('fontSize', initialValues),
+    "lms",
+    "fontSize",
+    getDefaultData("fontSize", initialValues),
     ssrHydration
   );
 
   const [fields, setFields] = useLocalStorage<ContextListState<API.Metadata>>(
-    'lms',
-    'fields',
-    getDefaultData('fields', initialValues),
+    "lms",
+    "fields",
+    getDefaultData("fields", initialValues),
     ssrHydration
   );
 
   const [stationaryEvents, setStationaryEvents] = useLocalStorage<
     ContextPaginatedMetaState<API.StationaryEvent>
   >(
-    'lms',
-    'stationaryEvents',
-    getDefaultData('stationaryEvents', initialValues),
+    "lms",
+    "stationaryEvents",
+    getDefaultData("stationaryEvents", initialValues),
     ssrHydration
   );
 
   const [stationaryEvent, setStationaryEvent] = useLocalStorage<
     ContextStateValue<EscolaLms.StationaryEvents.Models.StationaryEvent>
   >(
-    'lms',
-    'stationaryEvent',
-    getDefaultData('stationaryEvent', initialValues),
+    "lms",
+    "stationaryEvent",
+    getDefaultData("stationaryEvent", initialValues),
     ssrHydration
   );
 
   const [userStationaryEvents, setUserStationaryEvents] = useLocalStorage<
     ContextListState<API.StationaryEvent>
   >(
-    'lms',
-    'userStationaryEvents',
-    getDefaultData('userStationaryEvents', initialValues),
+    "lms",
+    "userStationaryEvents",
+    getDefaultData("userStationaryEvents", initialValues),
     ssrHydration
   );
 
   const [userWebinars, setUserWebinars] = useLocalStorage<
     ContextListState<API.Event>
   >(
-    'lms',
-    'userWebinars',
-    getDefaultData('userWebinars', initialValues),
+    "lms",
+    "userWebinars",
+    getDefaultData("userWebinars", initialValues),
     ssrHydration
   );
 
   const [products, setProducts] = useLocalStorage<
     ContextPaginatedMetaState<API.Product>
-  >('lms', 'products', getDefaultData('products', initialValues), ssrHydration);
+  >("lms", "products", getDefaultData("products", initialValues), ssrHydration);
 
   const [product, setProduct] = useLocalStorage<ContextStateValue<API.Product>>(
-    'lms',
-    'product',
-    getDefaultData('product', initialValues),
+    "lms",
+    "product",
+    getDefaultData("product", initialValues),
     ssrHydration
   );
 
@@ -484,7 +484,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
     return fetchDataType<API.AppConfig>({
       controllers: abortControllers.current,
       controller: `config`,
-      mode: 'value',
+      mode: "value",
       fetchAction: getConfig.bind(
         null,
         apiUrl
@@ -499,7 +499,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
     return fetchDataType<API.AppSettings>({
       controllers: abortControllers.current,
       controller: `settings`,
-      mode: 'value',
+      mode: "value",
       fetchAction: getSettings.bind(
         null,
         apiUrl
@@ -537,12 +537,12 @@ const EscolaLMSContextProviderInner: FunctionComponent<
   const fetchProducts = useCallback(
     (
       filter: API.PageParams &
-        API.PaginationParams & { type?: string; 'tags[]'?: string }
+        API.PaginationParams & { type?: string; "tags[]"?: string }
     ) => {
       return fetchDataType<API.Product>({
         controllers: abortControllers.current,
         controller: `products/${JSON.stringify(filter)}`,
-        mode: 'paginated',
+        mode: "paginated",
         fetchAction: getProducts.bind(null, apiUrl)(filter, {
           signal:
             abortControllers.current[`products/${JSON.stringify(filter)}`]
@@ -561,13 +561,13 @@ const EscolaLMSContextProviderInner: FunctionComponent<
             controllers: abortControllers.current,
             controller: `product${id}`,
             id,
-            mode: 'value',
+            mode: "value",
             fetchAction: getSingleProduct.bind(null, apiUrl)(id, token, {
               signal: abortControllers.current?.[`product${id}`]?.signal,
             }),
             setState: setProduct,
           })
-        : Promise.reject('noToken');
+        : Promise.reject("noToken");
     },
     [token]
   );
@@ -576,7 +576,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
     return fetchDataType<API.Metadata>({
       controllers: abortControllers.current,
       controller: `fields/${JSON.stringify(filter)}`,
-      mode: 'list',
+      mode: "list",
       fetchAction: getFields.bind(null, apiUrl)(filter, {
         signal:
           abortControllers.current[`fields/${JSON.stringify(filter)}`]?.signal,
@@ -590,7 +590,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
       return fetchDataType<API.StationaryEvent>({
         controllers: abortControllers.current,
         controller: `stationaryevents/${JSON.stringify(filter)}`,
-        mode: 'paginated',
+        mode: "paginated",
         fetchAction: getStationaryEvents.bind(null, apiUrl)(filter, {
           signal:
             abortControllers.current[
@@ -608,7 +608,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
       controllers: abortControllers.current,
       controller: `stationaryevent${id}`,
       id,
-      mode: 'value',
+      mode: "value",
       fetchAction: getStationaryEvent.bind(null, apiUrl)(id, {
         signal: abortControllers.current?.[`stationaryevent${id}`]?.signal,
       }),
@@ -621,13 +621,13 @@ const EscolaLMSContextProviderInner: FunctionComponent<
       ? fetchDataType<API.Event>({
           controllers: abortControllers.current,
           controller: `userwebinars`,
-          mode: 'list',
+          mode: "list",
           fetchAction: getMyWebinars.bind(null, apiUrl)(token, {
             signal: abortControllers.current?.userwebinars?.signal,
           }),
           setState: setUserWebinars,
         })
-      : Promise.reject('noToken');
+      : Promise.reject("noToken");
   }, [token]);
 
   const fetchUserStationaryEvents = useCallback(() => {
@@ -635,13 +635,13 @@ const EscolaLMSContextProviderInner: FunctionComponent<
       ? fetchDataType<API.StationaryEvent>({
           controllers: abortControllers.current,
           controller: `userstationaryevents`,
-          mode: 'list',
+          mode: "list",
           fetchAction: getMyStationaryEvents.bind(null, apiUrl)(token, {
             signal: abortControllers.current?.userstationaryevents?.signal,
           }),
           setState: setUserStationaryEvents,
         })
-      : Promise.reject('noToken');
+      : Promise.reject("noToken");
   }, [token]);
 
   const fetchTutorConsultations = useCallback(() => {
@@ -649,13 +649,13 @@ const EscolaLMSContextProviderInner: FunctionComponent<
       ? fetchDataType<API.AppointmentTerm>({
           controllers: abortControllers.current,
           controller: `tutorconsultation`,
-          mode: 'paginated',
+          mode: "paginated",
           fetchAction: getTutorConsultations.bind(null, apiUrl)(token, {
             signal: abortControllers.current?.tutorconsultation?.signal,
           }),
           setState: setTutorConsultations,
         })
-      : Promise.reject('noToken');
+      : Promise.reject("noToken");
   }, [token]);
 
   const approveConsultationTerm = useCallback(
@@ -664,14 +664,14 @@ const EscolaLMSContextProviderInner: FunctionComponent<
         ? fetchDataType<API.AppointmentTerm>({
             controllers: abortControllers.current,
             controller: `aprovetutorterm${id}`,
-            mode: 'paginated',
+            mode: "paginated",
             fetchAction: approveConsultation.bind(null, apiUrl)(token, id, {
               signal:
                 abortControllers.current?.[`aprovetutorterm${id}`]?.signal,
             }),
             setState: setTutorConsultations,
           })
-        : Promise.reject('noToken');
+        : Promise.reject("noToken");
     },
     [token]
   );
@@ -682,13 +682,13 @@ const EscolaLMSContextProviderInner: FunctionComponent<
         ? fetchDataType<API.AppointmentTerm>({
             controllers: abortControllers.current,
             controller: `rejectterm${id}`,
-            mode: 'paginated',
+            mode: "paginated",
             fetchAction: rejectConsultation.bind(null, apiUrl)(token, id, {
               signal: abortControllers.current?.[`rejectterm${id}`]?.signal,
             }),
             setState: setTutorConsultations,
           })
-        : Promise.reject('noToken');
+        : Promise.reject("noToken");
     },
     [token]
   );
@@ -697,7 +697,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
     (id: number) => {
       return token
         ? generateJitsy.bind(null, apiUrl)(token, id)
-        : Promise.reject('noToken');
+        : Promise.reject("noToken");
     },
     [token]
   );
@@ -706,7 +706,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
     (id: number) => {
       return token
         ? generateJitsyWebinar.bind(null, apiUrl)(token, id)
-        : Promise.reject('noToken');
+        : Promise.reject("noToken");
     },
     [token]
   );
@@ -717,7 +717,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
         ? fetchDataType<API.Certificate>({
             controllers: abortControllers.current,
             controller: `certificates/${JSON.stringify(params)}`,
-            mode: 'paginated',
+            mode: "paginated",
             fetchAction: getCertificates.bind(null, apiUrl)(token, params, {
               signal:
                 abortControllers.current[
@@ -726,7 +726,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
             }),
             setState: setCertificates,
           })
-        : Promise.reject('noToken');
+        : Promise.reject("noToken");
     },
     [token]
   );
@@ -735,7 +735,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
     (id: number) => {
       return token
         ? getCertificate.bind(null, apiUrl)(token, id)
-        : Promise.reject('noToken');
+        : Promise.reject("noToken");
     },
     [token]
   );
@@ -745,7 +745,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
       ? fetchDataType<API.MattermostData>({
           controllers: abortControllers.current,
           controller: `mattermostchannels`,
-          mode: 'value',
+          mode: "value",
           fetchAction: getMattermostChannels.bind(null, apiUrl)(
             token,
             {},
@@ -755,14 +755,14 @@ const EscolaLMSContextProviderInner: FunctionComponent<
           ),
           setState: setMattermostChannels,
         })
-      : Promise.reject('noToken');
+      : Promise.reject("noToken");
   }, [token]);
 
   const changeConsultationTerm = useCallback(
     (termId: number, newDate: string) => {
       return token
         ? changeTermDate.bind(null, apiUrl)(termId, newDate, token)
-        : Promise.reject('noToken');
+        : Promise.reject("noToken");
     },
     [token]
   );
@@ -772,7 +772,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
       ? fetchDataType<API.Consultation>({
           controllers: abortControllers.current,
           controller: `userconsultations`,
-          mode: 'paginated',
+          mode: "paginated",
           fetchAction: getUserConsultations.bind(null, apiUrl)(
             token,
 
@@ -782,7 +782,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
           ),
           setState: setUserConsultations,
         })
-      : Promise.reject('noToken');
+      : Promise.reject("noToken");
   }, [token]);
 
   const bookConsultationTerm = useCallback(
@@ -795,9 +795,9 @@ const EscolaLMSContextProviderInner: FunctionComponent<
                 fetchUserConsultations();
                 return response;
               }
-              throw Error('Error occured');
+              throw Error("Error occured");
             })
-        : Promise.reject('noToken');
+        : Promise.reject("noToken");
     },
     [token]
   );
@@ -807,7 +807,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
       id,
       controllers: abortControllers.current,
       controller: `consultation${id}`,
-      mode: 'value',
+      mode: "value",
       fetchAction: getConsultation.bind(null, apiUrl)(id, {
         signal: abortControllers.current?.[`consultation${id}`]?.signal,
       }),
@@ -819,7 +819,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
     (id: number) => {
       return token
         ? getSingleProduct.bind(null, apiUrl)(id, token)
-        : Promise.reject('noToken');
+        : Promise.reject("noToken");
     },
     [token]
   );
@@ -828,7 +828,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
     return fetchDataType<API.Event>({
       controllers: abortControllers.current,
       controller: `events/${JSON.stringify(filter)}`,
-      mode: 'paginated',
+      mode: "paginated",
       fetchAction: getEvents.bind(null, apiUrl)(
         filter,
 
@@ -847,7 +847,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
       controllers: abortControllers.current,
       controller: `usergroup${id}`,
       id,
-      mode: 'value',
+      mode: "value",
       fetchAction: getUserGroup.bind(null, apiUrl)(
         id,
 
@@ -863,7 +863,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
     return fetchDataType<API.UserGroup>({
       controllers: abortControllers.current,
       controller: `registablegroups`,
-      mode: 'list',
+      mode: "list",
       fetchAction: getRegisterableGroups.bind(
         null,
         apiUrl
@@ -878,7 +878,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
     return fetchDataType<API.UserGroup>({
       controllers: abortControllers.current,
       controller: `getusergroups/${JSON.stringify(params)}`,
-      mode: 'paginated',
+      mode: "paginated",
       fetchAction: getUserGroups.bind(null, apiUrl)(params, {
         signal:
           abortControllers.current[`getusergroups/${JSON.stringify(params)}`]
@@ -964,9 +964,9 @@ const EscolaLMSContextProviderInner: FunctionComponent<
     setCertificates(defaultConfig.certificates);
     setMattermostChannels(defaultConfig.mattermostChannels);
 
-    localStorage.removeItem('user');
-    localStorage.removeItem('user_token');
-    localStorage.removeItem('lms');
+    localStorage.removeItem("user");
+    localStorage.removeItem("user_token");
+    localStorage.removeItem("lms");
   }, [logoutUser]);
 
   const logout = useCallback(() => {
@@ -981,7 +981,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
     (model: string, id: number) => {
       return token
         ? getQuestionnaires.bind(null, apiUrl)(token, model, id)
-        : Promise.reject('noToken');
+        : Promise.reject("noToken");
     },
     [token]
   );
@@ -1001,7 +1001,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
             id,
             body
           )
-        : Promise.reject('noToken');
+        : Promise.reject("noToken");
     },
     [token]
   );
@@ -1011,19 +1011,19 @@ const EscolaLMSContextProviderInner: FunctionComponent<
       ? fetchDataType<API.Cart>({
           controllers: abortControllers.current,
           controller: `cart`,
-          mode: 'value',
+          mode: "value",
           fetchAction: getCart.bind(null, apiUrl)(token, {
             signal: abortControllers.current?.cart?.signal,
           }),
           setState: setCart,
         })
-      : Promise.reject('noToken');
+      : Promise.reject("noToken");
   }, [token]);
 
   const addToCart = useCallback(
     (productId: number, quantity?: number) => {
       if (!token) {
-        return Promise.reject('noToken');
+        return Promise.reject("noToken");
       }
       setCart((prevState) => ({
         ...prevState,
@@ -1048,7 +1048,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
   const addMissingProducts = useCallback(
     (products: number[]) => {
       if (!token) {
-        return Promise.reject('noToken');
+        return Promise.reject("noToken");
       }
       setCart((prevState) => ({
         ...prevState,
@@ -1073,7 +1073,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
   const removeFromCart = useCallback(
     (itemId: number) => {
       if (!token) {
-        return Promise.reject('noToken');
+        return Promise.reject("noToken");
       }
       setCart((prevState) => ({
         ...prevState,
@@ -1114,7 +1114,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
             .then((res) => {
               console.log(res);
             })
-        : Promise.reject('noToken');
+        : Promise.reject("noToken");
     },
     [token]
   );
@@ -1131,7 +1131,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
               console.log(err);
               return err;
             })
-        : Promise.reject('noToken');
+        : Promise.reject("noToken");
     },
     [token]
   );
@@ -1140,7 +1140,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
     (id: number) => {
       return token
         ? orderInvoice.bind(null, apiUrl)(token, id)
-        : Promise.reject('noToken');
+        : Promise.reject("noToken");
     },
     [token]
   );
@@ -1222,18 +1222,18 @@ const EscolaLMSContextProviderInner: FunctionComponent<
       ? fetchDataType<API.CourseProgress>({
           controllers: abortControllers.current,
           controller: `progress`,
-          mode: 'value',
+          mode: "value",
           fetchAction: getProgress.bind(null, apiUrl)(token, {
             signal: abortControllers.current?.progress?.signal,
           }),
           setState: setProgress,
         })
-      : Promise.reject('noToken');
+      : Promise.reject("noToken");
   }, [token]);
 
   const fetchCourseProgress = useCallback((id: number) => {
     if (!token) {
-      return Promise.reject('noToken');
+      return Promise.reject("noToken");
     }
     setCourseProgressDetails((prevState) => ({
       ...prevState,
@@ -1299,7 +1299,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
         controllers: abortControllers.current,
         controller: `tutor${id}`,
         id,
-        mode: 'value',
+        mode: "value",
         fetchAction: getTutor.bind(null, apiUrl)(id, {
           signal: abortControllers.current?.[`tutor${id}`]?.signal,
         }),
@@ -1315,7 +1315,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
         ? fetchDataType<API.Order>({
             controllers: abortControllers.current,
             controller: `orders/${JSON.stringify(params)}`,
-            mode: 'paginated',
+            mode: "paginated",
             fetchAction: getOrders.bind(null, apiUrl)(token, params, {
               signal:
                 abortControllers.current[`orders/${JSON.stringify(params)}`]
@@ -1323,7 +1323,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
             }),
             setState: setOrders,
           })
-        : Promise.reject('noToken');
+        : Promise.reject("noToken");
     },
     [token]
   );
@@ -1332,14 +1332,14 @@ const EscolaLMSContextProviderInner: FunctionComponent<
     return token
       ? fetchDataType<API.Payment>({
           controllers: abortControllers.current,
-          controller: 'payments',
-          mode: 'paginated',
+          controller: "payments",
+          mode: "paginated",
           fetchAction: getPayments.bind(null, apiUrl)(token, {
             signal: abortControllers.current?.payments?.signal,
           }),
           setState: setPayments,
         })
-      : Promise.reject('noToken');
+      : Promise.reject("noToken");
   }, [token]);
 
   const sendProgress = useCallback(
@@ -1390,7 +1390,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
                     : [],
               }));
             })
-        : Promise.reject('noToken');
+        : Promise.reject("noToken");
     },
     [token]
   );
@@ -1490,7 +1490,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
         ? putTopicPing
             .bind(null, apiUrl)(topicId, token)
             .catch((err) => err)
-        : Promise.reject('noToken');
+        : Promise.reject("noToken");
     },
     [token]
   );
@@ -1506,7 +1506,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
     if (progress.value) {
       progress.value.reduce((acc, course) => {
         acc.coursesProcProgress[
-          typeof course.course.id === 'number' ? course.course.id : 0
+          typeof course.course.id === "number" ? course.course.id : 0
         ] =
           course.progress.reduce((sum, item) => sum + item.status, 0) /
           course.progress.length;
@@ -1620,20 +1620,24 @@ const EscolaLMSContextProviderInner: FunctionComponent<
   const realizeVoucher = useCallback(
     (voucher: string) => {
       return token
-        ? postVoucher.bind(null, apiUrl)(voucher, token).finally(() => fetchCart())
-        : Promise.reject('noToken');
+        ? postVoucher
+            .bind(null, apiUrl)(voucher, token)
+            .finally(() => fetchCart())
+        : Promise.reject("noToken");
     },
     [token]
   );
 
-  const removeVoucher = useCallback(
-    () => {
-      return token
-        ? deleteVoucher.bind(null, apiUrl)(token).finally(() => fetchCart())
-        : Promise.reject('noToken');
-    },
-    [token]
-  );
+  const removeVoucher = useCallback(() => {
+    return token
+      ? deleteVoucher
+          .bind(
+            null,
+            apiUrl
+          )(token)
+          .finally(() => fetchCart())
+      : Promise.reject("noToken");
+  }, [token]);
 
   return (
     <EscolaLMSContext.Provider

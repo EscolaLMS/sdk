@@ -1,6 +1,6 @@
-import request, { RequestOptionsInit } from 'umi-request';
-import * as API from '../types/api';
-import { currentTimezone } from '../utils';
+import request, { RequestOptionsInit } from "umi-request";
+import * as API from "../types/api";
+import { currentTimezone } from "../utils";
 
 /**  DELETE /api/tasks/:id */
 export async function deleteTask(
@@ -10,12 +10,12 @@ export async function deleteTask(
   options?: RequestOptionsInit
 ) {
   return request<API.DefaultResponse<API.Task>>(`${apiUrl}/api/tasks/${id}`, {
-    method: 'DELETE',
+    method: "DELETE",
     headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
+      Accept: "application/json",
+      "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
-      'Current-timezone': currentTimezone(),
+      "Current-timezone": currentTimezone(),
     },
     ...(options || {}),
   });
@@ -30,13 +30,13 @@ export async function updateTask(
   options?: RequestOptionsInit
 ) {
   return request<API.DefaultResponse<API.Task>>(`${apiUrl}/api/tasks/${id}`, {
-    method: 'PATCH',
+    method: "PATCH",
     data: body,
     headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
+      Accept: "application/json",
+      "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
-      'Current-timezone': currentTimezone(),
+      "Current-timezone": currentTimezone(),
     },
     ...(options || {}),
   });
@@ -51,13 +51,13 @@ export async function createTaskNote(
   return request<API.DefaultResponse<API.TaskNote>>(
     `${apiUrl}/api/tasks/notes`,
     {
-      method: 'POST',
+      method: "POST",
       data: body,
       headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
+        Accept: "application/json",
+        "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
-        'Current-timezone': currentTimezone(),
+        "Current-timezone": currentTimezone(),
       },
     }
   );
@@ -73,13 +73,13 @@ export async function updateTaskNote(
   return request<API.DefaultResponse<API.TaskNote>>(
     `${apiUrl}/api/tasks/notes/${id}`,
     {
-      method: 'PATCH',
+      method: "PATCH",
       data: body,
       headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
+        Accept: "application/json",
+        "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
-        'Current-timezone': currentTimezone(),
+        "Current-timezone": currentTimezone(),
       },
     }
   );
@@ -94,12 +94,12 @@ export async function deleteTaskNote(
   return request<API.DefaultResponse<API.TaskNote>>(
     `${apiUrl}/api/tasks/notes/${id}`,
     {
-      method: 'DELETE',
+      method: "DELETE",
       headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
+        Accept: "application/json",
+        "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
-        'Current-timezone': currentTimezone(),
+        "Current-timezone": currentTimezone(),
       },
     }
   );

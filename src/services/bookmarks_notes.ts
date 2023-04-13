@@ -1,6 +1,6 @@
-import request, { RequestOptionsInit } from 'umi-request';
-import * as API from '../types/api';
-import { currentTimezone } from '../utils';
+import request, { RequestOptionsInit } from "umi-request";
+import * as API from "../types/api";
+import { currentTimezone } from "../utils";
 
 /**  GET /api/bookmarks */
 export async function bookmarkNotes(
@@ -10,13 +10,13 @@ export async function bookmarkNotes(
   options?: RequestOptionsInit
 ) {
   return request<API.BookmarkNoteList>(`${apiUrl}/api/bookmarks`, {
-    method: 'GET',
+    method: "GET",
     params,
     headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
+      Accept: "application/json",
+      "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
-      'Current-timezone': currentTimezone(),
+      "Current-timezone": currentTimezone(),
     },
     ...(options || {}),
   });
@@ -32,13 +32,13 @@ export async function createBookmarkNote(
   return request<API.DefaultResponse<API.BookmarkNote>>(
     `${apiUrl}/api/bookmarks`,
     {
-      method: 'POST',
+      method: "POST",
       data: body,
       headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
+        Accept: "application/json",
+        "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
-        'Current-timezone': currentTimezone(),
+        "Current-timezone": currentTimezone(),
       },
       ...(options || {}),
     }
@@ -55,12 +55,12 @@ export async function deleteBookmarkNote(
   return request<API.DefaultResponse<API.BookmarkNote>>(
     `${apiUrl}/api/bookmarks/${id}`,
     {
-      method: 'DELETE',
+      method: "DELETE",
       headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
+        Accept: "application/json",
+        "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
-        'Current-timezone': currentTimezone(),
+        "Current-timezone": currentTimezone(),
       },
       ...(options || {}),
     }
@@ -78,13 +78,13 @@ export async function updateBookmarkNote(
   return request<API.DefaultResponse<API.BookmarkNote>>(
     `${apiUrl}/api/bookmarks/${id}`,
     {
-      method: 'PATCH',
+      method: "PATCH",
       data: body,
       headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
+        Accept: "application/json",
+        "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
-        'Current-timezone': currentTimezone(),
+        "Current-timezone": currentTimezone(),
       },
       ...(options || {}),
     }

@@ -1,6 +1,6 @@
-import request from 'umi-request';
-import * as API from '../types/api';
-import { currentTimezone } from '../utils';
+import request from "umi-request";
+import * as API from "../types/api";
+import { currentTimezone } from "../utils";
 
 export async function getNotifications(
   apiUrl: string,
@@ -9,13 +9,13 @@ export async function getNotifications(
   options?: Record<string, any>
 ) {
   return request<API.NotificationList>(`${apiUrl}/api/notifications`, {
-    method: 'GET',
+    method: "GET",
     params,
     /* useCache: true */ useCache: false,
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
-      'Current-timezone': currentTimezone(),
+      "Current-timezone": currentTimezone(),
     },
     ...(options || {}),
   });
@@ -30,12 +30,12 @@ export async function readNotification(
   return request<API.DefaultResponse<API.Notification[]>>(
     `${apiUrl}/api/notifications/${id}/read`,
     {
-      method: 'POST',
+      method: "POST",
       /* useCache: true */ useCache: false,
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
-        'Current-timezone': currentTimezone(),
+        "Current-timezone": currentTimezone(),
       },
       ...(options || {}),
     }
@@ -50,12 +50,12 @@ export async function readAll(
   return request<API.DefaultResponse<API.Notification[]>>(
     `${apiUrl}/api/notifications/read-all`,
     {
-      method: 'POST',
+      method: "POST",
       /* useCache: true */ useCache: false,
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
-        'Current-timezone': currentTimezone(),
+        "Current-timezone": currentTimezone(),
       },
       ...(options || {}),
     }

@@ -5,22 +5,22 @@ import React, {
   useCallback,
   useRef,
   useEffect,
-} from 'react';
+} from "react";
 import {
   EscolaLMSContextConfig,
   EscolaLMSContextReadConfig,
   ContextListState,
-} from './types';
-import { defaultConfig } from './defaults';
-import { fetchDataType } from './states';
+} from "./types";
+import { defaultConfig } from "./defaults";
+import { fetchDataType } from "./states";
 
-import { useLocalStorage } from '../hooks/useLocalStorage';
-import * as API from './../../types/api';
-import { getDefaultData } from './index';
-import { categoryTree as getCategoryTree } from './../../services/categories';
+import { useLocalStorage } from "../hooks/useLocalStorage";
+import * as API from "./../../types/api";
+import { getDefaultData } from "./index";
+import { categoryTree as getCategoryTree } from "./../../services/categories";
 
 export const CategoriesContext: React.Context<
-  Pick<EscolaLMSContextConfig, 'categoryTree' | 'fetchCategories'>
+  Pick<EscolaLMSContextConfig, "categoryTree" | "fetchCategories">
 > = createContext({
   categoryTree: defaultConfig.categoryTree,
   fetchCategories: defaultConfig.fetchCategories,
@@ -28,7 +28,7 @@ export const CategoriesContext: React.Context<
 
 export interface CategoriesContextProviderType {
   apiUrl: string;
-  defaults?: Partial<Pick<EscolaLMSContextReadConfig, 'categoryTree'>>;
+  defaults?: Partial<Pick<EscolaLMSContextReadConfig, "categoryTree">>;
   ssrHydration?: boolean;
 }
 
@@ -51,9 +51,9 @@ export const CategoriesContextProvider: FunctionComponent<
   const [categoryTree, setCategoryTree] = useLocalStorage<
     ContextListState<API.Category>
   >(
-    'lms',
-    'categoryTree',
-    getDefaultData('categoryTree', {
+    "lms",
+    "categoryTree",
+    getDefaultData("categoryTree", {
       ...defaultConfig,
       ...defaults,
     }),
@@ -64,7 +64,7 @@ export const CategoriesContextProvider: FunctionComponent<
     return fetchDataType<API.Category>({
       controllers: abortControllers.current,
       controller: `categories`,
-      mode: 'list',
+      mode: "list",
       fetchAction: getCategoryTree.bind(
         null,
         apiUrl

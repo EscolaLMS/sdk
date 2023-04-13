@@ -6,19 +6,19 @@ import {
   useRef,
   useEffect,
   useMemo,
-} from 'react';
+} from "react";
 import {
   EscolaLMSContextConfig,
   EscolaLMSContextReadConfig,
   ContextPaginatedMetaState,
   ContextStateValue,
-} from './types';
-import { defaultConfig } from './defaults';
-import { fetchDataType } from './states';
+} from "./types";
+import { defaultConfig } from "./defaults";
+import { fetchDataType } from "./states";
 
-import { useLocalStorage } from '../hooks/useLocalStorage';
-import * as API from './../../types/api';
-import { getDefaultData } from './index';
+import { useLocalStorage } from "../hooks/useLocalStorage";
+import * as API from "./../../types/api";
+import { getDefaultData } from "./index";
 
 import {
   login as postLogin,
@@ -30,25 +30,25 @@ import {
   reset,
   emailVerify,
   refreshToken,
-} from './../../services/auth';
+} from "./../../services/auth";
 
-import { changePassword as postNewPassword } from '../../services/profile';
+import { changePassword as postNewPassword } from "../../services/profile";
 
 type UserContextType = Pick<
   EscolaLMSContextConfig,
-  | 'user'
-  | 'socialAuthorize'
-  | 'changePassword'
-  | 'login'
-  | 'logout'
-  | 'forgot'
-  | 'reset'
-  | 'fetchProfile'
-  | 'updateProfile'
-  | 'updateAvatar'
-  | 'getRefreshedToken'
-  | 'emailVerify'
-  | 'register'
+  | "user"
+  | "socialAuthorize"
+  | "changePassword"
+  | "login"
+  | "logout"
+  | "forgot"
+  | "reset"
+  | "fetchProfile"
+  | "updateProfile"
+  | "updateAvatar"
+  | "getRefreshedToken"
+  | "emailVerify"
+  | "register"
 > & { token?: string | null; tokenExpireDate?: string | null };
 
 export const UserContext: React.Context<UserContextType> =
@@ -72,7 +72,7 @@ export const UserContext: React.Context<UserContextType> =
 
 export interface UserContextProviderType {
   apiUrl: string;
-  defaults?: Partial<Pick<EscolaLMSContextReadConfig, 'user' | 'token'>>;
+  defaults?: Partial<Pick<EscolaLMSContextReadConfig, "user" | "token">>;
   ssrHydration?: boolean;
 }
 
@@ -93,15 +93,15 @@ export const UserContextProvider: FunctionComponent<
   }, [defaults]);
 
   const [token, setToken] = useLocalStorage<string | null>(
-    'user_token',
-    'token',
+    "user_token",
+    "token",
     defaults?.token ?? null
   );
 
   const [user, setUser] = useLocalStorage<ContextStateValue<API.UserAsProfile>>(
-    'user',
-    'user',
-    getDefaultData('user', {
+    "user",
+    "user",
+    getDefaultData("user", {
       ...defaultConfig,
       ...defaults,
     }),
@@ -186,13 +186,13 @@ export const UserContextProvider: FunctionComponent<
       ? fetchDataType<API.UserAsProfile>({
           controllers: abortControllers.current,
           controller: `profile`,
-          mode: 'value',
+          mode: "value",
           fetchAction: getProfile.bind(null, apiUrl)(token, {
             signal: abortControllers.current?.profile?.signal,
           }),
           setState: setUser,
         })
-      : Promise.reject('noToken');
+      : Promise.reject("noToken");
   }, [token]);
 
   const updateProfile = useCallback(
@@ -221,7 +221,7 @@ export const UserContextProvider: FunctionComponent<
                 }));
               }
             })
-        : Promise.reject('noToken');
+        : Promise.reject("noToken");
     },
     [token]
   );
@@ -250,7 +250,7 @@ export const UserContextProvider: FunctionComponent<
                 }));
               }
             })
-        : Promise.reject('noToken');
+        : Promise.reject("noToken");
     },
     [token]
   );
@@ -270,14 +270,14 @@ export const UserContextProvider: FunctionComponent<
           .catch((error) => {
             console.log(error);
           })
-      : Promise.reject('noToken');
+      : Promise.reject("noToken");
   }, [token]);
 
   const changePassword = useCallback(
     (body: API.ChangePasswordRequest) => {
       return token
         ? postNewPassword.bind(null, apiUrl)(token, body)
-        : Promise.reject('noToken');
+        : Promise.reject("noToken");
     },
     [token]
   );
@@ -290,7 +290,7 @@ export const UserContextProvider: FunctionComponent<
     try {
       return token
         ? new Date(
-            JSON.parse(atob(token.split('.')[1])).exp * 1000
+            JSON.parse(atob(token.split(".")[1])).exp * 1000
           ).toISOString()
         : null;
     } catch (er) {

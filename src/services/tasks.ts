@@ -1,6 +1,6 @@
-import request, { RequestOptionsInit } from 'umi-request';
-import * as API from '../types/api';
-import { currentTimezone } from '../utils';
+import request, { RequestOptionsInit } from "umi-request";
+import * as API from "../types/api";
+import { currentTimezone } from "../utils";
 
 /**  GET /api/tasks */
 export async function tasks(
@@ -10,13 +10,13 @@ export async function tasks(
   options?: RequestOptionsInit
 ) {
   return request<API.TasksList>(`${apiUrl}/api/tasks`, {
-    method: 'GET',
+    method: "GET",
     params,
     headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
+      Accept: "application/json",
+      "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
-      'Current-timezone': currentTimezone(),
+      "Current-timezone": currentTimezone(),
     },
     ...(options || {}),
   });
@@ -30,12 +30,12 @@ export async function getTask(
   options?: RequestOptionsInit
 ) {
   return request<API.DefaultResponse<API.Task>>(`${apiUrl}/api/tasks/${id}`, {
-    method: 'GET',
+    method: "GET",
     headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
+      Accept: "application/json",
+      "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
-      'Current-timezone': currentTimezone(),
+      "Current-timezone": currentTimezone(),
     },
     ...(options || {}),
   });
@@ -49,12 +49,12 @@ export async function deleteTask(
   options?: RequestOptionsInit
 ) {
   return request<API.DefaultResponse<API.Task>>(`${apiUrl}/api/tasks/${id}`, {
-    method: 'DELETE',
+    method: "DELETE",
     headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
+      Accept: "application/json",
+      "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
-      'Current-timezone': currentTimezone(),
+      "Current-timezone": currentTimezone(),
     },
     ...(options || {}),
   });
@@ -70,12 +70,12 @@ export async function completeTask(
   return request<API.DefaultResponse<API.Task>>(
     `${apiUrl}/api/tasks/complete/${id}`,
     {
-      method: 'POST',
+      method: "POST",
       headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
+        Accept: "application/json",
+        "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
-        'Current-timezone': currentTimezone(),
+        "Current-timezone": currentTimezone(),
       },
       ...(options || {}),
     }
@@ -92,12 +92,12 @@ export async function incompleteTask(
   return request<API.DefaultResponse<API.Task>>(
     `${apiUrl}/api/tasks/incomplete/${id}`,
     {
-      method: 'POST',
+      method: "POST",
       headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
+        Accept: "application/json",
+        "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
-        'Current-timezone': currentTimezone(),
+        "Current-timezone": currentTimezone(),
       },
       ...(options || {}),
     }
@@ -113,13 +113,13 @@ export async function updateTask(
   options?: RequestOptionsInit
 ) {
   return request<API.DefaultResponse<API.Task>>(`${apiUrl}/api/tasks/${id}`, {
-    method: 'PATCH',
+    method: "PATCH",
     data: body,
     headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
+      Accept: "application/json",
+      "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
-      'Current-timezone': currentTimezone(),
+      "Current-timezone": currentTimezone(),
     },
     ...(options || {}),
   });
@@ -132,13 +132,13 @@ export async function createTask(
   body: EscolaLms.Tasks.Http.Requests.CreateTaskRequest
 ) {
   return request<API.DefaultResponse<API.Task>>(`${apiUrl}/api/tasks`, {
-    method: 'POST',
+    method: "POST",
     data: body,
     headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
+      Accept: "application/json",
+      "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
-      'Current-timezone': currentTimezone(),
+      "Current-timezone": currentTimezone(),
     },
   });
 }

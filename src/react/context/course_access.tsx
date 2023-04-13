@@ -6,37 +6,37 @@ import {
   useRef,
   useEffect,
   useContext,
-} from 'react';
+} from "react";
 import {
   EscolaLMSContextConfig,
   EscolaLMSContextReadConfig,
   ContextPaginatedMetaState,
   ContextStateValue,
-} from './types';
-import { defaultConfig } from './defaults';
-import { fetchDataType } from './states';
+} from "./types";
+import { defaultConfig } from "./defaults";
+import { fetchDataType } from "./states";
 
-import { useLocalStorage } from '../hooks/useLocalStorage';
-import * as API from './../../types/api';
-import { getDefaultData } from './index';
+import { useLocalStorage } from "../hooks/useLocalStorage";
+import * as API from "./../../types/api";
+import { getDefaultData } from "./index";
 
 import {
   courseAccess as getCourseAccess,
   createCourseAccess,
   deleteCourseAccess as deleteCourseAccessCall,
   myCourses as getMyCourses,
-} from './../../services/course_access';
-import { UserContext } from './user';
+} from "./../../services/course_access";
+import { UserContext } from "./user";
 
 export const CourseAccessContext: React.Context<
   Pick<
     EscolaLMSContextConfig,
-    | 'courseAccess'
-    | 'fetchCourseAccess'
-    | 'addCourseAccess'
-    | 'deleteCourseAccess'
-    | 'myCourses'
-    | 'fetchMyCourses'
+    | "courseAccess"
+    | "fetchCourseAccess"
+    | "addCourseAccess"
+    | "deleteCourseAccess"
+    | "myCourses"
+    | "fetchMyCourses"
   >
 > = createContext({
   courseAccess: defaultConfig.courseAccess,
@@ -49,7 +49,7 @@ export const CourseAccessContext: React.Context<
 
 export interface CourseAccessContextProviderType {
   apiUrl: string;
-  defaults?: Partial<Pick<EscolaLMSContextReadConfig, 'courseAccess'>>;
+  defaults?: Partial<Pick<EscolaLMSContextReadConfig, "courseAccess">>;
   ssrHydration?: boolean;
 }
 
@@ -74,9 +74,9 @@ export const CourseAccessContextProvider: FunctionComponent<
   const [courseAccess, setCourseAccess] = useLocalStorage<
     ContextPaginatedMetaState<API.CourseAccessEnquiry>
   >(
-    'lms',
-    'courseAccess',
-    getDefaultData('courseAccess', {
+    "lms",
+    "courseAccess",
+    getDefaultData("courseAccess", {
       ...defaultConfig,
       ...defaults,
     }),
@@ -86,9 +86,9 @@ export const CourseAccessContextProvider: FunctionComponent<
   const [myCourses, setMyCourses] = useLocalStorage<
     ContextStateValue<number[]>
   >(
-    'lms',
-    'myCourses',
-    getDefaultData('myCourses', {
+    "lms",
+    "myCourses",
+    getDefaultData("myCourses", {
       ...defaultConfig,
       ...defaults,
     }),
@@ -112,7 +112,7 @@ export const CourseAccessContextProvider: FunctionComponent<
             }));
           }
         })
-      : Promise.reject('noToken');
+      : Promise.reject("noToken");
   }, [token]);
 
   const fetchCourseAccess = useCallback(
@@ -126,7 +126,7 @@ export const CourseAccessContextProvider: FunctionComponent<
         ? fetchDataType<API.CourseAccessEnquiry>({
             controllers: abortControllers.current,
             controller: `courseAccess/${JSON.stringify(filter)}`,
-            mode: 'paginated',
+            mode: "paginated",
             fetchAction: getCourseAccess.bind(null, apiUrl)(token, filter, {
               signal:
                 abortControllers.current[
@@ -135,7 +135,7 @@ export const CourseAccessContextProvider: FunctionComponent<
             }),
             setState: setCourseAccess,
           })
-        : Promise.reject('noToken');
+        : Promise.reject("noToken");
     },
     [token]
   );
@@ -144,7 +144,7 @@ export const CourseAccessContextProvider: FunctionComponent<
     (data: API.CourseAccessEnquiryCreateRequest) => {
       return token
         ? createCourseAccess(apiUrl, token, data)
-        : Promise.reject('noToken');
+        : Promise.reject("noToken");
     },
     [token]
   );
@@ -155,7 +155,7 @@ export const CourseAccessContextProvider: FunctionComponent<
       // TODO: what about error ?
       return token
         ? deleteCourseAccessCall(apiUrl, token, id)
-        : Promise.reject('noToken');
+        : Promise.reject("noToken");
     },
     [token]
   );

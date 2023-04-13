@@ -6,30 +6,30 @@ import {
   useRef,
   useEffect,
   useContext,
-} from 'react';
+} from "react";
 import {
   EscolaLMSContextConfig,
   EscolaLMSContextReadConfig,
   ContextPaginatedMetaState,
-} from './types';
-import { defaultConfig } from './defaults';
-import { fetchDataType } from './states';
+} from "./types";
+import { defaultConfig } from "./defaults";
+import { fetchDataType } from "./states";
 
-import { useLocalStorage } from '../hooks/useLocalStorage';
-import * as API from './../../types/api';
-import { getDefaultData } from './index';
+import { useLocalStorage } from "../hooks/useLocalStorage";
+import * as API from "./../../types/api";
+import { getDefaultData } from "./index";
 
 import {
   tasks as getTasks,
   createTask,
   deleteTask as deleteTaskCall,
-} from './../../services/tasks';
-import { UserContext } from './user';
+} from "./../../services/tasks";
+import { UserContext } from "./user";
 
 export const TasksContext: React.Context<
   Pick<
     EscolaLMSContextConfig,
-    'tasks' | 'fetchTasks' | 'addTask' | 'deleteTask'
+    "tasks" | "fetchTasks" | "addTask" | "deleteTask"
   >
 > = createContext({
   tasks: defaultConfig.tasks,
@@ -40,7 +40,7 @@ export const TasksContext: React.Context<
 
 export interface TasksContextProviderType {
   apiUrl: string;
-  defaults?: Partial<Pick<EscolaLMSContextReadConfig, 'tasks'>>;
+  defaults?: Partial<Pick<EscolaLMSContextReadConfig, "tasks">>;
   ssrHydration?: boolean;
 }
 
@@ -65,9 +65,9 @@ export const TasksContextProvider: FunctionComponent<
   const [tasks, setTasks] = useLocalStorage<
     ContextPaginatedMetaState<API.Task>
   >(
-    'lms',
-    'tasks',
-    getDefaultData('tasks', {
+    "lms",
+    "tasks",
+    getDefaultData("tasks", {
       ...defaultConfig,
       ...defaults,
     }),
@@ -80,7 +80,7 @@ export const TasksContextProvider: FunctionComponent<
         ? fetchDataType<API.Task>({
             controllers: abortControllers.current,
             controller: `tasks/${JSON.stringify(filter)}`,
-            mode: 'paginated',
+            mode: "paginated",
             fetchAction: getTasks.bind(null, apiUrl)(token, filter, {
               signal:
                 abortControllers.current[`tasks/${JSON.stringify(filter)}`]
@@ -88,7 +88,7 @@ export const TasksContextProvider: FunctionComponent<
             }),
             setState: setTasks,
           })
-        : Promise.reject('noToken');
+        : Promise.reject("noToken");
     },
     [token]
   );
@@ -97,7 +97,7 @@ export const TasksContextProvider: FunctionComponent<
     (data: EscolaLms.Tasks.Http.Requests.CreateTaskRequest) => {
       return token
         ? createTask(apiUrl, token, data)
-        : Promise.reject('noToken');
+        : Promise.reject("noToken");
     },
     [token]
   );
@@ -108,7 +108,7 @@ export const TasksContextProvider: FunctionComponent<
       // TODO: what about error ?
       return token
         ? deleteTaskCall(apiUrl, token, id)
-        : Promise.reject('noToken');
+        : Promise.reject("noToken");
     },
     [token]
   );

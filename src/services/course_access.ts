@@ -1,6 +1,6 @@
-import request, { RequestOptionsInit } from 'umi-request';
-import * as API from '../types/api';
-import { currentTimezone } from '../utils';
+import request, { RequestOptionsInit } from "umi-request";
+import * as API from "../types/api";
+import { currentTimezone } from "../utils";
 
 /**  GET /api/course-access-enquiries */
 export async function courseAccess(
@@ -12,13 +12,13 @@ export async function courseAccess(
   return request<API.CourseAccessEnquiryList>(
     `${apiUrl}/api/course-access-enquiries`,
     {
-      method: 'GET',
+      method: "GET",
       params,
       headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
+        Accept: "application/json",
+        "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
-        'Current-timezone': currentTimezone(),
+        "Current-timezone": currentTimezone(),
       },
       ...(options || {}),
     }
@@ -31,12 +31,12 @@ export async function myCourses(
   options?: RequestOptionsInit
 ) {
   return request<API.DefaultResponse<number[]>>(`${apiUrl}/api/courses/my`, {
-    method: 'GET',
+    method: "GET",
     headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
+      Accept: "application/json",
+      "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
-      'Current-timezone': currentTimezone(),
+      "Current-timezone": currentTimezone(),
     },
     ...(options || {}),
   });
@@ -52,12 +52,12 @@ export async function deleteCourseAccess(
   return request<API.DefaultResponse<API.CourseAccessEnquiry>>(
     `${apiUrl}/api/course-access-enquiries/${id}`,
     {
-      method: 'DELETE',
+      method: "DELETE",
       headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
+        Accept: "application/json",
+        "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
-        'Current-timezone': currentTimezone(),
+        "Current-timezone": currentTimezone(),
       },
       ...(options || {}),
     }
@@ -74,13 +74,13 @@ export async function createCourseAccess(
   return request<API.DefaultResponse<API.CourseAccessEnquiry>>(
     `${apiUrl}/api/course-access-enquiries`,
     {
-      method: 'POST',
+      method: "POST",
       data: body,
       headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
+        Accept: "application/json",
+        "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
-        'Current-timezone': currentTimezone(),
+        "Current-timezone": currentTimezone(),
       },
       ...(options || {}),
     }
