@@ -170,10 +170,7 @@ export async function addVoucher(
   });
 }
 
-export async function removeVoucher(
-  apiUrl: string,
-  token: string
-) {
+export async function removeVoucher(apiUrl: string, token: string) {
   return request<API.AuthResponse>(`${apiUrl}/api/cart/voucher`, {
     method: "DELETE",
     headers: {

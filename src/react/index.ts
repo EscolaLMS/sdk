@@ -1,10 +1,10 @@
-export { default as Image } from './components/Image';
+export { default as Image } from "./components/Image";
 
 export {
   EscolaLMSContextProvider,
   SCORMPlayer,
   EscolaLMSContext,
   sortProgram,
-} from './context/index';
+} from "./context/index";
 
-export { useLocalStorage } from './hooks/useLocalStorage';
+export { useLocalStorage } from "./hooks/useLocalStorage";

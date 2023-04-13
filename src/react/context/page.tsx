@@ -5,23 +5,23 @@ import React, {
   useCallback,
   useRef,
   useEffect,
-} from 'react';
+} from "react";
 import {
   EscolaLMSContextConfig,
   EscolaLMSContextReadConfig,
   ContextListState,
   ContextStateValue,
-} from './types';
-import { defaultConfig } from './defaults';
-import { fetchDataType } from './states';
+} from "./types";
+import { defaultConfig } from "./defaults";
+import { fetchDataType } from "./states";
 
-import { useLocalStorage } from '../hooks/useLocalStorage';
-import * as API from './../../types/api';
-import { getDefaultData } from './index';
-import { page as getPage } from './../../services/pages';
+import { useLocalStorage } from "../hooks/useLocalStorage";
+import * as API from "./../../types/api";
+import { getDefaultData } from "./index";
+import { page as getPage } from "./../../services/pages";
 
 export const PageContext: React.Context<
-  Pick<EscolaLMSContextConfig, 'page' | 'fetchPage'>
+  Pick<EscolaLMSContextConfig, "page" | "fetchPage">
 > = createContext({
   page: defaultConfig.page,
   fetchPage: defaultConfig.fetchPage,
@@ -29,7 +29,7 @@ export const PageContext: React.Context<
 
 export interface PageContextProviderType {
   apiUrl: string;
-  defaults?: Partial<Pick<EscolaLMSContextReadConfig, 'page'>>;
+  defaults?: Partial<Pick<EscolaLMSContextReadConfig, "page">>;
   ssrHydration?: boolean;
 }
 
@@ -39,9 +39,9 @@ export const PageContextProvider: FunctionComponent<
   const abortControllers = useRef<Record<string, AbortController | null>>({});
 
   const [page, setPage] = useLocalStorage<ContextStateValue<API.Page>>(
-    'lms',
-    'page',
-    getDefaultData('page', {
+    "lms",
+    "page",
+    getDefaultData("page", {
       ...defaultConfig,
       ...defaults,
     }),
@@ -53,7 +53,7 @@ export const PageContextProvider: FunctionComponent<
       controllers: abortControllers.current,
       controller: `page${slug}`,
       id: slug,
-      mode: 'value',
+      mode: "value",
       fetchAction: getPage.bind(null, apiUrl)(slug, {
         signal: abortControllers.current?.[`page${slug}`]?.signal,
       }),

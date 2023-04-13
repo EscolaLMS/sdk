@@ -5,34 +5,34 @@ import {
   useCallback,
   useRef,
   useContext,
-} from 'react';
+} from "react";
 import {
   EscolaLMSContextConfig,
   EscolaLMSContextReadConfig,
   ContextPaginatedMetaState,
-} from './types';
-import { defaultConfig } from './defaults';
-import { fetchDataType } from './states';
+} from "./types";
+import { defaultConfig } from "./defaults";
+import { fetchDataType } from "./states";
 
 import {
   getNotifications,
   readNotification,
   readAll as postReadAll,
-} from '../../services/notify';
+} from "../../services/notify";
 
-import { useLocalStorage } from '../hooks/useLocalStorage';
-import * as API from './../../types/api';
-import { getDefaultData } from './index';
+import { useLocalStorage } from "../hooks/useLocalStorage";
+import * as API from "./../../types/api";
+import { getDefaultData } from "./index";
 
-import { UserContext } from './user';
+import { UserContext } from "./user";
 
 export const NotificationsContext: React.Context<
   Pick<
     EscolaLMSContextConfig,
-    | 'notifications'
-    | 'fetchNotifications'
-    | 'readNotify'
-    | 'readAllNotifications'
+    | "notifications"
+    | "fetchNotifications"
+    | "readNotify"
+    | "readAllNotifications"
   >
 > = createContext({
   notifications: defaultConfig.notifications,
@@ -43,7 +43,7 @@ export const NotificationsContext: React.Context<
 
 export interface NotificationsContextProviderType {
   apiUrl: string;
-  defaults?: Partial<Pick<EscolaLMSContextReadConfig, 'notifications'>>;
+  defaults?: Partial<Pick<EscolaLMSContextReadConfig, "notifications">>;
   ssrHydration?: boolean;
 }
 
@@ -57,9 +57,9 @@ export const NotificationsContextProvider: FunctionComponent<
   const [notifications, setNotifications] = useLocalStorage<
     ContextPaginatedMetaState<API.Notification>
   >(
-    'lms',
-    'notifications',
-    getDefaultData('notifications', {
+    "lms",
+    "notifications",
+    getDefaultData("notifications", {
       ...defaultConfig,
       ...defaults,
     }),
@@ -77,7 +77,7 @@ export const NotificationsContextProvider: FunctionComponent<
         ? fetchDataType<API.Notification>({
             controllers: abortControllers.current,
             controller: `notifications/${JSON.stringify(filter)}`,
-            mode: 'paginated',
+            mode: "paginated",
             fetchAction: getNotifications.bind(null, apiUrl)(token, filter, {
               signal:
                 abortControllers.current[
@@ -86,7 +86,7 @@ export const NotificationsContextProvider: FunctionComponent<
             }),
             setState: setNotifications,
           })
-        : Promise.reject('noToken');
+        : Promise.reject("noToken");
     },
     [token]
   );
@@ -121,7 +121,7 @@ export const NotificationsContextProvider: FunctionComponent<
                 error: error,
               }));
             })
-        : Promise.reject('noToken');
+        : Promise.reject("noToken");
     },
     [token, notifications]
   );
@@ -141,18 +141,18 @@ export const NotificationsContextProvider: FunctionComponent<
                   data: [],
                   meta: {
                     current_page: 0,
-                    next_page_url: '',
+                    next_page_url: "",
                     last_page: 0,
-                    path: '',
+                    path: "",
                     per_page: 25,
                     prev_page_url: null,
                     to: 0,
                     total: 0,
                     links: {
-                      first: '',
-                      last: '',
-                      next: '',
-                      prev: '',
+                      first: "",
+                      last: "",
+                      next: "",
+                      prev: "",
                     },
                   },
                 },
@@ -167,7 +167,7 @@ export const NotificationsContextProvider: FunctionComponent<
               error: error,
             }));
           })
-      : Promise.reject('noToken');
+      : Promise.reject("noToken");
   }, [token, notifications]);
 
   return (

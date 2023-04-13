@@ -5,22 +5,22 @@ import React, {
   useCallback,
   useRef,
   useEffect,
-} from 'react';
+} from "react";
 import {
   EscolaLMSContextConfig,
   EscolaLMSContextReadConfig,
   ContextListState,
-} from './types';
-import { defaultConfig } from './defaults';
-import { fetchDataType } from './states';
+} from "./types";
+import { defaultConfig } from "./defaults";
+import { fetchDataType } from "./states";
 
-import { useLocalStorage } from '../hooks/useLocalStorage';
-import * as API from './../../types/api';
-import { getDefaultData } from './index';
-import { uniqueTags as getUniqueTags } from './../../services/tags';
+import { useLocalStorage } from "../hooks/useLocalStorage";
+import * as API from "./../../types/api";
+import { getDefaultData } from "./index";
+import { uniqueTags as getUniqueTags } from "./../../services/tags";
 
 export const TagsContext: React.Context<
-  Pick<EscolaLMSContextConfig, 'uniqueTags' | 'fetchTags'>
+  Pick<EscolaLMSContextConfig, "uniqueTags" | "fetchTags">
 > = createContext({
   uniqueTags: defaultConfig.uniqueTags,
   fetchTags: defaultConfig.fetchTags,
@@ -28,7 +28,7 @@ export const TagsContext: React.Context<
 
 export interface TagsContextProviderType {
   apiUrl: string;
-  defaults?: Partial<Pick<EscolaLMSContextReadConfig, 'uniqueTags'>>;
+  defaults?: Partial<Pick<EscolaLMSContextReadConfig, "uniqueTags">>;
   ssrHydration?: boolean;
 }
 
@@ -51,9 +51,9 @@ export const TagsContextProvider: FunctionComponent<
   const [uniqueTags, setUniqueTags] = useLocalStorage<
     ContextListState<API.Tag>
   >(
-    'lms',
-    'tags',
-    getDefaultData('uniqueTags', {
+    "lms",
+    "tags",
+    getDefaultData("uniqueTags", {
       ...defaultConfig,
       ...defaults,
     }),
@@ -64,7 +64,7 @@ export const TagsContextProvider: FunctionComponent<
     return fetchDataType<API.Tag>({
       controllers: abortControllers.current,
       controller: `tags`,
-      mode: 'list',
+      mode: "list",
       fetchAction: getUniqueTags.bind(
         null,
         apiUrl

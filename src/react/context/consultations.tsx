@@ -5,22 +5,22 @@ import React, {
   useCallback,
   useRef,
   useEffect,
-} from 'react';
+} from "react";
 import {
   EscolaLMSContextConfig,
   EscolaLMSContextReadConfig,
   ContextPaginatedMetaState,
-} from './types';
-import { defaultConfig } from './defaults';
-import { fetchDataType } from './states';
+} from "./types";
+import { defaultConfig } from "./defaults";
+import { fetchDataType } from "./states";
 
-import { useLocalStorage } from '../hooks/useLocalStorage';
-import * as API from './../../types/api';
-import { getDefaultData } from './index';
-import { consultations as getConsultations } from './../../services/consultations';
+import { useLocalStorage } from "../hooks/useLocalStorage";
+import * as API from "./../../types/api";
+import { getDefaultData } from "./index";
+import { consultations as getConsultations } from "./../../services/consultations";
 
 export const ConsultationsContext: React.Context<
-  Pick<EscolaLMSContextConfig, 'consultations' | 'fetchConsultations'>
+  Pick<EscolaLMSContextConfig, "consultations" | "fetchConsultations">
 > = createContext({
   consultations: defaultConfig.consultations,
   fetchConsultations: defaultConfig.fetchConsultations,
@@ -28,7 +28,7 @@ export const ConsultationsContext: React.Context<
 
 export interface ConsultationsContextProviderType {
   apiUrl: string;
-  defaults?: Partial<Pick<EscolaLMSContextReadConfig, 'consultations'>>;
+  defaults?: Partial<Pick<EscolaLMSContextReadConfig, "consultations">>;
   ssrHydration?: boolean;
 }
 
@@ -51,9 +51,9 @@ export const ConsultationsContextProvider: FunctionComponent<
   const [consultations, setConsultations] = useLocalStorage<
     ContextPaginatedMetaState<API.Consultation>
   >(
-    'lms',
-    'consultations',
-    getDefaultData('consultations', {
+    "lms",
+    "consultations",
+    getDefaultData("consultations", {
       ...defaultConfig,
       ...defaults,
     }),
@@ -64,7 +64,7 @@ export const ConsultationsContextProvider: FunctionComponent<
     return fetchDataType<API.Consultation>({
       controllers: abortControllers.current,
       controller: `consultations/${JSON.stringify(filter)}`,
-      mode: 'paginated',
+      mode: "paginated",
       fetchAction: getConsultations.bind(null, apiUrl)(
         filter,
 

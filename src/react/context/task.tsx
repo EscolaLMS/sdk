@@ -6,42 +6,42 @@ import React, {
   useRef,
   useEffect,
   useContext,
-} from 'react';
+} from "react";
 import {
   EscolaLMSContextConfig,
   EscolaLMSContextReadConfig,
   ContextListState,
   ContextStateValue,
-} from './types';
-import { defaultConfig } from './defaults';
-import { fetchDataType } from './states';
+} from "./types";
+import { defaultConfig } from "./defaults";
+import { fetchDataType } from "./states";
 
-import { useLocalStorage } from '../hooks/useLocalStorage';
-import * as API from './../../types/api';
-import { getDefaultData } from './index';
+import { useLocalStorage } from "../hooks/useLocalStorage";
+import * as API from "./../../types/api";
+import { getDefaultData } from "./index";
 import {
   getTask,
   updateTask as postUpdateTask,
   completeTask,
   incompleteTask,
-} from './../../services/tasks';
+} from "./../../services/tasks";
 import {
   createTaskNote as postCreateTaskNote,
   updateTaskNote as patchUpdateTaskNote,
   deleteTaskNote as deleteDeleteTaskNote,
-} from '../../services/task_notes';
-import { UserContext } from './user';
+} from "../../services/task_notes";
+import { UserContext } from "./user";
 
 export const TaskContext: React.Context<
   Pick<
     EscolaLMSContextConfig,
-    | 'task'
-    | 'fetchTask'
-    | 'updateTask'
-    | 'updateTaskStatus'
-    | 'createTaskNote'
-    | 'updateTaskNote'
-    | 'deleteTaskNote'
+    | "task"
+    | "fetchTask"
+    | "updateTask"
+    | "updateTaskStatus"
+    | "createTaskNote"
+    | "updateTaskNote"
+    | "deleteTaskNote"
   >
 > = createContext({
   task: defaultConfig.task,
@@ -55,7 +55,7 @@ export const TaskContext: React.Context<
 
 export interface TaskContextProviderType {
   apiUrl: string;
-  defaults?: Partial<Pick<EscolaLMSContextReadConfig, 'task'>>;
+  defaults?: Partial<Pick<EscolaLMSContextReadConfig, "task">>;
   ssrHydration?: boolean;
 }
 
@@ -67,9 +67,9 @@ export const TaskContextProvider: FunctionComponent<
   const abortControllers = useRef<Record<string, AbortController | null>>({});
 
   const [task, setTask] = useLocalStorage<ContextStateValue<API.Task>>(
-    'lms',
-    'task',
-    getDefaultData('task', {
+    "lms",
+    "task",
+    getDefaultData("task", {
       ...defaultConfig,
       ...defaults,
     }),
@@ -83,13 +83,13 @@ export const TaskContextProvider: FunctionComponent<
             controllers: abortControllers.current,
             controller: `task${id}`,
             id: id,
-            mode: 'value',
+            mode: "value",
             fetchAction: getTask.bind(null, apiUrl)(token, id, {
               signal: abortControllers.current?.[`task${id}`]?.signal,
             }),
             setState: setTask,
           })
-        : Promise.reject('noToken');
+        : Promise.reject("noToken");
     },
     [token]
   );
@@ -100,7 +100,7 @@ export const TaskContextProvider: FunctionComponent<
     (id: number, data: EscolaLms.Tasks.Http.Requests.UpdateTaskRequest) => {
       return token
         ? postUpdateTask(apiUrl, token, id, data)
-        : Promise.reject('noToken');
+        : Promise.reject("noToken");
     },
     [token]
   );
@@ -110,7 +110,7 @@ export const TaskContextProvider: FunctionComponent<
     // TODO: what about error ?
     (id: number, done: boolean = true) => {
       if (!token) {
-        return Promise.reject('noToken');
+        return Promise.reject("noToken");
       }
       return done
         ? completeTask(apiUrl, token, id)
@@ -124,7 +124,7 @@ export const TaskContextProvider: FunctionComponent<
     // TODO: what about error ?
     (id: number, note: string) => {
       if (!token) {
-        return Promise.reject('noToken');
+        return Promise.reject("noToken");
       }
       return postCreateTaskNote(apiUrl, token, {
         task_id: id,
@@ -139,7 +139,7 @@ export const TaskContextProvider: FunctionComponent<
     // TODO: what about error ?
     (taskId: number, taskNoteId: number, note: string) => {
       if (!token) {
-        return Promise.reject('noToken');
+        return Promise.reject("noToken");
       }
       return patchUpdateTaskNote(apiUrl, token, taskNoteId, {
         task_id: taskId,
@@ -154,7 +154,7 @@ export const TaskContextProvider: FunctionComponent<
     // TODO: what about error ?
     (taskNoteId: number) => {
       if (!token) {
-        return Promise.reject('noToken');
+        return Promise.reject("noToken");
       }
       return deleteDeleteTaskNote(apiUrl, token, taskNoteId);
     },

@@ -6,35 +6,35 @@ import {
   useRef,
   useEffect,
   useContext,
-} from 'react';
+} from "react";
 import {
   EscolaLMSContextConfig,
   EscolaLMSContextReadConfig,
   ContextPaginatedMetaState,
-} from './types';
-import { defaultConfig } from './defaults';
-import { fetchDataType } from './states';
+} from "./types";
+import { defaultConfig } from "./defaults";
+import { fetchDataType } from "./states";
 
-import { useLocalStorage } from '../hooks/useLocalStorage';
-import * as API from './../../types/api';
-import { getDefaultData } from './index';
+import { useLocalStorage } from "../hooks/useLocalStorage";
+import * as API from "./../../types/api";
+import { getDefaultData } from "./index";
 
 import {
   consultationAccess as getConsultationAccess,
   createConsultationAccess,
   deleteConsultationAccess as deleteConsultationAccessCall,
   updateConsultationAccess as patchConsultationAccess,
-} from './../../services/consultations_access';
-import { UserContext } from './user';
+} from "./../../services/consultations_access";
+import { UserContext } from "./user";
 
 export const ConsultationAccessContext: React.Context<
   Pick<
     EscolaLMSContextConfig,
-    | 'consultationAccess'
-    | 'fetchConsultationAccess'
-    | 'addConsultationAccess'
-    | 'deleteConsultationAccess'
-    | 'updateConsultationAccess'
+    | "consultationAccess"
+    | "fetchConsultationAccess"
+    | "addConsultationAccess"
+    | "deleteConsultationAccess"
+    | "updateConsultationAccess"
   >
 > = createContext({
   consultationAccess: defaultConfig.consultationAccess,
@@ -46,7 +46,7 @@ export const ConsultationAccessContext: React.Context<
 
 export interface ConsultationAccessContextProviderType {
   apiUrl: string;
-  defaults?: Partial<Pick<EscolaLMSContextReadConfig, 'consultationAccess'>>;
+  defaults?: Partial<Pick<EscolaLMSContextReadConfig, "consultationAccess">>;
   ssrHydration?: boolean;
 }
 
@@ -71,9 +71,9 @@ export const ConsultationAccessContextProvider: FunctionComponent<
   const [consultationAccess, setConsultationAccess] = useLocalStorage<
     ContextPaginatedMetaState<API.ConsultationsAccessEnquiry>
   >(
-    'lms',
-    'consultationAccess',
-    getDefaultData('consultationAccess', {
+    "lms",
+    "consultationAccess",
+    getDefaultData("consultationAccess", {
       ...defaultConfig,
       ...defaults,
     }),
@@ -91,7 +91,7 @@ export const ConsultationAccessContextProvider: FunctionComponent<
         ? fetchDataType<API.ConsultationsAccessEnquiry>({
             controllers: abortControllers.current,
             controller: `consultationAccess/${JSON.stringify(filter)}`,
-            mode: 'paginated',
+            mode: "paginated",
             fetchAction: getConsultationAccess.bind(null, apiUrl)(
               token,
               filter,
@@ -104,7 +104,7 @@ export const ConsultationAccessContextProvider: FunctionComponent<
             ),
             setState: setConsultationAccess,
           })
-        : Promise.reject('noToken');
+        : Promise.reject("noToken");
     },
     [token]
   );
@@ -113,7 +113,7 @@ export const ConsultationAccessContextProvider: FunctionComponent<
     (data: API.ConsultationsAccessEnquiryCreateRequest) => {
       return token
         ? createConsultationAccess(apiUrl, token, data)
-        : Promise.reject('noToken');
+        : Promise.reject("noToken");
     },
     [token]
   );
@@ -123,7 +123,7 @@ export const ConsultationAccessContextProvider: FunctionComponent<
     (id: number, data: API.ConsultationsAccessEnquiryUpdateRequest) => {
       return token
         ? patchConsultationAccess(apiUrl, token, id, data)
-        : Promise.reject('noToken');
+        : Promise.reject("noToken");
     },
     [token]
   );
@@ -134,7 +134,7 @@ export const ConsultationAccessContextProvider: FunctionComponent<
       // TODO: what about error ?
       return token
         ? deleteConsultationAccessCall(apiUrl, token, id)
-        : Promise.reject('noToken');
+        : Promise.reject("noToken");
     },
     [token]
   );

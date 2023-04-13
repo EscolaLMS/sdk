@@ -1,6 +1,6 @@
-import request, { RequestOptionsInit } from 'umi-request';
-import * as API from '../types/api';
-import { currentTimezone } from '../utils';
+import request, { RequestOptionsInit } from "umi-request";
+import * as API from "../types/api";
+import { currentTimezone } from "../utils";
 
 /**  GET /api/course-access-enquiries */
 export async function consultationAccess(
@@ -12,13 +12,13 @@ export async function consultationAccess(
   return request<API.ConsultationsAccessEnquiryList>(
     `${apiUrl}/api/consultation-access-enquiries`,
     {
-      method: 'GET',
+      method: "GET",
       params,
       headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
+        Accept: "application/json",
+        "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
-        'Current-timezone': currentTimezone(),
+        "Current-timezone": currentTimezone(),
       },
       ...(options || {}),
     }
@@ -35,12 +35,12 @@ export async function deleteConsultationAccess(
   return request<API.DefaultResponse<API.ConsultationsAccessEnquiry>>(
     `${apiUrl}/api/consultation-access-enquiries/${id}`,
     {
-      method: 'DELETE',
+      method: "DELETE",
       headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
+        Accept: "application/json",
+        "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
-        'Current-timezone': currentTimezone(),
+        "Current-timezone": currentTimezone(),
       },
       ...(options || {}),
     }
@@ -57,13 +57,13 @@ export async function createConsultationAccess(
   return request<API.DefaultResponse<API.ConsultationsAccessEnquiry>>(
     `${apiUrl}/api/consultation-access-enquiries`,
     {
-      method: 'POST',
+      method: "POST",
       data: body,
       headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
+        Accept: "application/json",
+        "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
-        'Current-timezone': currentTimezone(),
+        "Current-timezone": currentTimezone(),
       },
       ...(options || {}),
     }
@@ -81,13 +81,13 @@ export async function updateConsultationAccess(
   return request<API.DefaultResponse<API.ConsultationsAccessEnquiry>>(
     `${apiUrl}/api/consultation-access-enquiries/${id}`,
     {
-      method: 'PATCH',
+      method: "PATCH",
       data: body,
       headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
+        Accept: "application/json",
+        "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
-        'Current-timezone': currentTimezone(),
+        "Current-timezone": currentTimezone(),
       },
       ...(options || {}),
     }
