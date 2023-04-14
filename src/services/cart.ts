@@ -188,7 +188,7 @@ export async function orderInvoice(
   id: number,
   options?: RequestOptionsInit
 ) {
-  return request<any>(`${apiUrl}/api/invoices/${id}`, {
+  return request<any>(`${apiUrl}/api/order-invoices/${id}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/pdf",
