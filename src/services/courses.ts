@@ -45,6 +45,7 @@ export async function course(
 export async function getCourse(
   apiUrl: string,
   id: number,
+  token?: string | null,
   options?: RequestOptionsInit
 ) {
   return request<API.DefaultResponse<API.Course>>(
@@ -52,6 +53,15 @@ export async function getCourse(
     {
       method: "GET",
       ...(options || {}),
+      headers: token
+        ? {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+            "Current-timezone": currentTimezone(),
+          }
+        : {
+            "Content-Type": "application/json",
+          },
     }
   );
 }
