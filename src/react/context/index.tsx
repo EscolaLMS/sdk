@@ -903,10 +903,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
         : { [id]: { loading: true } },
     }));
     return getCourse
-      .bind(
-        null,
-        apiUrl
-      )(id)
+      .bind(null, apiUrl)(id, token)
       .then((response) => {
         if (response.success) {
           const lessons = sortProgram(response.data.lessons || []);
