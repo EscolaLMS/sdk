@@ -1031,8 +1031,9 @@ const EscolaLMSContextProviderInner: FunctionComponent<
       }));
       return postAddToCart
         .bind(null, apiUrl)(productId, token, quantity)
-        .then(() => {
+        .then((response) => {
           fetchCart();
+          return response;
         })
         .catch((error) => {
           setCart((prevState) => ({
@@ -1040,6 +1041,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
             loading: false,
             error: error.data,
           }));
+          return error;
         });
     },
     [fetchCart]
@@ -1094,6 +1096,8 @@ const EscolaLMSContextProviderInner: FunctionComponent<
             },
           }));
           fetchCart();
+
+          return response;
         })
         .catch((error) => {
           setCart((prevState) => ({
@@ -1101,6 +1105,8 @@ const EscolaLMSContextProviderInner: FunctionComponent<
             loading: false,
             error: error.data,
           }));
+
+          return error;
         });
     },
     [fetchCart]
