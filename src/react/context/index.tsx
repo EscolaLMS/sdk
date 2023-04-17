@@ -1870,46 +1870,30 @@ export const EscolaLMSContextProvider: FunctionComponent<
     apiUrl: props.apiUrl,
     ssrHydration: props.ssrHydration,
   };
-  // TODO this should be replaced with some smart component pipeping eg https://github.com/LSafer/react-pipeline/blob/master/src/index.tsx
-  return (
-    <UserContextProvider {...contextProps}>
-      <CoursesContextProvider {...contextProps}>
-        <CategoriesContextProvider {...contextProps}>
-          <TagsContextProvider {...contextProps}>
-            <TutorsContextProvider {...contextProps}>
-              <WebinarsContextProvider {...contextProps}>
-                <WebinarContextProvider {...contextProps}>
-                  <H5pContextProvider {...contextProps}>
-                    <ConsultationsContextProvider {...contextProps}>
-                      <PagesContextProvider {...contextProps}>
-                        <PageContextProvider {...contextProps}>
-                          <ConsultationAccessContextProvider {...contextProps}>
-                            <NotificationsContextProvider {...contextProps}>
-                              <CourseAccessContextProvider {...contextProps}>
-                                <TasksContextProvider {...contextProps}>
-                                  <TaskContextProvider {...contextProps}>
-                                    <BookmarkNotesContextProvider
-                                      {...contextProps}
-                                    >
-                                      <EscolaLMSContextProviderInner {...props}>
-                                        {children}
-                                      </EscolaLMSContextProviderInner>
-                                    </BookmarkNotesContextProvider>
-                                  </TaskContextProvider>
-                                </TasksContextProvider>
-                              </CourseAccessContextProvider>
-                            </NotificationsContextProvider>
-                          </ConsultationAccessContextProvider>
-                        </PageContextProvider>
-                      </PagesContextProvider>
-                    </ConsultationsContextProvider>
-                  </H5pContextProvider>
-                </WebinarContextProvider>
-              </WebinarsContextProvider>
-            </TutorsContextProvider>
-          </TagsContextProvider>
-        </CategoriesContextProvider>
-      </CoursesContextProvider>
-    </UserContextProvider>
-  );
+
+  const wrappers: React.FunctionComponent<React.PropsWithChildren<any>>[] = [
+    UserContextProvider,
+    CoursesContextProvider,
+    CategoriesContextProvider,
+    TagsContextProvider,
+    TutorsContextProvider,
+    WebinarsContextProvider,
+    WebinarContextProvider,
+    H5pContextProvider,
+    ConsultationsContextProvider,
+    PagesContextProvider,
+    PageContextProvider,
+    ConsultationAccessContextProvider,
+    NotificationsContextProvider,
+    CourseAccessContextProvider,
+    TasksContextProvider,
+    TaskContextProvider,
+    BookmarkNotesContextProvider,
+  ].reverse();
+
+  const C = wrappers.reduce((acc, curr, i) => {
+    return React.createElement(curr, contextProps, acc);
+  }, React.createElement(EscolaLMSContextProviderInner, props, children));
+
+  return C;
 };
