@@ -34,13 +34,6 @@ export interface ContextStateValue<T> {
   >;
 }
 
-export enum FontSize {
-  small = 0,
-  regular = 1,
-  bigger = 2,
-  big = 3,
-}
-
 export interface EscolaLMSContextReadConfig {
   token?: string | null;
   courses: ContextPaginatedMetaState<API.CourseListItem>;
@@ -65,7 +58,6 @@ export interface EscolaLMSContextReadConfig {
   mattermostChannels: ContextStateValue<API.MattermostData>;
   pages: ContextPaginatedMetaState<API.PageListItem>;
   page: ContextStateValue<API.Page>;
-  fontSize: FontSize;
   notifications: ContextPaginatedMetaState<API.Notification>;
   h5p: ContextStateValue<API.H5PObject>;
   tokenExpireDate?: string | null;
@@ -228,7 +220,6 @@ export interface EscolaLMSContextAPIConfig {
   topicIsFinished: (topicId: number) => Boolean;
   getNextPrevTopic: (topicId: number, next?: boolean) => API.Topic | null;
   courseProgress: (courseId: number) => number;
-  fontSizeToggle: (bigger: boolean) => void;
   socialAuthorize: (token: string) => void;
   fetchNotifications: (
     filter?: API.PaginationParams
