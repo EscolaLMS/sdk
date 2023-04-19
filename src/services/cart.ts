@@ -5,7 +5,7 @@ import { currentTimezone } from "../utils";
 export async function addToCart(
   apiUrl: string,
   productId: number,
-  token: string,
+  token?: string,
   quantity?: number,
   options?: RequestOptionsInit
 ) {

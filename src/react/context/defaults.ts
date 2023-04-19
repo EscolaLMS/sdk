@@ -86,6 +86,7 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
   addMissingProducts: (products: number[]) => Promise.reject(),
   removeFromCart: (id) => Promise.reject(id),
   fetchCart: () => Promise.reject(),
+  resetCart: () => Promise.reject(),
   cart: {
     loading: false,
     value: { total: 0, subtotal: 0, tax: 0, items: [] },
@@ -376,6 +377,7 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
   addMissingProducts: (products: number[]) => Promise.reject(),
   removeFromCart: (id) => Promise.reject(id),
   fetchCart: () => Promise.reject(),
+  resetCart: () => Promise.reject(),
   cart: {
     loading: false,
     value: { total: 0, subtotal: 0, tax: 0, items: [] },
