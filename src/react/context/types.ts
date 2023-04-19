@@ -151,6 +151,7 @@ export interface EscolaLMSContextAPIConfig {
   fetchCart: () => Promise<
     void | API.DefaultResponse<API.Cart> | API.DefaultMetaResponse<API.Cart>
   >;
+  resetCart: () => void;
   payWithStripe: (payment_method: string, return_url: string) => Promise<void>;
   payWithP24: (
     email: string,

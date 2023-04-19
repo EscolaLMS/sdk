@@ -133,6 +133,7 @@ import {
   BookmarkNotesContext,
   BookmarkNotesContextProvider,
 } from "./bookmark_notes";
+import { CartContext } from "./cart";
 
 export const SCORMPlayer: React.FC<{
   uuid: string;
@@ -241,6 +242,14 @@ const EscolaLMSContextProviderInner: FunctionComponent<
     register,
   } = useContext(UserContext);
 
+  const {
+    cart,
+    fetchCart,
+    addToCart,
+    removeFromCart,
+    addMissingProducts,
+    resetCart,
+  } = useContext(CartContext);
   const { courses, fetchCourses } = useContext(CoursesContext);
   const { categoryTree, fetchCategories } = useContext(CategoriesContext);
   const { uniqueTags, fetchTags } = useContext(TagsContext);
@@ -371,13 +380,6 @@ const EscolaLMSContextProviderInner: FunctionComponent<
   const [program, setProgram] = useLocalStorage<
     ContextStateValue<API.CourseProgram>
   >("lms", "program", getDefaultData("program", initialValues), ssrHydration);
-
-  const [cart, setCart] = useLocalStorage<ContextStateValue<API.Cart>>(
-    "lms",
-    "cart",
-    getDefaultData("cart", initialValues),
-    ssrHydration
-  );
 
   const [progress, setProgress] = useState<
     ContextStateValue<API.CourseProgress>
@@ -959,8 +961,8 @@ const EscolaLMSContextProviderInner: FunctionComponent<
   const resetState = useCallback(() => {
     logoutUser();
 
+    resetCart();
     setProgram(defaultConfig.program);
-    setCart(defaultConfig.cart);
     setCertificates(defaultConfig.certificates);
     setMattermostChannels(defaultConfig.mattermostChannels);
 
@@ -1004,112 +1006,6 @@ const EscolaLMSContextProviderInner: FunctionComponent<
         : Promise.reject("noToken");
     },
     [token]
-  );
-
-  const fetchCart = useCallback(() => {
-    return token
-      ? fetchDataType<API.Cart>({
-          controllers: abortControllers.current,
-          controller: `cart`,
-          mode: "value",
-          fetchAction: getCart.bind(null, apiUrl)(token, {
-            signal: abortControllers.current?.cart?.signal,
-          }),
-          setState: setCart,
-        })
-      : Promise.reject("noToken");
-  }, [token]);
-
-  const addToCart = useCallback(
-    (productId: number, quantity?: number) => {
-      if (!token) {
-        return Promise.reject("noToken");
-      }
-      setCart((prevState) => ({
-        ...prevState,
-        loading: true,
-      }));
-      return postAddToCart
-        .bind(null, apiUrl)(productId, token, quantity)
-        .then((response) => {
-          fetchCart();
-          return response;
-        })
-        .catch((error) => {
-          setCart((prevState) => ({
-            ...prevState,
-            loading: false,
-            error: error.data,
-          }));
-          return error;
-        });
-    },
-    [fetchCart]
-  );
-
-  const addMissingProducts = useCallback(
-    (products: number[]) => {
-      if (!token) {
-        return Promise.reject("noToken");
-      }
-      setCart((prevState) => ({
-        ...prevState,
-        loading: true,
-      }));
-      return postAddMissingProducts
-        .bind(null, apiUrl)(token, products)
-        .then(() => {
-          fetchCart();
-        })
-        .catch((error) => {
-          setCart((prevState) => ({
-            ...prevState,
-            loading: false,
-            error: error.data,
-          }));
-        });
-    },
-    [fetchCart]
-  );
-
-  const removeFromCart = useCallback(
-    (itemId: number) => {
-      if (!token) {
-        return Promise.reject("noToken");
-      }
-      setCart((prevState) => ({
-        ...prevState,
-        loading: true,
-      }));
-      return deleteRemoveFromCart
-        .bind(null, apiUrl)(itemId, token)
-        .then((response) => {
-          setCart((prevState) => ({
-            ...prevState,
-            loading: false,
-            value: {
-              ...prevState.value,
-              items:
-                prevState && prevState.value
-                  ? prevState.value.items.filter((item) => item.id !== itemId)
-                  : [],
-            },
-          }));
-          fetchCart();
-
-          return response;
-        })
-        .catch((error) => {
-          setCart((prevState) => ({
-            ...prevState,
-            loading: false,
-            error: error.data,
-          }));
-
-          return error;
-        });
-    },
-    [fetchCart]
   );
 
   const payWithStripe = useCallback(
@@ -1673,6 +1569,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
         fetchCart,
         addToCart,
         removeFromCart,
+        resetCart,
         cart,
         payWithStripe,
         fetchProgress,
