@@ -1,17 +1,6 @@
 import * as API from "./../../types/api";
 
-import {
-  ContextState,
-  ContextPaginatedMetaState,
-  ContextPaginatedState,
-  ContextListState,
-  ContextStateValue,
-  FontSize,
-  EscolaLMSContextReadConfig,
-  EscolaLMSContextAPIConfig,
-  EscolaLMSContextConfig,
-  SortProgram,
-} from "./types";
+import { EscolaLMSContextConfig } from "./types";
 
 export const blackList: API.IEvent[] = [
   "http://adlnet.gov/expapi/verbs/attended",
@@ -164,8 +153,6 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
   topicIsFinished: (topicId: number) => false,
   courseProgress: (courseId: number) => 0,
   getNextPrevTopic: (topicId: number, next?: boolean) => null,
-  fontSizeToggle: (bigger: boolean) => 0,
-  fontSize: FontSize.regular,
   socialAuthorize: (token: string) => Promise.reject(),
   notifications: {
     loading: false,
@@ -457,9 +444,7 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
   topicIsFinished: (topicId: number) => false,
   courseProgress: (courseId: number) => 0,
   getNextPrevTopic: (topicId: number, next?: boolean) => null,
-  fontSizeToggle: (bigger: boolean) => 0,
   getRefreshedToken: () => Promise.reject(),
-  fontSize: FontSize.regular,
   socialAuthorize: (token: string) => Promise.reject(),
   notifications: {
     loading: false,
