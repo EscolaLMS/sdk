@@ -220,6 +220,7 @@ export const UserContextProvider: FunctionComponent<
                   loading: false,
                 }));
               }
+              return res;
             })
         : Promise.reject("noToken");
     },

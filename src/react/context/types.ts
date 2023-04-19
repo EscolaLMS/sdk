@@ -223,7 +223,9 @@ export interface EscolaLMSContextAPIConfig {
   ) => Promise<
     void | API.DefaultResponse<API.Page> | API.DefaultMetaResponse<API.Page>
   >;
-  updateProfile: (data: API.UpdateUserDetails) => Promise<void>;
+  updateProfile: (
+    data: API.UpdateUserDetails
+  ) => Promise<API.DefaultResponse<API.UserAsProfile>>;
   updateAvatar: (avatar: File) => Promise<void>;
   topicPing: (topicId: number) => Promise<Boolean>;
   topicIsFinished: (topicId: number) => Boolean;
