@@ -396,19 +396,6 @@ const EscolaLMSContextProviderInner: FunctionComponent<
   // Refactor. Cart. Move to separate file.
   // https://github.com/EscolaLMS/sdk/issues/240
 
-<<<<<<< HEAD
-=======
-  const [cart, setCart] = useLocalStorage<ContextStateValue<API.Cart>>(
-    "lms",
-    "cart",
-    getDefaultData("cart", initialValues),
-    ssrHydration
-  );
-
-  // Refactor. Course Progress. Move to separate file.
-  // https://github.com/EscolaLMS/sdk/issues/241
-
->>>>>>> main
   const [progress, setProgress] = useState<
     ContextStateValue<API.CourseProgress>
   >(getDefaultData("progress", initialValues));
