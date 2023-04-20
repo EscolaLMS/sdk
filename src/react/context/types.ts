@@ -109,11 +109,7 @@ export interface EscolaLMSContextAPIConfig {
     | API.DefaultResponse<API.UserGroup>
     | API.DefaultMetaResponse<API.UserGroup>
   >;
-  fetchCourse: (
-    id: number
-  ) => Promise<
-    API.DefaultResponse<API.Course>
-  >;
+  fetchCourse: (id: number) => Promise<API.DefaultResponse<API.Course>>;
   fetchProgram: (id: number) => Promise<void>;
   fetchConfig: () => Promise<
     | void
