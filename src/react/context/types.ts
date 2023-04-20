@@ -109,7 +109,11 @@ export interface EscolaLMSContextAPIConfig {
     | API.DefaultResponse<API.UserGroup>
     | API.DefaultMetaResponse<API.UserGroup>
   >;
-  fetchCourse: (id: number) => Promise<void>;
+  fetchCourse: (
+    id: number
+  ) => Promise<
+    API.DefaultResponseError | API.DefaultResponseSuccess<API.Course>
+  >;
   fetchProgram: (id: number) => Promise<void>;
   fetchConfig: () => Promise<
     | void
@@ -302,13 +306,7 @@ export interface EscolaLMSContextAPIConfig {
     | API.DefaultResponse<API.Webinar>
     | API.DefaultMetaResponse<API.Webinar>
   >;
-  fetchWebinar: (
-    id: number
-  ) => Promise<
-    | void
-    | API.DefaultResponse<API.Webinar>
-    | API.DefaultMetaResponse<API.Webinar>
-  >;
+  fetchWebinar: (id: number) => Promise<API.DefaultResponse<API.Webinar>>;
   fetchEvents: (
     filter: API.EventsParams
   ) => Promise<

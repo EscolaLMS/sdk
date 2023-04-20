@@ -1002,6 +1002,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
                 },
           }));
         }
+        return response;
       });
   }, []);
 
