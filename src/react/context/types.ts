@@ -112,7 +112,7 @@ export interface EscolaLMSContextAPIConfig {
   fetchCourse: (
     id: number
   ) => Promise<
-    API.DefaultResponseError | API.DefaultResponseSuccess<API.Course>
+    API.DefaultResponse<API.Course>
   >;
   fetchProgram: (id: number) => Promise<void>;
   fetchConfig: () => Promise<
