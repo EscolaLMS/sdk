@@ -1159,13 +1159,15 @@ const EscolaLMSContextProviderInner: FunctionComponent<
               error: response,
             }));
           }
+          return response;
         })
-        .catch((error) => {
+        .catch((error: API.DefaultResponseError) => {
           setProgram((prevState) => ({
             ...prevState,
             loading: false,
-            error: error.data,
+            error: error,
           }));
+          return error;
         });
     },
     [token]
