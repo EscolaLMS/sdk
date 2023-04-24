@@ -9,7 +9,7 @@ export async function addToCart(
   quantity?: number,
   options?: RequestOptionsInit
 ) {
-  return request<API.SuccessResponse>(`${apiUrl}/api/cart/products`, {
+  return request<API.DefaultResponse<any>>(`${apiUrl}/api/cart/products`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
