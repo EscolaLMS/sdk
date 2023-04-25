@@ -9,7 +9,8 @@ import { EscolaLMSContext } from "../../context";
 
 import { getImageApiPath, getImageCachePath } from "./utils";
 
-interface ImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
+interface ImageProps
+  extends Omit<React.ImgHTMLAttributes<HTMLImageElement>, "onError"> {
   path: string;
   size?: number;
   srcSizes?: number[];
