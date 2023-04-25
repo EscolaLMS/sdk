@@ -6,7 +6,7 @@ import { currentTimezone } from "../utils";
 export async function quizAttempt(
   apiUrl: string,
   token: string,
-  body: EscolaLms.TopicTypeGift.Http.Requests.CreateQuizAttemptRequest,
+  body: EscolaLms.TopicTypeGift.Models.QuizAttempt,
   options?: RequestOptionsInit
 ) {
   return request<API.DefaultResponse<API.QuizAttempt>>(

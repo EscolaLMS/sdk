@@ -1385,3 +1385,12 @@ export interface ProjectFile {
   topic_id: number;
   user_id: number;
 }
+
+export type AddProductResponse = DefaultResponse<{
+  buyable: boolean;
+  difference: number;
+  limit: number;
+  operation: "increment" | "decrement" | "unchanged";
+  quantity_in_cart: number;
+  quantity_owned: number;
+}>;

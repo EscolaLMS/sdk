@@ -140,7 +140,7 @@ export interface EscolaLMSContextAPIConfig {
   addToCart: (
     id: number,
     quantity?: number
-  ) => Promise<API.DefaultResponse<any>>;
+  ) => Promise<API.DefaultResponse<API.AddProductResponse>>;
   addMissingProducts: (products: number[]) => Promise<void>;
   removeFromCart: (courseId: number) => Promise<void>;
   fetchCart: () => Promise<
@@ -221,7 +221,9 @@ export interface EscolaLMSContextAPIConfig {
   updateProfile: (
     data: API.UpdateUserDetails
   ) => Promise<API.DefaultResponse<API.UserAsProfile>>;
-  updateAvatar: (avatar: File) => Promise<void>;
+  updateAvatar: (
+    avatar: File
+  ) => Promise<API.DefaultResponse<API.UserAsProfile>>;
   topicPing: (topicId: number) => Promise<Boolean>;
   topicIsFinished: (topicId: number) => Boolean;
   getNextPrevTopic: (topicId: number, next?: boolean) => API.Topic | null;
