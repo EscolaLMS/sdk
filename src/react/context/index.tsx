@@ -46,9 +46,6 @@ import { getCertificates, getCertificate } from "../../services/certificates";
 import { getMattermostChannels } from "../../services/mattermost";
 
 import {
-  cart as getCart,
-  addToCart as postAddToCart,
-  removeFromCart as deleteRemoveFromCart,
   payWithStripe as postPayWithStripe,
   payWithP24 as postPayWithP24,
   orders as getOrders,
@@ -56,7 +53,6 @@ import {
   addVoucher as postVoucher,
   removeVoucher as deleteVoucher,
   orderInvoice,
-  addMissingProducts as postAddMissingProducts,
 } from "./../../services/cart";
 import {
   userGroups as getUserGroups,
@@ -130,7 +126,7 @@ import {
   BookmarkNotesContext,
   BookmarkNotesContextProvider,
 } from "./bookmark_notes";
-import { CartContext } from "./cart";
+import { CartContext, CartContextProvider } from "./cart";
 
 export const SCORMPlayer: React.FC<{
   uuid: string;
@@ -1790,6 +1786,7 @@ export const EscolaLMSContextProvider: FunctionComponent<
     TasksContextProvider,
     TaskContextProvider,
     BookmarkNotesContextProvider,
+    CartContextProvider,
   ].reverse();
 
   const C = wrappers.reduce((acc, curr, i) => {

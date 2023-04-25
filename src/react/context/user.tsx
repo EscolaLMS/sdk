@@ -250,7 +250,9 @@ export const UserContextProvider: FunctionComponent<
                   loading: false,
                 }));
               }
+              return res;
             })
+            .catch((error) => error)
         : Promise.reject("noToken");
     },
     [token]

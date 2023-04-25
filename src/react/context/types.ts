@@ -137,7 +137,10 @@ export interface EscolaLMSContextAPIConfig {
   forgot: (body: API.ForgotRequest) => Promise<API.AuthResponse>;
   reset: (body: API.ResetPasswordRequest) => Promise<API.AuthResponse>;
   emailVerify: (id: string, hash: string) => Promise<API.AuthResponse>;
-  addToCart: (id: number, quantity?: number) => Promise<API.SuccessResponse>;
+  addToCart: (
+    id: number,
+    quantity?: number
+  ) => Promise<API.DefaultResponse<API.AddProductResponse>>;
   addMissingProducts: (products: number[]) => Promise<void>;
   removeFromCart: (courseId: number) => Promise<void>;
   fetchCart: () => Promise<
@@ -218,7 +221,9 @@ export interface EscolaLMSContextAPIConfig {
   updateProfile: (
     data: API.UpdateUserDetails
   ) => Promise<API.DefaultResponse<API.UserAsProfile>>;
-  updateAvatar: (avatar: File) => Promise<void>;
+  updateAvatar: (
+    avatar: File
+  ) => Promise<API.DefaultResponse<API.UserAsProfile>>;
   topicPing: (topicId: number) => Promise<Boolean>;
   topicIsFinished: (topicId: number) => Boolean;
   getNextPrevTopic: (topicId: number, next?: boolean) => API.Topic | null;

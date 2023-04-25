@@ -24,6 +24,7 @@ import {
   addMissingProducts as postAddMissingProducts,
   removeFromCart as deleteRemoveFromCart,
 } from "./../../services/cart";
+import { DefaultResponseError } from "../../types/api";
 
 export const CartContext: React.Context<
   Pick<
@@ -66,13 +67,6 @@ export const CartContextProvider: FunctionComponent<
     ssrHydration
   );
 
-  //   const [cart, setCart] = useLocalStorage<ContextStateValue<API.Cart>>(
-  //     "lms",
-  //     "cart",
-  //     getDefaultData("cart", initialValues),
-  //     ssrHydration
-  //   );
-
   const fetchCart = useCallback(() => {
     return token
       ? fetchDataType<API.Cart>({
@@ -102,11 +96,11 @@ export const CartContextProvider: FunctionComponent<
           fetchCart();
           return response;
         })
-        .catch((error) => {
+        .catch((error: DefaultResponseError) => {
           setCart((prevState) => ({
             ...prevState,
             loading: false,
-            error: error.data,
+            error: error,
           }));
           return error;
         });
