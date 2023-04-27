@@ -228,6 +228,8 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
     loading: false,
   },
   fetchQuestionnaires: (model: string, id: number) => Promise.reject(),
+  fetchQuestionnaire: (modelTypeTitle: string, modelID: number, id: number) =>
+    Promise.reject(),
   sendQuestionnaireAnswer: (
     model: string,
     modelID: number,
@@ -520,6 +522,8 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
     loading: false,
   },
   fetchQuestionnaires: (model: string, id: number) => Promise.reject(),
+  fetchQuestionnaire: (modelTypeTitle: string, modelID: number, id: number) =>
+    Promise.reject(),
   sendQuestionnaireAnswer: (
     model: string,
     modelID: number,
