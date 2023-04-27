@@ -42,15 +42,10 @@ import {
   settings as getSettings,
   config as getConfig,
 } from "./../../services/settings";
-import { getNotifications, readNotification } from "../../services/notify";
 import { getCertificates, getCertificate } from "../../services/certificates";
 import { getMattermostChannels } from "../../services/mattermost";
 
-import { pages as getPages, page as getPage } from "./../../services/pages";
 import {
-  cart as getCart,
-  addToCart as postAddToCart,
-  removeFromCart as deleteRemoveFromCart,
   payWithStripe as postPayWithStripe,
   payWithP24 as postPayWithP24,
   orders as getOrders,
@@ -58,7 +53,6 @@ import {
   addVoucher as postVoucher,
   removeVoucher as deleteVoucher,
   orderInvoice,
-  addMissingProducts as postAddMissingProducts,
 } from "./../../services/cart";
 import {
   userGroups as getUserGroups,
@@ -72,7 +66,6 @@ import {
   ContextPaginatedMetaState,
   ContextListState,
   ContextStateValue,
-  FontSize,
   EscolaLMSContextReadConfig,
   EscolaLMSContextConfig,
   EscolaLMSContextAPIConfig,
@@ -90,10 +83,6 @@ import {
 
 import { fields as getFields } from "../../services/fields";
 
-import {
-  getQuestionnaires,
-  questionnaireAnswer,
-} from "../../services/questionnaire";
 import {
   stationaryEvents as getStationaryEvents,
   getMyStationaryEvents,
@@ -133,6 +122,11 @@ import {
   BookmarkNotesContext,
   BookmarkNotesContextProvider,
 } from "./bookmark_notes";
+import { CartContext, CartContextProvider } from "./cart";
+import {
+  QuestionnairesContext,
+  QuestionnairesContextProvider,
+} from "./questionnaires";
 
 export const SCORMPlayer: React.FC<{
   uuid: string;
@@ -241,6 +235,14 @@ const EscolaLMSContextProviderInner: FunctionComponent<
     register,
   } = useContext(UserContext);
 
+  const {
+    cart,
+    fetchCart,
+    addToCart,
+    removeFromCart,
+    addMissingProducts,
+    resetCart,
+  } = useContext(CartContext);
   const { courses, fetchCourses } = useContext(CoursesContext);
   const { categoryTree, fetchCategories } = useContext(CategoriesContext);
   const { uniqueTags, fetchTags } = useContext(TagsContext);
@@ -295,6 +297,12 @@ const EscolaLMSContextProviderInner: FunctionComponent<
     readAllNotifications,
   } = useContext(NotificationsContext);
 
+  const { fetchQuestionnaires, fetchQuestionnaire, sendQuestionnaireAnswer } =
+    useContext(QuestionnairesContext);
+
+  // https://github.com/EscolaLMS/sdk/issues/235
+  // FIXME: #235 move consultation logic to separate file
+
   const [consultation, setConsultation] = useLocalStorage<
     ContextStateValue<API.Consultation>
   >(
@@ -322,9 +330,15 @@ const EscolaLMSContextProviderInner: FunctionComponent<
     ssrHydration
   );
 
+  // Refactor Events. move logic to separate file
+  // https://github.com/EscolaLMS/sdk/issues/237
+
   const [events, setEvents] = useLocalStorage<
     ContextPaginatedMetaState<API.Event>
   >("lms", "events", getDefaultData("events", initialValues), ssrHydration);
+
+  // Refactor UserGroups. move logic to separate file
+  // https://github.com/EscolaLMS/sdk/issues/236
 
   const [userGroup, setUserGroup] = useLocalStorage<
     ContextStateValue<API.UserGroup>
@@ -353,9 +367,19 @@ const EscolaLMSContextProviderInner: FunctionComponent<
     ssrHydration
   );
 
+  // Refactor. Course & PRogram. Move to separate file.
+  // https://github.com/EscolaLMS/sdk/issues/238
+
   const [course, setCourse] = useLocalStorage<
     ContextStateValue<API.CourseListItem>
   >("lms", "course", getDefaultData("course", initialValues), ssrHydration);
+
+  const [program, setProgram] = useLocalStorage<
+    ContextStateValue<API.CourseProgram>
+  >("lms", "program", getDefaultData("program", initialValues), ssrHydration);
+
+  // Refactor. Settings & Config. Move to separate file.
+  // https://github.com/EscolaLMS/sdk/issues/239
 
   const [settings, setSettings] = useLocalStorage<
     ContextStateValue<API.AppSettings>
@@ -368,16 +392,8 @@ const EscolaLMSContextProviderInner: FunctionComponent<
     ssrHydration
   );
 
-  const [program, setProgram] = useLocalStorage<
-    ContextStateValue<API.CourseProgram>
-  >("lms", "program", getDefaultData("program", initialValues), ssrHydration);
-
-  const [cart, setCart] = useLocalStorage<ContextStateValue<API.Cart>>(
-    "lms",
-    "cart",
-    getDefaultData("cart", initialValues),
-    ssrHydration
-  );
+  // Refactor. Cart. Move to separate file.
+  // https://github.com/EscolaLMS/sdk/issues/240
 
   const [progress, setProgress] = useState<
     ContextStateValue<API.CourseProgress>
@@ -387,13 +403,22 @@ const EscolaLMSContextProviderInner: FunctionComponent<
     ContextStateValue<API.CourseProgressDetails>
   >(getDefaultData("courseProgressDetails", initialValues));
 
+  // Refactor. Orders . Move to separate file.
+  // https://github.com/EscolaLMS/sdk/issues/242
+
   const [orders, setOrders] = useLocalStorage<
     ContextPaginatedMetaState<API.Order>
   >("lms", "orders", getDefaultData("orders", initialValues), ssrHydration);
 
+  // Refactor. Payments . Move to separate file.
+  // https://github.com/EscolaLMS/sdk/issues/243
+
   const [payments, setPayments] = useLocalStorage<
     ContextPaginatedMetaState<API.Payment>
   >("lms", "payments", getDefaultData("payments", initialValues), ssrHydration);
+
+  // Refactor. Certificates . Move to separate file. Add new backend logic to generate
+  // https://github.com/EscolaLMS/sdk/issues/244
 
   const [certificates, setCertificates] = useLocalStorage<
     ContextPaginatedMetaState<API.Certificate>
@@ -404,6 +429,9 @@ const EscolaLMSContextProviderInner: FunctionComponent<
     ssrHydration
   );
 
+  // Refactor. Mattermost . Move to separate file.
+  // https://github.com/EscolaLMS/sdk/issues/245
+
   const [mattermostChannels, setMattermostChannels] = useLocalStorage<
     ContextStateValue<API.MattermostData>
   >(
@@ -413,16 +441,15 @@ const EscolaLMSContextProviderInner: FunctionComponent<
     ssrHydration
   );
 
+  // Refactor. Tutor . Move to separate file.
+  // https://github.com/EscolaLMS/sdk/issues/246
+
   const [tutor, setTutor] = useState<ContextStateValue<API.UserItem>>(
     getDefaultData("tutor", initialValues)
   );
 
-  const [fontSize, setFontSize] = useLocalStorage<FontSize>(
-    "lms",
-    "fontSize",
-    getDefaultData("fontSize", initialValues),
-    ssrHydration
-  );
+  // Refactor. Metadata Fields . Move to separate file.
+  // https://github.com/EscolaLMS/sdk/issues/247
 
   const [fields, setFields] = useLocalStorage<ContextListState<API.Metadata>>(
     "lms",
@@ -430,6 +457,9 @@ const EscolaLMSContextProviderInner: FunctionComponent<
     getDefaultData("fields", initialValues),
     ssrHydration
   );
+
+  // Refactor. Stationary Events . Move to separate file.
+  // https://github.com/EscolaLMS/sdk/issues/248
 
   const [stationaryEvents, setStationaryEvents] = useLocalStorage<
     ContextPaginatedMetaState<API.StationaryEvent>
@@ -458,6 +488,9 @@ const EscolaLMSContextProviderInner: FunctionComponent<
     ssrHydration
   );
 
+  // Refactor. Webinars . Move to separate file.
+  // https://github.com/EscolaLMS/sdk/issues/249
+
   const [userWebinars, setUserWebinars] = useLocalStorage<
     ContextListState<API.Event>
   >(
@@ -466,6 +499,9 @@ const EscolaLMSContextProviderInner: FunctionComponent<
     getDefaultData("userWebinars", initialValues),
     ssrHydration
   );
+
+  // Refactor. Products . Move to separate file.
+  // https://github.com/EscolaLMS/sdk/issues/250
 
   const [products, setProducts] = useLocalStorage<
     ContextPaginatedMetaState<API.Product>
@@ -480,6 +516,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
 
   const abortControllers = useRef<Record<string, AbortController | null>>({});
 
+  // https://github.com/EscolaLMS/sdk/issues/239
   const fetchConfig = useCallback(() => {
     return fetchDataType<API.AppConfig>({
       controllers: abortControllers.current,
@@ -495,6 +532,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
     });
   }, []);
 
+  // https://github.com/EscolaLMS/sdk/issues/239
   const fetchSettings = useCallback(() => {
     return fetchDataType<API.AppSettings>({
       controllers: abortControllers.current,
@@ -517,6 +555,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
     }
   }, [initialFetch]);
 
+  // TODO: remove after refactor
   useEffect(() => {
     if (defaults) {
       defaults.stationaryEvents !== null &&
@@ -534,6 +573,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
     }
   }, [defaults]);
 
+  // https://github.com/EscolaLMS/sdk/issues/250
   const fetchProducts = useCallback(
     (
       filter: API.PageParams &
@@ -553,7 +593,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
     },
     []
   );
-
+  // https://github.com/EscolaLMS/sdk/issues/250
   const fetchProduct = useCallback(
     (id: number) => {
       return token
@@ -572,6 +612,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
     [token]
   );
 
+  // https://github.com/EscolaLMS/sdk/issues/247
   const fetchFields = useCallback((filter: API.FieldsParams) => {
     return fetchDataType<API.Metadata>({
       controllers: abortControllers.current,
@@ -584,6 +625,8 @@ const EscolaLMSContextProviderInner: FunctionComponent<
       setState: setFields,
     });
   }, []);
+
+  // https://github.com/EscolaLMS/sdk/issues/248
 
   const fetchStationaryEvents = useCallback(
     (filter: API.StationaryEventsParams) => {
@@ -602,6 +645,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
     },
     []
   );
+  // https://github.com/EscolaLMS/sdk/issues/248
 
   const fetchStationaryEvent = useCallback((id: number) => {
     return fetchDataType<API.StationaryEvent>({
@@ -616,6 +660,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
     });
   }, []);
 
+  // https://github.com/EscolaLMS/sdk/issues/249
   const fetchUserWebinars = useCallback(() => {
     return token
       ? fetchDataType<API.Event>({
@@ -630,6 +675,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
       : Promise.reject("noToken");
   }, [token]);
 
+  // https://github.com/EscolaLMS/sdk/issues/248
   const fetchUserStationaryEvents = useCallback(() => {
     return token
       ? fetchDataType<API.StationaryEvent>({
@@ -693,6 +739,9 @@ const EscolaLMSContextProviderInner: FunctionComponent<
     [token]
   );
 
+  // Refactor Jitsy. Move to separate file
+  // https://github.com/EscolaLMS/sdk/issues/251
+
   const generateConsultationJitsy = useCallback(
     (id: number) => {
       return token
@@ -710,6 +759,8 @@ const EscolaLMSContextProviderInner: FunctionComponent<
     },
     [token]
   );
+
+  // https://github.com/EscolaLMS/sdk/issues/244
 
   const fetchCertificates = useCallback(
     (params?: API.PaginationParams) => {
@@ -950,14 +1001,17 @@ const EscolaLMSContextProviderInner: FunctionComponent<
                 },
           }));
         }
+        return response;
       });
   }, []);
 
+  // TODO each context should have a separate `reset` method
+  // https://github.com/EscolaLMS/sdk/issues/252
   const resetState = useCallback(() => {
     logoutUser();
 
+    resetCart();
     setProgram(defaultConfig.program);
-    setCart(defaultConfig.cart);
     setCertificates(defaultConfig.certificates);
     setMattermostChannels(defaultConfig.mattermostChannels);
 
@@ -973,135 +1027,6 @@ const EscolaLMSContextProviderInner: FunctionComponent<
 
     return Promise.resolve();
   }, []);
-
-  const fetchQuestionnaires = useCallback(
-    (model: string, id: number) => {
-      return token
-        ? getQuestionnaires.bind(null, apiUrl)(token, model, id)
-        : Promise.reject("noToken");
-    },
-    [token]
-  );
-
-  const sendQuestionnaireAnswer = useCallback(
-    (
-      model: string,
-      modelID: number,
-      id: number,
-      body: Partial<EscolaLms.Questionnaire.Models.QuestionAnswer>
-    ) => {
-      return token
-        ? questionnaireAnswer.bind(null, apiUrl)(
-            token,
-            model,
-            modelID,
-            id,
-            body
-          )
-        : Promise.reject("noToken");
-    },
-    [token]
-  );
-
-  const fetchCart = useCallback(() => {
-    return token
-      ? fetchDataType<API.Cart>({
-          controllers: abortControllers.current,
-          controller: `cart`,
-          mode: "value",
-          fetchAction: getCart.bind(null, apiUrl)(token, {
-            signal: abortControllers.current?.cart?.signal,
-          }),
-          setState: setCart,
-        })
-      : Promise.reject("noToken");
-  }, [token]);
-
-  const addToCart = useCallback(
-    (productId: number, quantity?: number) => {
-      if (!token) {
-        return Promise.reject("noToken");
-      }
-      setCart((prevState) => ({
-        ...prevState,
-        loading: true,
-      }));
-      return postAddToCart
-        .bind(null, apiUrl)(productId, token, quantity)
-        .then(() => {
-          fetchCart();
-        })
-        .catch((error) => {
-          setCart((prevState) => ({
-            ...prevState,
-            loading: false,
-            error: error.data,
-          }));
-        });
-    },
-    [fetchCart]
-  );
-
-  const addMissingProducts = useCallback(
-    (products: number[]) => {
-      if (!token) {
-        return Promise.reject("noToken");
-      }
-      setCart((prevState) => ({
-        ...prevState,
-        loading: true,
-      }));
-      return postAddMissingProducts
-        .bind(null, apiUrl)(token, products)
-        .then(() => {
-          fetchCart();
-        })
-        .catch((error) => {
-          setCart((prevState) => ({
-            ...prevState,
-            loading: false,
-            error: error.data,
-          }));
-        });
-    },
-    [fetchCart]
-  );
-
-  const removeFromCart = useCallback(
-    (itemId: number) => {
-      if (!token) {
-        return Promise.reject("noToken");
-      }
-      setCart((prevState) => ({
-        ...prevState,
-        loading: true,
-      }));
-      return deleteRemoveFromCart
-        .bind(null, apiUrl)(itemId, token)
-        .then((response) => {
-          setCart((prevState) => ({
-            ...prevState,
-            loading: false,
-            value: {
-              ...prevState.value,
-              items:
-                prevState && prevState.value
-                  ? prevState.value.items.filter((item) => item.id !== itemId)
-                  : [],
-            },
-          }));
-          fetchCart();
-        })
-        .catch((error) => {
-          setCart((prevState) => ({
-            ...prevState,
-            loading: false,
-            error: error.data,
-          }));
-        });
-    },
-    [fetchCart]
-  );
 
   const payWithStripe = useCallback(
     (payment_method: string, return_url: string) => {
@@ -1143,6 +1068,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
   );
 
   // TODO move this do separate file/context
+  // https://github.com/EscolaLMS/sdk/issues/238
 
   const fetchProgram = useCallback(
     (id: number) => {
@@ -1202,18 +1128,21 @@ const EscolaLMSContextProviderInner: FunctionComponent<
               error: response,
             }));
           }
+          return response;
         })
-        .catch((error) => {
+        .catch((error: API.DefaultResponseError) => {
           setProgram((prevState) => ({
             ...prevState,
             loading: false,
-            error: error.data,
+            error: error,
           }));
+          return error;
         });
     },
     [token]
   );
 
+  // https://github.com/EscolaLMS/sdk/issues/241
   const fetchProgress = useCallback(() => {
     return token
       ? fetchDataType<API.CourseProgress>({
@@ -1339,6 +1268,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
       : Promise.reject("noToken");
   }, [token]);
 
+  // https://github.com/EscolaLMS/sdk/issues/241
   const sendProgress = useCallback(
     (courseId: number, data: API.CourseProgressItemElement[]) => {
       return token
@@ -1391,6 +1321,9 @@ const EscolaLMSContextProviderInner: FunctionComponent<
     },
     [token]
   );
+
+  // Refactor h5pProgress. Move to h5p `src/react/context/h5p.tsx`
+  // https://github.com/EscolaLMS/sdk/issues/254
 
   const h5pProgress = useCallback(
     (courseId: string, topicId: number, statement: API.IStatement) => {
@@ -1481,6 +1414,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
     [token, progress, courseProgressDetails]
   );
 
+  // https://github.com/EscolaLMS/sdk/issues/241
   const topicPing = useCallback(
     (topicId: number) => {
       return token
@@ -1492,6 +1426,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
     [token]
   );
 
+  // https://github.com/EscolaLMS/sdk/issues/241
   const progressMap = useMemo(() => {
     const defaultMap: {
       coursesProcProgress: Record<number, number>;
@@ -1521,6 +1456,8 @@ const EscolaLMSContextProviderInner: FunctionComponent<
     return defaultMap;
   }, [progress]);
 
+  // https://github.com/EscolaLMS/sdk/issues/241
+
   const topicIsFinished = useCallback(
     (topicId: number) => {
       if (progressMap && progressMap.finishedTopics.includes(topicId)) {
@@ -1535,6 +1472,8 @@ const EscolaLMSContextProviderInner: FunctionComponent<
     [progressMap]
   );
 
+  // https://github.com/EscolaLMS/sdk/issues/241
+
   const courseProgress = useCallback(
     (courseId: number) =>
       progressMap && progressMap.coursesProcProgress[courseId]
@@ -1543,7 +1482,10 @@ const EscolaLMSContextProviderInner: FunctionComponent<
     [progressMap]
   );
 
-  // TODO: this should be refactored, since lessons are not flat structure any more
+  // Refactor. getNextPrevTopic. this should be refactored, since lessons are not flat structure any more
+  // Also this should return both topic and lesson
+  // https://github.com/EscolaLMS/sdk/issues/255
+
   const getNextPrevTopic = useCallback(
     (topicId: number, next: boolean = true) => {
       const lesson: API.Lesson | undefined = program.value?.lessons.find(
@@ -1606,13 +1548,8 @@ const EscolaLMSContextProviderInner: FunctionComponent<
     [program]
   );
 
-  const fontSizeToggle = useCallback(
-    (bigger: boolean) => {
-      const newFontSize = (fontSize + (bigger ? 1 : -1)) % 4;
-      return setFontSize(newFontSize);
-    },
-    [fontSize]
-  );
+  // Refactor voucher. move to separate file
+  // https://github.com/EscolaLMS/sdk/issues/256
 
   const realizeVoucher = useCallback(
     (voucher: string) => {
@@ -1664,6 +1601,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
         fetchCart,
         addToCart,
         removeFromCart,
+        resetCart,
         cart,
         payWithStripe,
         fetchProgress,
@@ -1690,8 +1628,6 @@ const EscolaLMSContextProviderInner: FunctionComponent<
         topicIsFinished,
         courseProgress,
         getNextPrevTopic,
-        fontSize,
-        fontSizeToggle,
         h5pProgress,
         userGroups,
         fetchUserGroups,
@@ -1749,6 +1685,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
         products,
         product,
         fetchQuestionnaires,
+        fetchQuestionnaire,
         sendQuestionnaireAnswer,
         fetchUserStationaryEvents,
         userStationaryEvents,
@@ -1804,46 +1741,32 @@ export const EscolaLMSContextProvider: FunctionComponent<
     apiUrl: props.apiUrl,
     ssrHydration: props.ssrHydration,
   };
-  // TODO this should be replaced with some smart component pipeping eg https://github.com/LSafer/react-pipeline/blob/master/src/index.tsx
-  return (
-    <UserContextProvider {...contextProps}>
-      <CoursesContextProvider {...contextProps}>
-        <CategoriesContextProvider {...contextProps}>
-          <TagsContextProvider {...contextProps}>
-            <TutorsContextProvider {...contextProps}>
-              <WebinarsContextProvider {...contextProps}>
-                <WebinarContextProvider {...contextProps}>
-                  <H5pContextProvider {...contextProps}>
-                    <ConsultationsContextProvider {...contextProps}>
-                      <PagesContextProvider {...contextProps}>
-                        <PageContextProvider {...contextProps}>
-                          <ConsultationAccessContextProvider {...contextProps}>
-                            <NotificationsContextProvider {...contextProps}>
-                              <CourseAccessContextProvider {...contextProps}>
-                                <TasksContextProvider {...contextProps}>
-                                  <TaskContextProvider {...contextProps}>
-                                    <BookmarkNotesContextProvider
-                                      {...contextProps}
-                                    >
-                                      <EscolaLMSContextProviderInner {...props}>
-                                        {children}
-                                      </EscolaLMSContextProviderInner>
-                                    </BookmarkNotesContextProvider>
-                                  </TaskContextProvider>
-                                </TasksContextProvider>
-                              </CourseAccessContextProvider>
-                            </NotificationsContextProvider>
-                          </ConsultationAccessContextProvider>
-                        </PageContextProvider>
-                      </PagesContextProvider>
-                    </ConsultationsContextProvider>
-                  </H5pContextProvider>
-                </WebinarContextProvider>
-              </WebinarsContextProvider>
-            </TutorsContextProvider>
-          </TagsContextProvider>
-        </CategoriesContextProvider>
-      </CoursesContextProvider>
-    </UserContextProvider>
-  );
+
+  const wrappers: React.FunctionComponent<React.PropsWithChildren<any>>[] = [
+    UserContextProvider,
+    CoursesContextProvider,
+    CategoriesContextProvider,
+    TagsContextProvider,
+    TutorsContextProvider,
+    WebinarsContextProvider,
+    WebinarContextProvider,
+    H5pContextProvider,
+    ConsultationsContextProvider,
+    PagesContextProvider,
+    PageContextProvider,
+    ConsultationAccessContextProvider,
+    NotificationsContextProvider,
+    CourseAccessContextProvider,
+    TasksContextProvider,
+    TaskContextProvider,
+    BookmarkNotesContextProvider,
+    CartContextProvider,
+    QuestionnairesContextProvider,
+  ].reverse();
+
+  const C = wrappers.reduce((acc, curr, i) => {
+    return React.createElement(curr, contextProps, acc);
+  }, React.createElement(EscolaLMSContextProviderInner, props, children));
+
+  return C;
 };

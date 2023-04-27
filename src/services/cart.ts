@@ -5,23 +5,26 @@ import { currentTimezone } from "../utils";
 export async function addToCart(
   apiUrl: string,
   productId: number,
-  token: string,
+  token?: string,
   quantity?: number,
   options?: RequestOptionsInit
 ) {
-  return request<API.SuccessResponse>(`${apiUrl}/api/cart/products`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-      "Current-timezone": currentTimezone(),
-    },
-    data: {
-      id: productId,
-      quantity: quantity || 1,
-    },
-    ...(options || {}),
-  });
+  return request<API.DefaultResponse<API.AddProductResponse>>(
+    `${apiUrl}/api/cart/products`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+        "Current-timezone": currentTimezone(),
+      },
+      data: {
+        id: productId,
+        quantity: quantity || 1,
+      },
+      ...(options || {}),
+    }
+  );
 }
 
 export async function removeFromCart(

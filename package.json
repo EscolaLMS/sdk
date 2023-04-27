@@ -1,9 +1,9 @@
 {
   "name": "@escolalms/sdk",
-  "version": "0.4.60",
+  "version": "0.4.65",
   "private": false,
   "dependencies": {
-    "@escolalms/ts-models": "^0.0.34",
+    "@escolalms/ts-models": "^0.0.35",
     "jssha": "^3.2.0",
     "react": "^17||^18",
     "react-dom": "^17||^18",

@@ -34,13 +34,6 @@ export interface ContextStateValue<T> {
   >;
 }
 
-export enum FontSize {
-  small = 0,
-  regular = 1,
-  bigger = 2,
-  big = 3,
-}
-
 export interface EscolaLMSContextReadConfig {
   token?: string | null;
   courses: ContextPaginatedMetaState<API.CourseListItem>;
@@ -65,7 +58,6 @@ export interface EscolaLMSContextReadConfig {
   mattermostChannels: ContextStateValue<API.MattermostData>;
   pages: ContextPaginatedMetaState<API.PageListItem>;
   page: ContextStateValue<API.Page>;
-  fontSize: FontSize;
   notifications: ContextPaginatedMetaState<API.Notification>;
   h5p: ContextStateValue<API.H5PObject>;
   tokenExpireDate?: string | null;
@@ -117,8 +109,8 @@ export interface EscolaLMSContextAPIConfig {
     | API.DefaultResponse<API.UserGroup>
     | API.DefaultMetaResponse<API.UserGroup>
   >;
-  fetchCourse: (id: number) => Promise<void>;
-  fetchProgram: (id: number) => Promise<void>;
+  fetchCourse: (id: number) => Promise<API.DefaultResponse<API.Course>>;
+  fetchProgram: (id: number) => Promise<API.DefaultResponse<API.CourseProgram>>;
   fetchConfig: () => Promise<
     | void
     | API.DefaultResponse<API.AppConfig>
@@ -145,12 +137,16 @@ export interface EscolaLMSContextAPIConfig {
   forgot: (body: API.ForgotRequest) => Promise<API.AuthResponse>;
   reset: (body: API.ResetPasswordRequest) => Promise<API.AuthResponse>;
   emailVerify: (id: string, hash: string) => Promise<API.AuthResponse>;
-  addToCart: (id: number, quantity?: number) => Promise<void>;
+  addToCart: (
+    id: number,
+    quantity?: number
+  ) => Promise<API.DefaultResponse<API.AddProductResponse>>;
   addMissingProducts: (products: number[]) => Promise<void>;
   removeFromCart: (courseId: number) => Promise<void>;
   fetchCart: () => Promise<
     void | API.DefaultResponse<API.Cart> | API.DefaultMetaResponse<API.Cart>
   >;
+  resetCart: () => void;
   payWithStripe: (payment_method: string, return_url: string) => Promise<void>;
   payWithP24: (
     email: string,
@@ -222,13 +218,16 @@ export interface EscolaLMSContextAPIConfig {
   ) => Promise<
     void | API.DefaultResponse<API.Page> | API.DefaultMetaResponse<API.Page>
   >;
-  updateProfile: (data: API.UpdateUserDetails) => Promise<void>;
-  updateAvatar: (avatar: File) => Promise<void>;
+  updateProfile: (
+    data: API.UpdateUserDetails
+  ) => Promise<API.DefaultResponse<API.UserAsProfile>>;
+  updateAvatar: (
+    avatar: File
+  ) => Promise<API.DefaultResponse<API.UserAsProfile>>;
   topicPing: (topicId: number) => Promise<Boolean>;
   topicIsFinished: (topicId: number) => Boolean;
   getNextPrevTopic: (topicId: number, next?: boolean) => API.Topic | null;
   courseProgress: (courseId: number) => number;
-  fontSizeToggle: (bigger: boolean) => void;
   socialAuthorize: (token: string) => void;
   fetchNotifications: (
     filter?: API.PaginationParams
@@ -293,13 +292,7 @@ export interface EscolaLMSContextAPIConfig {
     | API.DefaultResponse<API.Product>
     | API.DefaultMetaResponse<API.Product>
   >;
-  fetchProduct: (
-    id: number
-  ) => Promise<
-    | void
-    | API.DefaultResponse<API.Product>
-    | API.DefaultMetaResponse<API.Product>
-  >;
+  fetchProduct: (id: number) => Promise<API.DefaultResponse<API.Product>>;
   getProductInfo: (id: number) => Promise<API.DefaultResponse<API.Product>>;
   fetchWebinars: (
     filter: API.WebinarParams
@@ -308,13 +301,7 @@ export interface EscolaLMSContextAPIConfig {
     | API.DefaultResponse<API.Webinar>
     | API.DefaultMetaResponse<API.Webinar>
   >;
-  fetchWebinar: (
-    id: number
-  ) => Promise<
-    | void
-    | API.DefaultResponse<API.Webinar>
-    | API.DefaultMetaResponse<API.Webinar>
-  >;
+  fetchWebinar: (id: number) => Promise<API.DefaultResponse<API.Webinar>>;
   fetchEvents: (
     filter: API.EventsParams
   ) => Promise<
@@ -356,9 +343,12 @@ export interface EscolaLMSContextAPIConfig {
   fetchQuestionnaires: (
     model: string,
     id: number
-  ) => Promise<
-    API.DefaultMetaResponse<EscolaLms.Questionnaire.Models.Questionnaire>
-  >;
+  ) => Promise<API.DefaultMetaResponse<API.Questionnaire>>;
+  fetchQuestionnaire: (
+    modelTypeTitle: string,
+    modelID: number,
+    id: number
+  ) => Promise<API.DefaultResponse<API.QuestionnaireAnswerResponse>>;
   sendQuestionnaireAnswer: (
     model: string,
     modelID: number,

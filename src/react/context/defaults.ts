@@ -1,17 +1,6 @@
 import * as API from "./../../types/api";
 
-import {
-  ContextState,
-  ContextPaginatedMetaState,
-  ContextPaginatedState,
-  ContextListState,
-  ContextStateValue,
-  FontSize,
-  EscolaLMSContextReadConfig,
-  EscolaLMSContextAPIConfig,
-  EscolaLMSContextConfig,
-  SortProgram,
-} from "./types";
+import { EscolaLMSContextConfig } from "./types";
 
 export const blackList: API.IEvent[] = [
   "http://adlnet.gov/expapi/verbs/attended",
@@ -97,6 +86,7 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
   addMissingProducts: (products: number[]) => Promise.reject(),
   removeFromCart: (id) => Promise.reject(id),
   fetchCart: () => Promise.reject(),
+  resetCart: () => Promise.reject(),
   cart: {
     loading: false,
     value: { total: 0, subtotal: 0, tax: 0, items: [] },
@@ -163,8 +153,6 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
   topicIsFinished: (topicId: number) => false,
   courseProgress: (courseId: number) => 0,
   getNextPrevTopic: (topicId: number, next?: boolean) => null,
-  fontSizeToggle: (bigger: boolean) => 0,
-  fontSize: FontSize.regular,
   socialAuthorize: (token: string) => Promise.reject(),
   notifications: {
     loading: false,
@@ -240,6 +228,8 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
     loading: false,
   },
   fetchQuestionnaires: (model: string, id: number) => Promise.reject(),
+  fetchQuestionnaire: (modelTypeTitle: string, modelID: number, id: number) =>
+    Promise.reject(),
   sendQuestionnaireAnswer: (
     model: string,
     modelID: number,
@@ -389,6 +379,7 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
   addMissingProducts: (products: number[]) => Promise.reject(),
   removeFromCart: (id) => Promise.reject(id),
   fetchCart: () => Promise.reject(),
+  resetCart: () => Promise.reject(),
   cart: {
     loading: false,
     value: { total: 0, subtotal: 0, tax: 0, items: [] },
@@ -455,9 +446,7 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
   topicIsFinished: (topicId: number) => false,
   courseProgress: (courseId: number) => 0,
   getNextPrevTopic: (topicId: number, next?: boolean) => null,
-  fontSizeToggle: (bigger: boolean) => 0,
   getRefreshedToken: () => Promise.reject(),
-  fontSize: FontSize.regular,
   socialAuthorize: (token: string) => Promise.reject(),
   notifications: {
     loading: false,
@@ -533,6 +522,8 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
     loading: false,
   },
   fetchQuestionnaires: (model: string, id: number) => Promise.reject(),
+  fetchQuestionnaire: (modelTypeTitle: string, modelID: number, id: number) =>
+    Promise.reject(),
   sendQuestionnaireAnswer: (
     model: string,
     modelID: number,
