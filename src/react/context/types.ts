@@ -292,13 +292,7 @@ export interface EscolaLMSContextAPIConfig {
     | API.DefaultResponse<API.Product>
     | API.DefaultMetaResponse<API.Product>
   >;
-  fetchProduct: (
-    id: number
-  ) => Promise<
-    | void
-    | API.DefaultResponse<API.Product>
-    | API.DefaultMetaResponse<API.Product>
-  >;
+  fetchProduct: (id: number) => Promise<API.DefaultResponse<API.Product>>;
   getProductInfo: (id: number) => Promise<API.DefaultResponse<API.Product>>;
   fetchWebinars: (
     filter: API.WebinarParams
@@ -349,9 +343,12 @@ export interface EscolaLMSContextAPIConfig {
   fetchQuestionnaires: (
     model: string,
     id: number
-  ) => Promise<
-    API.DefaultMetaResponse<EscolaLms.Questionnaire.Models.Questionnaire>
-  >;
+  ) => Promise<API.DefaultMetaResponse<API.Questionnaire>>;
+  fetchQuestionnaire: (
+    modelTypeTitle: string,
+    modelID: number,
+    id: number
+  ) => Promise<API.DefaultResponse<API.QuestionnaireAnswerResponse>>;
   sendQuestionnaireAnswer: (
     model: string,
     modelID: number,

@@ -84,10 +84,6 @@ import {
 import { fields as getFields } from "../../services/fields";
 
 import {
-  getQuestionnaires,
-  questionnaireAnswer,
-} from "../../services/questionnaire";
-import {
   stationaryEvents as getStationaryEvents,
   getMyStationaryEvents,
   getStationaryEvent,
@@ -127,6 +123,10 @@ import {
   BookmarkNotesContextProvider,
 } from "./bookmark_notes";
 import { CartContext, CartContextProvider } from "./cart";
+import {
+  QuestionnairesContext,
+  QuestionnairesContextProvider,
+} from "./questionnaires";
 
 export const SCORMPlayer: React.FC<{
   uuid: string;
@@ -296,6 +296,9 @@ const EscolaLMSContextProviderInner: FunctionComponent<
     readNotify,
     readAllNotifications,
   } = useContext(NotificationsContext);
+
+  const { fetchQuestionnaires, fetchQuestionnaire, sendQuestionnaireAnswer } =
+    useContext(QuestionnairesContext);
 
   // https://github.com/EscolaLMS/sdk/issues/235
   // FIXME: #235 move consultation logic to separate file
@@ -1025,36 +1028,6 @@ const EscolaLMSContextProviderInner: FunctionComponent<
     return Promise.resolve();
   }, []);
 
-  // Refactor. Questionnaires move to separate file
-  const fetchQuestionnaires = useCallback(
-    (model: string, id: number) => {
-      return token
-        ? getQuestionnaires.bind(null, apiUrl)(token, model, id)
-        : Promise.reject("noToken");
-    },
-    [token]
-  );
-
-  const sendQuestionnaireAnswer = useCallback(
-    (
-      model: string,
-      modelID: number,
-      id: number,
-      body: Partial<EscolaLms.Questionnaire.Models.QuestionAnswer>
-    ) => {
-      return token
-        ? questionnaireAnswer.bind(null, apiUrl)(
-            token,
-            model,
-            modelID,
-            id,
-            body
-          )
-        : Promise.reject("noToken");
-    },
-    [token]
-  );
-
   const payWithStripe = useCallback(
     (payment_method: string, return_url: string) => {
       return token
@@ -1712,6 +1685,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
         products,
         product,
         fetchQuestionnaires,
+        fetchQuestionnaire,
         sendQuestionnaireAnswer,
         fetchUserStationaryEvents,
         userStationaryEvents,
@@ -1787,6 +1761,7 @@ export const EscolaLMSContextProvider: FunctionComponent<
     TaskContextProvider,
     BookmarkNotesContextProvider,
     CartContextProvider,
+    QuestionnairesContextProvider,
   ].reverse();
 
   const C = wrappers.reduce((acc, curr, i) => {

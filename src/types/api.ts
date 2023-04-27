@@ -1394,3 +1394,18 @@ export type AddProductResponse = DefaultResponse<{
   quantity_in_cart: number;
   quantity_owned: number;
 }>;
+
+export type Questionnaire = EscolaLms.Questionnaire.Models.Questionnaire;
+export type QuestionnaireAnswerResponse = {
+  id: number;
+  questions: QuestionnaireQuestionWithAnswer[];
+  title: string;
+};
+export type QuestionnaireQuestionWithAnswer = {
+  id: number;
+  title: string;
+  description: string;
+  rate: number | null;
+  type: "rate" | "text" | "review";
+  note: string | null;
+};

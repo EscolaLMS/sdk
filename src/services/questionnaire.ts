@@ -38,6 +38,27 @@ export async function getQuestionnaires(
   });
 }
 
+export async function getQuestionnaire(
+  apiUrl: string,
+  token: string,
+  modelTypeTitle: string,
+  modelID: number,
+  id: number
+) {
+  return request<API.DefaultResponse<API.QuestionnaireAnswerResponse>>(
+    `${apiUrl}/api/questionnaire/${modelTypeTitle}/${modelID}/${id}`,
+    {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+        "Current-timezone": currentTimezone(),
+      },
+    }
+  );
+}
+
 /**  POST /api/questionnaire/:model/:id */
 export async function questionnaireAnswer(
   apiUrl: string,
