@@ -9,19 +9,30 @@ import { EscolaLMSContextConfig, EscolaLMSContextReadConfig } from "./types";
 import { defaultConfig } from "./defaults";
 import {
   getQuestionnaire,
+  getQuestionnaireStars,
   getQuestionnaires,
+  getQuestionnairesAnswer,
   questionnaireAnswer,
+  questionnaireStars,
 } from "../../services/questionnaire";
 import { UserContext } from "./user";
+import { PaginationParams } from "../../types/api";
+import { API } from "../..";
 
 export const QuestionnairesContext: React.Context<
   Pick<
     EscolaLMSContextConfig,
-    "fetchQuestionnaires" | "fetchQuestionnaire" | "sendQuestionnaireAnswer"
+    | "fetchQuestionnaires"
+    | "fetchQuestionnaire"
+    | "fetchQuestionnairesAnswers"
+    | "fetchQuestionnaireStars"
+    | "sendQuestionnaireAnswer"
   >
 > = createContext({
   fetchQuestionnaires: defaultConfig.fetchQuestionnaires,
   fetchQuestionnaire: defaultConfig.fetchQuestionnaire,
+  fetchQuestionnairesAnswers: defaultConfig.fetchQuestionnairesAnswers,
+  fetchQuestionnaireStars: defaultConfig.fetchQuestionnaireStars,
   sendQuestionnaireAnswer: defaultConfig.sendQuestionnaireAnswer,
 });
 
@@ -58,6 +69,28 @@ export const QuestionnairesContextProvider: FunctionComponent<
     [token]
   );
 
+  const fetchQuestionnairesAnswers = useCallback(
+    (
+      modelTypeTitle: string,
+      modelID: number,
+      id: number,
+      params?: Partial<API.QuestionnaireAnswersParams>
+    ) =>
+      getQuestionnairesAnswer.bind(null, apiUrl)(
+        modelTypeTitle,
+        modelID,
+        id,
+        params
+      ),
+    []
+  );
+
+  const fetchQuestionnaireStars = useCallback(
+    (modelTypeTitle: string, modelID: number, id: number) =>
+      getQuestionnaireStars.bind(null, apiUrl)(modelTypeTitle, modelID, id),
+    []
+  );
+
   const sendQuestionnaireAnswer = useCallback(
     (
       model: string,
@@ -83,7 +116,9 @@ export const QuestionnairesContextProvider: FunctionComponent<
       value={{
         fetchQuestionnaires,
         fetchQuestionnaire,
+        fetchQuestionnairesAnswers,
         sendQuestionnaireAnswer,
+        fetchQuestionnaireStars,
       }}
     >
       {children}

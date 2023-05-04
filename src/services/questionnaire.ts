@@ -18,6 +18,23 @@ export async function questionnaireStars(
   );
 }
 
+/** GET api/questionnaire/{model-type}/{model-id}/questions/{question-id}/stars **/
+export async function getQuestionnaireStars(
+  apiUrl: string,
+  modelTypeTitle: string,
+  modelID: number,
+  id: number,
+  options?: RequestOptionsInit
+) {
+  return request<API.DefaultResponse<API.QuestionnaireStars>>(
+    `${apiUrl}/api/questionnaire/${modelTypeTitle}/${modelID}/questions/${id}/stars`,
+    {
+      method: "GET",
+      ...(options || {}),
+    }
+  );
+}
+
 /**  GET /api/questionnaire/:model/:id */
 export async function getQuestionnaires(
   apiUrl: string,
@@ -25,17 +42,18 @@ export async function getQuestionnaires(
   model: string,
   id: number
 ) {
-  return request<
-    API.DefaultMetaResponse<EscolaLms.Questionnaire.Models.Questionnaire>
-  >(`${apiUrl}/api/questionnaire/${model}/${id}`, {
-    method: "GET",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-      "Current-timezone": currentTimezone(),
-    },
-  });
+  return request<API.DefaultMetaResponse<API.Questionnaire>>(
+    `${apiUrl}/api/questionnaire/${model}/${id}`,
+    {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+        "Current-timezone": currentTimezone(),
+      },
+    }
+  );
 }
 
 export async function getQuestionnaire(
@@ -55,6 +73,27 @@ export async function getQuestionnaire(
         Authorization: `Bearer ${token}`,
         "Current-timezone": currentTimezone(),
       },
+    }
+  );
+}
+
+export async function getQuestionnairesAnswer(
+  apiUrl: string,
+  modelTypeTitle: string,
+  modelID: number,
+  id: number,
+  params?: Partial<API.QuestionnaireAnswersParams>
+) {
+  return request<API.DefaultMetaResponse<API.QuestionAnswer>>(
+    `${apiUrl}/api/questionnaire/${modelTypeTitle}/${modelID}/questions/${id}/answers`,
+    {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        "Current-timezone": currentTimezone(),
+      },
+      ...(params || {}),
     }
   );
 }

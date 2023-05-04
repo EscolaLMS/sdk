@@ -1395,17 +1395,65 @@ export type AddProductResponse = DefaultResponse<{
   quantity_owned: number;
 }>;
 
-export type Questionnaire = EscolaLms.Questionnaire.Models.Questionnaire;
+export type QuestionnaireQuestion = {
+  active: boolean;
+  description: string;
+  id: number;
+  position: number;
+  public_answers: boolean;
+  questionnaire_id: number;
+  title: string;
+  type: string;
+};
+
+export type QuestionnaireModel = {
+  id: number;
+  model_id: number;
+  model_title: string;
+  model_type_class: string;
+  model_type_id: number;
+  model_type_title: string;
+};
+
+export type Questionnaire = Pick<
+  EscolaLms.Questionnaire.Models.Questionnaire,
+  "active" | "id" | "title"
+> & {
+  models: QuestionnaireModel[];
+  questions: QuestionnaireQuestion[];
+};
+
 export type QuestionnaireAnswerResponse = {
   id: number;
   questions: QuestionnaireQuestionWithAnswer[];
   title: string;
 };
+
 export type QuestionnaireQuestionWithAnswer = {
   id: number;
   title: string;
   description: string;
   rate: number | null;
-  type: "rate" | "text" | "review";
+  type: QuestionnaireType;
   note: string | null;
+};
+
+export type QuestionnaireType = "rate" | "review" | "text";
+
+export type QuestionAnswer = {
+  id: number;
+  user_id: number;
+  question_id: number;
+  question_title: string;
+  questionnaire_model_id: number;
+  rate: number | number;
+  note: string;
+  visible_on_front: boolean;
+  user: Pick<API.UserItem, "avatar" | "id" | "name">;
+};
+
+export type QuestionnaireAnswersParams = {
+  type: API.QuestionnaireType;
+  order_by: "created_at" | "updated_at" | "rate";
+  order: "ASC" | "DESC";
 };
