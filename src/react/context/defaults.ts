@@ -230,6 +230,17 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
   fetchQuestionnaires: (model: string, id: number) => Promise.reject(),
   fetchQuestionnaire: (modelTypeTitle: string, modelID: number, id: number) =>
     Promise.reject(),
+  fetchQuestionnairesAnswers: (
+    modelTypeTitle: string,
+    modelID: number,
+    id: number,
+    params?: Partial<API.QuestionnaireAnswersParams>
+  ) => Promise.reject(),
+  fetchQuestionnaireStars: (
+    modelTypeTitle: string,
+    modelID: number,
+    id: number
+  ) => Promise.reject(),
   sendQuestionnaireAnswer: (
     model: string,
     modelID: number,
@@ -524,11 +535,22 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
   fetchQuestionnaires: (model: string, id: number) => Promise.reject(),
   fetchQuestionnaire: (modelTypeTitle: string, modelID: number, id: number) =>
     Promise.reject(),
+  fetchQuestionnairesAnswers: (
+    modelTypeTitle: string,
+    modelID: number,
+    id: number,
+    params?: Partial<API.QuestionnaireAnswersParams>
+  ) => Promise.reject(),
   sendQuestionnaireAnswer: (
     model: string,
     modelID: number,
     id: number,
     body: Partial<EscolaLms.Questionnaire.Models.QuestionAnswer>
+  ) => Promise.reject(),
+  fetchQuestionnaireStars: (
+    modelTypeTitle: string,
+    modelID: number,
+    id: number
   ) => Promise.reject(),
   fetchUserStationaryEvents: () => Promise.reject(),
   userStationaryEvents: {
