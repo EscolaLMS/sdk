@@ -234,7 +234,7 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
     modelTypeTitle: string,
     modelID: number,
     id: number,
-    params?: Partial<API.QuestionnaireAnswersParams>
+    params?: API.PaginationParams
   ) => Promise.reject(),
   fetchQuestionnaireStars: (
     modelTypeTitle: string,
@@ -539,7 +539,7 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
     modelTypeTitle: string,
     modelID: number,
     id: number,
-    params?: Partial<API.QuestionnaireAnswersParams>
+    params?: API.PaginationParams
   ) => Promise.reject(),
   sendQuestionnaireAnswer: (
     model: string,

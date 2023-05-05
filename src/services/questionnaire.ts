@@ -38,7 +38,6 @@ export async function getQuestionnaireStars(
 /**  GET /api/questionnaire/:model/:id */
 export async function getQuestionnaires(
   apiUrl: string,
-  token: string,
   model: string,
   id: number
 ) {
@@ -49,7 +48,6 @@ export async function getQuestionnaires(
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
         "Current-timezone": currentTimezone(),
       },
     }
@@ -82,7 +80,7 @@ export async function getQuestionnairesAnswer(
   modelTypeTitle: string,
   modelID: number,
   id: number,
-  params?: Partial<API.QuestionnaireAnswersParams>
+  params?: API.PaginationParams
 ) {
   return request<API.DefaultMetaResponse<API.QuestionAnswer>>(
     `${apiUrl}/api/questionnaire/${modelTypeTitle}/${modelID}/questions/${id}/answers`,
@@ -93,7 +91,7 @@ export async function getQuestionnairesAnswer(
         "Content-Type": "application/json",
         "Current-timezone": currentTimezone(),
       },
-      ...(params || {}),
+      params,
     }
   );
 }
