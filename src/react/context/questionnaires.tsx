@@ -47,12 +47,9 @@ export const QuestionnairesContextProvider: FunctionComponent<
   const { token } = useContext(UserContext);
 
   const fetchQuestionnaires = useCallback(
-    (model: string, id: number) => {
-      return token
-        ? getQuestionnaires.bind(null, apiUrl)(token, model, id)
-        : Promise.reject("noToken");
-    },
-    [token]
+    (model: string, id: number) =>
+      getQuestionnaires.bind(null, apiUrl)(model, id),
+    []
   );
 
   const fetchQuestionnaire = useCallback(
@@ -74,7 +71,7 @@ export const QuestionnairesContextProvider: FunctionComponent<
       modelTypeTitle: string,
       modelID: number,
       id: number,
-      params?: Partial<API.QuestionnaireAnswersParams>
+      params?: API.PaginationParams
     ) =>
       getQuestionnairesAnswer.bind(null, apiUrl)(
         modelTypeTitle,

@@ -358,7 +358,7 @@ export interface EscolaLMSContextAPIConfig {
     modelTypeTitle: string,
     modelID: number,
     id: number,
-    params?: Partial<API.QuestionnaireAnswersParams>
+    params?: API.PaginationParams
   ) => Promise<API.DefaultMetaResponse<API.QuestionAnswer>>;
   sendQuestionnaireAnswer: (
     model: string,
