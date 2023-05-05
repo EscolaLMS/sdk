@@ -1448,6 +1448,7 @@ export type QuestionAnswer = {
   questionnaire_model_id: number;
   rate: number | number;
   note: string;
+  updated_at: string;
   visible_on_front: boolean;
   user: Pick<API.UserItem, "avatar" | "id" | "name">;
 };
