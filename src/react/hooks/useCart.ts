@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { EscolaLMSContext } from "../context";
 import { Cart, DefaultResponseSuccess } from "../../types/api";
 
@@ -16,34 +16,39 @@ export const useCart = () => {
   });
   const { user, fetchCart } = useContext(EscolaLMSContext);
 
-  useEffect(() => {
-    if (user?.value && !user.loading && !cart.loading && !cart.loaded) {
-      setCart({
-        ...cart,
-        loading: true,
-      });
-      fetchCart()
-        .then((res) => {
-          const response = res as DefaultResponseSuccess<Cart>;
-          if (response.success) {
-            setCart({
-              data: response.data,
-              loaded: true,
-              loading: false,
-            });
-          }
-        })
-        .catch(() =>
+  const getCartData = useCallback(() => {
+    setCart({
+      ...cart,
+      loading: true,
+    });
+    fetchCart()
+      .then((res) => {
+        const response = res as DefaultResponseSuccess<Cart>;
+        if (response.success) {
           setCart({
-            ...cart,
+            data: response.data,
             loaded: true,
             loading: false,
-          })
-        );
+          });
+        }
+      })
+      .catch(() =>
+        setCart({
+          ...cart,
+          loaded: true,
+          loading: false,
+        })
+      );
+  }, []);
+
+  useEffect(() => {
+    if (user?.value && !user.loading && !cart.loading && !cart.loaded) {
+      getCartData();
     }
   }, [user, cart, fetchCart]);
 
   return {
     cart,
+    getCartData,
   };
 };

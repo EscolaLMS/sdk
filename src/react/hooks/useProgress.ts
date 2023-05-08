@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { CourseProgress, DefaultResponseSuccess } from "../../types/api";
 import { EscolaLMSContext } from "../context";
 
@@ -16,35 +16,39 @@ export const useProgress = () => {
   });
   const { user, fetchProgress } = useContext(EscolaLMSContext);
 
-  useEffect(() => {
-    if (user?.value && !user.loading && !progress.loading && !progress.loaded) {
-      setProgress({
-        ...progress,
-        loading: true,
-      });
-      fetchProgress()
-        .then((res) => {
-          const response =
-            res as DefaultResponseSuccess<CourseProgress>;
-          if (response.success) {
-            setProgress({
-              data: response.data,
-              loaded: true,
-              loading: false,
-            });
-          }
-        })
-        .catch(() =>
+  const getProgressData = useCallback(() => {
+    setProgress({
+      ...progress,
+      loading: true,
+    });
+    fetchProgress()
+      .then((res) => {
+        const response = res as DefaultResponseSuccess<CourseProgress>;
+        if (response.success) {
           setProgress({
-            ...progress,
+            data: response.data,
             loaded: true,
             loading: false,
-          })
-        );
+          });
+        }
+      })
+      .catch(() =>
+        setProgress({
+          ...progress,
+          loaded: true,
+          loading: false,
+        })
+      );
+  }, []);
+
+  useEffect(() => {
+    if (user?.value && !user.loading && !progress.loading && !progress.loaded) {
+      getProgressData();
     }
   }, [user, progress, fetchProgress]);
 
   return {
     progress,
+    getProgressData,
   };
 };
