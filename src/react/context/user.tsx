@@ -308,9 +308,8 @@ export const UserContextProvider: FunctionComponent<
         new Date(tokenExpireDate).getTime() - Date.now() - 5000
       ); // 5 seconds grace period
 
-      if (ms * 1000 > 3600) {
-        return;
-      }
+      // if long-term token (remember_me)
+      if (ms / 1000 > 60 * 60) return;
 
       const t = setTimeout(() => getRefreshedToken(), ms);
       return () => {
