@@ -302,6 +302,19 @@ export const UserContextProvider: FunctionComponent<
   }, [token]);
 
   useEffect(() => {
+    if (!tokenExpireDate) return;
+
+    const checkForTokenExpire = setInterval(() => {
+      const timeLeft = new Date(tokenExpireDate).getTime() - Date.now();
+      if (timeLeft <= 0) logout();
+    }, 5000); // 5 seconds seems to be optimal value
+
+    return () => {
+      clearInterval(checkForTokenExpire);
+    };
+  }, [tokenExpireDate]);
+
+  useEffect(() => {
     if (tokenExpireDate) {
       const ms = Math.max(
         1000,
