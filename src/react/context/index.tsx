@@ -297,8 +297,13 @@ const EscolaLMSContextProviderInner: FunctionComponent<
     readAllNotifications,
   } = useContext(NotificationsContext);
 
-  const { fetchQuestionnaires, fetchQuestionnaire, sendQuestionnaireAnswer } =
-    useContext(QuestionnairesContext);
+  const {
+    fetchQuestionnaires,
+    fetchQuestionnaire,
+    fetchQuestionnairesAnswers,
+    fetchQuestionnaireStars,
+    sendQuestionnaireAnswer,
+  } = useContext(QuestionnairesContext);
 
   // https://github.com/EscolaLMS/sdk/issues/235
   // FIXME: #235 move consultation logic to separate file
@@ -1686,6 +1691,8 @@ const EscolaLMSContextProviderInner: FunctionComponent<
         product,
         fetchQuestionnaires,
         fetchQuestionnaire,
+        fetchQuestionnairesAnswers,
+        fetchQuestionnaireStars,
         sendQuestionnaireAnswer,
         fetchUserStationaryEvents,
         userStationaryEvents,
