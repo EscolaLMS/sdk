@@ -86,6 +86,7 @@ export interface EscolaLMSContextReadConfig {
 export interface EscolaLMSContextAPIConfig {
   apiUrl: string;
   getImagePrefix: () => string;
+  getImageSvgPrefix: () => string;
   fetchCourses: (
     filter: API.CourseParams
   ) => Promise<API.DefaultMetaResponse<API.Course>>;

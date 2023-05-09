@@ -28,6 +28,7 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
   apiUrl: "",
 
   getImagePrefix: () => "",
+  getImageSvgPrefix: () => "",
   courses: {
     loading: false,
   },
@@ -323,6 +324,7 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
   },
   fetchMyCourses: () => Promise.reject(),
   getImagePrefix: () => "",
+  getImageSvgPrefix: () => "",
   courses: {
     loading: false,
   },

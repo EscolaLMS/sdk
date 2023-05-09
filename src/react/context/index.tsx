@@ -190,6 +190,7 @@ export interface EscolaLMSContextProviderType {
   apiUrl: string;
   defaults?: Partial<EscolaLMSContextReadConfig>;
   imagePrefix?: string;
+  imageSvgPrefix?: string;
   initialFetch?: boolean;
   ssrHydration?: boolean;
 }
@@ -206,6 +207,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
   apiUrl,
   defaults,
   imagePrefix = `${apiUrl}/storage/imgcache`,
+  imageSvgPrefix = `${apiUrl}/storage`,
   initialFetch = true,
   ssrHydration = false,
 }) => {
@@ -216,6 +218,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
   };
 
   const getImagePrefix = () => imagePrefix;
+  const getImageSvgPrefix = () => imageSvgPrefix;
 
   const {
     token,
@@ -1699,6 +1702,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
         fetchOrderInvoice,
         addMissingProducts,
         getImagePrefix,
+        getImageSvgPrefix,
         changeConsultationTerm,
         fetchProducts,
         fetchProduct,
