@@ -40,7 +40,8 @@ const Image = forwardRef<HTMLImageElement, ImageProps>(
     imgRef
   ) => {
     const [cached, setCached] = useState(false);
-    const { apiUrl, getImagePrefix, getImageSvgPrefix } = useContext(EscolaLMSContext);
+    const { apiUrl, getImagePrefix, getImageSvgPrefix } =
+      useContext(EscolaLMSContext);
 
     const imgSize = useMemo(
       () => (srcSizes?.[0] ? srcSizes[0] : size),
