@@ -40,7 +40,7 @@ const Image = forwardRef<HTMLImageElement, ImageProps>(
     imgRef
   ) => {
     const [cached, setCached] = useState(false);
-    const { apiUrl, getImagePrefix } = useContext(EscolaLMSContext);
+    const { apiUrl, getImagePrefix, getImageSvgPrefix } = useContext(EscolaLMSContext);
 
     const imgSize = useMemo(
       () => (srcSizes?.[0] ? srcSizes[0] : size),
@@ -113,7 +113,7 @@ const Image = forwardRef<HTMLImageElement, ImageProps>(
             loading={"lazy"}
             ref={imgRef}
             onError={cached ? undefined : onError}
-            src={`${getImagePrefix()}${path}}`}
+            src={`${getImageSvgPrefix()}${path}`}
             alt={alt}
             {...props}
           />
