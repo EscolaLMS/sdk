@@ -218,6 +218,8 @@ const EscolaLMSContextProviderInner: FunctionComponent<
   };
 
   const getImagePrefix = () => imagePrefix;
+  // Prefix for svg files
+  // Default: `${apiUrl}/storage`
   const getImageSvgPrefix = () => imageSvgPrefix;
 
   const {
