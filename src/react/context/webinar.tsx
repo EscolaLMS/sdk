@@ -3,6 +3,7 @@ import React, {
   FunctionComponent,
   PropsWithChildren,
   useCallback,
+  useContext,
   useRef,
 } from "react";
 import {
@@ -16,6 +17,7 @@ import { useLocalStorage } from "../hooks/useLocalStorage";
 import * as API from "./../../types/api";
 import { getDefaultData } from "./index";
 import { getWebinar } from "./../../services/webinars";
+import { UserContext } from "./user";
 
 export const WebinarContext: React.Context<
   Pick<EscolaLMSContextConfig, "webinar" | "fetchWebinar">
@@ -34,6 +36,7 @@ export const WebinarContextProvider: FunctionComponent<
   PropsWithChildren<WebinarContextProviderType>
 > = ({ children, defaults, apiUrl, ssrHydration }) => {
   const abortControllers = useRef<Record<string, AbortController | null>>({});
+  const { token } = useContext(UserContext);
 
   const [webinar, setWebinar] = useLocalStorage<
     ContextStateValue<EscolaLms.Webinar.Models.Webinar>
@@ -47,18 +50,21 @@ export const WebinarContextProvider: FunctionComponent<
     ssrHydration
   );
 
-  const fetchWebinar = useCallback((id: number) => {
-    return fetchDataType<API.Webinar>({
-      controllers: abortControllers.current,
-      controller: `webinar${id}`,
-      id,
-      mode: "value",
-      fetchAction: getWebinar.bind(null, apiUrl)(id, {
-        signal: abortControllers.current?.[`webinar${id}`]?.signal,
-      }),
-      setState: setWebinar,
-    });
-  }, []);
+  const fetchWebinar = useCallback(
+    (id: number) => {
+      return fetchDataType<API.Webinar>({
+        controllers: abortControllers.current,
+        controller: `webinar${id}`,
+        id,
+        mode: "value",
+        fetchAction: getWebinar.bind(null, apiUrl)(id, token, {
+          signal: abortControllers.current?.[`webinar${id}`]?.signal,
+        }),
+        setState: setWebinar,
+      });
+    },
+    [token]
+  );
 
   return (
     <WebinarContext.Provider

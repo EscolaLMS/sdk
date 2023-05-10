@@ -20,7 +20,7 @@ export async function products(
 export async function getSingleProduct(
   apiUrl: string,
   id: number,
-  token?: string,
+  token?: string | null,
   options?: RequestOptionsInit
 ) {
   return request<API.DefaultResponse<API.Product>>(
