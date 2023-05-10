@@ -19,6 +19,7 @@ export async function webinars(
 export async function getWebinar(
   apiUrl: string,
   id: number,
+  token?: string | null,
   options?: RequestOptionsInit
 ) {
   return request<API.DefaultResponse<API.Webinar>>(
@@ -26,6 +27,15 @@ export async function getWebinar(
     {
       method: "GET",
       ...(options || {}),
+      headers: token
+        ? {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+            "Current-timezone": currentTimezone(),
+          }
+        : {
+            "Content-Type": "application/json",
+          },
     }
   );
 }

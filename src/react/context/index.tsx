@@ -605,20 +605,17 @@ const EscolaLMSContextProviderInner: FunctionComponent<
   );
   // https://github.com/EscolaLMS/sdk/issues/250
   const fetchProduct = useCallback(
-    (id: number) => {
-      return token
-        ? fetchDataType<API.Product>({
-            controllers: abortControllers.current,
-            controller: `product${id}`,
-            id,
-            mode: "value",
-            fetchAction: getSingleProduct.bind(null, apiUrl)(id, token, {
-              signal: abortControllers.current?.[`product${id}`]?.signal,
-            }),
-            setState: setProduct,
-          })
-        : Promise.reject("noToken");
-    },
+    (id: number) =>
+      fetchDataType<API.Product>({
+        controllers: abortControllers.current,
+        controller: `product${id}`,
+        id,
+        mode: "value",
+        fetchAction: getSingleProduct.bind(null, apiUrl)(id, token, {
+          signal: abortControllers.current?.[`product${id}`]?.signal,
+        }),
+        setState: setProduct,
+      }),
     [token]
   );
 
@@ -949,71 +946,74 @@ const EscolaLMSContextProviderInner: FunctionComponent<
     });
   }, []);
 
-  const fetchCourse = useCallback((id: number) => {
-    setCourse((prevState) => ({
-      ...prevState,
-      loading: true,
-      byId: prevState.byId
-        ? {
-            ...prevState.byId,
-            [id]: {
-              ...prevState.byId[id],
-              loading: true,
-            },
+  const fetchCourse = useCallback(
+    (id: number) => {
+      setCourse((prevState) => ({
+        ...prevState,
+        loading: true,
+        byId: prevState.byId
+          ? {
+              ...prevState.byId,
+              [id]: {
+                ...prevState.byId[id],
+                loading: true,
+              },
+            }
+          : { [id]: { loading: true } },
+      }));
+      return getCourse
+        .bind(null, apiUrl)(id, token)
+        .then((response) => {
+          if (response.success) {
+            const lessons = sortProgram(response.data.lessons || []);
+            setCourse((prevState) => ({
+              loading: false,
+              value: {
+                ...response.data,
+                lessons: lessons,
+              },
+              byId: prevState.byId
+                ? {
+                    ...prevState.byId,
+                    [id]: {
+                      value: response.data,
+                      loading: false,
+                    },
+                  }
+                : {
+                    [id]: {
+                      value: response.data,
+                      loading: false,
+                    },
+                  },
+            }));
           }
-        : { [id]: { loading: true } },
-    }));
-    return getCourse
-      .bind(null, apiUrl)(id, token)
-      .then((response) => {
-        if (response.success) {
-          const lessons = sortProgram(response.data.lessons || []);
-          setCourse((prevState) => ({
-            loading: false,
-            value: {
-              ...response.data,
-              lessons: lessons,
-            },
-            byId: prevState.byId
-              ? {
-                  ...prevState.byId,
-                  [id]: {
-                    value: response.data,
-                    loading: false,
+          if (response.success === false) {
+            setCourse((prevState) => ({
+              ...prevState,
+              loading: false,
+              error: response,
+              byId: prevState.byId
+                ? {
+                    ...prevState.byId,
+                    [id]: {
+                      error: response,
+                      loading: false,
+                    },
+                  }
+                : {
+                    [id]: {
+                      error: response,
+                      loading: false,
+                    },
                   },
-                }
-              : {
-                  [id]: {
-                    value: response.data,
-                    loading: false,
-                  },
-                },
-          }));
-        }
-        if (response.success === false) {
-          setCourse((prevState) => ({
-            ...prevState,
-            loading: false,
-            error: response,
-            byId: prevState.byId
-              ? {
-                  ...prevState.byId,
-                  [id]: {
-                    error: response,
-                    loading: false,
-                  },
-                }
-              : {
-                  [id]: {
-                    error: response,
-                    loading: false,
-                  },
-                },
-          }));
-        }
-        return response;
-      });
-  }, []);
+            }));
+          }
+          return response;
+        });
+    },
+    [token]
+  );
 
   // TODO each context should have a separate `reset` method
   // https://github.com/EscolaLMS/sdk/issues/252
