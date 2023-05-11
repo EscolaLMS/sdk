@@ -50,7 +50,7 @@ export const WebinarsContextProvider: FunctionComponent<
   }, [defaults]);
 
   const [webinars, setWebinars] = useLocalStorage<
-    ContextPaginatedMetaState<EscolaLms.Webinar.Models.Webinar>
+    ContextPaginatedMetaState<API.Webinar>
   >(
     "lms",
     "webinars",
@@ -62,7 +62,7 @@ export const WebinarsContextProvider: FunctionComponent<
   );
 
   const fetchWebinars = useCallback((filter: API.WebinarParams) => {
-    return fetchDataType<EscolaLms.Webinar.Models.Webinar>({
+    return fetchDataType<API.Webinar>({
       controllers: abortControllers.current,
       controller: `webinars/${JSON.stringify(filter)}`,
       mode: "paginated",

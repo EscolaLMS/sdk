@@ -130,7 +130,7 @@ export interface EscolaLMSContextAPIConfig {
   fetchTags: () => Promise<
     void | API.DefaultResponse<API.Tag> | API.DefaultMetaResponse<API.Tag>
   >;
-  login: (body: API.LoginRequest) => Promise<void>;
+  login: (body: API.LoginRequest) => Promise<API.LoginResponse>;
   logout: () => Promise<void>;
   register: (
     body: API.RegisterRequest

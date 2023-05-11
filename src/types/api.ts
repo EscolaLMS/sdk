@@ -121,6 +121,7 @@ export type Course = {
   image_path?: string | null;
   video_path?: string | null;
   duration?: string | null;
+  findable: boolean;
   video_url?: string | null;
   categories?: Array<EscolaLms.Categories.Models.Category>;
   tags?: Tag[] | string[] | null;
@@ -286,11 +287,13 @@ export type Consultation = EscolaLms.Consultations.Models.Consultation & {
 };
 
 export type Product = EscolaLms.Cart.Models.Product & {
+  available_quantity: number;
   created_at?: string | null;
   updated_at?: string | null;
   buyable?: boolean;
   poster_path?: string | null;
   owned?: boolean;
+  owned_quantity: number;
   related_products?: Product[];
 };
 
@@ -299,9 +302,10 @@ export type ProductItems = EscolaLms.Cart.Models.ProductProductable & {
   description?: string;
 };
 
-export type Webinar = EscolaLms.Webinar.Models.Webinar & {
+export type Webinar = Omit<EscolaLms.Webinar.Models.Webinar, "trainers"> & {
   product?: Product;
   program?: string;
+  trainers: Array<API.User> | null;
 };
 
 export type CartProductParameters = {
@@ -429,8 +433,8 @@ export type ChangePasswordRequest = {
   new_confirm_password: string;
 };
 
-export type User = {
-  data: UserItem;
+export type User = EscolaLms.Auth.Models.User & {
+  url_avatar: string | null;
 };
 
 export type UserItem = Partial<
@@ -453,6 +457,7 @@ export type UserItem = Partial<
   // onboarding_completed: boolean;
   // email_verified: boolean;
   avatar?: string;
+  url_avatar: string | null;
   // path_avatar: string | null;
   bio?: string | null;
   categories?: Category[] | null;
