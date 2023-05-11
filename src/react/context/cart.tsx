@@ -105,7 +105,7 @@ export const CartContextProvider: FunctionComponent<
           return error;
         });
     },
-    [fetchCart]
+    [fetchCart, token]
   );
 
   const addMissingProducts = useCallback(

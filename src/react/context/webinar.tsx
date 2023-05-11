@@ -38,9 +38,7 @@ export const WebinarContextProvider: FunctionComponent<
   const abortControllers = useRef<Record<string, AbortController | null>>({});
   const { token } = useContext(UserContext);
 
-  const [webinar, setWebinar] = useLocalStorage<
-    ContextStateValue<EscolaLms.Webinar.Models.Webinar>
-  >(
+  const [webinar, setWebinar] = useLocalStorage<ContextStateValue<API.Webinar>>(
     "lms",
     "webinar",
     getDefaultData("webinar", {

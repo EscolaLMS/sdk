@@ -171,6 +171,7 @@ export const UserContextProvider: FunctionComponent<
               : { error: response, loading: false }
           );
         }
+        return response;
       })
       .catch((error) => {
         setUser((prevState) =>
@@ -178,6 +179,7 @@ export const UserContextProvider: FunctionComponent<
             ? { ...prevState, error: error, loading: false }
             : { error: error, loading: false }
         );
+        return error;
       });
   }, []);
 
