@@ -340,12 +340,14 @@ export type PageParams = {
 
 export type CourseParams = PageParams &
   PaginationParams & {
+    "categories[]"?: number[];
     title?: string;
     category_id?: number;
     author_id?: number;
     tag?: string;
     free?: boolean;
     only_with_categories?: boolean;
+    no_expired?: 0 | 1;
   };
 
 export type ConsultationParams = PageParams &
@@ -357,7 +359,12 @@ export type ConsultationParams = PageParams &
   };
 
 export type WebinarParams = PageParams &
-  PaginationParams & { name?: string; product?: Product };
+  PaginationParams & {
+    name?: string;
+    product?: Product;
+    "status[]"?: string;
+    only_incoming?: 0 | 1;
+  };
 
 export type StationaryEventsParams = PageParams &
   PaginationParams & {
