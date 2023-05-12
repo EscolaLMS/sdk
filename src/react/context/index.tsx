@@ -1167,67 +1167,70 @@ const EscolaLMSContextProviderInner: FunctionComponent<
       : Promise.reject("noToken");
   }, [token]);
 
-  const fetchCourseProgress = useCallback((id: number) => {
-    if (!token) {
-      return Promise.reject("noToken");
-    }
-    setCourseProgressDetails((prevState) => ({
-      ...prevState,
-      byId: prevState.byId
-        ? {
-            ...prevState.byId,
-            [id]: {
-              ...prevState.byId[id],
-              loading: true,
-            },
+  const fetchCourseProgress = useCallback(
+    (id: number) => {
+      if (!token) {
+        return Promise.reject("noToken");
+      }
+      setCourseProgressDetails((prevState) => ({
+        ...prevState,
+        byId: prevState.byId
+          ? {
+              ...prevState.byId,
+              [id]: {
+                ...prevState.byId[id],
+                loading: true,
+              },
+            }
+          : { [id]: { loading: true } },
+      }));
+      return getCourseProgress
+        .bind(null, apiUrl)(id, token)
+        .then((response) => {
+          if (response.success) {
+            setCourseProgressDetails((prevState) => ({
+              ...prevState,
+              loading: false,
+              byId: prevState.byId
+                ? {
+                    ...prevState.byId,
+                    [id]: {
+                      value: response.data,
+                      loading: false,
+                    },
+                  }
+                : {
+                    [id]: {
+                      value: response.data,
+                      loading: false,
+                    },
+                  },
+            }));
           }
-        : { [id]: { loading: true } },
-    }));
-    return getCourseProgress
-      .bind(null, apiUrl)(id, token)
-      .then((response) => {
-        if (response.success) {
-          setCourseProgressDetails((prevState) => ({
-            ...prevState,
-            loading: false,
-            byId: prevState.byId
-              ? {
-                  ...prevState.byId,
-                  [id]: {
-                    value: response.data,
-                    loading: false,
+          if (response.success === false) {
+            setCourseProgressDetails((prevState) => ({
+              ...prevState,
+              loading: false,
+              byId: prevState.byId
+                ? {
+                    ...prevState.byId,
+                    [id]: {
+                      error: response,
+                      loading: false,
+                    },
+                  }
+                : {
+                    [id]: {
+                      error: response,
+                      loading: false,
+                    },
                   },
-                }
-              : {
-                  [id]: {
-                    value: response.data,
-                    loading: false,
-                  },
-                },
-          }));
-        }
-        if (response.success === false) {
-          setCourseProgressDetails((prevState) => ({
-            ...prevState,
-            loading: false,
-            byId: prevState.byId
-              ? {
-                  ...prevState.byId,
-                  [id]: {
-                    error: response,
-                    loading: false,
-                  },
-                }
-              : {
-                  [id]: {
-                    error: response,
-                    loading: false,
-                  },
-                },
-          }));
-        }
-      });
-  }, []);
+            }));
+          }
+        });
+    },
+    [token]
+  );
 
   const fetchTutor = useCallback(
     (id: number) => {
