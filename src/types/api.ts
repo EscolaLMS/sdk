@@ -296,6 +296,7 @@ export type Product = EscolaLms.Cart.Models.Product & {
   owned_quantity: number;
   related_products?: Product[];
   sold_quantity: number;
+  gross_price: number;
 };
 
 export type ProductItems = EscolaLms.Cart.Models.ProductProductable & {
