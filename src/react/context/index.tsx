@@ -42,7 +42,7 @@ import {
   settings as getSettings,
   config as getConfig,
 } from "./../../services/settings";
-import { getCertificates, getCertificate } from "../../services/certificates";
+import { getCertificates, getCertificate, generateCertificatePdf } from "../../services/certificates";
 import { getMattermostChannels } from "../../services/mattermost";
 
 import {
@@ -793,6 +793,15 @@ const EscolaLMSContextProviderInner: FunctionComponent<
     (id: number) => {
       return token
         ? getCertificate.bind(null, apiUrl)(token, id)
+        : Promise.reject("noToken");
+    },
+    [token]
+  );
+
+  const generateCertificate = useCallback(
+    (id: number) => {
+      return token
+        ? generateCertificatePdf.bind(null, apiUrl)(token, id)
         : Promise.reject("noToken");
     },
     [token]
@@ -1656,6 +1665,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
         certificates,
         fetchCertificates,
         fetchCertificate,
+        generateCertificate,
         mattermostChannels,
         fetchMattermostChannels,
         h5p,

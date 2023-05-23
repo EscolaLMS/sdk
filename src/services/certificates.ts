@@ -41,3 +41,24 @@ export async function getCertificate(
     }
   );
 }
+
+/**  GET /api/pdfs */
+export async function generateCertificatePdf(
+  apiUrl: string,
+  token: string,
+  id: number,
+  options?: RequestOptionsInit
+) {
+  return request<Blob>(
+    `${apiUrl}/api/pdfs/generate/${id}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+        "Current-timezone": currentTimezone(),
+      },
+      ...(options || {}),
+    }
+  );
+}
