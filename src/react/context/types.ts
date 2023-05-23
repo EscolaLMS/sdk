@@ -203,9 +203,7 @@ export interface EscolaLMSContextAPIConfig {
   fetchCertificate: (
     id: number
   ) => Promise<API.DefaultResponse<API.Certificate>>;
-  generateCertificate: (
-    id: number
-  ) => Promise<Blob>;
+  generateCertificate: (id: number) => Promise<Blob>;
   fetchMattermostChannels: () => Promise<
     | void
     | API.DefaultResponse<API.MattermostData>

@@ -42,7 +42,11 @@ import {
   settings as getSettings,
   config as getConfig,
 } from "./../../services/settings";
-import { getCertificates, getCertificate, generateCertificatePdf } from "../../services/certificates";
+import {
+  getCertificates,
+  getCertificate,
+  generateCertificatePdf,
+} from "../../services/certificates";
 import { getMattermostChannels } from "../../services/mattermost";
 
 import {

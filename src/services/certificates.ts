@@ -49,17 +49,14 @@ export async function generateCertificatePdf(
   id: number,
   options?: RequestOptionsInit
 ) {
-  return request<Blob>(
-    `${apiUrl}/api/pdfs/generate/${id}`,
-    {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/pdf",
-        Authorization: `Bearer ${token}`,
-        "Current-timezone": currentTimezone(),
-      },
-      responseType: 'blob',
-      ...(options || {}),
-    }
-  );
+  return request<Blob>(`${apiUrl}/api/pdfs/generate/${id}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/pdf",
+      Authorization: `Bearer ${token}`,
+      "Current-timezone": currentTimezone(),
+    },
+    responseType: "blob",
+    ...(options || {}),
+  });
 }
