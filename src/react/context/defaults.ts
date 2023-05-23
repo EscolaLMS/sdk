@@ -90,7 +90,14 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
   resetCart: () => Promise.reject(),
   cart: {
     loading: false,
-    value: { total: 0, subtotal: 0, tax: 0, items: [] },
+    value: {
+      total: 0,
+      subtotal: 0,
+      tax: 0,
+      items: [],
+      coupon: null,
+      total_with_tax: 0,
+    },
   },
   payWithStripe: (payment_method: string, return_url: string) =>
     Promise.reject(payment_method),
@@ -184,7 +191,7 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
   fetchWebinar: (id: number) => Promise.reject(),
   fetchProducts: (
     filter: API.PageParams &
-      API.PaginationParams & { type?: string; "tags[]"?: string }
+      API.PaginationParams & { type?: string; "tags[]"?: string; name?: string }
   ) => Promise.reject(),
   fetchProduct: (id: number) => Promise.reject(),
   fields: {
@@ -396,7 +403,14 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
   resetCart: () => Promise.reject(),
   cart: {
     loading: false,
-    value: { total: 0, subtotal: 0, tax: 0, items: [] },
+    value: {
+      total: 0,
+      subtotal: 0,
+      tax: 0,
+      items: [],
+      coupon: null,
+      total_with_tax: 0,
+    },
   },
   payWithStripe: (payment_method: string, return_url: string) =>
     Promise.reject(payment_method),
@@ -498,7 +512,7 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
   fetchWebinar: (id: number) => Promise.reject(),
   fetchProducts: (
     filter: API.PageParams &
-      API.PaginationParams & { type?: string; "tags[]"?: string }
+      API.PaginationParams & { type?: string; "tags[]"?: string; name?: string }
   ) => Promise.reject(),
   fetchProduct: (id: number) => Promise.reject(),
   fetchFields: (filter: API.FieldsParams) => Promise.reject(),

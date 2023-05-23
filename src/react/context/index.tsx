@@ -587,7 +587,11 @@ const EscolaLMSContextProviderInner: FunctionComponent<
   const fetchProducts = useCallback(
     (
       filter: API.PageParams &
-        API.PaginationParams & { type?: string; "tags[]"?: string }
+        API.PaginationParams & {
+          type?: string;
+          "tags[]"?: string;
+          name?: string;
+        }
     ) => {
       return fetchDataType<API.Product>({
         controllers: abortControllers.current,

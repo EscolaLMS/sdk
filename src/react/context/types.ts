@@ -287,21 +287,13 @@ export interface EscolaLMSContextAPIConfig {
   ) => Promise<API.ScheduleConsultationResponse>;
   fetchProducts: (
     filter: API.PageParams &
-      API.PaginationParams & { type?: string; "tags[]"?: string }
-  ) => Promise<
-    | void
-    | API.DefaultResponse<API.Product>
-    | API.DefaultMetaResponse<API.Product>
-  >;
+      API.PaginationParams & { type?: string; "tags[]"?: string; name?: string }
+  ) => Promise<API.DefaultMetaResponse<API.Product>>;
   fetchProduct: (id: number) => Promise<API.DefaultResponse<API.Product>>;
   getProductInfo: (id: number) => Promise<API.DefaultResponse<API.Product>>;
   fetchWebinars: (
     filter: API.WebinarParams
-  ) => Promise<
-    | void
-    | API.DefaultResponse<API.Webinar>
-    | API.DefaultMetaResponse<API.Webinar>
-  >;
+  ) => Promise<API.DefaultMetaResponse<API.Webinar>>;
   fetchWebinar: (id: number) => Promise<API.DefaultResponse<API.Webinar>>;
   fetchEvents: (
     filter: API.EventsParams

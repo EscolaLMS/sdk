@@ -286,7 +286,7 @@ export type Consultation = EscolaLms.Consultations.Models.Consultation & {
   busy_terms: string[];
 };
 
-export type Product = EscolaLms.Cart.Models.Product & {
+export type Product = Omit<EscolaLms.Cart.Models.Product, "productables"> & {
   available_quantity: number;
   created_at?: string | null;
   updated_at?: string | null;
@@ -297,6 +297,7 @@ export type Product = EscolaLms.Cart.Models.Product & {
   related_products?: Product[];
   sold_quantity: number;
   gross_price: number;
+  productables?: Array<ProductItems> | null;
 };
 
 export type ProductItems = EscolaLms.Cart.Models.ProductProductable & {
@@ -308,6 +309,10 @@ export type Webinar = Omit<EscolaLms.Webinar.Models.Webinar, "trainers"> & {
   product?: Product;
   program?: string;
   trainers: Array<API.User> | null;
+  image_url: string | null;
+  is_ended: boolean;
+  is_started: boolean;
+  in_coming: boolean;
 };
 
 export type CartProductParameters = {
@@ -363,7 +368,7 @@ export type WebinarParams = PageParams &
   PaginationParams & {
     name?: string;
     product?: Product;
-    "status[]"?: string;
+    "status[]"?: string[];
     only_incoming?: 0 | 1;
   };
 
@@ -826,10 +831,12 @@ export type SCORM_SCO = {
 };
 
 export type Cart = {
-  items: EscolaLms.Cart.Models.CartItem[];
+  items: CartItem[];
   total?: string | number;
   subtotal?: string | number;
   tax?: string | number;
+  total_with_tax?: number;
+  coupon?: string | null;
 };
 
 export type CourseProgressItemElement = {
