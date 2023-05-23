@@ -188,13 +188,14 @@ export async function orderInvoice(
   id: number,
   options?: RequestOptionsInit
 ) {
-  return request<any>(`${apiUrl}/api/order-invoices/${id}`, {
+  return request<Blob>(`${apiUrl}/api/order-invoices/${id}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/pdf",
       Authorization: `Bearer ${token}`,
       "Current-timezone": currentTimezone(),
     },
+    responseType: "blob",
     ...(options || {}),
   });
 }
