@@ -54,10 +54,11 @@ export async function generateCertificatePdf(
     {
       method: "GET",
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "application/pdf",
         Authorization: `Bearer ${token}`,
         "Current-timezone": currentTimezone(),
       },
+      responseType: 'blob',
       ...(options || {}),
     }
   );
