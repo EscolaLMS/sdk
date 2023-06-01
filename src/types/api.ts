@@ -255,6 +255,10 @@ export type ConsultationsList = DefaultMetaResponse<Consultation>;
 
 export type SubjectsList = DefaultMetaResponse<GroupSubject>;
 
+export type LessonTutors = DefaultResponse<LessonTutor[]>;
+
+export type Schedule = DefaultResponse<ScheduleData[]>;
+
 export type WebinarsList = DefaultMetaResponse<Webinar>;
 
 export type ProductList = DefaultMetaResponse<Product>;
@@ -1509,4 +1513,54 @@ export type GroupSubject = {
   subject: Subject;
   tutor: Tutor;
   ssubject_form_hours_numbers: number;
+};
+
+export type Group = {
+  id: number;
+  name: string;
+};
+
+export type TermStatus = {
+  id: number;
+  name: string;
+};
+
+export type EventType = {
+  id: number;
+  title: string;
+  start: Date;
+  end: Date;
+};
+
+export type EventCalendarProps = {
+  id: number;
+  title: string;
+  start: Date | string;
+  end: Date | string;
+  tutor_name: string;
+  tutor_email: string;
+  group: string;
+  semester: string;
+  subject: string;
+};
+
+export type ScheduleData = {
+  id: number;
+  date_from: Date | string;
+  date_to: Date | string;
+  tutor: Tutor;
+  subject: Subject;
+  semester: Semester;
+  term_status: TermStatus;
+  group: Group;
+};
+
+export type LessonTutor = {
+  subjects: Subject[];
+  tutor: Tutor & {
+    degree_name: string;
+    department: string;
+    organization_unit: string;
+    path_avatar?: string;
+  };
 };
