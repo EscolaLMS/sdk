@@ -15,6 +15,7 @@ import auth from "./auth";
 import webinars from "./webinars";
 import tasks from "./tasks";
 import cart from "./cart";
+import schedule from "./schedule";
 
 export default () => {
   const scope = nock("http://api.localhost");
@@ -33,5 +34,6 @@ export default () => {
   auth(scope);
   tasks(scope);
   cart(scope);
+  schedule(scope).persist();
   return scope;
 };

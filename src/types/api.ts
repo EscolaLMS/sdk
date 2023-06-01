@@ -255,6 +255,8 @@ export type ConsultationsList = DefaultMetaResponse<Consultation>;
 
 export type SubjectsList = DefaultMetaResponse<GroupSubject>;
 
+export type SchedulesList = DefaultMetaResponse<ScheduleData>;
+
 export type LessonTutors = DefaultResponse<LessonTutor[]>;
 
 export type Schedule = DefaultResponse<ScheduleData[]>;

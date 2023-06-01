@@ -132,7 +132,7 @@ import {
   QuestionnairesContextProvider,
 } from "./questionnaires";
 import { SubjectsContext, SubjectsContextProvider } from "./subjects";
-import { ScheduleContext } from "./schedule";
+import { SchedulesContext } from "./schedules";
 import { ScheduleTutorsContext } from "./subjectsTutors";
 
 export const SCORMPlayer: React.FC<{
@@ -319,7 +319,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
 
   const { fetchSubjects, subjects } = useContext(SubjectsContext);
 
-  const { fetchSchedule, schedule } = useContext(ScheduleContext);
+  const { fetchSchedules, schedules } = useContext(SchedulesContext);
 
   const { fetchScheduleTutors, scheduleTutors } = useContext(
     ScheduleTutorsContext
@@ -1775,8 +1775,8 @@ const EscolaLMSContextProviderInner: FunctionComponent<
         fetchSubjects,
         subjects,
 
-        fetchSchedule,
-        schedule,
+        fetchSchedules,
+        schedules,
 
         fetchScheduleTutors,
         scheduleTutors,
