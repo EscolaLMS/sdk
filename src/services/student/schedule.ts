@@ -7,7 +7,7 @@ export async function schedule(
   token: string,
   options?: RequestOptionsInit
 ) {
-  return request<API.Schedule>(`${apiUrl}/api/schedule`, {
+  return request<API.Schedule>(`${apiUrl}/api/schedules`, {
     method: "GET",
     headers: {
       Accept: "application/json",

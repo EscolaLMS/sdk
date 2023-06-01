@@ -325,7 +325,7 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
   subjects: {
     loading: false,
   },
-  fetchSubjects: () => Promise.reject(),
+  fetchSubjects: (params?: API.PaginationParams) => Promise.reject(),
   fetchSchedule: () => Promise.reject(),
   schedule: {
     loading: false,
