@@ -84,6 +84,7 @@ export interface EscolaLMSContextReadConfig {
   subjects: ContextPaginatedMetaState<API.GroupSubject>;
   schedule: ContextListState<API.ScheduleData>;
   scheduleTutors: ContextListState<API.LessonTutor>;
+  attendances: ContextStateValue<API.Attendance[]>;
 }
 
 export interface EscolaLMSContextAPIConfig {
@@ -414,6 +415,13 @@ export interface EscolaLMSContextAPIConfig {
     data: EscolaLms.Tasks.Http.Requests.CreateTaskRequest
   ) => Promise<API.DefaultResponse<API.Task>>;
   deleteTask: (id: number) => Promise<API.DefaultResponse<API.Task>>;
+  fetchAttendances: (
+    groupId: number
+  ) => Promise<
+    | void
+    | API.DefaultResponse<API.Attendance[]>
+    | API.DefaultMetaResponse<API.Attendance[]>
+  >;
   fetchTask: (
     id: number
   ) => Promise<
