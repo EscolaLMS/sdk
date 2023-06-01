@@ -63,19 +63,24 @@ export const SubjectsContextProvider: FunctionComponent<
     ssrHydration
   );
 
-  const fetchSubjects = useCallback(() => {
-    return token
-      ? fetchDataType<API.GroupSubject>({
-          controllers: abortControllers.current,
-          controller: `subjects`,
-          mode: "paginated",
-          fetchAction: getSubjects.bind(null, apiUrl)(token, {
-            signal: abortControllers.current?.subjects?.signal,
-          }),
-          setState: setSubjects,
-        })
-      : Promise.reject("noToken");
-  }, [token]);
+  const fetchSubjects = useCallback(
+    (params?: API.PaginationParams) => {
+      return token
+        ? fetchDataType<API.GroupSubject>({
+            controllers: abortControllers.current,
+            controller: `subjects/${JSON.stringify(params)}`,
+            mode: "paginated",
+            fetchAction: getSubjects.bind(null, apiUrl)(token, params, {
+              signal:
+                abortControllers.current[`subjects/${JSON.stringify(params)}`]
+                  ?.signal,
+            }),
+            setState: setSubjects,
+          })
+        : Promise.reject("noToken");
+    },
+    [token]
+  );
   return (
     <SubjectsContext.Provider
       value={{

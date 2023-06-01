@@ -456,7 +456,9 @@ export interface EscolaLMSContextAPIConfig {
   deleteBookmarkNote: (
     id: number
   ) => Promise<API.DefaultResponse<API.BookmarkNote>>;
-  fetchSubjects: () => Promise<
+  fetchSubjects: (
+    params?: API.PaginationParams
+  ) => Promise<
     | void
     | API.DefaultResponse<API.GroupSubject>
     | API.DefaultMetaResponse<API.GroupSubject>

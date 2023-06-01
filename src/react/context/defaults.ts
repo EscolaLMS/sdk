@@ -325,7 +325,7 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
   subjects: {
     loading: false,
   },
-  fetchSubjects: () => Promise.reject(),
+  fetchSubjects: (params?: API.PaginationParams) => Promise.reject(),
 };
 
 export const defaultApiConfig: EscolaLMSContextConfig = {
@@ -639,7 +639,7 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
   subjects: {
     loading: false,
   },
-  fetchSubjects: () => Promise.reject(),
+  fetchSubjects: (params?: API.PaginationParams) => Promise.reject(),
 };
 
 export const defaultConfig = Object.assign(
