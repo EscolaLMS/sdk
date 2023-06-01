@@ -41,17 +41,6 @@ export const AttendancesContextProvider: FunctionComponent<
   const abortControllers = useRef<Record<string, AbortController | null>>({});
   const { token } = useContext(UserContext);
 
-  // useEffect(() => {
-  //   if (defaults) {
-  //     defaults.attendances !== null &&
-  //       setAttendances({
-  //         loading: false,
-  //         list: defaults.attendances,
-  //         error: undefined,
-  //       });
-  //   }
-  // }, [defaults]);
-
   const [attendances, setAttendances] = useLocalStorage<
     ContextStateValue<API.Attendance[]>
   >(
