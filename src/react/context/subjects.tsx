@@ -81,6 +81,7 @@ export const SubjectsContextProvider: FunctionComponent<
     },
     [token]
   );
+
   return (
     <SubjectsContext.Provider
       value={{

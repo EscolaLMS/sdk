@@ -82,6 +82,8 @@ export interface EscolaLMSContextReadConfig {
   consultationAccess: ContextPaginatedMetaState<API.ConsultationsAccessEnquiry>;
   bookmarkNotes: ContextPaginatedMetaState<API.BookmarkNote>;
   subjects: ContextPaginatedMetaState<API.GroupSubject>;
+  schedule: ContextListState<API.ScheduleData>;
+  scheduleTutors: ContextListState<API.LessonTutor>;
 }
 
 export interface EscolaLMSContextAPIConfig {
@@ -462,6 +464,16 @@ export interface EscolaLMSContextAPIConfig {
     | void
     | API.DefaultResponse<API.GroupSubject>
     | API.DefaultMetaResponse<API.GroupSubject>
+  >;
+  fetchSchedule: () => Promise<
+    | void
+    | API.DefaultResponse<API.ScheduleData>
+    | API.DefaultMetaResponse<API.ScheduleData>
+  >;
+  fetchScheduleTutors: () => Promise<
+    | void
+    | API.DefaultResponse<API.LessonTutor>
+    | API.DefaultMetaResponse<API.LessonTutor>
   >;
 }
 export type EscolaLMSContextConfig = EscolaLMSContextReadConfig &

@@ -132,6 +132,8 @@ import {
   QuestionnairesContextProvider,
 } from "./questionnaires";
 import { SubjectsContext, SubjectsContextProvider } from "./subjects";
+import { ScheduleContext } from "./schedule";
+import { ScheduleTutorsContext } from "./subjectsTutors";
 
 export const SCORMPlayer: React.FC<{
   uuid: string;
@@ -316,6 +318,12 @@ const EscolaLMSContextProviderInner: FunctionComponent<
   } = useContext(QuestionnairesContext);
 
   const { fetchSubjects, subjects } = useContext(SubjectsContext);
+
+  const { fetchSchedule, schedule } = useContext(ScheduleContext);
+
+  const { fetchScheduleTutors, scheduleTutors } = useContext(
+    ScheduleTutorsContext
+  );
 
   // https://github.com/EscolaLMS/sdk/issues/235
   // FIXME: #235 move consultation logic to separate file
@@ -1766,6 +1774,12 @@ const EscolaLMSContextProviderInner: FunctionComponent<
 
         fetchSubjects,
         subjects,
+
+        fetchSchedule,
+        schedule,
+
+        fetchScheduleTutors,
+        scheduleTutors,
       }}
     >
       {children}
