@@ -322,6 +322,10 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
     body: EscolaLms.Bookmarks.Http.Requests.UpdateBookmarkRequest
   ) => Promise.reject(id),
   deleteBookmarkNote: (id: number) => Promise.reject(id),
+  subjects: {
+    loading: false,
+  },
+  fetchSubjects: (params?: API.PaginationParams) => Promise.reject(),
 };
 
 export const defaultApiConfig: EscolaLMSContextConfig = {
@@ -632,6 +636,10 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
     body: EscolaLms.Bookmarks.Http.Requests.UpdateBookmarkRequest
   ) => Promise.reject(id),
   deleteBookmarkNote: (id: number) => Promise.reject(id),
+  subjects: {
+    loading: false,
+  },
+  fetchSubjects: (params?: API.PaginationParams) => Promise.reject(),
 };
 
 export const defaultConfig = Object.assign(

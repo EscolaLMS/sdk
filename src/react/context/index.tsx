@@ -131,6 +131,7 @@ import {
   QuestionnairesContext,
   QuestionnairesContextProvider,
 } from "./questionnaires";
+import { SubjectsContext, SubjectsContextProvider } from "./subjects";
 
 export const SCORMPlayer: React.FC<{
   uuid: string;
@@ -313,6 +314,8 @@ const EscolaLMSContextProviderInner: FunctionComponent<
     fetchQuestionnaireStars,
     sendQuestionnaireAnswer,
   } = useContext(QuestionnairesContext);
+
+  const { fetchSubjects, subjects } = useContext(SubjectsContext);
 
   // https://github.com/EscolaLMS/sdk/issues/235
   // FIXME: #235 move consultation logic to separate file
@@ -1760,6 +1763,9 @@ const EscolaLMSContextProviderInner: FunctionComponent<
         updateBookmarkNote,
         deleteBookmarkNote,
         fetchBookmarkNotes,
+
+        fetchSubjects,
+        subjects,
       }}
     >
       {children}
@@ -1796,6 +1802,7 @@ export const EscolaLMSContextProvider: FunctionComponent<
     BookmarkNotesContextProvider,
     CartContextProvider,
     QuestionnairesContextProvider,
+    SubjectsContextProvider,
   ].reverse();
 
   const C = wrappers.reduce((acc, curr, i) => {

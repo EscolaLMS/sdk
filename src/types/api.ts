@@ -253,6 +253,8 @@ export type PageListItem = Page;
 
 export type ConsultationsList = DefaultMetaResponse<Consultation>;
 
+export type SubjectsList = DefaultMetaResponse<GroupSubject>;
+
 export type WebinarsList = DefaultMetaResponse<Webinar>;
 
 export type ProductList = DefaultMetaResponse<Product>;
@@ -1478,4 +1480,33 @@ export type QuestionnaireAnswersParams = {
   type: API.QuestionnaireType;
   order_by: "created_at" | "updated_at" | "rate";
   order: "ASC" | "DESC";
+};
+
+export type Subject = {
+  id: number;
+  name: string;
+};
+
+export type Semester = {
+  id: number;
+  name: string;
+  type: string;
+  year: string;
+};
+
+export type Tutor = {
+  email: string;
+  first_name: string;
+  id: number;
+  last_name: string;
+};
+
+export type GroupSubject = {
+  group_id: number;
+  as_assessment_form_name: string;
+  as_form_name: string;
+  as_form_name_shortcut: string;
+  subject: Subject;
+  tutor: Tutor;
+  ssubject_form_hours_numbers: number;
 };

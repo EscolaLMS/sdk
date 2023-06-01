@@ -81,6 +81,7 @@ export interface EscolaLMSContextReadConfig {
   myCourses: ContextStateValue<number[]>;
   consultationAccess: ContextPaginatedMetaState<API.ConsultationsAccessEnquiry>;
   bookmarkNotes: ContextPaginatedMetaState<API.BookmarkNote>;
+  subjects: ContextPaginatedMetaState<API.GroupSubject>;
 }
 
 export interface EscolaLMSContextAPIConfig {
@@ -455,6 +456,13 @@ export interface EscolaLMSContextAPIConfig {
   deleteBookmarkNote: (
     id: number
   ) => Promise<API.DefaultResponse<API.BookmarkNote>>;
+  fetchSubjects: (
+    params?: API.PaginationParams
+  ) => Promise<
+    | void
+    | API.DefaultResponse<API.GroupSubject>
+    | API.DefaultMetaResponse<API.GroupSubject>
+  >;
 }
 export type EscolaLMSContextConfig = EscolaLMSContextReadConfig &
   EscolaLMSContextAPIConfig;
