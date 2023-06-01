@@ -329,6 +329,7 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
   fetchSchedule: () => Promise.reject(),
   schedule: {
     loading: false,
+    list: [],
   },
   scheduleTutors: {
     loading: false,
@@ -652,6 +653,7 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
   fetchSchedule: () => Promise.reject(),
   schedule: {
     loading: false,
+    list: [],
   },
   scheduleTutors: {
     loading: false,
