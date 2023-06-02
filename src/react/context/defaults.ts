@@ -282,7 +282,9 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
   task: {
     loading: false,
   },
-
+  attendances: {
+    loading: false,
+  },
   consultationAccess: {
     loading: false,
   },
@@ -297,6 +299,7 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
   ) => Promise.reject(),
 
   fetchTask: (id: number) => Promise.reject(),
+  fetchAttendances: (groupId: number) => Promise.reject(),
   deleteTask: (id: number) => Promise.reject(),
   addTask: (data: EscolaLms.Tasks.Http.Requests.CreateTaskRequest) =>
     Promise.reject(),
@@ -309,7 +312,16 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
   updateTaskNote: (id: number, taskNoteId: number, note: string) =>
     Promise.reject(id),
   deleteTaskNote: (taskNoteId: number) => Promise.reject(taskNoteId),
-
+  schedule: {
+    loading: false,
+    list: [],
+  },
+  scheduleTutors: {
+    loading: false,
+    list: [],
+  },
+  fetchSchedule: () => Promise.reject(),
+  fetchScheduleTutors: () => Promise.reject(),
   bookmarkNotes: {
     loading: false,
   },
@@ -322,20 +334,11 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
     body: EscolaLms.Bookmarks.Http.Requests.UpdateBookmarkRequest
   ) => Promise.reject(id),
   deleteBookmarkNote: (id: number) => Promise.reject(id),
+
   subjects: {
     loading: false,
   },
   fetchSubjects: (params?: API.PaginationParams) => Promise.reject(),
-  fetchSchedule: () => Promise.reject(),
-  schedule: {
-    loading: false,
-    list: [],
-  },
-  scheduleTutors: {
-    loading: false,
-    list: [],
-  },
-  fetchScheduleTutors: () => Promise.reject(),
 };
 
 export const defaultApiConfig: EscolaLMSContextConfig = {
@@ -620,7 +623,11 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
   task: {
     loading: false,
   },
+  attendances: {
+    loading: false,
+  },
   fetchTask: (id: number) => Promise.reject(id),
+  fetchAttendances: (groupId: number) => Promise.reject(groupId),
   deleteTask: (id: number) => Promise.reject(),
   addTask: (data: EscolaLms.Tasks.Http.Requests.CreateTaskRequest) =>
     Promise.reject(),
@@ -633,7 +640,16 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
   updateTaskNote: (id: number, taskNoteId: number, note: string) =>
     Promise.reject(id),
   deleteTaskNote: (taskNoteId: number) => Promise.reject(taskNoteId),
-
+  schedule: {
+    loading: false,
+    list: [],
+  },
+  scheduleTutors: {
+    loading: false,
+    list: [],
+  },
+  fetchSchedule: () => Promise.reject(),
+  fetchScheduleTutors: () => Promise.reject(),
   bookmarkNotes: {
     loading: false,
   },
@@ -650,16 +666,6 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
     loading: false,
   },
   fetchSubjects: () => Promise.reject(),
-  fetchSchedule: () => Promise.reject(),
-  schedule: {
-    loading: false,
-    list: [],
-  },
-  scheduleTutors: {
-    loading: false,
-    list: [],
-  },
-  fetchScheduleTutors: () => Promise.reject(),
 };
 
 export const defaultConfig = Object.assign(

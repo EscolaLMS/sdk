@@ -1564,3 +1564,23 @@ export type LessonTutor = {
     path_avatar?: string;
   };
 };
+
+export type Attendance = {
+  attendances: {
+    user_id: number;
+    value: AttendanceStatus | null;
+  }[];
+  date_from: string;
+  date_to: string;
+  group_id: number;
+  id: number;
+  semester_id: number;
+  subject_id: number;
+  teacher_id: number;
+  term_status_id: number;
+};
+
+export enum AttendanceStatus {
+  PRESENT = "present",
+  ABSENT = "absent",
+}

@@ -17,3 +17,23 @@ export async function schedule(
     ...(options || {}),
   });
 }
+
+export async function attendances(
+  apiUrl: string,
+  token: string,
+  groupId: number,
+  options?: RequestOptionsInit
+) {
+  return request<API.DefaultResponse<API.Attendance[]>>(
+    `${apiUrl}/api/schedules/groups/${groupId}`,
+    {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      ...(options || {}),
+    }
+  );
+}
