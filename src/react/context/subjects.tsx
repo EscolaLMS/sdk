@@ -64,7 +64,7 @@ export const SubjectsContextProvider: FunctionComponent<
   );
 
   const fetchSubjects = useCallback(
-    (params?: API.PaginationParams) => {
+    (params?: API.SubjectsParams) => {
       return token
         ? fetchDataType<API.GroupSubject>({
             controllers: abortControllers.current,

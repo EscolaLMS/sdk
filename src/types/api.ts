@@ -1512,6 +1512,25 @@ export type QuestionnaireAnswersParams = {
   order: "ASC" | "DESC";
 };
 
+export type SemestersParams = {
+  academic_year_id?: number;
+};
+
+export type AcademicYearParams = {
+  active?: boolean;
+};
+
+export type SubjectsParams = PaginationParams & {
+  semester_id?: number;
+};
+
+export type ScheduleParams = {
+  date_from?: string;
+  date_to?: string;
+  group_id?: number;
+  term_status_id?: number;
+};
+
 export type Subject = {
   id: number;
   name: string;
@@ -1579,6 +1598,7 @@ export type ScheduleData = {
   semester: Semester;
   term_status: TermStatus;
   group: Group;
+  ms_teams_join_url: string;
 };
 
 export type LessonTutor = {
