@@ -138,6 +138,11 @@ import {
   ScheduleTutorsContextProvider,
 } from "./subjectsTutors";
 import { AttendancesContext, AttendancesContextProvider } from "./attendances";
+import { postTeamsChat } from "../../services/student/chat";
+import {
+  StudentDetailsContext,
+  StudentDetailsContextProvider,
+} from "./studentDetails";
 
 export const SCORMPlayer: React.FC<{
   uuid: string;
@@ -330,6 +335,9 @@ const EscolaLMSContextProviderInner: FunctionComponent<
   );
 
   const { fetchAttendances, attendances } = useContext(AttendancesContext);
+
+  const { fetchSemesters, semesters, fetchAcademicYears, academicYears } =
+    useContext(StudentDetailsContext);
 
   // https://github.com/EscolaLMS/sdk/issues/235
   // FIXME: #235 move consultation logic to separate file
@@ -809,6 +817,15 @@ const EscolaLMSContextProviderInner: FunctionComponent<
             }),
             setState: setCertificates,
           })
+        : Promise.reject("noToken");
+    },
+    [token]
+  );
+
+  const createTeamsChat = useCallback(
+    (id: number) => {
+      return token
+        ? postTeamsChat(apiUrl, token, id)
         : Promise.reject("noToken");
     },
     [token]
@@ -1789,6 +1806,13 @@ const EscolaLMSContextProviderInner: FunctionComponent<
 
         fetchAttendances,
         attendances,
+
+        createTeamsChat,
+
+        fetchSemesters,
+        semesters,
+        fetchAcademicYears,
+        academicYears,
       }}
     >
       {children}
@@ -1829,6 +1853,7 @@ export const EscolaLMSContextProvider: FunctionComponent<
     ScheduleContextProvider,
     ScheduleTutorsContextProvider,
     AttendancesContextProvider,
+    StudentDetailsContextProvider,
   ].reverse();
 
   const C = wrappers.reduce((acc, curr, i) => {
