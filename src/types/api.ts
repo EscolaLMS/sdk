@@ -1499,7 +1499,7 @@ export type QuestionAnswer = {
   question_id: number;
   question_title: string;
   questionnaire_model_id: number;
-  rate: number | number;
+  rate: number;
   note: string;
   updated_at: string;
   visible_on_front: boolean;
@@ -1551,25 +1551,6 @@ export type TermStatus = {
   name: string;
 };
 
-export type EventType = {
-  id: number;
-  title: string;
-  start: Date;
-  end: Date;
-};
-
-export type EventCalendarProps = {
-  id: number;
-  title: string;
-  start: Date | string;
-  end: Date | string;
-  tutor_name: string;
-  tutor_email: string;
-  group: string;
-  semester: string;
-  subject: string;
-};
-
 export type ScheduleData = {
   id: number;
   date_from: Date | string;
@@ -1579,6 +1560,7 @@ export type ScheduleData = {
   semester: Semester;
   term_status: TermStatus;
   group: Group;
+  ms_teams_join_url: string | null;
 };
 
 export type LessonTutor = {
