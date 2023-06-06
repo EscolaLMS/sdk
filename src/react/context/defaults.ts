@@ -230,6 +230,7 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
   changePassword: () => Promise.reject(),
   realizeVoucher: () => Promise.reject(),
   removeVoucher: () => Promise.reject(),
+  createTeamsChat: () => Promise.reject(),
   products: {
     loading: false,
   },
@@ -339,6 +340,16 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
     loading: false,
   },
   fetchSubjects: (params?: API.PaginationParams) => Promise.reject(),
+  fetchSemesters: (id: number) => Promise.reject(),
+  semesters: {
+    loading: false,
+    list: [],
+  },
+  academicYears: {
+    loading: false,
+    list: [],
+  },
+  fetchAcademicYears: (active?: boolean) => Promise.reject(),
 };
 
 export const defaultApiConfig: EscolaLMSContextConfig = {
@@ -561,6 +572,7 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
   changePassword: () => Promise.reject(),
   realizeVoucher: () => Promise.reject(),
   removeVoucher: () => Promise.reject(),
+  createTeamsChat: () => Promise.reject(),
   products: {
     loading: false,
   },
@@ -666,6 +678,16 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
     loading: false,
   },
   fetchSubjects: () => Promise.reject(),
+  fetchSemesters: () => Promise.reject(),
+  semesters: {
+    loading: false,
+    list: [],
+  },
+  fetchAcademicYears: (active?: boolean) => Promise.reject(),
+  academicYears: {
+    loading: false,
+    list: [],
+  },
 };
 
 export const defaultConfig = Object.assign(

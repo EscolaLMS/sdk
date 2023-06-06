@@ -401,6 +401,10 @@ export type LoginRequest = {
   remember_me?: 1 | 0;
 };
 
+export type TeamsChatResponse = DefaultResponse<{
+  web_url: string;
+}>;
+
 export type LoginResponse = DefaultResponse<{
   token: string;
   expires_at: string;
@@ -455,6 +459,28 @@ export type ChangePasswordRequest = {
 
 export type User = EscolaLms.Auth.Models.User & {
   url_avatar: string | null;
+};
+
+export type SemesterData = {
+  id: number;
+  name: string;
+  type: string;
+  speciality: string;
+  study_plan_id: number;
+  academic_year_id: number;
+  is_active: boolean;
+};
+
+export type AcademicYear = {
+  id: number;
+  name: string;
+  year: number;
+  year_name: string;
+  summer_semester_start: string;
+  summer_semester_end: string;
+  winter_semester_start: string;
+  winter_semester_end: string;
+  active: boolean;
 };
 
 export type UserItem = Partial<
