@@ -7,18 +7,15 @@ export async function postTeamsChat(
   userId: number,
   options?: RequestOptionsInit
 ) {
-  return request<API.DefaultResponse<API.TeamsChatResponse>>(
-    `${apiUrl}/api/chats/ms-teams`,
-    {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      data: {
-        user_id: userId,
-      },
-      ...(options || {}),
-    }
-  );
+  return request<API.TeamsChatResponse>(`${apiUrl}/api/chats/ms-teams`, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    data: {
+      user_id: userId,
+    },
+    ...(options || {}),
+  });
 }

@@ -336,9 +336,7 @@ export interface EscolaLMSContextAPIConfig {
     void | API.DefaultResponse<API.Event> | API.DefaultMetaResponse<API.Event>
   >;
   realizeVoucher: (voucher: string) => Promise<API.AuthResponse>;
-  createTeamsChat: (
-    id: number
-  ) => Promise<API.DefaultResponse<API.TeamsChatResponse>>;
+  createTeamsChat: (id: number) => Promise<API.TeamsChatResponse>;
   removeVoucher: () => Promise<API.AuthResponse>;
   fetchQuestionnaires: (
     model: string,
