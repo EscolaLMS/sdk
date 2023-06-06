@@ -85,6 +85,7 @@ export interface EscolaLMSContextReadConfig {
   schedule: ContextListState<API.ScheduleData>;
   scheduleTutors: ContextListState<API.LessonTutor>;
   attendances: ContextStateValue<API.Attendance[]>;
+  exams: ContextPaginatedMetaState<API.Exam>;
 }
 
 export interface EscolaLMSContextAPIConfig {
@@ -482,6 +483,11 @@ export interface EscolaLMSContextAPIConfig {
     | void
     | API.DefaultResponse<API.LessonTutor>
     | API.DefaultMetaResponse<API.LessonTutor>
+  >;
+  fetchExams: (
+    params?: API.ExamsParams
+  ) => Promise<
+    void | API.DefaultResponse<API.Exam> | API.DefaultMetaResponse<API.Exam>
   >;
 }
 export type EscolaLMSContextConfig = EscolaLMSContextReadConfig &

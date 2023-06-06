@@ -255,6 +255,8 @@ export type ConsultationsList = DefaultMetaResponse<Consultation>;
 
 export type SubjectsList = DefaultMetaResponse<GroupSubject>;
 
+export type ExamsList = DefaultMetaResponse<Exam>;
+
 export type LessonTutors = DefaultResponse<LessonTutor[]>;
 
 export type Schedule = DefaultResponse<ScheduleData[]>;
@@ -348,6 +350,10 @@ export type PaginationParams = {
 export type PageParams = {
   current?: number;
   pageSize?: number;
+};
+
+export type ExamsParams = PaginationParams & {
+  group_id?: number;
 };
 
 export type CourseParams = PageParams &
@@ -1503,6 +1509,23 @@ export type Tutor = {
   first_name: string;
   id: number;
   last_name: string;
+};
+
+export type Exam = {
+  id: number;
+  semester_subject_id: number;
+  title: string;
+  type: string;
+  weight: number;
+  passed_at: string;
+  created_at: string;
+  group_id: number;
+  results: {
+    user_id: 0;
+    first_name: string;
+    last_name: string;
+    email: string;
+  }[];
 };
 
 export type GroupSubject = {
