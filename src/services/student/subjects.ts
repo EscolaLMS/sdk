@@ -5,7 +5,7 @@ import * as API from "../../types/api";
 export async function subjects(
   apiUrl: string,
   token: string,
-  params?: API.PaginationParams,
+  params?: API.SubjectsParams,
   options?: RequestOptionsInit
 ) {
   return request<API.SubjectsList>(`${apiUrl}/api/lesson-groups`, {

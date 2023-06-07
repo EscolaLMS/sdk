@@ -63,19 +63,22 @@ export const ScheduleContextProvider: FunctionComponent<
     ssrHydration
   );
 
-  const fetchSchedule = useCallback(() => {
-    return token
-      ? fetchDataType<API.ScheduleData>({
-          controllers: abortControllers.current,
-          controller: `schedule`,
-          mode: "list",
-          fetchAction: getSchedule.bind(null, apiUrl)(token, {
-            signal: abortControllers.current?.schedule?.signal,
-          }),
-          setState: setSchedule,
-        })
-      : Promise.reject("noToken");
-  }, [token]);
+  const fetchSchedule = useCallback(
+    (params?: API.ScheduleParams) => {
+      return token
+        ? fetchDataType<API.ScheduleData>({
+            controllers: abortControllers.current,
+            controller: `schedule`,
+            mode: "list",
+            fetchAction: getSchedule.bind(null, apiUrl)(token, params, {
+              signal: abortControllers.current?.schedule?.signal,
+            }),
+            setState: setSchedule,
+          })
+        : Promise.reject("noToken");
+    },
+    [token]
+  );
 
   return (
     <ScheduleContext.Provider

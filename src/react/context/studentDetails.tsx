@@ -82,13 +82,13 @@ export const StudentDetailsContextProvider: FunctionComponent<
   );
 
   const fetchSemesters = useCallback(
-    (yearId: number) => {
+    (params?: API.SemestersParams) => {
       return token
         ? fetchDataType<API.SemesterData>({
             controllers: abortControllers.current,
             controller: `semesters`,
             mode: "list",
-            fetchAction: getSemesters.bind(null, apiUrl)(token, yearId, {
+            fetchAction: getSemesters.bind(null, apiUrl)(token, params, {
               signal: abortControllers.current?.semesters?.signal,
             }),
             setState: setSemesters,
@@ -99,13 +99,13 @@ export const StudentDetailsContextProvider: FunctionComponent<
   );
 
   const fetchAcademicYears = useCallback(
-    (active?: boolean) => {
+    (params?: API.AcademicYearParams) => {
       return token
         ? fetchDataType<API.AcademicYear>({
             controllers: abortControllers.current,
             controller: `academicYears`,
             mode: "list",
-            fetchAction: getAcademicYears.bind(null, apiUrl)(token, active, {
+            fetchAction: getAcademicYears.bind(null, apiUrl)(token, params, {
               signal: abortControllers.current?.semesters?.signal,
             }),
             setState: setAcademicYears,

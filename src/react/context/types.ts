@@ -470,7 +470,7 @@ export interface EscolaLMSContextAPIConfig {
     id: number
   ) => Promise<API.DefaultResponse<API.BookmarkNote>>;
   fetchSubjects: (
-    params?: API.PaginationParams
+    params?: API.SubjectsParams
   ) => Promise<
     | void
     | API.DefaultResponse<API.GroupSubject>
@@ -487,14 +487,14 @@ export interface EscolaLMSContextAPIConfig {
     | API.DefaultMetaResponse<API.LessonTutor>
   >;
   fetchSemesters: (
-    id: number
+    params?: API.SemestersParams
   ) => Promise<
     | void
     | API.DefaultResponse<API.SemesterData>
     | API.DefaultMetaResponse<API.SemesterData>
   >;
   fetchAcademicYears: (
-    active?: boolean
+    params?: API.AcademicYearParams
   ) => Promise<
     | void
     | API.DefaultResponse<API.AcademicYear>
