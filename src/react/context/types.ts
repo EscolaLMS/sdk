@@ -86,6 +86,8 @@ export interface EscolaLMSContextReadConfig {
   scheduleTutors: ContextListState<API.LessonTutor>;
   attendances: ContextStateValue<API.Attendance[]>;
   exams: ContextPaginatedMetaState<API.Exam>;
+  semesters: ContextListState<API.SemesterData>;
+  academicYears: ContextListState<API.AcademicYear>;
 }
 
 export interface EscolaLMSContextAPIConfig {
@@ -335,6 +337,7 @@ export interface EscolaLMSContextAPIConfig {
     void | API.DefaultResponse<API.Event> | API.DefaultMetaResponse<API.Event>
   >;
   realizeVoucher: (voucher: string) => Promise<API.AuthResponse>;
+  createTeamsChat: (id: number) => Promise<API.TeamsChatResponse>;
   removeVoucher: () => Promise<API.AuthResponse>;
   fetchQuestionnaires: (
     model: string,
@@ -488,6 +491,20 @@ export interface EscolaLMSContextAPIConfig {
     params?: API.ExamsParams
   ) => Promise<
     void | API.DefaultResponse<API.Exam> | API.DefaultMetaResponse<API.Exam>
+  >;
+  fetchSemesters: (
+    id: number
+  ) => Promise<
+    | void
+    | API.DefaultResponse<API.SemesterData>
+    | API.DefaultMetaResponse<API.SemesterData>
+  >;
+  fetchAcademicYears: (
+    active?: boolean
+  ) => Promise<
+    | void
+    | API.DefaultResponse<API.AcademicYear>
+    | API.DefaultMetaResponse<API.AcademicYear>
   >;
 }
 export type EscolaLMSContextConfig = EscolaLMSContextReadConfig &

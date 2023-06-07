@@ -230,6 +230,7 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
   changePassword: () => Promise.reject(),
   realizeVoucher: () => Promise.reject(),
   removeVoucher: () => Promise.reject(),
+  createTeamsChat: () => Promise.reject(),
   products: {
     loading: false,
   },
@@ -339,10 +340,23 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
     loading: false,
   },
   fetchSubjects: (params?: API.PaginationParams) => Promise.reject(),
+<<<<<<< HEAD
   fetchExams: (params?: API.ExamsParams) => Promise.reject(),
   exams: {
     loading: false,
   },
+=======
+  fetchSemesters: (id: number) => Promise.reject(),
+  semesters: {
+    loading: false,
+    list: [],
+  },
+  academicYears: {
+    loading: false,
+    list: [],
+  },
+  fetchAcademicYears: (active?: boolean) => Promise.reject(),
+>>>>>>> main
 };
 
 export const defaultApiConfig: EscolaLMSContextConfig = {
@@ -565,6 +579,7 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
   changePassword: () => Promise.reject(),
   realizeVoucher: () => Promise.reject(),
   removeVoucher: () => Promise.reject(),
+  createTeamsChat: () => Promise.reject(),
   products: {
     loading: false,
   },
@@ -670,9 +685,21 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
     loading: false,
   },
   fetchSubjects: () => Promise.reject(),
+<<<<<<< HEAD
   fetchExams: () => Promise.reject(),
   exams: {
     loading: false,
+=======
+  fetchSemesters: () => Promise.reject(),
+  semesters: {
+    loading: false,
+    list: [],
+  },
+  fetchAcademicYears: (active?: boolean) => Promise.reject(),
+  academicYears: {
+    loading: false,
+    list: [],
+>>>>>>> main
   },
 };
 

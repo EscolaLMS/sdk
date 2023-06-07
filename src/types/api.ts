@@ -407,6 +407,10 @@ export type LoginRequest = {
   remember_me?: 1 | 0;
 };
 
+export type TeamsChatResponse = DefaultResponse<{
+  web_url: string;
+}>;
+
 export type LoginResponse = DefaultResponse<{
   token: string;
   expires_at: string;
@@ -461,6 +465,28 @@ export type ChangePasswordRequest = {
 
 export type User = EscolaLms.Auth.Models.User & {
   url_avatar: string | null;
+};
+
+export type SemesterData = {
+  id: number;
+  name: string;
+  type: string;
+  speciality: string;
+  study_plan_id: number;
+  academic_year_id: number;
+  is_active: boolean;
+};
+
+export type AcademicYear = {
+  id: number;
+  name: string;
+  year: number;
+  year_name: string;
+  summer_semester_start: string;
+  summer_semester_end: string;
+  winter_semester_start: string;
+  winter_semester_end: string;
+  active: boolean;
 };
 
 export type UserItem = Partial<
@@ -1479,7 +1505,7 @@ export type QuestionAnswer = {
   question_id: number;
   question_title: string;
   questionnaire_model_id: number;
-  rate: number | number;
+  rate: number;
   note: string;
   updated_at: string;
   visible_on_front: boolean;
@@ -1548,25 +1574,6 @@ export type TermStatus = {
   name: string;
 };
 
-export type EventType = {
-  id: number;
-  title: string;
-  start: Date;
-  end: Date;
-};
-
-export type EventCalendarProps = {
-  id: number;
-  title: string;
-  start: Date | string;
-  end: Date | string;
-  tutor_name: string;
-  tutor_email: string;
-  group: string;
-  semester: string;
-  subject: string;
-};
-
 export type ScheduleData = {
   id: number;
   date_from: Date | string;
@@ -1576,6 +1583,7 @@ export type ScheduleData = {
   semester: Semester;
   term_status: TermStatus;
   group: Group;
+  ms_teams_join_url: string | null;
 };
 
 export type LessonTutor = {
