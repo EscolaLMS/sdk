@@ -340,12 +340,10 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
     loading: false,
   },
   fetchSubjects: (params?: API.PaginationParams) => Promise.reject(),
-<<<<<<< HEAD
   fetchExams: (params?: API.ExamsParams) => Promise.reject(),
   exams: {
     loading: false,
   },
-=======
   fetchSemesters: (id: number) => Promise.reject(),
   semesters: {
     loading: false,
@@ -356,7 +354,6 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
     list: [],
   },
   fetchAcademicYears: (active?: boolean) => Promise.reject(),
->>>>>>> main
 };
 
 export const defaultApiConfig: EscolaLMSContextConfig = {
@@ -685,11 +682,10 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
     loading: false,
   },
   fetchSubjects: () => Promise.reject(),
-<<<<<<< HEAD
   fetchExams: () => Promise.reject(),
   exams: {
     loading: false,
-=======
+  },
   fetchSemesters: () => Promise.reject(),
   semesters: {
     loading: false,
@@ -699,7 +695,6 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
   academicYears: {
     loading: false,
     list: [],
->>>>>>> main
   },
 };
 
