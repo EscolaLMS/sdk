@@ -5,6 +5,7 @@ import * as API from "../../types/api";
 export async function schedule(
   apiUrl: string,
   token: string,
+  params?: API.ScheduleParams,
   options?: RequestOptionsInit
 ) {
   return request<API.Schedule>(`${apiUrl}/api/schedules`, {
@@ -14,6 +15,7 @@ export async function schedule(
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
     },
+    params,
     ...(options || {}),
   });
 }

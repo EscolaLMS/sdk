@@ -4,7 +4,7 @@ import * as API from "../../types/api";
 export async function semesters(
   apiUrl: string,
   token: string,
-  yearId?: number,
+  params?: API.SemestersParams,
   options?: RequestOptionsInit
 ) {
   return request<API.DefaultResponse<API.SemesterData[]>>(
@@ -16,9 +16,7 @@ export async function semesters(
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      data: {
-        academic_year_id: yearId,
-      },
+      params,
       ...(options || {}),
     }
   );
@@ -27,7 +25,7 @@ export async function semesters(
 export async function academicYears(
   apiUrl: string,
   token: string,
-  active?: boolean,
+  params?: API.AcademicYearParams,
   options?: RequestOptionsInit
 ) {
   return request<API.DefaultResponse<API.AcademicYear[]>>(
@@ -39,9 +37,7 @@ export async function academicYears(
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      data: {
-        active: active,
-      },
+      params,
       ...(options || {}),
     }
   );
