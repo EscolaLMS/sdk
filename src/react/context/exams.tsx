@@ -40,17 +40,6 @@ export const ExamsContextProvider: FunctionComponent<
   const abortControllers = useRef<Record<string, AbortController | null>>({});
   const { token } = useContext(UserContext);
 
-  useEffect(() => {
-    if (defaults) {
-      defaults.exams !== null &&
-        setExams({
-          loading: false,
-          list: defaults.exams?.list,
-          error: undefined,
-        });
-    }
-  }, [defaults]);
-
   const [exams, setExams] = useLocalStorage<
     ContextPaginatedMetaState<API.Exam>
   >(
@@ -66,14 +55,14 @@ export const ExamsContextProvider: FunctionComponent<
   const fetchExams = useCallback(
     (params?: API.ExamsParams) => {
       return token
-        ? fetchDataType<API.Exam>({
+        ? fetchDataType<API.Exam[]>({
             controllers: abortControllers.current,
-            controller: `exams/${JSON.stringify(params)}`,
-            mode: "paginated",
+            controller: `exams${params?.group_id}`,
+            id: params?.group_id,
+            mode: "value",
             fetchAction: getExams.bind(null, apiUrl)(token, params, {
               signal:
-                abortControllers.current[`exams/${JSON.stringify(params)}`]
-                  ?.signal,
+                abortControllers.current?.[`exams${params?.group_id}`]?.signal,
             }),
             setState: setExams,
           })
