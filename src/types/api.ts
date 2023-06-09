@@ -516,8 +516,19 @@ export type UserItem = Partial<
   interests?: Array<EscolaLms.Categories.Models.Category> | null | never[];
 };
 
+export type MembershipDetails = {
+  id: number;
+  value: string;
+};
+
 export type UserAsProfile = Omit<UserItem, "roles"> & {
   roles: string[];
+  membership_info: {
+    course: MembershipDetails;
+    faculty: MembershipDetails;
+    kind: MembershipDetails;
+    type: MembershipDetails;
+  }[];
 };
 
 export type UpdateUserDetails = {
