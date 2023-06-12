@@ -523,7 +523,7 @@ export type MembershipDetails = {
 
 export type UserAsProfile = Omit<UserItem, "roles"> & {
   roles: string[];
-  membership_info: {
+  membership_info?: {
     course: MembershipDetails;
     faculty: MembershipDetails;
     kind: MembershipDetails;
