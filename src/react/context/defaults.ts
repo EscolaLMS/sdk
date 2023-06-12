@@ -339,6 +339,10 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
   subjects: {
     loading: false,
   },
+  fetchExams: (params?: API.ExamsParams) => Promise.reject(),
+  exams: {
+    loading: false,
+  },
   fetchSubjects: (params?: API.SubjectsParams) => Promise.reject(),
   fetchSemesters: (params?: API.SemestersParams) => Promise.reject(),
   semesters: {
@@ -678,6 +682,10 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
     loading: false,
   },
   fetchSubjects: () => Promise.reject(),
+  fetchExams: () => Promise.reject(),
+  exams: {
+    loading: false,
+  },
   fetchSemesters: () => Promise.reject(),
   semesters: {
     loading: false,

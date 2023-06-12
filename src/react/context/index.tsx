@@ -138,6 +138,7 @@ import {
   ScheduleTutorsContextProvider,
 } from "./subjectsTutors";
 import { AttendancesContext, AttendancesContextProvider } from "./attendances";
+import { ExamsContext, ExamsContextProvider } from "./exams";
 import { postTeamsChat } from "../../services/student/chat";
 import {
   StudentDetailsContext,
@@ -336,6 +337,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
 
   const { fetchAttendances, attendances } = useContext(AttendancesContext);
 
+  const { fetchExams, exams } = useContext(ExamsContext);
   const { fetchSemesters, semesters, fetchAcademicYears, academicYears } =
     useContext(StudentDetailsContext);
 
@@ -1807,6 +1809,8 @@ const EscolaLMSContextProviderInner: FunctionComponent<
         fetchAttendances,
         attendances,
 
+        fetchExams,
+        exams,
         createTeamsChat,
 
         fetchSemesters,
@@ -1853,6 +1857,7 @@ export const EscolaLMSContextProvider: FunctionComponent<
     ScheduleContextProvider,
     ScheduleTutorsContextProvider,
     AttendancesContextProvider,
+    ExamsContextProvider,
     StudentDetailsContextProvider,
   ].reverse();
 
