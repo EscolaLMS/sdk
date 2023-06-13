@@ -1593,6 +1593,16 @@ export type GroupSubject = {
   subject: Subject;
   tutor: Tutor;
   ssubject_form_hours_numbers: number;
+  final_grades: {
+    grade_date: string;
+    grade_name: string;
+    grade_term: {
+      id: number;
+      name: string;
+    };
+    grade_value: number;
+    id: number;
+  }[];
 };
 
 export type Group = {
