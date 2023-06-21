@@ -20,6 +20,7 @@ export async function stationaryEvents(
 export async function getStationaryEvent(
   apiUrl: string,
   id: number,
+  token?: string | null,
   options?: RequestOptionsInit
 ) {
   return request<API.DefaultResponse<API.StationaryEvent>>(
@@ -27,6 +28,15 @@ export async function getStationaryEvent(
     {
       method: "GET",
       ...(options || {}),
+      headers: token
+        ? {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+            "Current-timezone": currentTimezone(),
+          }
+        : {
+            "Content-Type": "application/json",
+          },
     }
   );
 }

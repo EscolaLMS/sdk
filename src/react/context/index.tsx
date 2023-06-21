@@ -693,7 +693,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
       controller: `stationaryevent${id}`,
       id,
       mode: "value",
-      fetchAction: getStationaryEvent.bind(null, apiUrl)(id, {
+      fetchAction: getStationaryEvent.bind(null, apiUrl)(id, token, {
         signal: abortControllers.current?.[`stationaryevent${id}`]?.signal,
       }),
       setState: setStationaryEvent,
