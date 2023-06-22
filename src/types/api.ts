@@ -321,6 +321,7 @@ export type Webinar = Omit<EscolaLms.Webinar.Models.Webinar, "trainers"> & {
   is_ended: boolean;
   is_started: boolean;
   in_coming: boolean;
+  deadline?: string | null;
 };
 
 export type CartProductParameters = {
