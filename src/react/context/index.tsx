@@ -255,6 +255,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
     emailVerify,
     tokenExpireDate,
     register,
+    deleteAccount,
   } = useContext(UserContext);
 
   const {
@@ -1642,6 +1643,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
   return (
     <EscolaLMSContext.Provider
       value={{
+        deleteAccount,
         token,
         apiUrl,
         courses,
