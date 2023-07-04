@@ -30,6 +30,7 @@ import {
   reset,
   emailVerify,
   refreshToken,
+  deleteAccount as postDeleteAccount,
 } from "./../../services/auth";
 
 import { changePassword as postNewPassword } from "../../services/profile";
@@ -49,6 +50,7 @@ type UserContextType = Pick<
   | "getRefreshedToken"
   | "emailVerify"
   | "register"
+  | "deleteAccount"
 > & { token?: string | null; tokenExpireDate?: string | null };
 
 export const UserContext: React.Context<UserContextType> =
@@ -68,6 +70,7 @@ export const UserContext: React.Context<UserContextType> =
     register: defaultConfig.register,
     token: null,
     tokenExpireDate: null,
+    deleteAccount: defaultConfig.deleteAccount,
   });
 
 export interface UserContextProviderType {
@@ -303,6 +306,23 @@ export const UserContextProvider: FunctionComponent<
     }
   }, [token]);
 
+  const deleteAccount = useCallback(() => {
+    return token
+      ? postDeleteAccount
+          .bind(
+            null,
+            apiUrl
+          )(token)
+          .then((res) => {
+            if (res.success) {
+              logout();
+            }
+            return res;
+          })
+          .catch((error) => error)
+      : Promise.reject("noToken");
+  }, [token, logout]);
+
   useEffect(() => {
     if (tokenExpireDate) {
       const ms = Math.max(
@@ -349,6 +369,7 @@ export const UserContextProvider: FunctionComponent<
         getRefreshedToken,
         emailVerify: emailVerify.bind(null, apiUrl),
         register,
+        deleteAccount,
       }}
     >
       {children}

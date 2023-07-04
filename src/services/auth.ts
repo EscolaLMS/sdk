@@ -166,3 +166,17 @@ export async function completeSocialAuth(
     }
   );
 }
+
+export async function deleteAccount(apiUrl: string, token: string) {
+  return request<API.DefaultResponse<API.AuthResponse>>(
+    `${apiUrl}/api/profile`,
+    {
+      method: "DELETE",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+}
