@@ -306,7 +306,6 @@ it("checks delete account logic", async () => {
       token: data.data.token,
     })
   );
-
   act(() => {
     render(<DeleteAccount />);
   });
