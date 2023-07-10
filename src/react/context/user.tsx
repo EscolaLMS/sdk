@@ -30,7 +30,8 @@ import {
   reset,
   emailVerify,
   refreshToken,
-  deleteAccount as postDeleteAccount,
+  startAccountDelete,
+  finishAccountDelete,
 } from "./../../services/auth";
 
 import { changePassword as postNewPassword } from "../../services/profile";
@@ -50,7 +51,8 @@ type UserContextType = Pick<
   | "getRefreshedToken"
   | "emailVerify"
   | "register"
-  | "deleteAccount"
+  | "initAccountDelete"
+  | "confirmAccountDelete"
 > & { token?: string | null; tokenExpireDate?: string | null };
 
 export const UserContext: React.Context<UserContextType> =
@@ -70,7 +72,8 @@ export const UserContext: React.Context<UserContextType> =
     register: defaultConfig.register,
     token: null,
     tokenExpireDate: null,
-    deleteAccount: defaultConfig.deleteAccount,
+    initAccountDelete: defaultConfig.initAccountDelete,
+    confirmAccountDelete: defaultConfig.confirmAccountDelete,
   });
 
 export interface UserContextProviderType {
@@ -306,22 +309,33 @@ export const UserContextProvider: FunctionComponent<
     }
   }, [token]);
 
-  const deleteAccount = useCallback(() => {
-    return token
-      ? postDeleteAccount
-          .bind(
-            null,
-            apiUrl
-          )(token)
-          .then((res) => {
-            if (res.success) {
-              logout();
-            }
-            return res;
-          })
-          .catch((error) => error)
-      : Promise.reject("noToken");
-  }, [token, logout]);
+  const initAccountDelete = useCallback(
+    (returnUrl: string) => {
+      return token
+        ? startAccountDelete
+            .bind(null, apiUrl)(token, returnUrl)
+            .then((res) => {
+              return res;
+            })
+            .catch((error) => error)
+        : Promise.reject("noToken");
+    },
+    [token, logout]
+  );
+
+  const confirmAccountDelete = useCallback(
+    (userId: string, deleteToken: string) => {
+      return token
+        ? finishAccountDelete
+            .bind(null, apiUrl)(token, userId, deleteToken)
+            .then((res) => {
+              return res;
+            })
+            .catch((error) => error)
+        : Promise.reject("noToken");
+    },
+    [token, logout]
+  );
 
   useEffect(() => {
     if (tokenExpireDate) {
@@ -369,7 +383,8 @@ export const UserContextProvider: FunctionComponent<
         getRefreshedToken,
         emailVerify: emailVerify.bind(null, apiUrl),
         register,
-        deleteAccount,
+        initAccountDelete,
+        confirmAccountDelete,
       }}
     >
       {children}
