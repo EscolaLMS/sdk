@@ -6,6 +6,11 @@ export const registerDataSuccess = {
   message: "Registered",
 };
 
+export const deleteAccountDataSuccess = {
+  message: "User deletion request created",
+  success: true,
+};
+
 const dataFail = {
   message: "The given data was invalid.",
   errors: {
@@ -61,5 +66,14 @@ export default (scope: nock.Scope) => {
       return [200, dataSuccess];
     }
     return [422];
+  });
+
+  scope.post("/api/profile/delete/init").reply((uri, requestBody) => {
+    if (typeof requestBody === "object" && requestBody.return_url) {
+      const response = deleteAccountDataSuccess;
+      return [200, response];
+    } else {
+      return [422];
+    }
   });
 };

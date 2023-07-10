@@ -257,21 +257,41 @@ it("checks profile update logic", async () => {
 });
 
 const DeleteAccount = () => {
-  const { deleteAccount, user } = useContext(EscolaLMSContext);
+  const [loading, setLoading] = useState(false);
+  const { initAccountDelete } = useContext(EscolaLMSContext);
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState(false);
 
   return (
     <div>
-      <button data-testid="delete-account" onClick={deleteAccount}>
+      <Login />
+      <button
+        data-testid="delete-account"
+        onClick={() => {
+          setLoading(true);
+          initAccountDelete("https://demo-stage.escolalms.com")
+            .then((res) => {
+              if (res.success) {
+                setSuccess(true);
+              } else {
+                setError(true);
+              }
+            })
+            .catch((error) => {
+              if (error) {
+                setSuccess(false);
+                setError(true);
+              }
+            })
+            .finally(() => setLoading(false));
+        }}
+      >
         Delete Account
       </button>
-      <div data-testid="user-loading">
-        {user.loading ? "Loading" : "Loaded"}
-      </div>
-      {user.error && <div data-testid="user-error">Error</div>}
-      {user.value && (
-        <div data-testid="user-name">
-          {user.value.first_name} {user.value.last_name}
-        </div>
+      <div data-testid="delete-loading">{loading ? "Loading" : "Loaded"}</div>
+      {error && <div data-testid="delete-error">Error</div>}
+      {success && (
+        <div data-testid="delete-success">Account delete email sent</div>
       )}
     </div>
   );
@@ -286,12 +306,13 @@ it("checks delete account logic", async () => {
       token: data.data.token,
     })
   );
+
   act(() => {
     render(<DeleteAccount />);
   });
 
   await waitFor(() => {
-    expect(screen.queryByText("Delete Account")).toBeInTheDocument();
+    expect(screen.queryByText("Loaded")).toBeInTheDocument();
   });
 
   act(() => {
@@ -309,7 +330,11 @@ it("checks delete account logic", async () => {
   });
 
   await waitFor(() => {
-    expect(screen.queryByText("user-name")).not.toBeInTheDocument();
+    expect(screen.queryByText("Loaded")).toBeInTheDocument();
+  });
+
+  await waitFor(() => {
+    expect(screen.queryByText("Account delete email sent")).toBeInTheDocument();
   });
 });
 

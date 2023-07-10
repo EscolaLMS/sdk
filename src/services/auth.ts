@@ -167,11 +167,36 @@ export async function completeSocialAuth(
   );
 }
 
-export async function deleteAccount(apiUrl: string, token: string) {
+export async function startAccountDelete(
+  apiUrl: string,
+  token: string,
+  returnUrl: string
+) {
   return request<API.DefaultResponse<API.AuthResponse>>(
-    `${apiUrl}/api/profile`,
+    `${apiUrl}/api/profile/delete/init`,
     {
-      method: "DELETE",
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      data: {
+        return_url: returnUrl,
+      },
+    }
+  );
+}
+
+export async function finishAccountDelete(
+  apiUrl: string,
+  token: string,
+  userId: string,
+  deleteToken: string
+) {
+  return request<API.DefaultResponse<API.AuthResponse>>(
+    `${apiUrl}/api/profile/delete/${userId}/${deleteToken}`,
+    {
+      method: "GET",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
