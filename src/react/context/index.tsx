@@ -144,6 +144,7 @@ import {
   StudentDetailsContext,
   StudentDetailsContextProvider,
 } from "./studentDetails";
+import { ChallengesContext, ChallengesContextProvider } from "./challenges";
 
 export const SCORMPlayer: React.FC<{
   uuid: string;
@@ -305,6 +306,9 @@ const EscolaLMSContextProviderInner: FunctionComponent<
     myCourses,
     fetchMyCourses,
   } = useContext(CourseAccessContext);
+
+  const { fetchChallenges, challenges, challenge, fetchChallenge } =
+    useContext(ChallengesContext);
 
   const {
     consultationAccess,
@@ -1777,6 +1781,11 @@ const EscolaLMSContextProviderInner: FunctionComponent<
         myCourses,
         fetchMyCourses,
 
+        challenges,
+        fetchChallenges,
+        challenge,
+        fetchChallenge,
+
         consultationAccess,
         fetchConsultationAccess,
         addConsultationAccess,
@@ -1863,6 +1872,7 @@ export const EscolaLMSContextProvider: FunctionComponent<
     AttendancesContextProvider,
     ExamsContextProvider,
     StudentDetailsContextProvider,
+    ChallengesContextProvider,
   ].reverse();
 
   const C = wrappers.reduce((acc, curr, i) => {

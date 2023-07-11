@@ -90,6 +90,8 @@ export type Category = {
   subcategories?: Category[];
   count?: number;
   count_free?: number;
+  description?: string;
+  name_with_breadcrumbs?: string;
 };
 
 export type Tag = {
@@ -136,6 +138,26 @@ export type Course = {
   active_from?: string;
   hours_to_complete?: number | null;
   product?: Product;
+};
+
+export type Author = {
+  first_name: string;
+  last_name: string;
+  id: number;
+  path_avatar: string | null;
+} & Record<string, string | number | boolean | null>;
+
+export type Challenge = {
+  id: number;
+  name: string;
+  type: string;
+  description: string;
+  image_path?: string | null;
+  is_active: boolean;
+  quiz_id?: number | null;
+  created_at: string;
+  categories?: number[];
+  authors?: Author[];
 };
 
 export type PaginatedList<Model> = {
@@ -217,6 +239,8 @@ export type RawResponse<Model> = Model | DefaultResponseError;
 export type SuccessResponse = { success: true } | DefaultResponseError;
 
 export type CourseList = DefaultMetaResponse<Course>;
+
+export type ChallengesList = DefaultMetaResponse<Challenge>;
 
 export type CertificateList = DefaultMetaResponse<Certificate>;
 
@@ -368,6 +392,13 @@ export type CourseParams = PageParams &
     only_with_categories?: boolean;
     no_expired?: 0 | 1;
   };
+
+export type ChallengesParams = PaginationParams & {
+  order_by?: "id" | "name" | "created_at";
+  type?: "simple" | "complex";
+  order?: "ASC" | "DESC";
+  name?: string;
+};
 
 export type ConsultationParams = PageParams &
   PaginationParams & {
