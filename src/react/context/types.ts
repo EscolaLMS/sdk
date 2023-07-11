@@ -37,6 +37,7 @@ export interface ContextStateValue<T> {
 export interface EscolaLMSContextReadConfig {
   token?: string | null;
   courses: ContextPaginatedMetaState<API.CourseListItem>;
+  challenges: ContextPaginatedMetaState<API.Challenge>;
   userGroup: ContextStateValue<API.UserGroup>;
   userGroups: ContextPaginatedMetaState<API.UserGroup>;
   registerableGroups: ContextListState<API.UserGroup>;
@@ -77,6 +78,7 @@ export interface EscolaLMSContextReadConfig {
   userStationaryEvents: ContextListState<API.StationaryEvent>;
   tasks: ContextPaginatedMetaState<API.Task>;
   task: ContextStateValue<API.Task>;
+  challenge: ContextStateValue<API.Challenge>;
   courseAccess: ContextPaginatedMetaState<API.CourseAccessEnquiry>;
   myCourses: ContextStateValue<number[]>;
   consultationAccess: ContextPaginatedMetaState<API.ConsultationsAccessEnquiry>;
@@ -97,6 +99,9 @@ export interface EscolaLMSContextAPIConfig {
   fetchCourses: (
     filter: API.CourseParams
   ) => Promise<API.DefaultMetaResponse<API.Course>>;
+  fetchChallenges: (
+    filter: API.ChallengesParams
+  ) => Promise<API.DefaultMetaResponse<API.Challenge>>;
 
   fetchUserGroup: (
     id: number
@@ -431,6 +436,13 @@ export interface EscolaLMSContextAPIConfig {
     id: number
   ) => Promise<
     void | API.DefaultResponse<API.Task> | API.DefaultMetaResponse<API.Task>
+  >;
+  fetchChallenge: (
+    id: number
+  ) => Promise<
+    | void
+    | API.DefaultResponse<API.Challenge>
+    | API.DefaultMetaResponse<API.Challenge>
   >;
   updateTask: (
     id: number,

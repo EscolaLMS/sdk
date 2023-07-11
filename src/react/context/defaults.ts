@@ -36,6 +36,10 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
   userGroup: {
     loading: false,
   },
+  fetchChallenges: () => Promise.reject(),
+  challenges: {
+    loading: false,
+  },
   fetchUserGroup: () => Promise.reject(),
   userGroups: {
     loading: false,
@@ -284,6 +288,9 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
   task: {
     loading: false,
   },
+  challenge: {
+    loading: false,
+  },
   attendances: {
     loading: false,
   },
@@ -301,6 +308,7 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
   ) => Promise.reject(),
 
   fetchTask: (id: number) => Promise.reject(),
+  fetchChallenge: (id: number) => Promise.reject(),
   fetchAttendances: (groupId: number) => Promise.reject(),
   deleteTask: (id: number) => Promise.reject(),
   addTask: (data: EscolaLms.Tasks.Http.Requests.CreateTaskRequest) =>
@@ -371,6 +379,10 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
   },
   fetchCourses: () => Promise.reject(),
   userGroup: {
+    loading: false,
+  },
+  fetchChallenges: () => Promise.reject(),
+  challenges: {
     loading: false,
   },
   fetchUserGroup: () => Promise.reject(),
@@ -641,10 +653,14 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
   task: {
     loading: false,
   },
+  challenge: {
+    loading: false,
+  },
   attendances: {
     loading: false,
   },
   fetchTask: (id: number) => Promise.reject(id),
+  fetchChallenge: (id: number) => Promise.reject(id),
   fetchAttendances: (groupId: number) => Promise.reject(groupId),
   deleteTask: (id: number) => Promise.reject(),
   addTask: (data: EscolaLms.Tasks.Http.Requests.CreateTaskRequest) =>
