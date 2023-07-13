@@ -147,6 +147,26 @@ export type Author = {
   path_avatar: string | null;
 } & Record<string, string | number | boolean | null>;
 
+export type Scale = {
+  parent_category_id: number;
+  category_id: number;
+  scale_min: number;
+};
+
+export type CompetencyTestResults = {
+  attempt_id: number;
+  created_at: string;
+  id: number;
+  scale: Scale[];
+  value: {
+    category_id: number;
+    scale_category_id: number;
+    score: number;
+    max_score: number;
+    matched_course: number[];
+  }[];
+};
+
 export type Challenge = {
   id: number;
   name: string;
@@ -158,6 +178,9 @@ export type Challenge = {
   created_at: string;
   categories?: number[];
   authors?: Author[];
+  results: CompetencyTestResults[];
+  results_count: number;
+  summary: string;
 };
 
 export type PaginatedList<Model> = {
