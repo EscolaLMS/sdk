@@ -157,7 +157,7 @@ export type CompetencyTestResults = {
   attempt_id: number;
   created_at: string;
   id: number;
-  scale: Scale[];
+  scale: Scale[][];
   value: {
     category_id: number;
     scale_category_id: number;
