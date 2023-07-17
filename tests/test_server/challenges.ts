@@ -1,4 +1,5 @@
 import nock from "nock";
+import { API } from "../../src";
 
 export const response = {
   success: true,
@@ -13,7 +14,367 @@ export const response = {
       is_active: true,
       quiz_id: 10,
       created_at: "2023-07-06T11:01:49.000000Z",
-      results_count: 0,
+      summary: "Lorem",
+      results_count: 7,
+      authors: [],
+      results: [
+        {
+          id: 1,
+          value: [
+            {
+              category_id: 25,
+              scale_category_id: 26,
+              score: 0,
+              max_score: 4,
+              matched_course: [1],
+            },
+            {
+              category_id: 21,
+              scale_category_id: 22,
+              score: 0,
+              max_score: 1,
+              matched_course: [9],
+            },
+          ],
+          scale: [
+            [
+              {
+                parent_category_id: 25,
+                category_id: 26,
+                scale_min: 0,
+              },
+              {
+                parent_category_id: 25,
+                category_id: 27,
+                scale_min: 35,
+              },
+              {
+                parent_category_id: 25,
+                category_id: 28,
+                scale_min: 80,
+              },
+            ],
+            [
+              {
+                parent_category_id: 21,
+                category_id: 22,
+                scale_min: 0,
+              },
+              {
+                parent_category_id: 21,
+                category_id: 23,
+                scale_min: 35,
+              },
+              {
+                parent_category_id: 21,
+                category_id: 24,
+                scale_min: 80,
+              },
+            ],
+          ],
+          attempt_id: 53,
+          created_at: "2023-07-13T08:31:22.000000Z",
+        },
+        {
+          id: 2,
+          value: [
+            {
+              category_id: 25,
+              scale_category_id: 26,
+              score: 0,
+              max_score: 2,
+              matched_course: [1],
+            },
+          ],
+          scale: [
+            [
+              {
+                parent_category_id: 25,
+                category_id: 26,
+                scale_min: 0,
+              },
+              {
+                parent_category_id: 25,
+                category_id: 27,
+                scale_min: 35,
+              },
+              {
+                parent_category_id: 25,
+                category_id: 28,
+                scale_min: 80,
+              },
+            ],
+            [
+              {
+                parent_category_id: 21,
+                category_id: 22,
+                scale_min: 0,
+              },
+              {
+                parent_category_id: 21,
+                category_id: 23,
+                scale_min: 35,
+              },
+              {
+                parent_category_id: 21,
+                category_id: 24,
+                scale_min: 80,
+              },
+            ],
+          ],
+          attempt_id: 54,
+          created_at: "2023-07-13T08:32:47.000000Z",
+        },
+        {
+          id: 3,
+          value: [],
+          scale: [
+            [
+              {
+                parent_category_id: 25,
+                category_id: 26,
+                scale_min: 0,
+              },
+              {
+                parent_category_id: 25,
+                category_id: 27,
+                scale_min: 35,
+              },
+              {
+                parent_category_id: 25,
+                category_id: 28,
+                scale_min: 80,
+              },
+            ],
+            [
+              {
+                parent_category_id: 21,
+                category_id: 22,
+                scale_min: 0,
+              },
+              {
+                parent_category_id: 21,
+                category_id: 23,
+                scale_min: 35,
+              },
+              {
+                parent_category_id: 21,
+                category_id: 24,
+                scale_min: 80,
+              },
+            ],
+          ],
+          attempt_id: 55,
+          created_at: "2023-07-13T08:33:29.000000Z",
+        },
+        {
+          id: 4,
+          value: [
+            {
+              category_id: 25,
+              scale_category_id: 26,
+              score: 0,
+              max_score: 2,
+              matched_course: [1],
+            },
+          ],
+          scale: [
+            [
+              {
+                parent_category_id: 25,
+                category_id: 26,
+                scale_min: 0,
+              },
+              {
+                parent_category_id: 25,
+                category_id: 27,
+                scale_min: 35,
+              },
+              {
+                parent_category_id: 25,
+                category_id: 28,
+                scale_min: 80,
+              },
+            ],
+            [
+              {
+                parent_category_id: 21,
+                category_id: 22,
+                scale_min: 0,
+              },
+              {
+                parent_category_id: 21,
+                category_id: 23,
+                scale_min: 35,
+              },
+              {
+                parent_category_id: 21,
+                category_id: 24,
+                scale_min: 80,
+              },
+            ],
+          ],
+          attempt_id: 56,
+          created_at: "2023-07-13T08:34:41.000000Z",
+        },
+        {
+          id: 5,
+          value: [
+            {
+              category_id: 25,
+              scale_category_id: 26,
+              score: 0,
+              max_score: 3,
+              matched_course: [1],
+            },
+          ],
+          scale: [
+            [
+              {
+                parent_category_id: 25,
+                category_id: 26,
+                scale_min: 0,
+              },
+              {
+                parent_category_id: 25,
+                category_id: 27,
+                scale_min: 35,
+              },
+              {
+                parent_category_id: 25,
+                category_id: 28,
+                scale_min: 80,
+              },
+            ],
+            [
+              {
+                parent_category_id: 21,
+                category_id: 22,
+                scale_min: 0,
+              },
+              {
+                parent_category_id: 21,
+                category_id: 23,
+                scale_min: 35,
+              },
+              {
+                parent_category_id: 21,
+                category_id: 24,
+                scale_min: 80,
+              },
+            ],
+          ],
+          attempt_id: 57,
+          created_at: "2023-07-13T08:53:47.000000Z",
+        },
+        {
+          id: 6,
+          value: [
+            {
+              category_id: 25,
+              scale_category_id: 26,
+              score: 0,
+              max_score: 2,
+              matched_course: [1],
+            },
+            {
+              category_id: 21,
+              scale_category_id: 22,
+              score: 1,
+              max_score: 1,
+              matched_course: [9],
+            },
+          ],
+          scale: [
+            [
+              {
+                parent_category_id: 25,
+                category_id: 26,
+                scale_min: 0,
+              },
+              {
+                parent_category_id: 25,
+                category_id: 27,
+                scale_min: 35,
+              },
+              {
+                parent_category_id: 25,
+                category_id: 28,
+                scale_min: 80,
+              },
+            ],
+            [
+              {
+                parent_category_id: 21,
+                category_id: 22,
+                scale_min: 0,
+              },
+              {
+                parent_category_id: 21,
+                category_id: 23,
+                scale_min: 35,
+              },
+              {
+                parent_category_id: 21,
+                category_id: 24,
+                scale_min: 80,
+              },
+            ],
+          ],
+          attempt_id: 58,
+          created_at: "2023-07-13T10:16:38.000000Z",
+        },
+        {
+          id: 11,
+          value: [
+            {
+              category_id: 25,
+              scale_category_id: 26,
+              score: 0,
+              max_score: 2,
+              matched_course: [1],
+            },
+          ],
+          scale: [
+            [
+              {
+                parent_category_id: 25,
+                category_id: 26,
+                scale_min: 0,
+              },
+              {
+                parent_category_id: 25,
+                category_id: 27,
+                scale_min: 35,
+              },
+              {
+                parent_category_id: 25,
+                category_id: 28,
+                scale_min: 80,
+              },
+            ],
+            [
+              {
+                parent_category_id: 21,
+                category_id: 22,
+                scale_min: 0,
+              },
+              {
+                parent_category_id: 21,
+                category_id: 23,
+                scale_min: 35,
+              },
+              {
+                parent_category_id: 21,
+                category_id: 24,
+                scale_min: 80,
+              },
+            ],
+          ],
+          attempt_id: 68,
+          created_at: "2023-07-14T07:51:11.000000Z",
+        },
+      ],
     },
     {
       id: 1,
@@ -25,6 +386,9 @@ export const response = {
       quiz_id: 4,
       created_at: "2023-07-03T09:20:37.000000Z",
       results_count: 0,
+      results: [],
+      summary: "Lorem",
+      authors: [],
     },
   ],
   meta: {

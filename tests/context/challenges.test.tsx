@@ -10,7 +10,7 @@ import { response as challengesResponse } from "../test_server/challenges";
 import "@testing-library/jest-dom";
 
 import fakeServer from "../test_server";
-import { ContextPaginatedMetaState } from "../../src/react/context/types";
+
 import { API } from "../../src";
 
 beforeAll(() => {
