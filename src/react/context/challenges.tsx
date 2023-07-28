@@ -62,7 +62,7 @@ export const ChallengesContextProvider: FunctionComponent<
   }, [defaults]);
 
   const [challenges, setChallenges] = useLocalStorage<
-    ContextPaginatedMetaState<API.Challenge>
+    ContextPaginatedMetaState<API.CompetencyChallenge>
   >(
     "lms",
     "challenges",
@@ -74,7 +74,7 @@ export const ChallengesContextProvider: FunctionComponent<
   );
 
   const [challenge, setChallenge] = useLocalStorage<
-    ContextStateValue<API.Challenge>
+    ContextStateValue<API.CompetencyChallenge>
   >(
     "lms",
     "challenge",
@@ -88,7 +88,7 @@ export const ChallengesContextProvider: FunctionComponent<
   const fetchChallenges = useCallback(
     (filter?: API.ChallengesParams) => {
       return token
-        ? fetchDataType<API.Challenge>({
+        ? fetchDataType<API.CompetencyChallenge>({
             controllers: abortControllers.current,
             controller: `challenges/${JSON.stringify(filter)}`,
             mode: "paginated",
@@ -107,7 +107,7 @@ export const ChallengesContextProvider: FunctionComponent<
   const fetchChallenge = useCallback(
     (id: number) => {
       return token
-        ? fetchDataType<API.Challenge>({
+        ? fetchDataType<API.CompetencyChallenge>({
             controllers: abortControllers.current,
             controller: `challenge${id}`,
             id: id,
