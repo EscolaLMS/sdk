@@ -1,17 +1,12 @@
 import React from "react";
 import { useContext, useEffect } from "react";
 import { act } from "react-dom/test-utils";
-import {
-  EscolaLMSContext,
-  EscolaLMSContextProvider,
-} from "./../../src/react/context";
+import { EscolaLMSContext, EscolaLMSContextProvider } from "../../src/react";
 import { waitFor, screen, unwrappedRender } from "../test-utils";
 import { response as challengesResponse } from "../test_server/challenges";
 import "@testing-library/jest-dom";
 
 import fakeServer from "../test_server";
-
-import { API } from "../../src";
 
 beforeAll(() => {
   fakeServer();
@@ -67,7 +62,7 @@ it("test fetching challenges", async () => {
         defaults={{
           challenges: {
             loading: false,
-            list: challengesResponse as API.PaginatedMetaList<API.Challenge>,
+            list: challengesResponse,
           },
         }}
       >
@@ -97,7 +92,7 @@ it("test default params challenges", async () => {
       defaults={{
         challenges: {
           loading: false,
-          list: challengesResponse as API.PaginatedMetaList<API.Challenge>,
+          list: challengesResponse,
         },
       }}
     >
