@@ -25,7 +25,7 @@ export async function singleChallenge(
   id: number,
   options?: RequestOptionsInit
 ) {
-  return request<API.DefaultResponse<API.Challenge>>(
+  return request<API.DefaultResponse<API.CompetencyChallenge>>(
     `${apiUrl}/api/competency-challenges/${id}`,
     {
       method: "GET",

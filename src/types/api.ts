@@ -1,5 +1,7 @@
 import { API } from "..";
 
+type Nullable<T> = T | null | undefined;
+
 export enum TopicType {
   Unselected = "",
   RichText = "EscolaLms\\TopicTypes\\Models\\TopicContent\\RichText",
@@ -153,35 +155,61 @@ export type Scale = {
   scale_min: number;
 };
 
+export type ResultValue = {
+  category_id: number;
+  scale_category_id: number;
+  parent_category_id: number;
+  score: number;
+  max_score: number;
+  matched_course: number[];
+};
+
 export type CompetencyTestResults = {
   attempt_id: number;
   created_at: string;
   id: number;
   scale: Scale[][];
-  value: {
-    category_id: number;
-    scale_category_id: number;
-    score: number;
-    max_score: number;
-    matched_course: number[];
-  }[];
+  value: ResultValue[];
 };
 
-export type Challenge = {
+export type CompetencyChallengeCategory = {
   id: number;
   name: string;
-  type: string;
+  parent_id?: number;
+};
+
+export enum CompetencyChallengeType {
+  Simple = "simple",
+  Complex = "complex",
+}
+
+export type BaseCompetencyChallenge = {
+  id: number;
+  name: string;
   description: string;
-  image_path?: string | null;
+  summary: string;
+  image_path?: Nullable<string>;
   is_active: boolean;
-  quiz_id?: number | null;
-  created_at: string;
+  quiz_id?: Nullable<number>;
+  created_at: Date | string;
   categories?: number[];
   authors?: Author[];
   results: CompetencyTestResults[];
   results_count: number;
-  summary: string;
 };
+
+export type SimpleCompetencyChallenge = BaseCompetencyChallenge & {
+  type: CompetencyChallengeType.Simple;
+  category: CompetencyChallengeCategory;
+};
+
+export type ComplexCompetencyChallenge = BaseCompetencyChallenge & {
+  type: CompetencyChallengeType.Complex;
+};
+
+export type CompetencyChallenge =
+  | SimpleCompetencyChallenge
+  | ComplexCompetencyChallenge;
 
 export type PaginatedList<Model> = {
   current_page: number;
@@ -263,7 +291,7 @@ export type SuccessResponse = { success: true } | DefaultResponseError;
 
 export type CourseList = DefaultMetaResponse<Course>;
 
-export type ChallengesList = DefaultMetaResponse<Challenge>;
+export type ChallengesList = DefaultMetaResponse<CompetencyChallenge>;
 
 export type CertificateList = DefaultMetaResponse<Certificate>;
 
