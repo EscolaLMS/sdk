@@ -190,6 +190,7 @@ export type BaseCompetencyChallenge = {
   summary: string;
   image_path?: Nullable<string>;
   is_active: boolean;
+  is_highlighted: boolean;
   quiz_id?: Nullable<number>;
   created_at: Date | string;
   categories?: number[];
