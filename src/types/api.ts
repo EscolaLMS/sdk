@@ -382,6 +382,7 @@ export type Product = Omit<EscolaLms.Cart.Models.Product, "productables"> & {
   sold_quantity: number;
   gross_price: number;
   productables?: Array<ProductItems> | null;
+  authors?: User[] | null;
 };
 
 export type ProductItems = EscolaLms.Cart.Models.ProductProductable & {
