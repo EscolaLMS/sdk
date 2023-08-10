@@ -1411,6 +1411,12 @@ export type CourseAccessEnquiryCreateRequest =
 export type ConsultationsAccessEnquiry =
   EscolaLms.ConsultationAccess.Models.ConsultationAccessEnquiry;
 
+export type ConsultationAccessEnquiryUrl = {
+  id: number;
+  meeting_link: string;
+  meeting_link_type: string;
+};
+
 export type ConsultationsAccessEnquiryTerm =
   EscolaLms.ConsultationAccess.Models.ConsultationAccessEnquiryProposedTerm;
 

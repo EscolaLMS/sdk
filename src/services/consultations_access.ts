@@ -93,3 +93,25 @@ export async function updateConsultationAccess(
     }
   );
 }
+
+/**  GET /api/consultation-access-enquiries/:id/join */
+export async function getUrlByConsultationEnquiryAccessId(
+  apiUrl: string,
+  token: string,
+  consultationAccessEnquiryId: number,
+  options?: RequestOptionsInit
+) {
+  return request<API.DefaultResponse<API.ConsultationAccessEnquiryUrl>>(
+    `${apiUrl}/api/consultation-access-enquiries/${consultationAccessEnquiryId}/join`,
+    {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+        "Current-timezone": currentTimezone(),
+      },
+      ...(options || {}),
+    }
+  );
+}
