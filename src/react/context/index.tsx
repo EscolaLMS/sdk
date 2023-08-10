@@ -20,6 +20,7 @@ import {
   topicPing as putTopicPing,
   h5pProgress as postSendh5pProgress,
   courseProgress as getCourseProgress,
+  myAuthoredCourses as getMyAuthoredCourses,
 } from "./../../services/courses";
 import {
   bookConsultationDate,
@@ -445,6 +446,10 @@ const EscolaLMSContextProviderInner: FunctionComponent<
   const [progress, setProgress] = useState<
     ContextStateValue<API.CourseProgress>
   >(getDefaultData("progress", initialValues));
+
+  const [myAuthoredCourses, setMyAuthoredCourses] = useState<
+    ContextStateValue<API.Course[]>
+  >(getDefaultData("myAuthoredCourses", initialValues));
 
   const [courseProgressDetails, setCourseProgressDetails] = useState<
     ContextStateValue<API.CourseProgressDetails>
@@ -1226,6 +1231,20 @@ const EscolaLMSContextProviderInner: FunctionComponent<
       : Promise.reject("noToken");
   }, [token]);
 
+  const fetchMyAuthoredCourses = useCallback(() => {
+    return token
+      ? fetchDataType<API.Course[]>({
+          controllers: abortControllers.current,
+          controller: `myAuthoredCourses`,
+          mode: "value",
+          fetchAction: getMyAuthoredCourses.bind(null, apiUrl)(token, {
+            signal: abortControllers.current?.myAuthoredCourses?.signal,
+          }),
+          setState: setMyAuthoredCourses,
+        })
+      : Promise.reject("noToken");
+  }, [token]);
+
   const fetchCourseProgress = useCallback(
     (id: number) => {
       if (!token) {
@@ -1780,6 +1799,8 @@ const EscolaLMSContextProviderInner: FunctionComponent<
         deleteCourseAccess,
         myCourses,
         fetchMyCourses,
+        fetchMyAuthoredCourses,
+        myAuthoredCourses,
 
         challenges,
         fetchChallenges,

@@ -110,6 +110,25 @@ export async function progress(
   );
 }
 
+export async function myAuthoredCourses(
+  apiUrl: string,
+  token: string,
+  options?: RequestOptionsInit
+) {
+  return request<API.DefaultResponse<API.Course[]>>(
+    `${apiUrl}/api/courses/authored`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+        "Current-timezone": currentTimezone(),
+      },
+      ...(options || {}),
+    }
+  );
+}
+
 export async function courseProgress(
   apiUrl: string,
   courseId: number,
