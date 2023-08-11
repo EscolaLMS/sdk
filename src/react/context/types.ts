@@ -174,11 +174,7 @@ export interface EscolaLMSContextAPIConfig {
     | API.DefaultResponse<API.CourseProgress>
     | API.DefaultMetaResponse<API.CourseProgress>
   >;
-  fetchMyAuthoredCourses: () => Promise<
-    | void
-    | API.DefaultResponse<API.Course[]>
-    | API.DefaultMetaResponse<API.Course[]>
-  >;
+  fetchMyAuthoredCourses: () => Promise<API.DefaultResponse<API.Course[]>>;
   fetchCourseProgress: (courseId: number) => Promise<void>;
   sendProgress: (
     courseId: number,
