@@ -110,12 +110,17 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
   payWithP24: (email: string, return_url: string, data?: API.InvoiceData) =>
     Promise.reject(),
   fetchProgress: () => Promise.reject(),
+  fetchMyAuthoredCourses: () => Promise.reject(),
   fetchCourseProgress: (id: number) => Promise.reject(),
   courseProgressDetails: {
     loading: false,
     byId: {},
   },
   progress: {
+    loading: false,
+    value: [],
+  },
+  myAuthoredCourses: {
     loading: false,
     value: [],
   },
@@ -465,12 +470,17 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
   payWithP24: (email: string, return_url: string, data?: API.InvoiceData) =>
     Promise.reject(),
   fetchProgress: () => Promise.reject(),
+  fetchMyAuthoredCourses: () => Promise.reject(),
   fetchCourseProgress: (id) => Promise.reject(),
   courseProgressDetails: {
     loading: false,
     byId: {},
   },
   progress: {
+    loading: false,
+    value: [],
+  },
+  myAuthoredCourses: {
     loading: false,
     value: [],
   },
