@@ -25,6 +25,28 @@ export async function consultationAccess(
   );
 }
 
+/**  GET /api/consultation-access-enquiries/:enquiry_id */
+export async function consultationAccessEnquiry(
+  apiUrl: string,
+  token: string,
+  enquiry_id: number,
+  options?: RequestOptionsInit
+) {
+  return request<API.DefaultResponse<API.ConsultationsAccessEnquiry>>(
+    `${apiUrl}/api/consultation-access-enquiries/${enquiry_id}`,
+    {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+        "Current-timezone": currentTimezone(),
+      },
+      ...(options || {}),
+    }
+  );
+}
+
 /**  DELETE /api/course-access-enquiries/:id */
 export async function deleteConsultationAccess(
   apiUrl: string,
