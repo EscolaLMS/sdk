@@ -46,12 +46,7 @@ export const ConsultationAccessContext = createContext<
 
 export interface ConsultationAccessContextProviderType {
   apiUrl: string;
-  defaults?: Partial<
-    Pick<
-      EscolaLMSContextReadConfig,
-      "consultationAccess" | "consultationAccessEnquiry"
-    >
-  >;
+  defaults?: Partial<Pick<EscolaLMSContextReadConfig, "consultationAccess">>;
   ssrHydration?: boolean;
 }
 

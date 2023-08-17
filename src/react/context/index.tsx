@@ -8,7 +8,10 @@ import React, {
   useMemo,
   PropsWithChildren,
 } from "react";
-import { ConsultationsAccessEnquiryContext } from "./consultations_access_enquiry";
+import {
+  ConsultationsAccessEnquiryContext,
+  ConsultationAccessEnquiryContextProvider,
+} from "./consultations_access_enquiry";
 
 import { CoursesContext } from "./courses";
 import { fetchDataType } from "./states";
@@ -1887,6 +1890,7 @@ export const EscolaLMSContextProvider: FunctionComponent<
     PagesContextProvider,
     PageContextProvider,
     ConsultationAccessContextProvider,
+    ConsultationAccessEnquiryContextProvider,
     NotificationsContextProvider,
     CourseAccessContextProvider,
     TasksContextProvider,
