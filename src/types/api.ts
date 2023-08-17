@@ -1385,7 +1385,17 @@ export type Task =
       related_id: number;
     });
 
-export type TaskParams = PageParams;
+export type TaskParams = PageParams &
+  PaginationParams & {
+    title?: string;
+    type?: string;
+    user_id?: number;
+    created_by_id?: number;
+    related_type?: TaskRelatedType;
+    related_id?: number;
+    due_date_from?: Date | string;
+    due_date_to?: Date | string;
+  };
 
 export type CourseAccessEnquiryList = DefaultMetaResponse<CourseAccessEnquiry>;
 
@@ -1420,9 +1430,14 @@ export type ConsultationAccessEnquiryUrl = {
 export type ConsultationsAccessEnquiryTerm =
   EscolaLms.ConsultationAccess.Models.ConsultationAccessEnquiryProposedTerm;
 
-export type ConsultationsAccessEnquiryParams =
-  EscolaLms.ConsultationAccess.Http.Requests.ListConsultationAccessEnquiryRequest &
-    PaginatedListParams;
+export type ConsultationsAccessEnquiryParams = PageParams &
+  PaginationParams & {
+    consultation_id?: number;
+    status?: string;
+    proposed_at_from?: Date | string;
+    proposed_at_to?: Date | string;
+    is_coming?: boolean;
+  };
 
 export type ConsultationsAccessEnquiryList =
   DefaultMetaResponse<ConsultationsAccessEnquiry>;
