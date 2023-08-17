@@ -395,11 +395,7 @@ export interface EscolaLMSContextAPIConfig {
   ) => Promise<API.DefaultMetaResponse<API.Task>>;
   fetchCourseAccess: (
     filter?: API.CourseAccessEnquiryListParams
-  ) => Promise<
-    | void
-    | API.DefaultResponse<API.CourseAccessEnquiry>
-    | API.DefaultMetaResponse<API.CourseAccessEnquiry>
-  >;
+  ) => Promise<API.DefaultMetaResponse<API.CourseAccessEnquiry>>;
   fetchMyCourses: () => Promise<void>;
   addCourseAccess: (
     data: API.CourseAccessEnquiryCreateRequest
@@ -431,11 +427,7 @@ export interface EscolaLMSContextAPIConfig {
   deleteTask: (id: number) => Promise<API.DefaultResponse<API.Task>>;
   fetchAttendances: (
     groupId: number
-  ) => Promise<
-    | void
-    | API.DefaultResponse<API.Attendance[]>
-    | API.DefaultMetaResponse<API.Attendance[]>
-  >;
+  ) => Promise<API.DefaultResponse<API.Attendance[]>>;
   fetchTask: (
     id: number
   ) => Promise<
@@ -468,11 +460,7 @@ export interface EscolaLMSContextAPIConfig {
 
   fetchBookmarkNotes: (
     filter?: API.BookmarkNoteParams
-  ) => Promise<
-    | void
-    | API.DefaultResponse<API.BookmarkNote>
-    | API.DefaultMetaResponse<API.BookmarkNote>
-  >;
+  ) => Promise<API.DefaultMetaResponse<API.BookmarkNote>>;
   createBookmarkNote: (
     body: EscolaLms.Bookmarks.Http.Requests.CreateBookmarkRequest
   ) => Promise<API.DefaultResponse<API.BookmarkNote>>;
