@@ -52,7 +52,12 @@ export const ConsultationAccessContext: React.Context<
 
 export interface ConsultationAccessContextProviderType {
   apiUrl: string;
-  defaults?: Partial<Pick<EscolaLMSContextReadConfig, "consultationAccess">>;
+  defaults?: Partial<
+    Pick<
+      EscolaLMSContextReadConfig,
+      "consultationAccess" | "consultationAccessEnquiry"
+    >
+  >;
   ssrHydration?: boolean;
 }
 
