@@ -27,7 +27,7 @@ import {
 } from "./../../services/consultations_access";
 import { UserContext } from "./user";
 
-export const ConsultationAccessContext: React.Context<
+export const ConsultationAccessContext = createContext<
   Pick<
     EscolaLMSContextConfig,
     | "consultationAccess"
@@ -36,7 +36,7 @@ export const ConsultationAccessContext: React.Context<
     | "deleteConsultationAccess"
     | "updateConsultationAccess"
   >
-> = createContext({
+>({
   consultationAccess: defaultConfig.consultationAccess,
   fetchConsultationAccess: defaultConfig.fetchConsultationAccess,
   addConsultationAccess: defaultConfig.addConsultationAccess,

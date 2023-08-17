@@ -8,6 +8,10 @@ import React, {
   useMemo,
   PropsWithChildren,
 } from "react";
+import {
+  ConsultationsAccessEnquiryContext,
+  ConsultationAccessEnquiryContextProvider,
+} from "./consultations_access_enquiry";
 
 import { CoursesContext } from "./courses";
 import { fetchDataType } from "./states";
@@ -310,6 +314,9 @@ const EscolaLMSContextProviderInner: FunctionComponent<
 
   const { fetchChallenges, challenges, challenge, fetchChallenge } =
     useContext(ChallengesContext);
+
+  const { fetchConsultationAccessEnquiry, consultationAccessEnquiry } =
+    useContext(ConsultationsAccessEnquiryContext);
 
   const {
     consultationAccess,
@@ -1807,6 +1814,9 @@ const EscolaLMSContextProviderInner: FunctionComponent<
         challenge,
         fetchChallenge,
 
+        consultationAccessEnquiry,
+        fetchConsultationAccessEnquiry,
+
         consultationAccess,
         fetchConsultationAccess,
         addConsultationAccess,
@@ -1880,6 +1890,7 @@ export const EscolaLMSContextProvider: FunctionComponent<
     PagesContextProvider,
     PageContextProvider,
     ConsultationAccessContextProvider,
+    ConsultationAccessEnquiryContextProvider,
     NotificationsContextProvider,
     CourseAccessContextProvider,
     TasksContextProvider,
