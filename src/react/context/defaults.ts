@@ -304,7 +304,8 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
   consultationAccessEnquiry: {
     loading: false,
   },
-  fetchConsultationAccessEnquiry: (enquiry_id: number) => Promise.reject(),
+  fetchConsultationAccessEnquiry: (enquiryId: number) => Promise.reject(),
+
   consultationAccess: {
     loading: false,
   },
@@ -655,7 +656,7 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
     Promise.reject(),
 
   consultationAccessEnquiry: { loading: false },
-  fetchConsultationAccessEnquiry: (enquiry_id: number) => Promise.reject(),
+  fetchConsultationAccessEnquiry: (enquiryId: number) => Promise.reject(),
 
   consultationAccess: {
     loading: false,

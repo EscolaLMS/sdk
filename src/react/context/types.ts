@@ -409,7 +409,7 @@ export interface EscolaLMSContextAPIConfig {
   ) => Promise<API.DefaultResponse<API.CourseAccessEnquiry>>;
 
   fetchConsultationAccessEnquiry: (
-    enquiry_id: number
+    enquiryId: number
   ) => Promise<API.DefaultResponse<API.ConsultationsAccessEnquiry>>;
   fetchConsultationAccess: (
     filter?: API.CourseAccessEnquiryListParams

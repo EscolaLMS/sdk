@@ -8,6 +8,7 @@ import React, {
   useMemo,
   PropsWithChildren,
 } from "react";
+import { ConsultationsAccessEnquiryContext } from "./consultations_access_enquiry";
 
 import { CoursesContext } from "./courses";
 import { fetchDataType } from "./states";
@@ -311,10 +312,10 @@ const EscolaLMSContextProviderInner: FunctionComponent<
   const { fetchChallenges, challenges, challenge, fetchChallenge } =
     useContext(ChallengesContext);
 
-  const {
-    consultationAccessEnquiry,
-    fetchConsultationAccessEnquiry,
+  const { fetchConsultationAccessEnquiry, consultationAccessEnquiry } =
+    useContext(ConsultationsAccessEnquiryContext);
 
+  const {
     consultationAccess,
     fetchConsultationAccess,
     addConsultationAccess,
