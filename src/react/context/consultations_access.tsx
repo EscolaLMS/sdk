@@ -83,7 +83,7 @@ export const ConsultationAccessContextProvider: FunctionComponent<
   const fetchConsultationAccess = useCallback(
     (
       filter: API.ConsultationsAccessEnquiryParams = {
-        current_page: 0,
+        page: 1,
         per_page: 25,
       }
     ) => {

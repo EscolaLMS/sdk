@@ -391,9 +391,7 @@ export interface EscolaLMSContextAPIConfig {
   ) => Promise<API.DefaultResponse<object>>;
   fetchTasks: (
     filter: API.TaskParams
-  ) => Promise<
-    void | API.DefaultResponse<API.Task> | API.DefaultMetaResponse<API.Task>
-  >;
+  ) => Promise<API.DefaultMetaResponse<API.Task>>;
   fetchCourseAccess: (
     filter?: API.CourseAccessEnquiryListParams
   ) => Promise<
@@ -411,11 +409,7 @@ export interface EscolaLMSContextAPIConfig {
 
   fetchConsultationAccess: (
     filter?: API.CourseAccessEnquiryListParams
-  ) => Promise<
-    | void
-    | API.DefaultResponse<API.ConsultationsAccessEnquiry>
-    | API.DefaultMetaResponse<API.ConsultationsAccessEnquiry>
-  >;
+  ) => Promise<API.DefaultMetaResponse<API.ConsultationsAccessEnquiry>>;
   addConsultationAccess: (
     data: API.ConsultationsAccessEnquiryCreateRequest
   ) => Promise<API.DefaultResponse<API.ConsultationsAccessEnquiry>>;
