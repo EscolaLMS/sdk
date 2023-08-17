@@ -300,6 +300,11 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
   attendances: {
     loading: false,
   },
+
+  consultationAccessEnquiry: {
+    loading: false,
+  },
+  fetchConsultationAccessEnquiry: (enquiry_id: number) => Promise.reject(),
   consultationAccess: {
     loading: false,
   },
@@ -648,6 +653,9 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
   deleteCourseAccess: (id: number) => Promise.reject(),
   addCourseAccess: (data: API.CourseAccessEnquiryCreateRequest) =>
     Promise.reject(),
+
+  consultationAccessEnquiry: { loading: false },
+  fetchConsultationAccessEnquiry: (enquiry_id: number) => Promise.reject(),
 
   consultationAccess: {
     loading: false,

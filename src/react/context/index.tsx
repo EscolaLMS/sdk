@@ -312,6 +312,9 @@ const EscolaLMSContextProviderInner: FunctionComponent<
     useContext(ChallengesContext);
 
   const {
+    consultationAccessEnquiry,
+    fetchConsultationAccessEnquiry,
+
     consultationAccess,
     fetchConsultationAccess,
     addConsultationAccess,
@@ -1806,6 +1809,9 @@ const EscolaLMSContextProviderInner: FunctionComponent<
         fetchChallenges,
         challenge,
         fetchChallenge,
+
+        consultationAccessEnquiry,
+        fetchConsultationAccessEnquiry,
 
         consultationAccess,
         fetchConsultationAccess,

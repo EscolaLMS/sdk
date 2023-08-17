@@ -11,6 +11,7 @@ import {
   EscolaLMSContextConfig,
   EscolaLMSContextReadConfig,
   ContextPaginatedMetaState,
+  ContextStateValue,
 } from "./types";
 import { defaultConfig } from "./defaults";
 import { fetchDataType } from "./states";
@@ -21,6 +22,7 @@ import { getDefaultData } from "./index";
 
 import {
   consultationAccess as getConsultationAccess,
+  consultationAccessEnquiry as getConsultationAccessEnquiry,
   createConsultationAccess,
   deleteConsultationAccess as deleteConsultationAccessCall,
   updateConsultationAccess as patchConsultationAccess,
@@ -30,6 +32,8 @@ import { UserContext } from "./user";
 export const ConsultationAccessContext: React.Context<
   Pick<
     EscolaLMSContextConfig,
+    | "consultationAccessEnquiry"
+    | "fetchConsultationAccessEnquiry"
     | "consultationAccess"
     | "fetchConsultationAccess"
     | "addConsultationAccess"
@@ -37,6 +41,8 @@ export const ConsultationAccessContext: React.Context<
     | "updateConsultationAccess"
   >
 > = createContext({
+  consultationAccessEnquiry: defaultConfig.consultationAccessEnquiry,
+  fetchConsultationAccessEnquiry: defaultConfig.fetchConsultationAccessEnquiry,
   consultationAccess: defaultConfig.consultationAccess,
   fetchConsultationAccess: defaultConfig.fetchConsultationAccess,
   addConsultationAccess: defaultConfig.addConsultationAccess,
@@ -80,6 +86,17 @@ export const ConsultationAccessContextProvider: FunctionComponent<
     ssrHydration
   );
 
+  const [consultationAccessEnquiry, setConsultationAccessEnquiry] =
+    useLocalStorage<ContextStateValue<API.ConsultationsAccessEnquiry>>(
+      "lms",
+      "consultationAccessEnquiry",
+      getDefaultData("consultationAccessEnquiry", {
+        ...defaultConfig,
+        ...defaults,
+      }),
+      ssrHydration
+    );
+
   const fetchConsultationAccess = useCallback(
     (
       filter: API.ConsultationsAccessEnquiryParams = {
@@ -100,6 +117,29 @@ export const ConsultationAccessContextProvider: FunctionComponent<
                   abortControllers.current[
                     `consultationAccess/${JSON.stringify(filter)}`
                   ]?.signal,
+              }
+            ),
+            setState: setConsultationAccess,
+          })
+        : Promise.reject("noToken");
+    },
+    [token]
+  );
+
+  const fetchConsultationAccessEnquiry = useCallback(
+    (enquiry_id: number) => {
+      return token
+        ? fetchDataType<API.ConsultationsAccessEnquiry>({
+            controllers: abortControllers.current,
+            controller: `consultationAccess${enquiry_id}`,
+            mode: "value",
+            fetchAction: getConsultationAccessEnquiry.bind(null, apiUrl)(
+              token,
+              enquiry_id,
+              {
+                signal:
+                  abortControllers.current[`consultationAccess${enquiry_id}`]
+                    ?.signal,
               }
             ),
             setState: setConsultationAccess,
@@ -142,6 +182,8 @@ export const ConsultationAccessContextProvider: FunctionComponent<
   return (
     <ConsultationAccessContext.Provider
       value={{
+        consultationAccessEnquiry,
+        fetchConsultationAccessEnquiry,
         consultationAccess,
         fetchConsultationAccess,
         addConsultationAccess,
