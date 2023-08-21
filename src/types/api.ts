@@ -633,13 +633,17 @@ export interface CompleteSocialAuth {
   return_url: string;
 }
 
-export type Lesson = Omit<EscolaLms.Courses.Models.Lesson, "topics"> & {
+export type Lesson = Omit<
+  EscolaLms.Courses.Models.Lesson,
+  "topics" | "lessons"
+> & {
   id: number;
   created_at: string;
   title: string;
   course_id: number;
   updated_at?: string;
   order: number;
+  lessons?: Lesson[];
   duration: string;
   summary?: string;
   topics?: Topic[];
