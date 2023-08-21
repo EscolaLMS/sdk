@@ -1142,22 +1142,25 @@ export type ConsultationTerm = {
   user_id: number;
 };
 
+export type NotificationData = {
+  stationaryEvent?: StationaryEvent;
+  productable?: ProductItems;
+  product?: ProductItems;
+  order?: Order;
+  payment?: Payment;
+  course?: Course;
+  topicContent?: TopicableBase;
+  consultationTerm?: ConsultationTerm;
+  webinar?: Webinar;
+};
+
+// Shouldn't it be union of type based on EventType?
 export type Notification = {
   id: string;
   type: string;
   notifiable_type: string;
   notifiable_id: number;
-  data: {
-    stationaryEvent?: StationaryEvent;
-    productable?: ProductItems;
-    product?: ProductItems;
-    order?: Order;
-    payment?: Payment;
-    course?: Course;
-    topicContent?: TopicableBase;
-    consultationTerm?: ConsultationTerm;
-    webinar?: Webinar;
-  };
+  data: NotificationData;
   read_at: null | Date;
   created_at: Date;
   updated_at: Date;
@@ -1695,6 +1698,19 @@ export type Exam = {
   }[];
 };
 
+export type GroupSubjectFinalGradeGradeTerm = {
+  id: number;
+  name: string;
+};
+
+export type GroupSubjectFinalGrade = {
+  grade_date: string;
+  grade_name: string;
+  grade_term: GroupSubjectFinalGradeGradeTerm;
+  grade_value: number;
+  id: number;
+};
+
 export type GroupSubject = {
   group_id: number;
   as_assessment_form_name: string;
@@ -1703,16 +1719,7 @@ export type GroupSubject = {
   subject: Subject;
   tutor: Tutor;
   ssubject_form_hours_numbers: number;
-  final_grades: {
-    grade_date: string;
-    grade_name: string;
-    grade_term: {
-      id: number;
-      name: string;
-    };
-    grade_value: number;
-    id: number;
-  }[];
+  final_grades: GroupSubjectFinalGrade[];
 };
 
 export type Group = {
@@ -1747,11 +1754,13 @@ export type LessonTutor = {
   };
 };
 
+export type AttendanceItem = {
+  user_id: number;
+  value: AttendanceStatus | null;
+};
+
 export type Attendance = {
-  attendances: {
-    user_id: number;
-    value: AttendanceStatus | null;
-  }[];
+  attendances: AttendanceItem[];
   date_from: string;
   date_to: string;
   group_id: number;
