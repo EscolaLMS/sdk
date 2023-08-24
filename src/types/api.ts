@@ -1437,14 +1437,14 @@ export type ConsultationAccessEnquiryUrl = {
 export type ConsultationsAccessEnquiryTerm =
   EscolaLms.ConsultationAccess.Models.ConsultationAccessEnquiryProposedTerm;
 
-export type ConsultationsAccessEnquiryParams = PageParams &
-  PaginationParams & {
-    consultation_id?: number;
-    status?: string;
-    proposed_at_from?: Date | string;
-    proposed_at_to?: Date | string;
-    is_coming?: boolean;
-  };
+export type ConsultationsAccessEnquiryParams = PaginationParams & {
+  consultation_id?: number;
+  status?: string;
+  proposed_at_from?: Date | string;
+  proposed_at_to?: Date | string;
+  is_coming?: boolean;
+  consultation_term_ids?: number[];
+};
 
 export type ConsultationsAccessEnquiryList =
   DefaultMetaResponse<ConsultationsAccessEnquiry>;

@@ -6,14 +6,17 @@ import { currentTimezone } from "../utils";
 export async function consultationAccess(
   apiUrl: string,
   token: string,
-  params: API.ConsultationsAccessEnquiryParams,
+  { consultation_term_ids, ...params }: API.ConsultationsAccessEnquiryParams,
   options?: RequestOptionsInit
 ) {
   return request<API.ConsultationsAccessEnquiryList>(
     `${apiUrl}/api/consultation-access-enquiries`,
     {
       method: "GET",
-      params,
+      params: {
+        "consultation_term_ids[]": consultation_term_ids,
+        ...params,
+      },
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
