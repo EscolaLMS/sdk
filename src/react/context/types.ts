@@ -250,11 +250,7 @@ export interface EscolaLMSContextAPIConfig {
   socialAuthorize: (token: string) => void;
   fetchNotifications: (
     filter?: API.PaginationParams
-  ) => Promise<
-    | void
-    | API.DefaultResponse<API.Notification>
-    | API.DefaultMetaResponse<API.Notification>
-  >;
+  ) => Promise<API.DefaultMetaResponse<API.Notification>>;
   readNotify: (id: string) => Promise<void>;
   readAllNotifications: () => Promise<void>;
   fetchH5P: (uuid: string) => void;
