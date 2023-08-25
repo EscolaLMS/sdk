@@ -6,12 +6,15 @@ import { currentTimezone } from "../utils";
 export async function bookmarkNotes(
   apiUrl: string,
   token: string,
-  params: API.BookmarkNoteParams,
+  { bookmarkable_ids, ...params }: API.BookmarkNoteParams,
   options?: RequestOptionsInit
 ) {
   return request<API.BookmarkNoteList>(`${apiUrl}/api/bookmarks`, {
     method: "GET",
-    params,
+    params: {
+      "bookmarkable_ids[]": bookmarkable_ids,
+      ...params,
+    },
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",

@@ -16,6 +16,12 @@ export enum TopicType {
   GiftQuiz = "EscolaLms\\TopicTypeGift\\Models\\GiftQuiz",
 }
 
+export enum BookmarkableType {
+  Course = "EscolaLms\\Courses\\Models\\Course",
+  Lesson = "EscolaLms\\Courses\\Models\\Lesson",
+  Topic = "EscolaLms\\Courses\\Models\\Topic",
+}
+
 export enum PaymentStatusType {
   NEW = "new",
   PAID = "paid",
@@ -1467,7 +1473,40 @@ export type Metadata = Omit<EscolaLms.ModelFields.Models.Metadata, "rules"> & {
 
 export type BookmarkNoteList = DefaultMetaResponse<BookmarkNote>;
 
-export type BookmarkNote = EscolaLms.Bookmarks.Models.Bookmark;
+export type BookmarkNoteBase = {
+  id: number;
+  value: string | null;
+  created_at: Date | string;
+  updated_at: Date | string;
+  bookmarkable_id: number;
+  user_id: number;
+  user: Nullable<User>;
+};
+
+export type BookmarkCourse = BookmarkNoteBase & {
+  bookmarkable_type: BookmarkableType.Course;
+  // TODO: after backend support this should be typed well
+  bookmarkable: null;
+};
+
+export type BookmarkLesson = BookmarkNoteBase & {
+  bookmarkable_type: BookmarkableType.Lesson;
+  // TODO: after backend support this should be typed well
+  bookmarkable: null;
+};
+
+export type BookmarkTopic = BookmarkNoteBase & {
+  bookmarkable_type: BookmarkableType.Topic;
+  bookmarkable: {
+    id: number;
+    title: string;
+    type: TopicType;
+    lesson_id: number;
+    course_id: number;
+  };
+};
+
+export type BookmarkNote = BookmarkCourse | BookmarkLesson | BookmarkTopic;
 
 export type BookmarkNoteParams =
   EscolaLms.Bookmarks.Http.Requests.ListBookmarkRequest &
@@ -1476,7 +1515,8 @@ export type BookmarkNoteParams =
       order?: "ASC" | "DESC";
       has_value?: boolean | 1 | 0;
       bookmarkable_id?: number;
-      bookmarkable_type?: string;
+      bookmarkable_ids?: number[];
+      bookmarkable_type?: BookmarkableType;
     };
 
 export enum QuestionType {
