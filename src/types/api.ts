@@ -1519,6 +1519,12 @@ export type BookmarkNoteParams =
       bookmarkable_type?: BookmarkableType;
     };
 
+export type CreateBookmarkNote = {
+  value: Nullable<string>;
+  bookmarkable_id: number;
+  bookmarkable_type: BookmarkableType;
+};
+
 export enum QuestionType {
   MULTIPLE_CHOICE = "multiple_choice",
   MULTIPLE_CHOICE_WITH_MULTIPLE_RIGHT_ANSWERS = "multiple_choice_with_multiple_right_answers",

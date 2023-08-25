@@ -458,11 +458,11 @@ export interface EscolaLMSContextAPIConfig {
     filter?: API.BookmarkNoteParams
   ) => Promise<API.DefaultMetaResponse<API.BookmarkNote>>;
   createBookmarkNote: (
-    body: EscolaLms.Bookmarks.Http.Requests.CreateBookmarkRequest
+    body: API.CreateBookmarkNote
   ) => Promise<API.DefaultResponse<API.BookmarkNote>>;
   updateBookmarkNote: (
     id: number,
-    body: EscolaLms.Bookmarks.Http.Requests.UpdateBookmarkRequest
+    body: API.CreateBookmarkNote
   ) => Promise<API.DefaultResponse<API.BookmarkNote>>;
   deleteBookmarkNote: (
     id: number

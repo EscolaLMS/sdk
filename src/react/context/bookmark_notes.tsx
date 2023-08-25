@@ -101,7 +101,7 @@ export const BookmarkNotesContextProvider: FunctionComponent<
   );
 
   const createBookmarkNote = useCallback(
-    (data: EscolaLms.Bookmarks.Http.Requests.CreateBookmarkRequest) => {
+    (data: API.CreateBookmarkNote) => {
       return token
         ? postCreateBookmarkNote(apiUrl, token, data)
         : Promise.reject("noToken");
@@ -121,10 +121,7 @@ export const BookmarkNotesContextProvider: FunctionComponent<
   );
 
   const updateBookmarkNote = useCallback(
-    (
-      id: number,
-      data: EscolaLms.Bookmarks.Http.Requests.UpdateBookmarkRequest
-    ) => {
+    (id: number, data: API.CreateBookmarkNote) => {
       // TODO: remove note on list and byID once it fine
       // TODO: what about error ?
       return token
