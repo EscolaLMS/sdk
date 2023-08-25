@@ -1503,6 +1503,7 @@ export type BookmarkTopic = BookmarkNoteBase & {
     type: TopicType;
     lesson_id: number;
     course_id: number;
+    course_title: string;
   };
 };
 
