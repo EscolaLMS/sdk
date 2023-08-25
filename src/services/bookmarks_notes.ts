@@ -29,7 +29,7 @@ export async function bookmarkNotes(
 export async function createBookmarkNote(
   apiUrl: string,
   token: string,
-  body: EscolaLms.Bookmarks.Http.Requests.CreateBookmarkRequest,
+  body: API.CreateBookmarkNote,
   options?: RequestOptionsInit
 ) {
   return request<API.DefaultResponse<API.BookmarkNote>>(
@@ -75,7 +75,7 @@ export async function updateBookmarkNote(
   apiUrl: string,
   token: string,
   id: number,
-  body: EscolaLms.Bookmarks.Http.Requests.UpdateBookmarkRequest,
+  body: Partial<API.CreateBookmarkNote>,
   options?: RequestOptionsInit
 ) {
   return request<API.DefaultResponse<API.BookmarkNote>>(
