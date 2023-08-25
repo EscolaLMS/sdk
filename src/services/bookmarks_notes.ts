@@ -75,7 +75,7 @@ export async function updateBookmarkNote(
   apiUrl: string,
   token: string,
   id: number,
-  body: Partial<API.CreateBookmarkNote>,
+  body: API.CreateBookmarkNote,
   options?: RequestOptionsInit
 ) {
   return request<API.DefaultResponse<API.BookmarkNote>>(
