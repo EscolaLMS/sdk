@@ -110,6 +110,27 @@ export async function progress(
   );
 }
 
+export async function progressPaginated(
+  apiUrl: string,
+  token: string,
+  params?: API.CourseParams,
+  options?: RequestOptionsInit
+) {
+  return request<API.DefaultMetaResponse<API.CourseProgressItem>>(
+    `${apiUrl}/api/courses/progress/paginated`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+        "Current-timezone": currentTimezone(),
+      },
+      params,
+      ...(options || {}),
+    }
+  );
+}
+
 export async function myAuthoredCourses(
   apiUrl: string,
   token: string,

@@ -452,6 +452,10 @@ export type CourseParams = PageParams &
     no_expired?: 0 | 1;
   };
 
+export type PaginatedProgressParams = CourseParams & {
+  status?: string;
+};
+
 export type ChallengesParams = PaginationParams & {
   order_by?: "id" | "name" | "created_at";
   type?: "simple" | "complex";

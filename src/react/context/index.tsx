@@ -25,6 +25,7 @@ import {
   h5pProgress as postSendh5pProgress,
   courseProgress as getCourseProgress,
   myAuthoredCourses as getMyAuthoredCourses,
+  progressPaginated as getProgressPaginated,
 } from "./../../services/courses";
 import {
   bookConsultationDate,
@@ -453,6 +454,10 @@ const EscolaLMSContextProviderInner: FunctionComponent<
   const [progress, setProgress] = useState<
     ContextStateValue<API.CourseProgress>
   >(getDefaultData("progress", initialValues));
+
+  const [paginatedProgress, setPaginatedProgress] = useState<
+    ContextStateValue<API.CourseProgressItem[]>
+  >(getDefaultData("paginatedProgress", initialValues));
 
   const [myAuthoredCourses, setMyAuthoredCourses] = useState<
     ContextStateValue<API.Course[]>
@@ -1238,6 +1243,30 @@ const EscolaLMSContextProviderInner: FunctionComponent<
       : Promise.reject("noToken");
   }, [token]);
 
+  const fetchPaginatedProgress = useCallback(
+    (filter: API.PaginatedProgressParams) => {
+      return token
+        ? fetchDataType<API.CourseProgressItem>({
+            controllers: abortControllers.current,
+            controller: `progressPaginated/${JSON.stringify(filter)}`,
+            mode: "paginated",
+            fetchAction: getProgressPaginated.bind(null, apiUrl)(
+              token,
+              filter,
+              {
+                signal:
+                  abortControllers.current[
+                    `progressPaginated/${JSON.stringify(filter)}`
+                  ]?.signal,
+              }
+            ),
+            setState: setPaginatedProgress,
+          })
+        : Promise.reject("noToken");
+    },
+    []
+  );
+
   const fetchMyAuthoredCourses = useCallback(() => {
     return token
       ? fetchDataType<API.Course[]>({
@@ -1705,6 +1734,8 @@ const EscolaLMSContextProviderInner: FunctionComponent<
         cart,
         payWithStripe,
         fetchProgress,
+        fetchPaginatedProgress,
+        paginatedProgress,
         fetchCourseProgress,
         progress,
         courseProgressDetails,
