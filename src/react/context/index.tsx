@@ -1264,7 +1264,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
           })
         : Promise.reject("noToken");
     },
-    []
+    [token]
   );
 
   const fetchMyAuthoredCourses = useCallback(() => {
