@@ -556,7 +556,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
   // https://github.com/EscolaLMS/sdk/issues/249
 
   const [userWebinars, setUserWebinars] = useLocalStorage<
-    ContextListState<API.Event>
+    ContextListState<API.Webinar>
   >(
     "lms",
     "userWebinars",
@@ -728,7 +728,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
   // https://github.com/EscolaLMS/sdk/issues/249
   const fetchUserWebinars = useCallback(() => {
     return token
-      ? fetchDataType<API.Event>({
+      ? fetchDataType<API.Webinar>({
           controllers: abortControllers.current,
           controller: `userwebinars`,
           mode: "list",

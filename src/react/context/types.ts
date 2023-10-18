@@ -74,7 +74,7 @@ export interface EscolaLMSContextReadConfig {
   events: ContextPaginatedMetaState<API.Event>;
   webinar: ContextStateValue<API.Webinar>;
   stationaryEvent: ContextStateValue<API.StationaryEvent>;
-  userWebinars: ContextListState<API.Event>;
+  userWebinars: ContextListState<API.Webinar>;
   products: ContextPaginatedMetaState<API.Product>;
   product: ContextStateValue<API.Product>;
   userStationaryEvents: ContextListState<API.StationaryEvent>;
@@ -347,7 +347,7 @@ export interface EscolaLMSContextAPIConfig {
     webinarId: number
   ) => Promise<API.DefaultResponse<API.JitsyData>>;
   fetchUserWebinars: () => Promise<
-    void | API.DefaultResponse<API.Event> | API.DefaultMetaResponse<API.Event>
+    void | API.DefaultResponse<API.Webinar> | API.DefaultMetaResponse<API.Webinar>
   >;
   realizeVoucher: (voucher: string) => Promise<API.AuthResponse>;
   createTeamsChat: (id: number) => Promise<API.TeamsChatResponse>;
