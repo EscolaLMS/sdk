@@ -46,7 +46,7 @@ export async function getMyWebinars(
   token: string,
   options?: RequestOptionsInit
 ) {
-  return request<API.DefaultMetaResponse<API.Event>>(
+  return request<API.DefaultMetaResponse<API.Webinar>>(
     `${apiUrl}/api/webinars/me`,
     {
       method: "GET",
