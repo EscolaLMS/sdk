@@ -347,7 +347,9 @@ export interface EscolaLMSContextAPIConfig {
     webinarId: number
   ) => Promise<API.DefaultResponse<API.JitsyData>>;
   fetchUserWebinars: () => Promise<
-    void | API.DefaultResponse<API.Webinar> | API.DefaultMetaResponse<API.Webinar>
+    | void
+    | API.DefaultResponse<API.Webinar>
+    | API.DefaultMetaResponse<API.Webinar>
   >;
   realizeVoucher: (voucher: string) => Promise<API.AuthResponse>;
   createTeamsChat: (id: number) => Promise<API.TeamsChatResponse>;
