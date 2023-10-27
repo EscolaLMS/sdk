@@ -1824,5 +1824,7 @@ export type Attendance = {
 
 export enum AttendanceStatus {
   PRESENT = "present",
+  PRESENT_NOT_EXERCISING = "present_not_exercising",
   ABSENT = "absent",
+  EXCUSED_ABSENCE = "excused_absence",
 }
