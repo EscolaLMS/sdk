@@ -134,9 +134,10 @@ export async function progressPaginated(
 export async function myAuthoredCourses(
   apiUrl: string,
   token: string,
+  params?: API.PaginationParams,
   options?: RequestOptionsInit
 ) {
-  return request<API.DefaultResponse<API.Course[]>>(
+  return request<API.DefaultMetaResponse<API.Course>>(
     `${apiUrl}/api/courses/authored`,
     {
       method: "GET",
@@ -145,6 +146,7 @@ export async function myAuthoredCourses(
         Authorization: `Bearer ${token}`,
         "Current-timezone": currentTimezone(),
       },
+      params,
       ...(options || {}),
     }
   );
