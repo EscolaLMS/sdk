@@ -126,7 +126,6 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
   },
   myAuthoredCourses: {
     loading: false,
-    value: [],
   },
   sendProgress: (courseId: number, data: API.CourseProgressItemElement[]) =>
     Promise.reject(),
@@ -496,7 +495,6 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
   },
   myAuthoredCourses: {
     loading: false,
-    value: [],
   },
   sendProgress: (courseId: number, data: API.CourseProgressItemElement[]) =>
     Promise.reject(),

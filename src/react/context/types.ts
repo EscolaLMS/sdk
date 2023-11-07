@@ -51,7 +51,7 @@ export interface EscolaLMSContextReadConfig {
   cart: ContextStateValue<API.Cart>;
   progress: ContextStateValue<API.CourseProgress>;
   paginatedProgress: ContextPaginatedMetaState<API.CourseProgressItem>;
-  myAuthoredCourses: ContextStateValue<API.Course[]>;
+  myAuthoredCourses: ContextPaginatedMetaState<API.Course>;
   courseProgressDetails: ContextStateValue<API.CourseProgressDetails>;
   tutors: ContextListState<API.UserItem>;
   tutor: ContextStateValue<API.UserItem>;
@@ -179,7 +179,11 @@ export interface EscolaLMSContextAPIConfig {
   fetchPaginatedProgress: (
     filter: API.PaginatedProgressParams
   ) => Promise<API.DefaultMetaResponse<API.CourseProgressItem>>;
-  fetchMyAuthoredCourses: () => Promise<API.DefaultResponse<API.Course[]>>;
+  fetchMyAuthoredCourses: (
+    params?: API.PaginationParams
+  ) => Promise<
+    void | API.DefaultResponse<API.Course> | API.DefaultMetaResponse<API.Course>
+  >;
   fetchCourseProgress: (courseId: number) => Promise<void>;
   sendProgress: (
     courseId: number,

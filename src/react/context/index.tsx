@@ -460,7 +460,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
   >(getDefaultData("paginatedProgress", initialValues));
 
   const [myAuthoredCourses, setMyAuthoredCourses] = useState<
-    ContextStateValue<API.Course[]>
+    ContextPaginatedMetaState<API.Course>
   >(getDefaultData("myAuthoredCourses", initialValues));
 
   const [courseProgressDetails, setCourseProgressDetails] = useState<
@@ -1267,19 +1267,29 @@ const EscolaLMSContextProviderInner: FunctionComponent<
     [token]
   );
 
-  const fetchMyAuthoredCourses = useCallback(() => {
-    return token
-      ? fetchDataType<API.Course[]>({
-          controllers: abortControllers.current,
-          controller: `myAuthoredCourses`,
-          mode: "value",
-          fetchAction: getMyAuthoredCourses.bind(null, apiUrl)(token, {
-            signal: abortControllers.current?.myAuthoredCourses?.signal,
-          }),
-          setState: setMyAuthoredCourses,
-        })
-      : Promise.reject("noToken");
-  }, [token]);
+  const fetchMyAuthoredCourses = useCallback(
+    (params?: API.PaginationParams) => {
+      return token
+        ? fetchDataType<API.Course>({
+            controllers: abortControllers.current,
+            controller: `myAuthoredCourses/${JSON.stringify(params)}`,
+            mode: "paginated",
+            fetchAction: getMyAuthoredCourses.bind(null, apiUrl)(
+              token,
+              params,
+              {
+                signal:
+                  abortControllers.current[
+                    `myAuthoredCourses/${JSON.stringify(params)}`
+                  ]?.signal,
+              }
+            ),
+            setState: setMyAuthoredCourses,
+          })
+        : Promise.reject("noToken");
+    },
+    [token]
+  );
 
   const fetchCourseProgress = useCallback(
     (id: number) => {
