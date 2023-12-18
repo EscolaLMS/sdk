@@ -1823,6 +1823,10 @@ export type Attendance = {
   term_status_id: number;
 };
 
+export type PencilSpaces = {
+  redirect_url: string;
+};
+
 export enum AttendanceStatus {
   PRESENT = "present",
   PRESENT_NOT_EXERCISING = "present_not_exercising",

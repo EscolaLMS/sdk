@@ -378,6 +378,7 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
     list: [],
   },
   fetchAcademicYears: (params?: API.AcademicYearParams) => Promise.reject(),
+  createPencilSpacesLink: (data: API.PencilSpaces) => Promise.reject(),
 };
 
 export const defaultApiConfig: EscolaLMSContextConfig = {
@@ -741,6 +742,7 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
     loading: false,
     list: [],
   },
+  createPencilSpacesLink: (data: API.PencilSpaces) => Promise.reject(),
 };
 
 export const defaultConfig = Object.assign(

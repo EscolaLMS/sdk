@@ -513,6 +513,9 @@ export interface EscolaLMSContextAPIConfig {
     | API.DefaultResponse<API.AcademicYear>
     | API.DefaultMetaResponse<API.AcademicYear>
   >;
+  createPencilSpacesLink: (
+    data: API.PencilSpaces
+  ) => Promise<API.DefaultResponse<API.PencilSpaces>>;
 }
 export type EscolaLMSContextConfig = EscolaLMSContextReadConfig &
   EscolaLMSContextAPIConfig;
