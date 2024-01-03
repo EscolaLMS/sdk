@@ -1742,7 +1742,7 @@ export type ExamScale = {
 };
 
 export type ExamResults = {
-  user_id: 0;
+  user_id: number;
   first_name: string;
   last_name: string;
   email: string;
