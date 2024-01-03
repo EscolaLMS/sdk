@@ -1732,6 +1732,23 @@ export type Tutor = {
   last_name: string;
 };
 
+export type ExamScale = {
+  s_subject_scale_form_id: number;
+  scale: {
+    name: string;
+    grade: number;
+    grade_value: number;
+  }[];
+};
+
+export type ExamResults = {
+  user_id: 0;
+  first_name: string;
+  last_name: string;
+  email: string;
+  result: number;
+}[];
+
 export type Exam = {
   id: number;
   semester_subject_id: number;
@@ -1741,13 +1758,8 @@ export type Exam = {
   passed_at: string;
   created_at: string;
   group_id: number;
-  results: {
-    user_id: 0;
-    first_name: string;
-    last_name: string;
-    email: string;
-    result: number;
-  }[];
+  grade_scale: ExamScale;
+  results: ExamResults;
 };
 
 export type GroupSubjectFinalGradeGradeTerm = {
