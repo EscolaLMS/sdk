@@ -151,6 +151,7 @@ import {
   StudentDetailsContextProvider,
 } from "./studentDetails";
 import { ChallengesContext, ChallengesContextProvider } from "./challenges";
+import { getFlatTopics } from "../../utils/course";
 
 export const SCORMPlayer: React.FC<{
   uuid: string;
@@ -1619,64 +1620,30 @@ const EscolaLMSContextProviderInner: FunctionComponent<
     [progressMap]
   );
 
-  // Refactor. getNextPrevTopic. this should be refactored, since lessons are not flat structure any more
-  // Also this should return both topic and lesson
+  // Refactored. Added getFlatTopics function with return flatted topics from lessons
   // https://github.com/EscolaLMS/sdk/issues/255
 
   const getNextPrevTopic = useCallback(
     (topicId: number, next: boolean = true) => {
-      const lesson: API.Lesson | undefined = program.value?.lessons.find(
-        (lesson) => !!lesson.topics?.find((topic) => topicId === topic.id)
-      );
 
       if (program.value === undefined) {
         return null;
       }
 
-      if (!lesson) {
+      const flatTopics = getFlatTopics(program.value.lessons);
+      const currentTopicIndex = flatTopics?.findIndex((fTopic) => fTopic.id === topicId);
+
+      if (!currentTopicIndex || currentTopicIndex === -1) {
         return null;
       }
-
-      const currentLessonIndex = program.value.lessons.findIndex(
-        (fLesson) => lesson.id === fLesson.id
-      );
-      if (currentLessonIndex === undefined) {
-        return null;
-      }
-
-      const currentTopicIndex = (
-        program.value && program.value.lessons ? program.value.lessons : []
-      )[currentLessonIndex].topics?.findIndex(
-        (topic) => Number(topic.id) === Number(topicId)
-      );
-
-      if (currentTopicIndex === undefined) {
-        return null;
-      }
-
-      const topics = program.value.lessons[currentLessonIndex].topics;
 
       if (next) {
-        if (Array.isArray(topics) && topics[currentTopicIndex + 1]) {
-          return topics[currentTopicIndex + 1] || null;
-        } else {
-          if (program.value.lessons[currentLessonIndex + 1]) {
-            const newLesson = program.value.lessons[currentLessonIndex + 1];
-            return (newLesson.topics && newLesson.topics[0]) || null;
-          }
+        if (Array.isArray(flatTopics) && flatTopics[currentTopicIndex + 1]) {
+          return flatTopics[currentTopicIndex + 1] || null;
         }
       } else {
-        if (Array.isArray(topics) && topics[currentTopicIndex - 1]) {
-          return topics[currentTopicIndex - 1] || null;
-        } else {
-          if (program.value.lessons[currentLessonIndex - 1]) {
-            const newLesson = program.value.lessons[currentLessonIndex - 1];
-            return (
-              (newLesson.topics &&
-                newLesson.topics[newLesson.topics.length - 1]) ||
-              null
-            );
-          }
+        if (Array.isArray(flatTopics) && flatTopics[currentTopicIndex - 1]) {
+          return flatTopics[currentTopicIndex - 1] || null;
         }
       }
 
