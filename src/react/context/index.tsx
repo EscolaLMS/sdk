@@ -1625,13 +1625,14 @@ const EscolaLMSContextProviderInner: FunctionComponent<
 
   const getNextPrevTopic = useCallback(
     (topicId: number, next: boolean = true) => {
-
       if (program.value === undefined) {
         return null;
       }
 
       const flatTopics = getFlatTopics(program.value.lessons);
-      const currentTopicIndex = flatTopics?.findIndex((fTopic) => fTopic.id === topicId);
+      const currentTopicIndex = flatTopics?.findIndex(
+        (fTopic) => fTopic.id === topicId
+      );
 
       if (!currentTopicIndex || currentTopicIndex === -1) {
         return null;
