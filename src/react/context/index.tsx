@@ -1634,7 +1634,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
         (fTopic) => fTopic.id === topicId
       );
 
-      if (!currentTopicIndex || currentTopicIndex === -1) {
+      if (currentTopicIndex === undefined || currentTopicIndex === -1) {
         return null;
       }
 
