@@ -35,7 +35,7 @@ export const QuestionnairesContext: React.Context<
   fetchQuestionnairesAnswers: defaultConfig.fetchQuestionnairesAnswers,
   fetchQuestionnaireStars: defaultConfig.fetchQuestionnaireStars,
   sendQuestionnaireAnswer: defaultConfig.sendQuestionnaireAnswer,
-  fetchQuestionnaireStarsByModel: defaultConfig.fetchQuestionnaireStarsByModel
+  fetchQuestionnaireStarsByModel: defaultConfig.fetchQuestionnaireStarsByModel,
 });
 
 export interface QuestionnairesContextProviderType {
