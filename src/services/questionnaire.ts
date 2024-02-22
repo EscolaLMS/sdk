@@ -3,13 +3,13 @@ import * as API from "../types/api";
 import { currentTimezone } from "../utils";
 
 /**  GET /api/questionnaire/stars */
-export async function questionnaireStars(
+export async function getQuestionnaireStarsByModel(
   apiUrl: string,
   model: string,
   id: number,
   options?: RequestOptionsInit
 ) {
-  return request<API.DefaultResponse<API.QuestionnaireStars>>(
+  return request<API.DefaultResponse<API.QuestionnaireStarsModel>>(
     `${apiUrl}/api/questionnaire/stars/${model}/${id}`,
     {
       method: "GET",

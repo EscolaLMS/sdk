@@ -372,6 +372,10 @@ export interface EscolaLMSContextAPIConfig {
     modelID: number,
     id: number
   ) => Promise<API.DefaultResponse<API.QuestionnaireStars>>;
+  fetchQuestionnaireStarsByModel: (
+    modelTypeTitle: string,
+    modelID: number,
+  ) => Promise<API.DefaultResponse<API.QuestionnaireStarsModel>>;
   fetchQuestionnairesAnswers: (
     modelTypeTitle: string,
     modelID: number,

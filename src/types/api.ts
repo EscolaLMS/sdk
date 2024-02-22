@@ -1367,6 +1367,12 @@ export type QuestionnaireStars = {
   rates: QuestionnaireStarsRated;
 };
 
+export type QuestionnaireStarsModel = {
+  sum_rates: number;
+  count_answers: number;
+  avg_rate: number;
+};
+
 export type InvoiceData = {
   client_email: string;
   client_name?: string;
