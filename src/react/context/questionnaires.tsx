@@ -13,7 +13,7 @@ import {
   getQuestionnaires,
   getQuestionnairesAnswer,
   questionnaireAnswer,
-  questionnaireStars,
+  getQuestionnaireStarsByModel,
 } from "../../services/questionnaire";
 import { UserContext } from "./user";
 import { PaginationParams } from "../../types/api";
@@ -27,6 +27,7 @@ export const QuestionnairesContext: React.Context<
     | "fetchQuestionnairesAnswers"
     | "fetchQuestionnaireStars"
     | "sendQuestionnaireAnswer"
+    | "fetchQuestionnaireStarsByModel"
   >
 > = createContext({
   fetchQuestionnaires: defaultConfig.fetchQuestionnaires,
@@ -34,6 +35,7 @@ export const QuestionnairesContext: React.Context<
   fetchQuestionnairesAnswers: defaultConfig.fetchQuestionnairesAnswers,
   fetchQuestionnaireStars: defaultConfig.fetchQuestionnaireStars,
   sendQuestionnaireAnswer: defaultConfig.sendQuestionnaireAnswer,
+  fetchQuestionnaireStarsByModel: defaultConfig.fetchQuestionnaireStarsByModel,
 });
 
 export interface QuestionnairesContextProviderType {
@@ -88,6 +90,12 @@ export const QuestionnairesContextProvider: FunctionComponent<
     []
   );
 
+  const fetchQuestionnaireStarsByModel = useCallback(
+    (modelTypeTitle: string, modelID: number) =>
+      getQuestionnaireStarsByModel.bind(null, apiUrl)(modelTypeTitle, modelID),
+    []
+  );
+
   const sendQuestionnaireAnswer = useCallback(
     (
       model: string,
@@ -116,6 +124,7 @@ export const QuestionnairesContextProvider: FunctionComponent<
         fetchQuestionnairesAnswers,
         sendQuestionnaireAnswer,
         fetchQuestionnaireStars,
+        fetchQuestionnaireStarsByModel,
       }}
     >
       {children}

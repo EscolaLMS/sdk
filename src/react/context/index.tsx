@@ -341,6 +341,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
     fetchQuestionnairesAnswers,
     fetchQuestionnaireStars,
     sendQuestionnaireAnswer,
+    fetchQuestionnaireStarsByModel,
   } = useContext(QuestionnairesContext);
 
   const { fetchSubjects, subjects } = useContext(SubjectsContext);
@@ -1798,6 +1799,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
         fetchQuestionnaire,
         fetchQuestionnairesAnswers,
         fetchQuestionnaireStars,
+        fetchQuestionnaireStarsByModel,
         sendQuestionnaireAnswer,
         fetchUserStationaryEvents,
         userStationaryEvents,
