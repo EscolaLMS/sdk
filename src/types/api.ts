@@ -659,6 +659,8 @@ export type Lesson = Omit<
   summary?: string;
   topics?: Topic[];
   isNew?: boolean;
+  active_from?: string;
+  active_to?: string;
 };
 
 export type TopicBase = {
