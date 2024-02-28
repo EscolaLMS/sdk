@@ -1162,16 +1162,15 @@ export type BulkNotificationSection = {
   key: string;
   updated_at: string;
   value: string;
-}
+};
 
 export type BulkNotification = {
   channel: EventTypes;
   created_at: string;
   id: number;
   updated_at: string;
-  sections:BulkNotificationSection[]
-
-}
+  sections: BulkNotificationSection[];
+};
 
 export type NotificationData = {
   stationaryEvent?: StationaryEvent;
@@ -1183,7 +1182,7 @@ export type NotificationData = {
   topicContent?: TopicableBase;
   consultationTerm?: ConsultationTerm;
   webinar?: Webinar;
-  notification?: BulkNotification
+  notification?: BulkNotification;
 };
 
 // Shouldn't it be union of type based on EventType?
@@ -1200,8 +1199,6 @@ export type Notification = {
 };
 
 export type NotificationList = DefaultMetaResponse<Notification>;
-
-
 
 export type Certificate = {
   id: number;
