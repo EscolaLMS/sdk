@@ -1137,6 +1137,8 @@ export enum EventTypes {
   ResetPassword = "EscolaLms\\Auth\\Events\\ResetPassword",
   UserAddedToGroup = "EscolaLms\\Auth\\Events\\UserAddedToGroup",
   UserRemovedFromGroup = "EscolaLms\\Auth\\Events\\UserRemovedFromGroup",
+  BulkNotification = "EscolaLms\\BulkNotifications\\Events\\NotificationSent",
+  PushNotification = "EscolaLms\\BulkNotifications\\Channels\\PushNotificationChannel",
 }
 
 export type ConsultationTerm = {
