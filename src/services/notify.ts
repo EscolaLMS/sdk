@@ -61,3 +61,23 @@ export async function readAll(
     }
   );
 }
+
+export async function notyficationTokens(
+  apiUrl: string,
+  token: string,
+  options?: Record<string, any>
+) {
+  return request<API.DefaultResponse<API.Notification[]>>(
+    `${apiUrl}/api/notifications/tokens`,
+    {
+      method: "POST",
+      useCache: false,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+        "Current-timezone": currentTimezone(),
+      },
+      ...(options || {}),
+    }
+  );
+}
