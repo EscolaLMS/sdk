@@ -1155,7 +1155,7 @@ export type ConsultationTerm = {
   user_id: number;
 };
 
-export type BulkSection = {
+export type BulkNotificationSection = {
   bulk_notification_id: number;
   created_at: string;
   id: number;
@@ -1169,7 +1169,7 @@ export type BulkNotification = {
   created_at: string;
   id: number;
   updated_at: string;
-  sections:BulkSection[]
+  sections:BulkNotificationSection[]
 
 }
 
