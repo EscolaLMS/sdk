@@ -1217,8 +1217,8 @@ export enum CertificateAssignableTypes {
 }
 
 export type CertificateParams = PaginationParams & {
-  assignable_type: CertificateAssignableTypes;
-  assignable_id: number;
+  assignable_type?: CertificateAssignableTypes;
+  assignable_id?: number;
 };
 
 export type MattermostData = {
