@@ -830,7 +830,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
   // https://github.com/EscolaLMS/sdk/issues/244
 
   const fetchCertificates = useCallback(
-    (params?: API.PaginationParams) => {
+    (params?: API.CertificateParams) => {
       return token
         ? fetchDataType<API.Certificate>({
             controllers: abortControllers.current,

@@ -6,7 +6,7 @@ import { currentTimezone } from "../utils";
 export async function getCertificates(
   apiUrl: string,
   token: string,
-  params?: API.PaginationParams,
+  params?: API.CertificateParams,
   options?: RequestOptionsInit
 ) {
   return request<API.CertificateList>(`${apiUrl}/api/pdfs`, {

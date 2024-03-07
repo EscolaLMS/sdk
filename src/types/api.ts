@@ -1212,6 +1212,15 @@ export type Certificate = {
   title?: string;
 };
 
+export enum CertificateAssignableTypes {
+  Course = "EscolaLms\\Courses\\Models\\Course",
+}
+
+export type CertificateParams = PaginationParams & {
+  assignable_type?: CertificateAssignableTypes;
+  assignable_id?: number;
+};
+
 export type MattermostData = {
   server: string;
   teams: MattermostChannels[];
