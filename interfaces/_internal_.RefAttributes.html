@@ -15,10 +15,25 @@
 <li><a href="../modules.html">@escolalms/sdk</a></li>
 <li><a href="../modules/_internal_.html">&lt;internal&gt;</a></li>
 <li><a href="_internal_.RefAttributes.html">RefAttributes</a></li></ul>
-<h1>Interface RefAttributes&lt;T&gt;<code class="tsd-tag ts-flagInternal">Internal</code> </h1></div>
+<h1>Interface RefAttributes&lt;T&gt;</h1></div>
 <section class="tsd-panel tsd-comment">
-<div class="tsd-comment tsd-typography"><p>You shouldn&#39;t need to use this type since you never see these attributes
-inside your component or have to validate them.</p>
+<div class="tsd-comment tsd-typography"><p>The props any component accepting refs can receive.
+Class components, built-in browser components (e.g. <code>div</code>) and forwardRef components can receive refs and automatically accept these props.</p>
+<pre><code class="language-tsx"><span class="hl-4">const</span><span class="hl-1"> </span><span class="hl-7">Component</span><span class="hl-1"> = </span><span class="hl-6">forwardRef</span><span class="hl-1">(() </span><span class="hl-4">=&gt;</span><span class="hl-1"> </span><span class="hl-8">&lt;</span><span class="hl-9">div</span><span class="hl-1"> </span><span class="hl-8">/&gt;</span><span class="hl-1">);</span><br/><span class="hl-8">&lt;</span><span class="hl-5">Component</span><span class="hl-1"> </span><span class="hl-11">ref</span><span class="hl-1">=</span><span class="hl-4">{</span><span class="hl-10">(</span><span class="hl-2">current</span><span class="hl-10">) </span><span class="hl-4">=&gt;</span><span class="hl-10"> </span><span class="hl-2">console</span><span class="hl-10">.</span><span class="hl-6">log</span><span class="hl-10">(</span><span class="hl-2">current</span><span class="hl-10">)</span><span class="hl-4">}</span><span class="hl-1"> </span><span class="hl-8">/&gt;</span>
+</code></pre>
+<p>You only need this type if you manually author the types of props that need to be compatible with legacy refs.</p>
+<pre><code class="language-tsx"><span class="hl-4">interface</span><span class="hl-1"> </span><span class="hl-5">Props</span><span class="hl-1"> </span><span class="hl-4">extends</span><span class="hl-1"> </span><span class="hl-5">React</span><span class="hl-1">.</span><span class="hl-5">RefAttributes</span><span class="hl-1">&lt;</span><span class="hl-5">HTMLDivElement</span><span class="hl-1">&gt; {}</span><br/><span class="hl-4">declare</span><span class="hl-1"> </span><span class="hl-4">const</span><span class="hl-1"> </span><span class="hl-7">Component</span><span class="hl-1">: </span><span class="hl-5">React</span><span class="hl-1">.</span><span class="hl-5">FunctionComponent</span><span class="hl-1">&lt;</span><span class="hl-5">Props</span><span class="hl-1">&gt;;</span>
+</code></pre>
+<p>Otherwise it&#39;s simpler to directly use <a href="../types/_internal_.Ref.html">Ref</a> since you can safely use the
+props type to describe to props that a consumer can pass to the component
+as well as describing the props the implementation of a component &quot;sees&quot;.
+<a href="_internal_.RefAttributes.html">RefAttributes</a> is generally not safe to describe both consumer and seen props.</p>
+<pre><code class="language-tsx"><span class="hl-4">interface</span><span class="hl-1"> </span><span class="hl-5">Props</span><span class="hl-1"> </span><span class="hl-4">extends</span><span class="hl-1"> {</span><br/><span class="hl-1">  </span><span class="hl-2">ref</span><span class="hl-1">?: </span><span class="hl-5">React</span><span class="hl-1">.</span><span class="hl-5">Ref</span><span class="hl-1">&lt;</span><span class="hl-5">HTMLDivElement</span><span class="hl-1">&gt; | </span><span class="hl-5">undefined</span><span class="hl-1">;</span><br/><span class="hl-1">}</span><br/><span class="hl-4">declare</span><span class="hl-1"> </span><span class="hl-4">const</span><span class="hl-1"> </span><span class="hl-7">Component</span><span class="hl-1">: </span><span class="hl-5">React</span><span class="hl-1">.</span><span class="hl-5">FunctionComponent</span><span class="hl-1">&lt;</span><span class="hl-5">Props</span><span class="hl-1">&gt;;</span>
+</code></pre>
+<p>WARNING: The implementation of a component will not have access to the same type in versions of React supporting string refs.
+The following example would be incorrect usage because <a href="../classes/_internal_.Component.html">Component</a> would never have access to a <code>ref</code> with type <code>string</code></p>
+<pre><code class="language-tsx"><span class="hl-4">const</span><span class="hl-1"> </span><span class="hl-6">Component</span><span class="hl-1"> = (</span><span class="hl-2">props</span><span class="hl-1">: </span><span class="hl-5">React</span><span class="hl-1">.</span><span class="hl-5">RefAttributes</span><span class="hl-1">) </span><span class="hl-4">=&gt;</span><span class="hl-1"> </span><span class="hl-2">props</span><span class="hl-1">.</span><span class="hl-2">ref</span><span class="hl-1">;</span>
+</code></pre>
 </div></section> 
 <section class="tsd-panel tsd-type-parameters">
 <h4>Type Parameters</h4>
@@ -32,7 +47,7 @@ inside your component or have to validate them.</p>
 <ul class="tsd-hierarchy">
 <li><span class="target">RefAttributes</span></li></ul></li></ul></section><aside class="tsd-sources">
 <ul>
-<li>Defined in node_modules/@types/react/ts5.0/index.d.ts:239</li></ul></aside>
+<li>Defined in node_modules/@types/react/ts5.0/index.d.ts:286</li></ul></aside>
 <section class="tsd-panel-group tsd-index-group">
 <section class="tsd-panel tsd-index-panel">
 <details class="tsd-index-content tsd-index-accordion" open><summary class="tsd-accordion-summary tsd-index-summary">
@@ -50,17 +65,18 @@ inside your component or have to validate them.</p>
 <div class="tsd-signature">key<span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><a href="../types/_internal_.Key.html" class="tsd-signature-type" data-tsd-kind="Type alias">Key</a></div><aside class="tsd-sources">
 <p>Inherited from <a href="_internal_.Attributes.html">Attributes</a>.<a href="_internal_.Attributes.html#key">key</a></p>
 <ul>
-<li>Defined in node_modules/@types/react/ts5.0/index.d.ts:237</li></ul></aside></section>
+<li>Defined in node_modules/@types/react/ts5.0/index.d.ts:252</li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-external"><a id="ref" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagOptional">Optional</code> <span>ref</span><a href="#ref" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
-<div class="tsd-signature">ref<span class="tsd-signature-symbol">?:</span> <a href="../types/_internal_.Ref.html" class="tsd-signature-type" data-tsd-kind="Type alias">Ref</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type" data-tsd-kind="Type parameter">T</span><span class="tsd-signature-symbol">&gt;</span></div>
+<div class="tsd-signature">ref<span class="tsd-signature-symbol">?:</span> <a href="../types/_internal_.LegacyRef.html" class="tsd-signature-type" data-tsd-kind="Type alias">LegacyRef</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type" data-tsd-kind="Type parameter">T</span><span class="tsd-signature-symbol">&gt;</span></div>
 <div class="tsd-comment tsd-typography"><p>Allows getting a ref to the component instance.
-Once the component unmounts, React will set <code>ref.current</code> to <code>null</code> (or call the ref with <code>null</code> if you passed a callback ref).</p>
+Once the component unmounts, React will set <code>ref.current</code> to <code>null</code>
+(or call the ref with <code>null</code> if you passed a callback ref).</p>
 
-<h3>See</h3><p><a href="https://react.dev/learn/referencing-values-with-refs#refs-and-the-dom">https://react.dev/learn/referencing-values-with-refs#refs-and-the-dom</a></p>
+<h3>See</h3><p><a href="https://react.dev/learn/referencing-values-with-refs#refs-and-the-dom">React Docs</a></p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in node_modules/@types/react/ts5.0/index.d.ts:245</li></ul></aside></section></section></div>
+<li>Defined in node_modules/@types/react/ts5.0/index.d.ts:294</li></ul></aside></section></section></div>
 <div class="col-4 col-menu menu-sticky-wrap menu-highlight">
 <div class="tsd-navigation settings">
 <details class="tsd-index-accordion"><summary class="tsd-accordion-summary">
