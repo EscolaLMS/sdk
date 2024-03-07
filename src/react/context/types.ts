@@ -222,7 +222,7 @@ export interface EscolaLMSContextAPIConfig {
     | API.DefaultMetaResponse<API.UserAsProfile>
   >;
   fetchCertificates: (
-    params?: API.PaginationParams
+    params?: API.CertificateParams
   ) => Promise<
     | void
     | API.DefaultResponse<API.Certificate>
