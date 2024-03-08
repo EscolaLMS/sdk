@@ -65,9 +65,10 @@ export async function readAll(
 export async function notyficationTokens(
   apiUrl: string,
   token: string,
+  body: API.NotificationsTokensBody,
   options?: Record<string, any>
 ) {
-  return request<API.DefaultResponse<API.Notification[]>>(
+  return request<API.DefaultResponse<unknown>>(
     `${apiUrl}/api/notifications/tokens`,
     {
       method: "POST",
@@ -77,6 +78,7 @@ export async function notyficationTokens(
         Authorization: `Bearer ${token}`,
         "Current-timezone": currentTimezone(),
       },
+      data: body,
       ...(options || {}),
     }
   );

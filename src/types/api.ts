@@ -1876,3 +1876,7 @@ export enum AttendanceStatus {
   ABSENT = "absent",
   EXCUSED_ABSENCE = "excused_absence",
 }
+
+export type NotificationsTokensBody = {
+  token: string;
+}
