@@ -1879,4 +1879,4 @@ export enum AttendanceStatus {
 
 export type NotificationsTokensBody = {
   token: string;
-}
+};
