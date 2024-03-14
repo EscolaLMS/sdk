@@ -95,6 +95,8 @@ export interface EscolaLMSContextReadConfig {
   academicYears: ContextListState<API.AcademicYear>;
   dictionariesWords: ContextPaginatedMetaState<API.DictionariesWords>;
   dictionariesWord: ContextStateValue<API.DictionariesWords>;
+  dictionariesAccess: ContextStateValue<API.DictionariesAccess>;
+  dictionariesWordsCategories: ContextListState<API.DictionariesWordsCategory>;
 }
 
 export interface EscolaLMSContextAPIConfig {
@@ -530,6 +532,15 @@ export interface EscolaLMSContextAPIConfig {
     slug: string,
     id: number
   ) => Promise<API.DefaultResponse<API.DictionariesWords>>;
+  fetchDictionariesAccess: () => Promise<API.DefaultResponse<API.DictionariesAccess>>;
+  fetchDictionariesWordsCategories: (
+    slug: string,
+    params?: API.DictionariesParams
+  ) => Promise<
+    | void
+    | API.DefaultResponse<API.DictionariesWordsCategory>
+    | API.DefaultMetaResponse<API.DictionariesWordsCategory>
+  >;
 }
 export type EscolaLMSContextConfig = EscolaLMSContextReadConfig &
   EscolaLMSContextAPIConfig;

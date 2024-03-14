@@ -38,7 +38,7 @@ export async function dictionariesWord(
 export async function dictionariesWordsCategories(
   apiUrl: string,
   slug: string,
-  params: API.DictionariesParams,
+  params?: API.DictionariesParams,
   options?: RequestOptionsInit
 ) {
   return request<API.DefaultResponse<API.DictionariesWordsCategory[]>>(
@@ -56,7 +56,7 @@ export async function dictionariesAccess(
   apiUrl: string,
   options?: RequestOptionsInit
 ) {
-  return request<API.DefaultResponse<API.DictionariesAccess[]>>(
+  return request<API.DefaultResponse<API.DictionariesAccess>>(
     `${apiUrl}/api/dictionaries/access`,
     {
       method: "GET",

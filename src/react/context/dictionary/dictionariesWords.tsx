@@ -10,15 +10,15 @@ import {
   EscolaLMSContextConfig,
   EscolaLMSContextReadConfig,
   ContextPaginatedMetaState,
-} from "./types";
-import { defaultConfig } from "./defaults";
-import { fetchDataType } from "./states";
+} from "../types";
+import { defaultConfig } from "../defaults";
+import { fetchDataType } from "../states";
 
-import { useLocalStorage } from "../hooks/useLocalStorage";
-import * as API from "../../types/api";
-import { getDefaultData } from "./index";
+import { useLocalStorage } from "../../hooks/useLocalStorage";
+import * as API from "../../../types/api";
+import { getDefaultData } from "../index";
 
-import { dictionariesWords as getDictionariesWords } from "../../services/dictionary";
+import { dictionariesWords as getDictionariesWords } from "../../../services/dictionary";
 
 export const DictionariesWordsContext: React.Context<
   Pick<EscolaLMSContextConfig, "dictionariesWords" | "fetchDictionariesWords">

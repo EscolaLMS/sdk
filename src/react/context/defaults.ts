@@ -389,6 +389,14 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
     loading: false,
   },
   fetchDictionariesWord: () => Promise.reject(),
+  dictionariesAccess: {
+    loading: false,
+  },
+  fetchDictionariesAccess: () => Promise.reject(),
+  dictionariesWordsCategories: {
+    loading: false,
+  },
+  fetchDictionariesWordsCategories: () => Promise.reject(),
 };
 
 export const defaultApiConfig: EscolaLMSContextConfig = {
@@ -763,6 +771,14 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
     loading: false,
   },
   fetchDictionariesWord: () => Promise.reject(),
+  dictionariesAccess: {
+    loading: false,
+  },
+  fetchDictionariesAccess: () => Promise.reject(),
+  dictionariesWordsCategories: {
+    loading: false,
+  },
+  fetchDictionariesWordsCategories: () => Promise.reject(),
 };
 
 export const defaultConfig = Object.assign(
