@@ -250,6 +250,9 @@ export interface EscolaLMSContextAPIConfig {
   updateProfile: (
     data: API.UpdateUserDetails
   ) => Promise<API.DefaultResponse<API.UserAsProfile>>;
+  updateProfileEmail: (
+    data: API.UpdateUserEmail
+  ) => Promise<API.DefaultResponse<API.UserAsProfile>>;
   updateAvatar: (
     avatar: File
   ) => Promise<API.DefaultResponse<API.UserAsProfile>>;

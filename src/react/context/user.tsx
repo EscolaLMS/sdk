@@ -25,6 +25,7 @@ import {
   profile as getProfile,
   register as postRegister,
   updateProfile as postUpdateProfile,
+  updateProfileEmail as postUpdateProfileEmail,
   updateAvatar as postUpdateAvatar,
   forgot,
   reset,
@@ -47,6 +48,7 @@ type UserContextType = Pick<
   | "reset"
   | "fetchProfile"
   | "updateProfile"
+  | "updateProfileEmail"
   | "updateAvatar"
   | "getRefreshedToken"
   | "emailVerify"
@@ -66,6 +68,7 @@ export const UserContext: React.Context<UserContextType> =
     reset: defaultConfig.reset,
     fetchProfile: defaultConfig.fetchProfile,
     updateProfile: defaultConfig.updateProfile,
+    updateProfileEmail: defaultConfig.updateProfileEmail,
     updateAvatar: defaultConfig.updateAvatar,
     getRefreshedToken: defaultConfig.getRefreshedToken,
     emailVerify: defaultConfig.emailVerify,
@@ -235,6 +238,38 @@ export const UserContextProvider: FunctionComponent<
     [token]
   );
 
+  const updateProfileEmail = useCallback(
+    (body: API.UpdateUserEmail) => {
+      setUser((prevState) => ({
+        ...prevState,
+        loading: true,
+      }));
+
+      return token
+        ? postUpdateProfileEmail
+            .bind(null, apiUrl)(body, token)
+            .then((res) => {
+              if (res.success === true) {
+                setUser((prevState) => ({
+                  value: {
+                    ...res.data,
+                  },
+                  loading: false,
+                }));
+              } else if (res.success === false) {
+                setUser((prevState) => ({
+                  ...prevState,
+                  error: res,
+                  loading: false,
+                }));
+              }
+              return res;
+            })
+        : Promise.reject("noToken");
+    },
+    [token]
+  );
+
   const updateAvatar = useCallback(
     (file: File) => {
       setUser((prevState) => {
@@ -379,6 +414,7 @@ export const UserContextProvider: FunctionComponent<
         reset: reset.bind(null, apiUrl),
         fetchProfile,
         updateProfile,
+        updateProfileEmail,
         updateAvatar,
         getRefreshedToken,
         emailVerify: emailVerify.bind(null, apiUrl),

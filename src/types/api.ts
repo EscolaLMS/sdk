@@ -639,6 +639,10 @@ export type UpdateUserDetails = {
   phone?: string;
 } & Record<string, string | number | boolean | null>;
 
+export type UpdateUserEmail = {
+  email?: string;
+};
+
 export interface CompleteSocialAuth {
   email: string;
   return_url: string;
