@@ -74,6 +74,25 @@ export async function updateProfile(
     }
   );
 }
+export async function updateProfileEmail(
+  apiUrl: string,
+  body: API.UpdateUserEmail,
+  token: string
+) {
+  return request<API.DefaultResponse<API.UserAsProfile>>(
+    `${apiUrl}/api/profile/me-auth`,
+    {
+      method: "PUT",
+      data: body,
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+        "Current-timezone": currentTimezone(),
+      },
+    }
+  );
+}
 
 export async function updateAvatar(apiUrl: string, file: File, token: string) {
   const formData = new FormData();
