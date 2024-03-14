@@ -14,6 +14,8 @@ import {
 } from "./consultations_access_enquiry";
 
 import { CoursesContext } from "./courses";
+import { DictionariesWordsContext, DictionariesWordsContextProvider } from "./dictionariesWords";
+import { DictionariesWordContext, DictionariesWordContextProvider } from "./dictionariesWord";
 import { fetchDataType } from "./states";
 import {
   getCourse,
@@ -357,6 +359,9 @@ const EscolaLMSContextProviderInner: FunctionComponent<
   const { fetchExams, exams } = useContext(ExamsContext);
   const { fetchSemesters, semesters, fetchAcademicYears, academicYears } =
     useContext(StudentDetailsContext);
+
+  const { dictionariesWords, fetchDictionariesWords } = useContext(DictionariesWordsContext);
+  const { dictionariesWord, fetchDictionariesWord } = useContext(DictionariesWordContext);
 
   // https://github.com/EscolaLMS/sdk/issues/235
   // FIXME: #235 move consultation logic to separate file
@@ -1872,6 +1877,11 @@ const EscolaLMSContextProviderInner: FunctionComponent<
         semesters,
         fetchAcademicYears,
         academicYears,
+
+        dictionariesWords,
+        fetchDictionariesWords,
+        dictionariesWord,
+        fetchDictionariesWord,
       }}
     >
       {children}
@@ -1916,6 +1926,8 @@ export const EscolaLMSContextProvider: FunctionComponent<
     ExamsContextProvider,
     StudentDetailsContextProvider,
     ChallengesContextProvider,
+    DictionariesWordsContextProvider,
+    DictionariesWordContextProvider,
   ].reverse();
 
   const C = wrappers.reduce((acc, curr, i) => {
