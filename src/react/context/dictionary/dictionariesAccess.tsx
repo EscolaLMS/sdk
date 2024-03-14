@@ -54,7 +54,10 @@ export const DictionariesAccessContextProvider: FunctionComponent<
       controllers: abortControllers.current,
       controller: `dictionariesAccess`,
       mode: "value",
-      fetchAction: getDictionariesAccess.bind(null, apiUrl)({
+      fetchAction: getDictionariesAccess.bind(
+        null,
+        apiUrl
+      )({
         signal: abortControllers.current?.[`dictionariesAccess`]?.signal,
       }),
       setState: setDictionariesAccess,

@@ -532,7 +532,9 @@ export interface EscolaLMSContextAPIConfig {
     slug: string,
     id: number
   ) => Promise<API.DefaultResponse<API.DictionariesWords>>;
-  fetchDictionariesAccess: () => Promise<API.DefaultResponse<API.DictionariesAccess>>;
+  fetchDictionariesAccess: () => Promise<
+    API.DefaultResponse<API.DictionariesAccess>
+  >;
   fetchDictionariesWordsCategories: (
     slug: string,
     params?: API.DictionariesParams

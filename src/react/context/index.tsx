@@ -14,10 +14,22 @@ import {
 } from "./consultations_access_enquiry";
 
 import { CoursesContext } from "./courses";
-import { DictionariesWordsContext, DictionariesWordsContextProvider } from "./dictionary/dictionariesWords";
-import { DictionariesWordContext, DictionariesWordContextProvider } from "./dictionary/dictionariesWord";
-import { DictionariesAccessContext, DictionariesAccessContextProvider } from "./dictionary/dictionariesAccess";
-import { DictionariesWordsCategoriesContext, DictionariesWordsCategoriesContextProvider } from "./dictionary/dictionariesWordsCategories";
+import {
+  DictionariesWordsContext,
+  DictionariesWordsContextProvider,
+} from "./dictionary/dictionariesWords";
+import {
+  DictionariesWordContext,
+  DictionariesWordContextProvider,
+} from "./dictionary/dictionariesWord";
+import {
+  DictionariesAccessContext,
+  DictionariesAccessContextProvider,
+} from "./dictionary/dictionariesAccess";
+import {
+  DictionariesWordsCategoriesContext,
+  DictionariesWordsCategoriesContextProvider,
+} from "./dictionary/dictionariesWordsCategories";
 import { fetchDataType } from "./states";
 import {
   getCourse,
@@ -363,10 +375,17 @@ const EscolaLMSContextProviderInner: FunctionComponent<
   const { fetchSemesters, semesters, fetchAcademicYears, academicYears } =
     useContext(StudentDetailsContext);
 
-  const { dictionariesWords, fetchDictionariesWords } = useContext(DictionariesWordsContext);
-  const { dictionariesWord, fetchDictionariesWord } = useContext(DictionariesWordContext);
-  const { dictionariesAccess, fetchDictionariesAccess } = useContext(DictionariesAccessContext);
-  const { dictionariesWordsCategories, fetchDictionariesWordsCategories } = useContext(DictionariesWordsCategoriesContext);
+  const { dictionariesWords, fetchDictionariesWords } = useContext(
+    DictionariesWordsContext
+  );
+  const { dictionariesWord, fetchDictionariesWord } = useContext(
+    DictionariesWordContext
+  );
+  const { dictionariesAccess, fetchDictionariesAccess } = useContext(
+    DictionariesAccessContext
+  );
+  const { dictionariesWordsCategories, fetchDictionariesWordsCategories } =
+    useContext(DictionariesWordsCategoriesContext);
 
   // https://github.com/EscolaLMS/sdk/issues/235
   // FIXME: #235 move consultation logic to separate file

@@ -1888,17 +1888,20 @@ export type NotificationsTokensBody = {
 export type DictionariesParams = {
   word?: string;
   // Example: url?category_ids[]=1&category_ids[]=2category_ids[]=3
-  'category_ids[]': number;
-}
+  "category_ids[]": number;
+};
 
-export type DictionariesWordsCategory = Pick<Category, 'name' | 'name_with_breadcrumbs' | 'id'>;
+export type DictionariesWordsCategory = Pick<
+  Category,
+  "name" | "name_with_breadcrumbs" | "id"
+>;
 
 export type DictionaryWordData = {
   id?: number;
   title?: string;
   description?: string;
   video_url?: string;
-}
+};
 
 export type DictionariesWords = {
   id: number;
@@ -1909,9 +1912,9 @@ export type DictionariesWords = {
   categories: DictionariesWordsCategory[];
   description?: string;
   data?: {
-    descriptions?: DictionaryWordData,
+    descriptions?: DictionaryWordData;
   };
-}
+};
 
 export type DictionariesAccess = {
   dictionary_id: number;
@@ -1919,4 +1922,4 @@ export type DictionariesAccess = {
   slug: string;
   end_date: string;
   is_active: boolean;
-}
+};
