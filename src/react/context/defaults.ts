@@ -381,6 +381,22 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
     list: [],
   },
   fetchAcademicYears: (params?: API.AcademicYearParams) => Promise.reject(),
+  dictionariesWords: {
+    loading: false,
+  },
+  fetchDictionariesWords: () => Promise.reject(),
+  dictionariesWord: {
+    loading: false,
+  },
+  fetchDictionariesWord: () => Promise.reject(),
+  dictionariesAccess: {
+    loading: false,
+  },
+  fetchDictionariesAccess: () => Promise.reject(),
+  dictionariesWordsCategories: {
+    loading: false,
+  },
+  fetchDictionariesWordsCategories: () => Promise.reject(),
 };
 
 export const defaultApiConfig: EscolaLMSContextConfig = {
@@ -747,6 +763,22 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
     loading: false,
     list: [],
   },
+  dictionariesWords: {
+    loading: false,
+  },
+  fetchDictionariesWords: () => Promise.reject(),
+  dictionariesWord: {
+    loading: false,
+  },
+  fetchDictionariesWord: () => Promise.reject(),
+  dictionariesAccess: {
+    loading: false,
+  },
+  fetchDictionariesAccess: () => Promise.reject(),
+  dictionariesWordsCategories: {
+    loading: false,
+  },
+  fetchDictionariesWordsCategories: () => Promise.reject(),
 };
 
 export const defaultConfig = Object.assign(
