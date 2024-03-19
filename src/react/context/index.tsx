@@ -74,6 +74,7 @@ import { getMattermostChannels } from "../../services/mattermost";
 import {
   payWithStripe as postPayWithStripe,
   payWithP24 as postPayWithP24,
+  subscriptionPayWithP24 as postSubscriptionPayWithP24,
   orders as getOrders,
   payments as getPayments,
   addVoucher as postVoucher,
@@ -1175,6 +1176,28 @@ const EscolaLMSContextProviderInner: FunctionComponent<
     [token]
   );
 
+  const subscriptionPayWithP24 = useCallback(
+    (
+      subId: number,
+      email: string,
+      return_url: string,
+      data?: API.InvoiceData
+    ) => {
+      return token
+        ? postSubscriptionPayWithP24
+            .bind(null, apiUrl)(subId, email, return_url, token, data)
+            .then((res) => {
+              return res;
+            })
+            .catch((err) => {
+              console.log(err);
+              return err;
+            })
+        : Promise.reject("noToken");
+    },
+    [token]
+  );
+
   const fetchOrderInvoice = useCallback(
     (id: number) => {
       return token
@@ -1807,6 +1830,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
         fetchWebinar,
         webinars,
         payWithP24,
+        subscriptionPayWithP24,
         getProductInfo,
         fetchTutorConsultations,
         approveConsultationTerm,

@@ -109,6 +109,12 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
     Promise.reject(payment_method),
   payWithP24: (email: string, return_url: string, data?: API.InvoiceData) =>
     Promise.reject(),
+  subscriptionPayWithP24: (
+    subId: number,
+    email: string,
+    return_url: string,
+    data?: API.InvoiceData
+  ) => Promise.reject(),
   fetchProgress: () => Promise.reject(),
   fetchPaginatedProgress: () => Promise.reject(),
   paginatedProgress: {
@@ -497,6 +503,12 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
     Promise.reject(payment_method),
   payWithP24: (email: string, return_url: string, data?: API.InvoiceData) =>
     Promise.reject(),
+  subscriptionPayWithP24: (
+    subId: number,
+    email: string,
+    return_url: string,
+    data?: API.InvoiceData
+  ) => Promise.reject(),
   fetchProgress: () => Promise.reject(),
   fetchPaginatedProgress: () => Promise.reject(),
   paginatedProgress: {
