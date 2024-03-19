@@ -37,3 +37,52 @@ export async function getSingleProduct(
     }
   );
 }
+
+/**  GET /api/products/my */
+export async function getMyProducts(
+  apiUrl: string,
+  params: API.PageParams &
+    API.PaginationParams & { type?: string; "tags[]"?: string },
+  token?: string | null,
+  options?: RequestOptionsInit
+) {
+  return request<API.ProductList>(`${apiUrl}/api/products/my`, {
+    method: "GET",
+    params,
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+      "Current-timezone": currentTimezone(),
+    },
+
+    ...(options || {}),
+  });
+}
+
+/**  POST /api/productables/attach */
+export async function attachProduct(
+  apiUrl: string,
+  productableId: number,
+  productableType: string,
+  token?: string | null,
+  options?: RequestOptionsInit
+) {
+  return request<API.DefaultResponse<null>>(
+    `${apiUrl}/api/productables/attach`,
+    {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+        "Current-timezone": currentTimezone(),
+      },
+      data: {
+        productable_id: productableId,
+        productable_type: productableType,
+      },
+      ...(options || {}),
+    }
+  );
+}
