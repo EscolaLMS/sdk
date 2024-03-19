@@ -76,6 +76,7 @@ export interface EscolaLMSContextReadConfig {
   stationaryEvent: ContextStateValue<API.StationaryEvent>;
   userWebinars: ContextListState<API.Webinar>;
   products: ContextPaginatedMetaState<API.Product>;
+  userProducts: ContextPaginatedMetaState<API.Product>;
   product: ContextStateValue<API.Product>;
   userStationaryEvents: ContextListState<API.StationaryEvent>;
   tasks: ContextPaginatedMetaState<API.Task>;
@@ -324,6 +325,14 @@ export interface EscolaLMSContextAPIConfig {
     filter: API.PageParams &
       API.PaginationParams & { type?: string; "tags[]"?: string; name?: string }
   ) => Promise<API.DefaultMetaResponse<API.Product>>;
+  fetchMyProducts: (
+    filter: API.PageParams &
+      API.PaginationParams & { type?: string; "tags[]"?: string; name?: string }
+  ) => Promise<API.DefaultMetaResponse<API.Product>>;
+  attachProduct: (
+    productableId: number,
+    productableType: string
+  ) => Promise<API.DefaultResponse<null>>;
   fetchProduct: (id: number) => Promise<API.DefaultResponse<API.Product>>;
   getProductInfo: (id: number) => Promise<API.DefaultResponse<API.Product>>;
   fetchWebinars: (
