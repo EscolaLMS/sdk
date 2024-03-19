@@ -125,7 +125,7 @@ export async function subscriptionPayWithP24(
   token: string,
   data?: API.InvoiceData
 ) {
-  return request<API.P24Response>(`${apiUrl}/api/cart/${subId}/pay`, {
+  return request<API.P24Response>(`${apiUrl}/api/product/${subId}/pay`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
