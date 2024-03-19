@@ -175,6 +175,12 @@ export interface EscolaLMSContextAPIConfig {
     return_url: string,
     data?: API.InvoiceData
   ) => Promise<void>;
+  subscriptionPayWithP24: (
+    subId: number,
+    email: string,
+    return_url: string,
+    data?: API.InvoiceData
+  ) => Promise<void>;
   fetchProgress: () => Promise<
     | void
     | API.DefaultResponse<API.CourseProgress>
