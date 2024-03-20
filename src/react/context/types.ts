@@ -1,4 +1,4 @@
-import * as API from "./../../types/api";
+import * as API from './../../types/api';
 
 export interface ContextState<T> {
   loading: boolean;
@@ -316,7 +316,7 @@ export interface EscolaLMSContextAPIConfig {
   ) => Promise<API.ScheduleConsultationResponse>;
   fetchProducts: (
     filter: API.PageParams &
-      API.PaginationParams & { type?: string; "tags[]"?: string; name?: string }
+      API.PaginationParams & { type?: string; 'tags[]'?: string; name?: string }
   ) => Promise<API.DefaultMetaResponse<API.Product>>;
   fetchProduct: (id: number) => Promise<API.DefaultResponse<API.Product>>;
   getProductInfo: (id: number) => Promise<API.DefaultResponse<API.Product>>;
@@ -536,7 +536,7 @@ export interface EscolaLMSContextAPIConfig {
     API.DefaultResponse<API.DictionariesAccess>
   >;
   fetchDictionariesWordsCategories: (
-    slug: string,
+    slig: string,
     params?: API.DictionariesParams
   ) => Promise<
     | void
