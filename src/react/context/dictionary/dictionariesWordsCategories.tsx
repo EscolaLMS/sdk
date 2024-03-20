@@ -32,7 +32,9 @@ export const DictionariesWordsCategoriesContext: React.Context<
 
 export interface DictionariesWordsCategoriesContextProviderType {
   apiUrl: string;
-  defaults?: Partial<Pick<EscolaLMSContextReadConfig, 'dictionariesWordsCategories'>>;
+  defaults?: Partial<
+    Pick<EscolaLMSContextReadConfig, 'dictionariesWordsCategories'>
+  >;
   ssrHydration?: boolean;
 }
 
@@ -52,17 +54,16 @@ export const DictionariesWordsCategoriesContextProvider: FunctionComponent<
     }
   }, [defaults]);
 
-  const [dictionariesWordsCategories, setDictionariesWordsCategories] = useLocalStorage<
-    ContextListState<API.DictionariesWordsCategory>
-  >(
-    'lms',
-    'dictionariesWordsCategories',
-    getDefaultData('dictionariesWordsCategories', {
-      ...defaultConfig,
-      ...defaults,
-    }),
-    ssrHydration
-  );
+  const [dictionariesWordsCategories, setDictionariesWordsCategories] =
+    useLocalStorage<ContextListState<API.DictionariesWordsCategory>>(
+      'lms',
+      'dictionariesWordsCategories',
+      getDefaultData('dictionariesWordsCategories', {
+        ...defaultConfig,
+        ...defaults,
+      }),
+      ssrHydration
+    );
 
   const fetchDictionariesWordsCategories = useCallback(
     (slug: string, params?: API.DictionariesParams) => {

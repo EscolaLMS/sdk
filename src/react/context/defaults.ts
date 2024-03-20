@@ -217,7 +217,7 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
   fetchProduct: (id: number) => Promise.reject(),
   fetchMyProducts: (
     filter: API.PageParams &
-      API.PaginationParams & { type?: string; "tags[]"?: string; name?: string }
+      API.PaginationParams & { type?: string; 'tags[]'?: string; name?: string }
   ) => Promise.reject(),
   attachProduct: (productableId: number, productableType: string) =>
     Promise.reject(),
@@ -628,7 +628,7 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
   ) => Promise.reject(),
   fetchMyProducts: (
     filter: API.PageParams &
-      API.PaginationParams & { type?: string; "tags[]"?: string; name?: string }
+      API.PaginationParams & { type?: string; 'tags[]'?: string; name?: string }
   ) => Promise.reject(),
   fetchProduct: (id: number) => Promise.reject(),
   attachProduct: (productableId: number, productableType: string) =>

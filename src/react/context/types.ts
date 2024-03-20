@@ -327,7 +327,7 @@ export interface EscolaLMSContextAPIConfig {
   ) => Promise<API.DefaultMetaResponse<API.Product>>;
   fetchMyProducts: (
     filter: API.PageParams &
-      API.PaginationParams & { type?: string; "tags[]"?: string; name?: string }
+      API.PaginationParams & { type?: string; 'tags[]'?: string; name?: string }
   ) => Promise<API.DefaultMetaResponse<API.Product>>;
   attachProduct: (
     productableId: number,
