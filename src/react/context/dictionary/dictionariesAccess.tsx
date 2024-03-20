@@ -3,6 +3,7 @@ import {
   FunctionComponent,
   PropsWithChildren,
   useCallback,
+  useContext,
   useRef,
 } from 'react';
 import {
@@ -18,6 +19,7 @@ import * as API from '../../../types/api';
 import { getDefaultData } from '../index';
 
 import { dictionariesAccess as getDictionariesAccess } from '../../../services/dictionary';
+import { UserContext } from '../user';
 
 export const DictionariesAccessContext: React.Context<
   Pick<EscolaLMSContextConfig, 'dictionariesAccess' | 'fetchDictionariesAccess'>
@@ -36,6 +38,7 @@ export const DictionariesAccessContextProvider: FunctionComponent<
   PropsWithChildren<DictionariesAccessContextProviderType>
 > = ({ children, defaults, apiUrl, ssrHydration }) => {
   const abortControllers = useRef<Record<string, AbortController | null>>({});
+  const { token } = useContext(UserContext);
 
   const [dictionariesAccess, setDictionariesAccess] = useLocalStorage<
     ContextStateValue<API.DictionariesAccess>
@@ -50,19 +53,22 @@ export const DictionariesAccessContextProvider: FunctionComponent<
   );
 
   const fetchDictionariesAccess = useCallback(() => {
-    return fetchDataType<API.DictionariesAccess>({
-      controllers: abortControllers.current,
-      controller: `dictionariesAccess`,
-      mode: 'value',
-      fetchAction: getDictionariesAccess.bind(
-        null,
-        apiUrl
-      )({
-        signal: abortControllers.current?.[`dictionariesAccess`]?.signal,
-      }),
-      setState: setDictionariesAccess,
-    });
-  }, []);
+    return token
+      ? fetchDataType<API.DictionariesAccess>({
+          controllers: abortControllers.current,
+          controller: `dictionariesAccess`,
+          mode: 'value',
+          fetchAction: getDictionariesAccess.bind(
+            null,
+            apiUrl,
+            token,
+          )({
+            signal: abortControllers.current?.[`dictionariesAccess`]?.signal,
+          }),
+          setState: setDictionariesAccess,
+        })
+      : Promise.reject('noToken');
+  }, [token]);
 
   return (
     <DictionariesAccessContext.Provider

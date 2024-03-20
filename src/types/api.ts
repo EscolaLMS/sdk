@@ -1892,6 +1892,8 @@ export type DictionariesParams = {
   word_start?: string;
 };
 
+export type DictionariesWordsParams = DictionariesParams & PaginationParams;
+
 export type DictionariesWordsCategory = Pick<
   Category,
   'name' | 'name_with_breadcrumbs' | 'id'
