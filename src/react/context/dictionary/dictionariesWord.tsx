@@ -3,6 +3,7 @@ import {
   FunctionComponent,
   PropsWithChildren,
   useCallback,
+  useEffect,
   useRef,
 } from "react";
 import {
@@ -48,6 +49,17 @@ export const DictionariesWordContextProvider: FunctionComponent<
     }),
     ssrHydration
   );
+
+  useEffect(() => {
+    if (defaults) {
+      defaults.dictionariesWord !== null &&
+        setDictionariesWord({
+          loading: false,
+          value: defaults.dictionariesWord?.value,
+          error: undefined,
+        });
+    }
+  }, [defaults]);
 
   const fetchDictionariesWord = useCallback((slug: string, id: number) => {
     return fetchDataType<API.DictionariesWords>({

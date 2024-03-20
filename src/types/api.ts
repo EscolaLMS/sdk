@@ -1888,8 +1888,11 @@ export type NotificationsTokensBody = {
 export type DictionariesParams = {
   word?: string;
   // Example: url?category_ids[]=1&category_ids[]=2category_ids[]=3
-  "category_ids[]": number;
+  "category_ids[]"?: number[];
+  word_start?: string;
 };
+
+export type DictionariesWordsParams = DictionariesParams & PaginationParams;
 
 export type DictionariesWordsCategory = Pick<
   Category,
@@ -1912,7 +1915,7 @@ export type DictionariesWords = {
   categories: DictionariesWordsCategory[];
   description?: string;
   data?: {
-    descriptions?: DictionaryWordData;
+    descriptions?: DictionaryWordData[];
   };
 };
 

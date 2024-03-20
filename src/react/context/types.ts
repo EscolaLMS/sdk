@@ -541,7 +541,7 @@ export interface EscolaLMSContextAPIConfig {
   >;
   fetchDictionariesWords: (
     slug: string,
-    params?: API.DictionariesParams
+    params?: API.DictionariesWordsParams
   ) => Promise<API.DefaultMetaResponse<API.DictionariesWords>>;
   fetchDictionariesWord: (
     slug: string,
@@ -551,7 +551,7 @@ export interface EscolaLMSContextAPIConfig {
     API.DefaultResponse<API.DictionariesAccess>
   >;
   fetchDictionariesWordsCategories: (
-    slug: string,
+    slig: string,
     params?: API.DictionariesParams
   ) => Promise<
     | void

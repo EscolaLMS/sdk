@@ -5,7 +5,7 @@ import * as API from "../types/api";
 export async function dictionariesWords(
   apiUrl: string,
   slug: string,
-  params?: API.DictionariesParams,
+  params?: API.DictionariesWordsParams,
   options?: RequestOptionsInit
 ) {
   return request<API.DefaultMetaResponse<API.DictionariesWords>>(
@@ -54,12 +54,16 @@ export async function dictionariesWordsCategories(
 /**  GET /api/dictionaries/access */
 export async function dictionariesAccess(
   apiUrl: string,
+  token: string,
   options?: RequestOptionsInit
 ) {
   return request<API.DefaultResponse<API.DictionariesAccess>>(
     `${apiUrl}/api/dictionaries/access`,
     {
       method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
       ...(options || {}),
     }
   );

@@ -410,6 +410,7 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
   fetchDictionariesAccess: () => Promise.reject(),
   dictionariesWordsCategories: {
     loading: false,
+    list: [],
   },
   fetchDictionariesWordsCategories: () => Promise.reject(),
 };
@@ -807,6 +808,7 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
   fetchDictionariesAccess: () => Promise.reject(),
   dictionariesWordsCategories: {
     loading: false,
+    list: [],
   },
   fetchDictionariesWordsCategories: () => Promise.reject(),
 };

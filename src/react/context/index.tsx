@@ -2034,6 +2034,7 @@ export const EscolaLMSContextProvider: FunctionComponent<
     DictionariesWordsContextProvider,
     DictionariesWordContextProvider,
     DictionariesAccessContextProvider,
+    DictionariesWordsCategoriesContextProvider,
   ].reverse();
 
   const C = wrappers.reduce((acc, curr, i) => {

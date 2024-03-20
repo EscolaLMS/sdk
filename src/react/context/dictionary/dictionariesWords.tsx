@@ -62,7 +62,7 @@ export const DictionariesWordsContextProvider: FunctionComponent<
   );
 
   const fetchDictionariesWords = useCallback(
-    (slug: string, params?: API.DictionariesParams) => {
+    (slug: string, params?: API.DictionariesWordsParams) => {
       return fetchDataType<API.DictionariesWords>({
         controllers: abortControllers.current,
         controller: `dictionaries/${slug}/words/${JSON.stringify(params)}`,
