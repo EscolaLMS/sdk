@@ -18,8 +18,8 @@ import { useLocalStorage } from "../../hooks/useLocalStorage";
 import * as API from "../../../types/api";
 import { getDefaultData } from "../index";
 
-import { dictionariesAccess as getDictionariesAccess } from '../../../services/dictionary';
-import { UserContext } from '../user';
+import { dictionariesAccess as getDictionariesAccess } from "../../../services/dictionary";
+import { UserContext } from "../user";
 
 export const DictionariesAccessContext: React.Context<
   Pick<EscolaLMSContextConfig, "dictionariesAccess" | "fetchDictionariesAccess">
@@ -57,17 +57,17 @@ export const DictionariesAccessContextProvider: FunctionComponent<
       ? fetchDataType<API.DictionariesAccess>({
           controllers: abortControllers.current,
           controller: `dictionariesAccess`,
-          mode: 'value',
+          mode: "value",
           fetchAction: getDictionariesAccess.bind(
             null,
             apiUrl,
-            token,
+            token
           )({
             signal: abortControllers.current?.[`dictionariesAccess`]?.signal,
           }),
           setState: setDictionariesAccess,
         })
-      : Promise.reject('noToken');
+      : Promise.reject("noToken");
   }, [token]);
 
   return (

@@ -1,5 +1,5 @@
-import request, { RequestOptionsInit } from 'umi-request';
-import * as API from '../types/api';
+import request, { RequestOptionsInit } from "umi-request";
+import * as API from "../types/api";
 
 /**  GET /api/dictionaries/{slug}/words */
 export async function dictionariesWords(
@@ -11,7 +11,7 @@ export async function dictionariesWords(
   return request<API.DefaultMetaResponse<API.DictionariesWords>>(
     `${apiUrl}/api/dictionaries/${slug}/words`,
     {
-      method: 'GET',
+      method: "GET",
       params,
       ...(options || {}),
     }
@@ -28,7 +28,7 @@ export async function dictionariesWord(
   return request<API.DefaultResponse<API.DictionariesWords>>(
     `${apiUrl}/api/dictionaries/${slug}/words/${id}`,
     {
-      method: 'GET',
+      method: "GET",
       ...(options || {}),
     }
   );
@@ -44,7 +44,7 @@ export async function dictionariesWordsCategories(
   return request<API.DefaultResponse<API.DictionariesWordsCategory[]>>(
     `${apiUrl}/api/dictionaries/${slug}/words/categories`,
     {
-      method: 'GET',
+      method: "GET",
       params,
       ...(options || {}),
     }
@@ -60,7 +60,7 @@ export async function dictionariesAccess(
   return request<API.DefaultResponse<API.DictionariesAccess>>(
     `${apiUrl}/api/dictionaries/access`,
     {
-      method: 'GET',
+      method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,
       },
