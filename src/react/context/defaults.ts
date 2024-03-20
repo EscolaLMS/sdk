@@ -1,34 +1,34 @@
-import * as API from './../../types/api';
+import * as API from "./../../types/api";
 
-import { EscolaLMSContextConfig } from './types';
+import { EscolaLMSContextConfig } from "./types";
 
 export const blackList: API.IEvent[] = [
-  'http://adlnet.gov/expapi/verbs/attended',
-  'http://adlnet.gov/expapi/verbs/attempted',
-  'http://adlnet.gov/expapi/verbs/interacted',
-  'http://adlnet.gov/expapi/verbs/imported',
-  'http://adlnet.gov/expapi/verbs/created',
+  "http://adlnet.gov/expapi/verbs/attended",
+  "http://adlnet.gov/expapi/verbs/attempted",
+  "http://adlnet.gov/expapi/verbs/interacted",
+  "http://adlnet.gov/expapi/verbs/imported",
+  "http://adlnet.gov/expapi/verbs/created",
 ];
 
 export const completed: API.IEvent[] = [
-  'http://adlnet.gov/expapi/verbs/completed',
-  'http://adlnet.gov/expapi/verbs/answered',
-  'http://activitystrea.ms/schema/1.0/consume',
-  'http://adlnet.gov/expapi/verbs/passed',
-  'http://adlnet.gov/expapi/verbs/mastered',
+  "http://adlnet.gov/expapi/verbs/completed",
+  "http://adlnet.gov/expapi/verbs/answered",
+  "http://activitystrea.ms/schema/1.0/consume",
+  "http://adlnet.gov/expapi/verbs/passed",
+  "http://adlnet.gov/expapi/verbs/mastered",
 ];
 
-export const attempted: API.IEvent = 'http://adlnet.gov/expapi/verbs/attempted';
+export const attempted: API.IEvent = "http://adlnet.gov/expapi/verbs/attempted";
 
-export const guessTheAnswer: API.IEventException = 'GuessTheAnswer';
-export const questionSet: API.IEventException = 'QuestionSet';
+export const guessTheAnswer: API.IEventException = "GuessTheAnswer";
+export const questionSet: API.IEventException = "QuestionSet";
 
 /** TODO this should be divide into each file and just imported here and merged into one object   */
 export const defaultReadConfig: EscolaLMSContextConfig = {
-  apiUrl: '',
+  apiUrl: "",
 
-  getImagePrefix: () => '',
-  getImageSvgPrefix: () => '',
+  getImagePrefix: () => "",
+  getImageSvgPrefix: () => "",
   courses: {
     loading: false,
   },
@@ -82,7 +82,7 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
   register: () =>
     Promise.reject({
       success: false,
-      message: 'register method not implemented',
+      message: "register method not implemented",
     }),
   forgot: (body: API.ForgotRequest) => Promise.reject(),
   reset: (body: API.ResetPasswordRequest) => Promise.reject(),
@@ -166,7 +166,7 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
   },
   mattermostChannels: {
     loading: false,
-    value: { server: '', teams: [] },
+    value: { server: "", teams: [] },
   },
   fetchMattermostChannels: () => Promise.reject(),
   fetchPages: () => Promise.reject(),
@@ -212,12 +212,12 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
   fetchWebinar: (id: number) => Promise.reject(),
   fetchProducts: (
     filter: API.PageParams &
-      API.PaginationParams & { type?: string; 'tags[]'?: string; name?: string }
+      API.PaginationParams & { type?: string; "tags[]"?: string; name?: string }
   ) => Promise.reject(),
   fetchProduct: (id: number) => Promise.reject(),
   fetchMyProducts: (
     filter: API.PageParams &
-      API.PaginationParams & { type?: string; 'tags[]'?: string; name?: string }
+      API.PaginationParams & { type?: string; "tags[]"?: string; name?: string }
   ) => Promise.reject(),
   attachProduct: (productableId: number, productableType: string) =>
     Promise.reject(),
@@ -416,14 +416,14 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
 };
 
 export const defaultApiConfig: EscolaLMSContextConfig = {
-  apiUrl: '',
+  apiUrl: "",
   myCourses: {
     loading: false,
     value: [],
   },
   fetchMyCourses: () => Promise.reject(),
-  getImagePrefix: () => '',
-  getImageSvgPrefix: () => '',
+  getImagePrefix: () => "",
+  getImageSvgPrefix: () => "",
   courses: {
     loading: false,
   },
@@ -486,7 +486,7 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
   register: () =>
     Promise.reject({
       success: false,
-      message: 'register method not implemented',
+      message: "register method not implemented",
     }),
   forgot: (body: API.ForgotRequest) => Promise.reject(),
   reset: (body: API.ResetPasswordRequest) => Promise.reject(),
@@ -570,7 +570,7 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
   },
   mattermostChannels: {
     loading: false,
-    value: { server: '', teams: [] },
+    value: { server: "", teams: [] },
   },
   fetchMattermostChannels: () => Promise.reject(),
   fetchPages: () => Promise.reject(),
@@ -624,11 +624,11 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
   fetchWebinar: (id: number) => Promise.reject(),
   fetchProducts: (
     filter: API.PageParams &
-      API.PaginationParams & { type?: string; 'tags[]'?: string; name?: string }
+      API.PaginationParams & { type?: string; "tags[]"?: string; name?: string }
   ) => Promise.reject(),
   fetchMyProducts: (
     filter: API.PageParams &
-      API.PaginationParams & { type?: string; 'tags[]'?: string; name?: string }
+      API.PaginationParams & { type?: string; "tags[]"?: string; name?: string }
   ) => Promise.reject(),
   fetchProduct: (id: number) => Promise.reject(),
   attachProduct: (productableId: number, productableType: string) =>

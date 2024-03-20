@@ -5,24 +5,24 @@ import React, {
   useCallback,
   useRef,
   useEffect,
-} from 'react';
+} from "react";
 import {
   EscolaLMSContextConfig,
   EscolaLMSContextReadConfig,
   ContextListState,
-} from '../types';
-import { defaultConfig } from '../defaults';
-import { fetchDataType } from '../states';
+} from "../types";
+import { defaultConfig } from "../defaults";
+import { fetchDataType } from "../states";
 
-import { useLocalStorage } from '../../hooks/useLocalStorage';
-import * as API from '../../../types/api';
-import { getDefaultData } from '../index';
-import { dictionariesWordsCategories as getDictionariesWordsCategories } from '../../../services/dictionary';
+import { useLocalStorage } from "../../hooks/useLocalStorage";
+import * as API from "../../../types/api";
+import { getDefaultData } from "../index";
+import { dictionariesWordsCategories as getDictionariesWordsCategories } from "../../../services/dictionary";
 
 export const DictionariesWordsCategoriesContext: React.Context<
   Pick<
     EscolaLMSContextConfig,
-    'dictionariesWordsCategories' | 'fetchDictionariesWordsCategories'
+    "dictionariesWordsCategories" | "fetchDictionariesWordsCategories"
   >
 > = createContext({
   dictionariesWordsCategories: defaultConfig.dictionariesWordsCategories,
@@ -33,7 +33,7 @@ export const DictionariesWordsCategoriesContext: React.Context<
 export interface DictionariesWordsCategoriesContextProviderType {
   apiUrl: string;
   defaults?: Partial<
-    Pick<EscolaLMSContextReadConfig, 'dictionariesWordsCategories'>
+    Pick<EscolaLMSContextReadConfig, "dictionariesWordsCategories">
   >;
   ssrHydration?: boolean;
 }
@@ -56,9 +56,9 @@ export const DictionariesWordsCategoriesContextProvider: FunctionComponent<
 
   const [dictionariesWordsCategories, setDictionariesWordsCategories] =
     useLocalStorage<ContextListState<API.DictionariesWordsCategory>>(
-      'lms',
-      'dictionariesWordsCategories',
-      getDefaultData('dictionariesWordsCategories', {
+      "lms",
+      "dictionariesWordsCategories",
+      getDefaultData("dictionariesWordsCategories", {
         ...defaultConfig,
         ...defaults,
       }),
@@ -70,7 +70,7 @@ export const DictionariesWordsCategoriesContextProvider: FunctionComponent<
       return fetchDataType<API.DictionariesWordsCategory>({
         controllers: abortControllers.current,
         controller: `dictionaryWordsCategories`,
-        mode: 'list',
+        mode: "list",
         fetchAction: getDictionariesWordsCategories.bind(null, apiUrl)(
           slug,
           params,

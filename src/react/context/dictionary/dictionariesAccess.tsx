@@ -4,23 +4,23 @@ import {
   PropsWithChildren,
   useCallback,
   useRef,
-} from 'react';
+} from "react";
 import {
   EscolaLMSContextConfig,
   EscolaLMSContextReadConfig,
   ContextStateValue,
-} from '../types';
-import { defaultConfig } from '../defaults';
-import { fetchDataType } from '../states';
+} from "../types";
+import { defaultConfig } from "../defaults";
+import { fetchDataType } from "../states";
 
-import { useLocalStorage } from '../../hooks/useLocalStorage';
-import * as API from '../../../types/api';
-import { getDefaultData } from '../index';
+import { useLocalStorage } from "../../hooks/useLocalStorage";
+import * as API from "../../../types/api";
+import { getDefaultData } from "../index";
 
-import { dictionariesAccess as getDictionariesAccess } from '../../../services/dictionary';
+import { dictionariesAccess as getDictionariesAccess } from "../../../services/dictionary";
 
 export const DictionariesAccessContext: React.Context<
-  Pick<EscolaLMSContextConfig, 'dictionariesAccess' | 'fetchDictionariesAccess'>
+  Pick<EscolaLMSContextConfig, "dictionariesAccess" | "fetchDictionariesAccess">
 > = createContext({
   dictionariesAccess: defaultConfig.dictionariesAccess,
   fetchDictionariesAccess: defaultConfig.fetchDictionariesAccess,
@@ -28,7 +28,7 @@ export const DictionariesAccessContext: React.Context<
 
 export interface DictionariesAccessContextProviderType {
   apiUrl: string;
-  defaults?: Partial<Pick<EscolaLMSContextReadConfig, 'dictionariesAccess'>>;
+  defaults?: Partial<Pick<EscolaLMSContextReadConfig, "dictionariesAccess">>;
   ssrHydration?: boolean;
 }
 
@@ -40,9 +40,9 @@ export const DictionariesAccessContextProvider: FunctionComponent<
   const [dictionariesAccess, setDictionariesAccess] = useLocalStorage<
     ContextStateValue<API.DictionariesAccess>
   >(
-    'lms',
-    'dictionariesAccess',
-    getDefaultData('dictionariesAccess', {
+    "lms",
+    "dictionariesAccess",
+    getDefaultData("dictionariesAccess", {
       ...defaultConfig,
       ...defaults,
     }),
@@ -53,7 +53,7 @@ export const DictionariesAccessContextProvider: FunctionComponent<
     return fetchDataType<API.DictionariesAccess>({
       controllers: abortControllers.current,
       controller: `dictionariesAccess`,
-      mode: 'value',
+      mode: "value",
       fetchAction: getDictionariesAccess.bind(
         null,
         apiUrl
