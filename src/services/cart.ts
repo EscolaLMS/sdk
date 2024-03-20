@@ -117,6 +117,25 @@ export async function payWithP24(
   });
 }
 
+export async function subscriptionPayWithP24(
+  apiUrl: string,
+  subId: number,
+  email: string,
+  return_url: string,
+  token: string,
+  data?: API.InvoiceData
+) {
+  return request<API.P24Response>(`${apiUrl}/api/product/${subId}/pay`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+      "Current-timezone": currentTimezone(),
+    },
+    data: { email, return_url, ...data },
+  });
+}
+
 export async function orders(
   apiUrl: string,
   token: string,

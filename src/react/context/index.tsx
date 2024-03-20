@@ -56,7 +56,9 @@ import {
 } from "./../../services/consultations";
 import {
   products as getProducts,
+  getMyProducts,
   getSingleProduct,
+  attachProduct as postAttachProduct,
 } from "../../services/products";
 import { getMyWebinars, generateJitsyWebinar } from "../../services/webinars";
 import { events as getEvents } from "../../services/events";
@@ -74,6 +76,7 @@ import { getMattermostChannels } from "../../services/mattermost";
 import {
   payWithStripe as postPayWithStripe,
   payWithP24 as postPayWithP24,
+  subscriptionPayWithP24 as postSubscriptionPayWithP24,
   orders as getOrders,
   payments as getPayments,
   addVoucher as postVoucher,
@@ -602,6 +605,15 @@ const EscolaLMSContextProviderInner: FunctionComponent<
     ContextPaginatedMetaState<API.Product>
   >("lms", "products", getDefaultData("products", initialValues), ssrHydration);
 
+  const [userProducts, setUserProducts] = useLocalStorage<
+    ContextPaginatedMetaState<API.Product>
+  >(
+    "lms",
+    "userProducts",
+    getDefaultData("userProducts", initialValues),
+    ssrHydration
+  );
+
   const [product, setProduct] = useLocalStorage<ContextStateValue<API.Product>>(
     "lms",
     "product",
@@ -692,6 +704,45 @@ const EscolaLMSContextProviderInner: FunctionComponent<
     },
     []
   );
+
+  const fetchMyProducts = useCallback(
+    (
+      filter: API.PageParams &
+        API.PaginationParams & {
+          type?: string;
+          "tags[]"?: string;
+          name?: string;
+        }
+    ) => {
+      return token
+        ? fetchDataType<API.Product>({
+            controllers: abortControllers.current,
+            controller: `products/my/${JSON.stringify(filter)}`,
+            mode: "paginated",
+            fetchAction: getMyProducts.bind(null, apiUrl)(filter, token, {
+              signal:
+                abortControllers.current[
+                  `products/my/${JSON.stringify(filter)}`
+                ]?.signal,
+            }),
+            setState: setUserProducts,
+          })
+        : Promise.reject("noToken");
+    },
+    [token]
+  );
+
+  const attachProduct = useCallback(
+    (productableId: number, productableType: string) => {
+      return token
+        ? postAttachProduct
+            .bind(null, apiUrl)(productableId, productableType, token)
+            .catch((err) => err)
+        : Promise.reject("noToken");
+    },
+    [token]
+  );
+
   // https://github.com/EscolaLMS/sdk/issues/250
   const fetchProduct = useCallback(
     (id: number) =>
@@ -1163,6 +1214,28 @@ const EscolaLMSContextProviderInner: FunctionComponent<
       return token
         ? postPayWithP24
             .bind(null, apiUrl)(email, return_url, token, data)
+            .then((res) => {
+              return res;
+            })
+            .catch((err) => {
+              console.log(err);
+              return err;
+            })
+        : Promise.reject("noToken");
+    },
+    [token]
+  );
+
+  const subscriptionPayWithP24 = useCallback(
+    (
+      subId: number,
+      email: string,
+      return_url: string,
+      data?: API.InvoiceData
+    ) => {
+      return token
+        ? postSubscriptionPayWithP24
+            .bind(null, apiUrl)(subId, email, return_url, token, data)
             .then((res) => {
               return res;
             })
@@ -1807,6 +1880,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
         fetchWebinar,
         webinars,
         payWithP24,
+        subscriptionPayWithP24,
         getProductInfo,
         fetchTutorConsultations,
         approveConsultationTerm,
@@ -1819,6 +1893,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
         stationaryEvent,
         webinar,
         userWebinars,
+        userProducts,
         fetchUserWebinars,
         generateWebinarJitsy,
         realizeVoucher,
@@ -1840,7 +1915,8 @@ const EscolaLMSContextProviderInner: FunctionComponent<
         changeConsultationTerm,
         fetchProducts,
         fetchProduct,
-
+        fetchMyProducts,
+        attachProduct,
         courseAccess,
         fetchCourseAccess,
         addCourseAccess,

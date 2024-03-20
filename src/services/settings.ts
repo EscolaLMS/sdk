@@ -14,6 +14,7 @@ export async function settings(apiUrl: string, options?: RequestOptionsInit) {
     {
       method: "GET",
       ...(options || {}),
+      useCache: false,
     }
   );
 }

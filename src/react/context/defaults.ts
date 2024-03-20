@@ -109,6 +109,12 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
     Promise.reject(payment_method),
   payWithP24: (email: string, return_url: string, data?: API.InvoiceData) =>
     Promise.reject(),
+  subscriptionPayWithP24: (
+    subId: number,
+    email: string,
+    return_url: string,
+    data?: API.InvoiceData
+  ) => Promise.reject(),
   fetchProgress: () => Promise.reject(),
   fetchPaginatedProgress: () => Promise.reject(),
   paginatedProgress: {
@@ -209,6 +215,12 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
       API.PaginationParams & { type?: string; 'tags[]'?: string; name?: string }
   ) => Promise.reject(),
   fetchProduct: (id: number) => Promise.reject(),
+  fetchMyProducts: (
+    filter: API.PageParams &
+      API.PaginationParams & { type?: string; "tags[]"?: string; name?: string }
+  ) => Promise.reject(),
+  attachProduct: (productableId: number, productableType: string) =>
+    Promise.reject(),
   fields: {
     loading: false,
     list: [],
@@ -247,6 +259,9 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
   removeVoucher: () => Promise.reject(),
   createTeamsChat: () => Promise.reject(),
   products: {
+    loading: false,
+  },
+  userProducts: {
     loading: false,
   },
   product: {
@@ -498,6 +513,12 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
     Promise.reject(payment_method),
   payWithP24: (email: string, return_url: string, data?: API.InvoiceData) =>
     Promise.reject(),
+  subscriptionPayWithP24: (
+    subId: number,
+    email: string,
+    return_url: string,
+    data?: API.InvoiceData
+  ) => Promise.reject(),
   fetchProgress: () => Promise.reject(),
   fetchPaginatedProgress: () => Promise.reject(),
   paginatedProgress: {
@@ -605,7 +626,13 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
     filter: API.PageParams &
       API.PaginationParams & { type?: string; 'tags[]'?: string; name?: string }
   ) => Promise.reject(),
+  fetchMyProducts: (
+    filter: API.PageParams &
+      API.PaginationParams & { type?: string; "tags[]"?: string; name?: string }
+  ) => Promise.reject(),
   fetchProduct: (id: number) => Promise.reject(),
+  attachProduct: (productableId: number, productableType: string) =>
+    Promise.reject(),
   fetchFields: (filter: API.FieldsParams) => Promise.reject(),
   stationaryEvents: {
     loading: false,
@@ -637,6 +664,9 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
   removeVoucher: () => Promise.reject(),
   createTeamsChat: () => Promise.reject(),
   products: {
+    loading: false,
+  },
+  userProducts: {
     loading: false,
   },
   product: {
