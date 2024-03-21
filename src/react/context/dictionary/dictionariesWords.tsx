@@ -63,19 +63,26 @@ export const DictionariesWordsContextProvider: FunctionComponent<
 
   const fetchDictionariesWords = useCallback(
     (slug: string, params?: API.DictionariesWordsParams) => {
+      const abortString = params?.abort_prev
+        ? `dictionaries/${slug}/words`
+        : `dictionaries/${slug}/words/${JSON.stringify(params)}`;
+      if (abortControllers.current[abortString]) {
+        abortControllers.current[abortString]?.abort();
+      }
+
+      abortControllers.current = {
+        [abortString]: new AbortController(),
+      };
       return fetchDataType<API.DictionariesWords>({
         controllers: abortControllers.current,
-        controller: `dictionaries/${slug}/words/${JSON.stringify(params)}`,
+        controller: abortString,
         mode: "paginated",
         fetchAction: getDictionariesWords.bind(
           null,
           apiUrl,
           slug
         )(params, {
-          signal:
-            abortControllers.current[
-              `dictionaries/${slug}/words/${JSON.stringify(params)}`
-            ]?.signal,
+          signal: abortControllers.current[abortString]?.signal,
         }),
         setState: setDictionariesWords,
       });

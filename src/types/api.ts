@@ -1890,6 +1890,7 @@ export type DictionariesParams = {
   // Example: url?category_ids[]=1&category_ids[]=2category_ids[]=3
   "category_ids[]"?: number[];
   word_start?: string;
+  abort_prev?: boolean;
 };
 
 export type DictionariesWordsParams = DictionariesParams & PaginationParams;
