@@ -5,23 +5,23 @@ import {
   useCallback,
   useRef,
   useEffect,
-} from 'react';
+} from "react";
 import {
   EscolaLMSContextConfig,
   EscolaLMSContextReadConfig,
   ContextPaginatedMetaState,
-} from '../types';
-import { defaultConfig } from '../defaults';
-import { fetchDataType } from '../states';
+} from "../types";
+import { defaultConfig } from "../defaults";
+import { fetchDataType } from "../states";
 
-import { useLocalStorage } from '../../hooks/useLocalStorage';
-import * as API from '../../../types/api';
-import { getDefaultData } from '../index';
+import { useLocalStorage } from "../../hooks/useLocalStorage";
+import * as API from "../../../types/api";
+import { getDefaultData } from "../index";
 
-import { dictionariesWords as getDictionariesWords } from '../../../services/dictionary';
+import { dictionariesWords as getDictionariesWords } from "../../../services/dictionary";
 
 export const DictionariesWordsContext: React.Context<
-  Pick<EscolaLMSContextConfig, 'dictionariesWords' | 'fetchDictionariesWords'>
+  Pick<EscolaLMSContextConfig, "dictionariesWords" | "fetchDictionariesWords">
 > = createContext({
   dictionariesWords: defaultConfig.dictionariesWords,
   fetchDictionariesWords: defaultConfig.fetchDictionariesWords,
@@ -29,7 +29,7 @@ export const DictionariesWordsContext: React.Context<
 
 export interface DictionariesWordsContextProviderType {
   apiUrl: string;
-  defaults?: Partial<Pick<EscolaLMSContextReadConfig, 'dictionariesWords'>>;
+  defaults?: Partial<Pick<EscolaLMSContextReadConfig, "dictionariesWords">>;
   ssrHydration?: boolean;
 }
 
@@ -52,9 +52,9 @@ export const DictionariesWordsContextProvider: FunctionComponent<
   const [dictionariesWords, setDictionariesWords] = useLocalStorage<
     ContextPaginatedMetaState<API.DictionariesWords>
   >(
-    'lms',
-    'dictionariesWords',
-    getDefaultData('dictionariesWords', {
+    "lms",
+    "dictionariesWords",
+    getDefaultData("dictionariesWords", {
       ...defaultConfig,
       ...defaults,
     }),
@@ -76,7 +76,7 @@ export const DictionariesWordsContextProvider: FunctionComponent<
       return fetchDataType<API.DictionariesWords>({
         controllers: abortControllers.current,
         controller: abortString,
-        mode: 'paginated',
+        mode: "paginated",
         fetchAction: getDictionariesWords.bind(
           null,
           apiUrl,
