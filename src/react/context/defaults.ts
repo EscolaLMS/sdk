@@ -221,6 +221,7 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
   ) => Promise.reject(),
   attachProduct: (productableId: number, productableType: string) =>
     Promise.reject(),
+  cancelSubscription: (productId: number) => Promise.reject(),
   fields: {
     loading: false,
     list: [],
@@ -633,6 +634,7 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
   fetchProduct: (id: number) => Promise.reject(),
   attachProduct: (productableId: number, productableType: string) =>
     Promise.reject(),
+  cancelSubscription: (productId: number) => Promise.reject(),
   fetchFields: (filter: API.FieldsParams) => Promise.reject(),
   stationaryEvents: {
     loading: false,
