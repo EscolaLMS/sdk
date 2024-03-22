@@ -59,6 +59,7 @@ import {
   getMyProducts,
   getSingleProduct,
   attachProduct as postAttachProduct,
+  cancelSubscripton as postCancelSubscription,
 } from "../../services/products";
 import { getMyWebinars, generateJitsyWebinar } from "../../services/webinars";
 import { events as getEvents } from "../../services/events";
@@ -737,6 +738,17 @@ const EscolaLMSContextProviderInner: FunctionComponent<
       return token
         ? postAttachProduct
             .bind(null, apiUrl)(productableId, productableType, token)
+            .catch((err) => err)
+        : Promise.reject("noToken");
+    },
+    [token]
+  );
+
+  const cancelSubscription = useCallback(
+    (productId: number) => {
+      return token
+        ? postCancelSubscription
+            .bind(null, apiUrl)(productId, token)
             .catch((err) => err)
         : Promise.reject("noToken");
     },
@@ -1917,6 +1929,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
         fetchProduct,
         fetchMyProducts,
         attachProduct,
+        cancelSubscription,
         courseAccess,
         fetchCourseAccess,
         addCourseAccess,

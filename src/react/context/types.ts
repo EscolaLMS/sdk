@@ -333,6 +333,7 @@ export interface EscolaLMSContextAPIConfig {
     productableId: number,
     productableType: string
   ) => Promise<API.DefaultResponse<null>>;
+  cancelSubscription: (productId: number) => Promise<API.DefaultResponse<null>>;
   fetchProduct: (id: number) => Promise<API.DefaultResponse<API.Product>>;
   getProductInfo: (id: number) => Promise<API.DefaultResponse<API.Product>>;
   fetchWebinars: (

@@ -86,3 +86,26 @@ export async function attachProduct(
     }
   );
 }
+
+/**  POST /api/products/cancel:id */
+export async function cancelSubscripton(
+  apiUrl: string,
+  productId: number,
+  token?: string | null,
+  options?: RequestOptionsInit
+) {
+  return request<API.DefaultResponse<null>>(
+    `${apiUrl}/api/products/cancel/${productId}`,
+    {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+        "Current-timezone": currentTimezone(),
+      },
+
+      ...(options || {}),
+    }
+  );
+}
