@@ -1,4 +1,5 @@
-import * as API from "./../../types/api";
+import { RequestOptionsInit } from 'umi-request';
+import * as API from './../../types/api';
 
 export interface ContextState<T> {
   loading: boolean;
@@ -325,7 +326,7 @@ export interface EscolaLMSContextAPIConfig {
     filter: API.PageParams &
       API.PaginationParams & {
         type?: string;
-        "tags[]"?: string;
+        'tags[]'?: string;
         name?: string;
         productable_type?: string;
       }
@@ -334,7 +335,7 @@ export interface EscolaLMSContextAPIConfig {
     filter: API.PageParams &
       API.PaginationParams & {
         type?: string;
-        "tags[]"?: string;
+        'tags[]'?: string;
         name?: string;
         productable_type?: string;
       }
@@ -428,7 +429,10 @@ export interface EscolaLMSContextAPIConfig {
     | API.DefaultResponse<API.StationaryEvent>
     | API.DefaultMetaResponse<API.StationaryEvent>
   >;
-  fetchOrderInvoice: (id: number) => Promise<Blob>;
+  fetchOrderInvoice: (
+    id: number,
+    options?: RequestOptionsInit
+  ) => Promise<Blob>;
   changeConsultationTerm: (
     termId: number,
     newDate: string
