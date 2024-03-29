@@ -134,7 +134,9 @@ export type Course = {
   duration?: string | null;
   findable: boolean;
   video_url?: string | null;
-  categories?: Array<EscolaLms.Categories.Models.Category>;
+  categories?: Array<EscolaLms.Categories.Models.Category> & {
+    description?: string | null;
+  };
   tags?: Tag[] | string[] | null;
   users_count?: number;
   level?: string | null;
@@ -394,6 +396,11 @@ export type Product = Omit<EscolaLms.Cart.Models.Product, "productables"> & {
   end_date?: string;
   poster_url?: string;
   is_active?: boolean;
+  id?: string;
+  tags?: string[];
+  name?: string;
+  subscription_period?: string;
+  subscription_duration?: number;
 };
 
 export type ProductItems = EscolaLms.Cart.Models.ProductProductable & {
@@ -1179,6 +1186,8 @@ export enum EventTypes {
   EscolaLmsAccountConfirmedTemplateEvent = "EscolaLms\\Auth\\Events\\EscolaLmsAccountConfirmedTemplateEvent",
   EscolaLmsCartOrderPaidTemplateEvent = "EscolaLms\\Cart\\Events\\EscolaLmsCartOrderPaidTemplateEvent",
   PdfCreated = "EscolaLms\\TemplatesPdf\\Events\\PdfCreated",
+  LessonFinished = "EscolaLms\\Courses\\Events\\LessonFinished",
+  CourseAccessEnquiryStudentCreatedEvent = "EscolaLms\\CourseAccess\\Events\\CourseAccessEnquiryStudentCreatedEvent",
 }
 
 export type ConsultationTerm = {
@@ -1212,6 +1221,10 @@ export type BulkNotification = {
   sections: BulkNotificationSection[];
 };
 
+export type Pdf = {
+  title: string;
+};
+
 export type NotificationData = {
   stationaryEvent?: StationaryEvent;
   productable?: ProductItems;
@@ -1223,6 +1236,7 @@ export type NotificationData = {
   consultationTerm?: ConsultationTerm;
   webinar?: Webinar;
   notification?: BulkNotification;
+  pdf?: Pdf;
 };
 
 // Shouldn't it be union of type based on EventType?
@@ -1961,13 +1975,4 @@ export type DictionariesAccess = {
   slug: string;
   end_date: string;
   is_active: boolean;
-};
-
-export type Subscription = API.Product & {
-  id?: string;
-  tags?: string[];
-  name?: string;
-  subscription_period?: string;
-  subscription_duration?: number;
-  gross_price?: number;
 };
