@@ -1186,6 +1186,7 @@ export enum EventTypes {
   EscolaLmsAccountConfirmedTemplateEvent = "EscolaLms\\Auth\\Events\\EscolaLmsAccountConfirmedTemplateEvent",
   EscolaLmsCartOrderPaidTemplateEvent = "EscolaLms\\Cart\\Events\\EscolaLmsCartOrderPaidTemplateEvent",
   PdfCreated = "EscolaLms\\TemplatesPdf\\Events\\PdfCreated",
+  LessonFinished = "EscolaLms\\Courses\\Events\\LessonFinished",
 }
 
 export type ConsultationTerm = {
@@ -1219,6 +1220,10 @@ export type BulkNotification = {
   sections: BulkNotificationSection[];
 };
 
+export type Pdf = {
+  title: string;
+};
+
 export type NotificationData = {
   stationaryEvent?: StationaryEvent;
   productable?: ProductItems;
@@ -1230,6 +1235,7 @@ export type NotificationData = {
   consultationTerm?: ConsultationTerm;
   webinar?: Webinar;
   notification?: BulkNotification;
+  pdf?: Pdf;
 };
 
 // Shouldn't it be union of type based on EventType?
