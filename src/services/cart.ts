@@ -1,6 +1,6 @@
-import request, { RequestOptionsInit } from 'umi-request';
-import * as API from '../types/api';
-import { currentTimezone } from '../utils';
+import request, { RequestOptionsInit } from "umi-request";
+import * as API from "../types/api";
+import { currentTimezone } from "../utils";
 
 export async function addToCart(
   apiUrl: string,
@@ -10,11 +10,11 @@ export async function addToCart(
   options?: RequestOptionsInit
 ) {
   return request<API.AddProductResponse>(`${apiUrl}/api/cart/products`, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
-      'Current-timezone': currentTimezone(),
+      "Current-timezone": currentTimezone(),
     },
     data: {
       id: productId,
@@ -31,11 +31,11 @@ export async function removeFromCart(
   options?: RequestOptionsInit
 ) {
   return request<API.SuccessResponse>(`${apiUrl}/api/cart/products/${itemId}`, {
-    method: 'DELETE',
+    method: "DELETE",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
-      'Current-timezone': currentTimezone(),
+      "Current-timezone": currentTimezone(),
     },
     ...(options || {}),
   });
@@ -47,10 +47,10 @@ export async function cart(
   options?: RequestOptionsInit
 ) {
   return request<API.DefaultResponseSuccess<API.Cart>>(`${apiUrl}/api/cart`, {
-    method: 'GET',
+    method: "GET",
     headers: {
-      'Content-Type': 'application/json',
-      'Current-timezone': currentTimezone(),
+      "Content-Type": "application/json",
+      "Current-timezone": currentTimezone(),
       Authorization: `Bearer ${token}`,
     },
     ...(options || {}),
@@ -65,11 +65,11 @@ export async function addMissingProducts(
   return request<API.DefaultResponseSuccess<API.Cart>>(
     `${apiUrl}/api/cart/missing`,
     {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
-        'Current-timezone': currentTimezone(),
+        "Current-timezone": currentTimezone(),
       },
       data: {
         products: products,
@@ -85,14 +85,14 @@ export async function payWithStripe(
   token: string
 ) {
   return request<API.SuccessResponse>(`${apiUrl}/api/cart/pay`, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
-      'Current-timezone': currentTimezone(),
+      "Current-timezone": currentTimezone(),
     },
     data: {
-      gateway: 'stripe',
+      gateway: "stripe",
       payment_method,
       return_url,
     },
@@ -107,11 +107,11 @@ export async function payWithP24(
   data?: API.InvoiceData
 ) {
   return request<API.P24Response>(`${apiUrl}/api/cart/pay`, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
-      'Current-timezone': currentTimezone(),
+      "Current-timezone": currentTimezone(),
     },
     data: { email, return_url, ...data },
   });
@@ -126,11 +126,11 @@ export async function subscriptionPayWithP24(
   data?: API.InvoiceData
 ) {
   return request<API.P24Response>(`${apiUrl}/api/product/${subId}/pay`, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
-      'Current-timezone': currentTimezone(),
+      "Current-timezone": currentTimezone(),
     },
     data: { email, return_url, ...data },
   });
@@ -143,11 +143,11 @@ export async function orders(
   options?: RequestOptionsInit
 ) {
   return request<API.OrderList>(`${apiUrl}/api/orders`, {
-    method: 'GET',
+    method: "GET",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
-      'Current-timezone': currentTimezone(),
+      "Current-timezone": currentTimezone(),
     },
     params,
     ...(options || {}),
@@ -160,11 +160,11 @@ export async function payments(
   options?: RequestOptionsInit
 ) {
   return request<API.PaymentList>(`${apiUrl}/api/payments`, {
-    method: 'GET',
+    method: "GET",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
-      'Current-timezone': currentTimezone(),
+      "Current-timezone": currentTimezone(),
     },
     ...(options || {}),
   });
@@ -176,27 +176,27 @@ export async function addVoucher(
   token: string
 ) {
   return request<API.AuthResponse>(`${apiUrl}/api/cart/voucher`, {
-    method: 'POST',
+    method: "POST",
     data: {
       code: voucher,
     },
     headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
+      Accept: "application/json",
+      "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
-      'Current-timezone': currentTimezone(),
+      "Current-timezone": currentTimezone(),
     },
   });
 }
 
 export async function removeVoucher(apiUrl: string, token: string) {
   return request<API.AuthResponse>(`${apiUrl}/api/cart/voucher`, {
-    method: 'DELETE',
+    method: "DELETE",
     headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
+      Accept: "application/json",
+      "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
-      'Current-timezone': currentTimezone(),
+      "Current-timezone": currentTimezone(),
     },
   });
 }
@@ -209,13 +209,13 @@ export async function orderInvoice(
 ) {
   return request<Blob>(`${apiUrl}/api/order-invoices/${id}`, {
     ...(options || {}),
-    method: 'GET',
+    method: "GET",
     headers: {
-      'Content-Type': 'application/pdf',
+      "Content-Type": "application/pdf",
       Authorization: `Bearer ${token}`,
-      'Current-timezone': currentTimezone(),
+      "Current-timezone": currentTimezone(),
       ...(options?.headers ?? {}),
     },
-    responseType: 'blob',
+    responseType: "blob",
   });
 }
