@@ -218,7 +218,7 @@ export interface EscolaLMSContextAPIConfig {
     | API.DefaultMetaResponse<API.UserItem>
   >;
   fetchOrders: (
-    params?: API.PaginationParams
+    params?: API.PaginationParams & { status?: number }
   ) => Promise<
     void | API.DefaultResponse<API.Order> | API.DefaultMetaResponse<API.Order>
   >;
@@ -323,11 +323,21 @@ export interface EscolaLMSContextAPIConfig {
   ) => Promise<API.ScheduleConsultationResponse>;
   fetchProducts: (
     filter: API.PageParams &
-      API.PaginationParams & { type?: string; "tags[]"?: string; name?: string }
+      API.PaginationParams & {
+        type?: string;
+        "tags[]"?: string;
+        name?: string;
+        productable_type?: string;
+      }
   ) => Promise<API.DefaultMetaResponse<API.Product>>;
   fetchMyProducts: (
     filter: API.PageParams &
-      API.PaginationParams & { type?: string; "tags[]"?: string; name?: string }
+      API.PaginationParams & {
+        type?: string;
+        "tags[]"?: string;
+        name?: string;
+        productable_type?: string;
+      }
   ) => Promise<API.DefaultMetaResponse<API.Product>>;
   attachProduct: (
     productableId: number,

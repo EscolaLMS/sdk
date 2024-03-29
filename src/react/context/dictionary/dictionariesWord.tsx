@@ -3,6 +3,7 @@ import {
   FunctionComponent,
   PropsWithChildren,
   useCallback,
+  useContext,
   useEffect,
   useRef,
 } from "react";
@@ -19,6 +20,7 @@ import * as API from "../../../types/api";
 import { getDefaultData } from "../index";
 
 import { dictionariesWord as getDictionariesWord } from "../../../services/dictionary";
+import { UserContext } from "../user";
 
 export const DictionariesWordContext: React.Context<
   Pick<EscolaLMSContextConfig, "dictionariesWord" | "fetchDictionariesWord">
@@ -37,6 +39,7 @@ export const DictionariesWordContextProvider: FunctionComponent<
   PropsWithChildren<DictionariesWordContextProviderType>
 > = ({ children, defaults, apiUrl, ssrHydration }) => {
   const abortControllers = useRef<Record<string, AbortController | null>>({});
+  const { token } = useContext(UserContext);
 
   const [dictionariesWord, setDictionariesWord] = useLocalStorage<
     ContextStateValue<API.DictionariesWords>
@@ -61,18 +64,24 @@ export const DictionariesWordContextProvider: FunctionComponent<
     }
   }, [defaults]);
 
-  const fetchDictionariesWord = useCallback((slug: string, id: number) => {
-    return fetchDataType<API.DictionariesWords>({
-      controllers: abortControllers.current,
-      controller: `dictionariesWord${id}`,
-      id: id,
-      mode: "value",
-      fetchAction: getDictionariesWord.bind(null, apiUrl)(slug, id, {
-        signal: abortControllers.current?.[`dictionariesWord${id}`]?.signal,
-      }),
-      setState: setDictionariesWord,
-    });
-  }, []);
+  const fetchDictionariesWord = useCallback(
+    (slug: string, id: number) => {
+      return fetchDataType<API.DictionariesWords>({
+        controllers: abortControllers.current,
+        controller: `dictionariesWord${id}`,
+        id: id,
+        mode: "value",
+        fetchAction: getDictionariesWord.bind(null, apiUrl)(slug, id, {
+          signal: abortControllers.current?.[`dictionariesWord${id}`]?.signal,
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }),
+        setState: setDictionariesWord,
+      });
+    },
+    [token]
+  );
 
   return (
     <DictionariesWordContext.Provider

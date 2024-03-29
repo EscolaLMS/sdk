@@ -147,6 +147,7 @@ export type Course = {
   active_from?: string;
   hours_to_complete?: number | null;
   product?: Product;
+  poster_url?: string;
 };
 
 export type Author = {
@@ -390,6 +391,9 @@ export type Product = Omit<EscolaLms.Cart.Models.Product, "productables"> & {
   gross_price: number;
   productables?: Array<ProductItems> | null;
   authors?: User[] | null;
+  end_date?: string;
+  poster_url?: string;
+  is_active?: boolean;
 };
 
 export type ProductItems = EscolaLms.Cart.Models.ProductProductable & {
@@ -1021,6 +1025,7 @@ export type CourseProgressItem = {
 
 export type OrderItems = EscolaLms.Cart.Models.CartItem & {
   name?: string;
+  product?: Product;
 };
 
 export type Order = {
@@ -1243,6 +1248,7 @@ export type Certificate = {
   path?: null;
   content?: any;
   title?: string;
+  assignable_id?: number;
 };
 
 export enum CertificateAssignableTypes {
@@ -1955,4 +1961,13 @@ export type DictionariesAccess = {
   slug: string;
   end_date: string;
   is_active: boolean;
+};
+
+export type Subscription = API.Product & {
+  id?: string;
+  tags?: string[];
+  name?: string;
+  subscription_period?: string;
+  subscription_duration?: number;
+  gross_price?: number;
 };
