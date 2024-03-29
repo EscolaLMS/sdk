@@ -172,6 +172,7 @@ import {
 } from "./studentDetails";
 import { ChallengesContext, ChallengesContextProvider } from "./challenges";
 import { getFlatTopics } from "../../utils/course";
+import { RequestOptionsInit } from "umi-request";
 
 export const SCORMPlayer: React.FC<{
   uuid: string;
@@ -1261,9 +1262,9 @@ const EscolaLMSContextProviderInner: FunctionComponent<
   );
 
   const fetchOrderInvoice = useCallback(
-    (id: number) => {
+    (id: number, options?: RequestOptionsInit) => {
       return token
-        ? orderInvoice.bind(null, apiUrl)(token, id)
+        ? orderInvoice.bind(null, apiUrl)(token, id, options)
         : Promise.reject("noToken");
     },
     [token]

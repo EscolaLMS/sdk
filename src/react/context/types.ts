@@ -1,3 +1,4 @@
+import { RequestOptionsInit } from "umi-request";
 import * as API from "./../../types/api";
 
 export interface ContextState<T> {
@@ -428,7 +429,10 @@ export interface EscolaLMSContextAPIConfig {
     | API.DefaultResponse<API.StationaryEvent>
     | API.DefaultMetaResponse<API.StationaryEvent>
   >;
-  fetchOrderInvoice: (id: number) => Promise<Blob>;
+  fetchOrderInvoice: (
+    id: number,
+    options?: RequestOptionsInit
+  ) => Promise<Blob>;
   changeConsultationTerm: (
     termId: number,
     newDate: string
