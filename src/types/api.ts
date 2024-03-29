@@ -1,52 +1,52 @@
-import { API } from '..';
+import { API } from "..";
 
 type Nullable<T> = T | null | undefined;
 
 export enum TopicType {
-  Unselected = '',
-  RichText = 'EscolaLms\\TopicTypes\\Models\\TopicContent\\RichText',
-  OEmbed = 'EscolaLms\\TopicTypes\\Models\\TopicContent\\OEmbed',
-  Audio = 'EscolaLms\\TopicTypes\\Models\\TopicContent\\Audio',
-  Video = 'EscolaLms\\TopicTypes\\Models\\TopicContent\\Video',
-  H5P = 'EscolaLms\\TopicTypes\\Models\\TopicContent\\H5P',
-  Image = 'EscolaLms\\TopicTypes\\Models\\TopicContent\\Image',
-  Pdf = 'EscolaLms\\TopicTypes\\Models\\TopicContent\\PDF',
-  Scorm = 'EscolaLms\\TopicTypes\\Models\\TopicContent\\ScormSco',
-  Project = 'EscolaLms\\TopicTypeProject\\Models\\Project',
-  GiftQuiz = 'EscolaLms\\TopicTypeGift\\Models\\GiftQuiz',
+  Unselected = "",
+  RichText = "EscolaLms\\TopicTypes\\Models\\TopicContent\\RichText",
+  OEmbed = "EscolaLms\\TopicTypes\\Models\\TopicContent\\OEmbed",
+  Audio = "EscolaLms\\TopicTypes\\Models\\TopicContent\\Audio",
+  Video = "EscolaLms\\TopicTypes\\Models\\TopicContent\\Video",
+  H5P = "EscolaLms\\TopicTypes\\Models\\TopicContent\\H5P",
+  Image = "EscolaLms\\TopicTypes\\Models\\TopicContent\\Image",
+  Pdf = "EscolaLms\\TopicTypes\\Models\\TopicContent\\PDF",
+  Scorm = "EscolaLms\\TopicTypes\\Models\\TopicContent\\ScormSco",
+  Project = "EscolaLms\\TopicTypeProject\\Models\\Project",
+  GiftQuiz = "EscolaLms\\TopicTypeGift\\Models\\GiftQuiz",
 }
 
 export enum BookmarkableType {
-  Course = 'EscolaLms\\Courses\\Models\\Course',
-  Lesson = 'EscolaLms\\Courses\\Models\\Lesson',
-  Topic = 'EscolaLms\\Courses\\Models\\Topic',
+  Course = "EscolaLms\\Courses\\Models\\Course",
+  Lesson = "EscolaLms\\Courses\\Models\\Lesson",
+  Topic = "EscolaLms\\Courses\\Models\\Topic",
 }
 
 export enum PaymentStatusType {
-  NEW = 'new',
-  PAID = 'paid',
-  CANCELLED = 'cancelled',
+  NEW = "new",
+  PAID = "paid",
+  CANCELLED = "cancelled",
 }
 
 export type IEvent =
-  | 'http://adlnet.gov/expapi/verbs/experienced'
-  | 'http://adlnet.gov/expapi/verbs/attended'
-  | 'http://adlnet.gov/expapi/verbs/attempted'
-  | 'http://adlnet.gov/expapi/verbs/completed'
-  | 'http://adlnet.gov/expapi/verbs/passed'
-  | 'http://adlnet.gov/expapi/verbs/failed'
-  | 'http://adlnet.gov/expapi/verbs/answered'
-  | 'http://adlnet.gov/expapi/verbs/interacted'
-  | 'http://adlnet.gov/expapi/verbs/imported'
-  | 'http://adlnet.gov/expapi/verbs/created'
-  | 'http://adlnet.gov/expapi/verbs/shared'
-  | 'http://adlnet.gov/expapi/verbs/voided'
-  | 'http://activitystrea.ms/schema/1.0/consume'
-  | 'http://adlnet.gov/expapi/verbs/mastered';
+  | "http://adlnet.gov/expapi/verbs/experienced"
+  | "http://adlnet.gov/expapi/verbs/attended"
+  | "http://adlnet.gov/expapi/verbs/attempted"
+  | "http://adlnet.gov/expapi/verbs/completed"
+  | "http://adlnet.gov/expapi/verbs/passed"
+  | "http://adlnet.gov/expapi/verbs/failed"
+  | "http://adlnet.gov/expapi/verbs/answered"
+  | "http://adlnet.gov/expapi/verbs/interacted"
+  | "http://adlnet.gov/expapi/verbs/imported"
+  | "http://adlnet.gov/expapi/verbs/created"
+  | "http://adlnet.gov/expapi/verbs/shared"
+  | "http://adlnet.gov/expapi/verbs/voided"
+  | "http://activitystrea.ms/schema/1.0/consume"
+  | "http://adlnet.gov/expapi/verbs/mastered";
 
 export type IStatementCategory = {
   id: string;
-  objectType: 'string';
+  objectType: "string";
 };
 
 export type IScore = {
@@ -77,9 +77,9 @@ export type IStatement = {
 };
 
 export type IEventException =
-  | 'GuessTheAnswer'
-  | 'Questionnaire'
-  | 'QuestionSet';
+  | "GuessTheAnswer"
+  | "Questionnaire"
+  | "QuestionSet";
 
 export type Category = {
   id: number;
@@ -189,8 +189,8 @@ export type CompetencyChallengeCategory = {
 };
 
 export enum CompetencyChallengeType {
-  Simple = 'simple',
-  Complex = 'complex',
+  Simple = "simple",
+  Complex = "complex",
 }
 
 export type BaseCompetencyChallenge = {
@@ -367,7 +367,7 @@ export type UserGroupList = DefaultMetaResponse<UserGroup>;
 
 export type Consultation = EscolaLms.Consultations.Models.Consultation & {
   product?: Product;
-  executed_status?: null | 'reported' | 'not_reported' | 'reject' | 'approved';
+  executed_status?: null | "reported" | "not_reported" | "reject" | "approved";
   executed_at?: string;
   consultation_term_id?: number;
   is_ended?: boolean;
@@ -380,7 +380,7 @@ export type Consultation = EscolaLms.Consultations.Models.Consultation & {
   busy_terms: string[];
 };
 
-export type Product = Omit<EscolaLms.Cart.Models.Product, 'productables'> & {
+export type Product = Omit<EscolaLms.Cart.Models.Product, "productables"> & {
   available_quantity: number;
   created_at?: string | null;
   updated_at?: string | null;
@@ -408,7 +408,7 @@ export type ProductItems = EscolaLms.Cart.Models.ProductProductable & {
   description?: string;
 };
 
-export type Webinar = Omit<EscolaLms.Webinar.Models.Webinar, 'trainers'> & {
+export type Webinar = Omit<EscolaLms.Webinar.Models.Webinar, "trainers"> & {
   product?: Product;
   program?: string;
   trainers: Array<API.User> | null;
@@ -438,7 +438,7 @@ export type CartItem = EscolaLms.Cart.Models.CartItem & {
 
 export type PaginationParams = {
   order_by?: string;
-  order?: 'ASC' | 'DESC';
+  order?: "ASC" | "DESC";
   page?: number;
   per_page?: number;
 };
@@ -454,7 +454,7 @@ export type ExamsParams = PaginationParams & {
 
 export type CourseParams = PageParams &
   PaginationParams & {
-    'categories[]'?: number[];
+    "categories[]"?: number[];
     title?: string;
     category_id?: number;
     author_id?: number;
@@ -469,9 +469,9 @@ export type PaginatedProgressParams = CourseParams & {
 };
 
 export type ChallengesParams = PaginationParams & {
-  order_by?: 'id' | 'name' | 'created_at';
-  type?: 'simple' | 'complex';
-  order?: 'ASC' | 'DESC';
+  order_by?: "id" | "name" | "created_at";
+  type?: "simple" | "complex";
+  order?: "ASC" | "DESC";
   name?: string;
 };
 
@@ -487,7 +487,7 @@ export type WebinarParams = PageParams &
   PaginationParams & {
     name?: string;
     product?: Product;
-    'status[]'?: string[];
+    "status[]"?: string[];
     only_incoming?: 0 | 1;
   };
 
@@ -599,11 +599,11 @@ export type AcademicYear = {
 export type UserItem = Partial<
   Exclude<
     EscolaLms.Auth.Models.User,
-    | 'password'
-    | 'remember_token'
-    | 'password_reset_token'
-    | 'email_verified_at'
-    | 'is_active'
+    | "password"
+    | "remember_token"
+    | "password_reset_token"
+    | "email_verified_at"
+    | "is_active"
   >
 > & {
   // id: number;
@@ -628,7 +628,7 @@ export type MembershipDetails = {
   value: string;
 };
 
-export type UserAsProfile = Omit<UserItem, 'roles'> & {
+export type UserAsProfile = Omit<UserItem, "roles"> & {
   roles: string[];
   membership_info?: {
     course: MembershipDetails;
@@ -661,7 +661,7 @@ export interface CompleteSocialAuth {
 
 export type Lesson = Omit<
   EscolaLms.Courses.Models.Lesson,
-  'topics' | 'lessons'
+  "topics" | "lessons"
 > & {
   id: number;
   created_at: string;
@@ -963,7 +963,7 @@ export type SCORM = {
   id: number;
   resource_type: null;
   resource_id: number;
-  version: 'scorm_12' | 'scorm_2004';
+  version: "scorm_12" | "scorm_2004";
   hash_name: string;
   origin_file: string;
   origin_file_mime: string;
@@ -1259,7 +1259,7 @@ export type Certificate = {
 };
 
 export enum CertificateAssignableTypes {
-  Course = 'EscolaLms\\Courses\\Models\\Course',
+  Course = "EscolaLms\\Courses\\Models\\Course",
 }
 
 export type CertificateParams = PaginationParams & {
@@ -1386,7 +1386,7 @@ export type H5PObject = {
       contentUserData: [
         {
           state: object;
-        },
+        }
       ];
     }
   >;
@@ -1463,9 +1463,9 @@ export type InvoiceData = {
 export type TasksList = DefaultMetaResponse<Task>;
 
 export type TaskRelatedType =
-  | 'EscolaLMS\\Courses\\Course'
-  | 'EscolaLMS\\Courses\\Topic'
-  | 'EscolaLMS\\Courses\\Lesson';
+  | "EscolaLMS\\Courses\\Course"
+  | "EscolaLMS\\Courses\\Topic"
+  | "EscolaLMS\\Courses\\Lesson";
 
 export type TaskNote = EscolaLms.Tasks.Models.TaskNote & {
   note: string;
@@ -1503,7 +1503,7 @@ export type CourseAccessEnquiry =
     data?: object;
   };
 
-export type CourseAccessEnquiryStatus = 'pending' | 'approved';
+export type CourseAccessEnquiryStatus = "pending" | "approved";
 
 export type CourseAccessEnquiryListParams =
   EscolaLms.CourseAccess.Http.Requests.ListCourseAccessEnquiryRequest &
@@ -1548,12 +1548,12 @@ export type ConsultationsAccessEnquiryCreateRequest =
 
 export type ConsultationsAccessEnquiryUpdateRequest = Omit<
   EscolaLms.ConsultationAccess.Http.Requests.CreateConsultationAccessEnquiryRequest,
-  'consultation_id'
+  "consultation_id"
 > & {
   description?: string;
 };
 
-export type Metadata = Omit<EscolaLms.ModelFields.Models.Metadata, 'rules'> & {
+export type Metadata = Omit<EscolaLms.ModelFields.Models.Metadata, "rules"> & {
   rules: string | string[] | null;
 };
 
@@ -1598,8 +1598,8 @@ export type BookmarkNote = BookmarkCourse | BookmarkLesson | BookmarkTopic;
 export type BookmarkNoteParams =
   EscolaLms.Bookmarks.Http.Requests.ListBookmarkRequest &
     PaginationParams & {
-      order_by?: 'created_at' | 'id' | 'value';
-      order?: 'ASC' | 'DESC';
+      order_by?: "created_at" | "id" | "value";
+      order?: "ASC" | "DESC";
       has_value?: boolean | 1 | 0;
       bookmarkable_id?: number;
       bookmarkable_ids?: number[];
@@ -1613,14 +1613,14 @@ export type CreateBookmarkNote = {
 };
 
 export enum QuestionType {
-  MULTIPLE_CHOICE = 'multiple_choice',
-  MULTIPLE_CHOICE_WITH_MULTIPLE_RIGHT_ANSWERS = 'multiple_choice_with_multiple_right_answers',
-  TRUE_FALSE = 'true_false',
-  SHORT_ANSWERS = 'short_answers',
-  MATCHING = 'matching',
-  NUMERICAL_QUESTION = 'numerical_question',
-  ESSAY = 'essay',
-  DESCRIPTION = 'description',
+  MULTIPLE_CHOICE = "multiple_choice",
+  MULTIPLE_CHOICE_WITH_MULTIPLE_RIGHT_ANSWERS = "multiple_choice_with_multiple_right_answers",
+  TRUE_FALSE = "true_false",
+  SHORT_ANSWERS = "short_answers",
+  MATCHING = "matching",
+  NUMERICAL_QUESTION = "numerical_question",
+  ESSAY = "essay",
+  DESCRIPTION = "description",
 }
 
 type QuizQuestionBase = {
@@ -1706,7 +1706,7 @@ export type AddProductResponse = DefaultResponse<{
   buyable: boolean;
   difference: number;
   limit: number;
-  operation: 'increment' | 'decrement' | 'unchanged';
+  operation: "increment" | "decrement" | "unchanged";
   quantity_in_cart: number;
   quantity_owned: number;
 }>;
@@ -1733,7 +1733,7 @@ export type QuestionnaireModel = {
 
 export type Questionnaire = Pick<
   EscolaLms.Questionnaire.Models.Questionnaire,
-  'active' | 'id' | 'title'
+  "active" | "id" | "title"
 > & {
   models: QuestionnaireModel[];
   questions: QuestionnaireQuestion[];
@@ -1754,7 +1754,7 @@ export type QuestionnaireQuestionWithAnswer = {
   note: string | null;
 };
 
-export type QuestionnaireType = 'rate' | 'review' | 'text';
+export type QuestionnaireType = "rate" | "review" | "text";
 
 export type QuestionAnswer = {
   id: number;
@@ -1766,13 +1766,13 @@ export type QuestionAnswer = {
   note: string;
   updated_at: string;
   visible_on_front: boolean;
-  user: Pick<API.UserItem, 'avatar' | 'id' | 'name'>;
+  user: Pick<API.UserItem, "avatar" | "id" | "name">;
 };
 
 export type QuestionnaireAnswersParams = {
   type: API.QuestionnaireType;
-  order_by: 'created_at' | 'updated_at' | 'rate';
-  order: 'ASC' | 'DESC';
+  order_by: "created_at" | "updated_at" | "rate";
+  order: "ASC" | "DESC";
 };
 
 export type SemestersParams = {
@@ -1917,10 +1917,10 @@ export type Attendance = {
 };
 
 export enum AttendanceStatus {
-  PRESENT = 'present',
-  PRESENT_NOT_EXERCISING = 'present_not_exercising',
-  ABSENT = 'absent',
-  EXCUSED_ABSENCE = 'excused_absence',
+  PRESENT = "present",
+  PRESENT_NOT_EXERCISING = "present_not_exercising",
+  ABSENT = "absent",
+  EXCUSED_ABSENCE = "excused_absence",
 }
 
 export type NotificationsTokensBody = {
@@ -1930,7 +1930,7 @@ export type NotificationsTokensBody = {
 export type DictionariesParams = {
   word?: string;
   // Example: url?category_ids[]=1&category_ids[]=2category_ids[]=3
-  'category_ids[]'?: number[];
+  "category_ids[]"?: number[];
   word_start?: string;
   abort_prev?: boolean;
 };
@@ -1939,7 +1939,7 @@ export type DictionariesWordsParams = DictionariesParams & PaginationParams;
 
 export type DictionariesWordsCategory = Pick<
   Category,
-  'name' | 'name_with_breadcrumbs' | 'id'
+  "name" | "name_with_breadcrumbs" | "id"
 >;
 
 export type DictionaryWordData = {

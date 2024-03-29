@@ -1,4 +1,4 @@
-import * as API from './../../types/api';
+import * as API from "./../../types/api";
 
 export interface ContextState<T> {
   loading: boolean;
@@ -325,7 +325,7 @@ export interface EscolaLMSContextAPIConfig {
     filter: API.PageParams &
       API.PaginationParams & {
         type?: string;
-        'tags[]'?: string;
+        "tags[]"?: string;
         name?: string;
         productable_type?: string;
       }
@@ -334,7 +334,7 @@ export interface EscolaLMSContextAPIConfig {
     filter: API.PageParams &
       API.PaginationParams & {
         type?: string;
-        'tags[]'?: string;
+        "tags[]"?: string;
         name?: string;
         productable_type?: string;
       }
