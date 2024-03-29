@@ -1187,6 +1187,7 @@ export enum EventTypes {
   EscolaLmsCartOrderPaidTemplateEvent = "EscolaLms\\Cart\\Events\\EscolaLmsCartOrderPaidTemplateEvent",
   PdfCreated = "EscolaLms\\TemplatesPdf\\Events\\PdfCreated",
   LessonFinished = "EscolaLms\\Courses\\Events\\LessonFinished",
+  CourseAccessEnquiryStudentCreatedEvent = "EscolaLms\\CourseAccess\\Events\\CourseAccessEnquiryStudentCreatedEvent",
 }
 
 export type ConsultationTerm = {
