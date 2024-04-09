@@ -35,13 +35,17 @@ import {
   finishAccountDelete,
 } from "./../../services/auth";
 
-import { changePassword as postNewPassword } from "../../services/profile";
+import {
+  changePassword as postNewPassword,
+  deleteAccount as postDeleteAccount,
+} from "../../services/profile";
 
 type UserContextType = Pick<
   EscolaLMSContextConfig,
   | "user"
   | "socialAuthorize"
   | "changePassword"
+  | "deleteAccount"
   | "login"
   | "logout"
   | "forgot"
@@ -62,6 +66,7 @@ export const UserContext: React.Context<UserContextType> =
     user: defaultConfig.user,
     socialAuthorize: defaultConfig.socialAuthorize,
     changePassword: defaultConfig.changePassword,
+    deleteAccount: defaultConfig.deleteAccount,
     login: defaultConfig.login,
     logout: defaultConfig.logout,
     forgot: defaultConfig.forgot,
@@ -328,6 +333,12 @@ export const UserContextProvider: FunctionComponent<
     [token]
   );
 
+  const deleteAccount = useCallback(() => {
+    return token
+      ? postDeleteAccount.bind(null, apiUrl)(token)
+      : Promise.reject("noToken");
+  }, [token]);
+
   const socialAuthorize = useCallback((token: string) => {
     setToken(token);
   }, []);
@@ -408,6 +419,7 @@ export const UserContextProvider: FunctionComponent<
         user,
         socialAuthorize,
         changePassword,
+        deleteAccount,
         login,
         logout,
         forgot: forgot.bind(null, apiUrl),

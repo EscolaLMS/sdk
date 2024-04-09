@@ -18,3 +18,15 @@ export async function changePassword(
     data: body,
   });
 }
+
+export async function deleteAccount(apiUrl: string, token: string) {
+  return request<API.AuthResponse>(`${apiUrl}/api/profile`, {
+    method: "DELETE",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+      "Current-timezone": currentTimezone(),
+    },
+  });
+}
