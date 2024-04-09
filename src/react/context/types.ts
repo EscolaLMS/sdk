@@ -378,6 +378,8 @@ export interface EscolaLMSContextAPIConfig {
   changePassword: (
     body: API.ChangePasswordRequest
   ) => Promise<API.AuthResponse>;
+
+  deleteAccount: () => Promise<API.AuthResponse>;
   generateConsultationJitsy: (
     consultation: number
   ) => Promise<API.DefaultResponse<API.JitsyData>>;
