@@ -401,6 +401,14 @@ export type Product = Omit<EscolaLms.Cart.Models.Product, "productables"> & {
   name?: string;
   subscription_period?: string;
   subscription_duration?: number;
+  fields?: {
+    in_app_purchase_ids?: {
+      revenuecat?: {
+        app_store?: string;
+        play_store?: string;
+      };
+    };
+  };
 };
 
 export type ProductItems = EscolaLms.Cart.Models.ProductProductable & {
