@@ -1435,7 +1435,7 @@ export type AppointmentTerm = {
   duration: string;
   // TODO: enum status
   status: string;
-  user: UserItem & Record<string, string>;
+  users: UserItem & Record<string, string>[];
   is_started?: boolean;
   is_ended?: boolean;
   in_coming?: boolean;
@@ -1744,6 +1744,8 @@ export type QuestionnaireModel = {
   model_type_class: string;
   model_type_id: number;
   model_type_title: string;
+  target_goroup?: 'user' | 'author';
+  display_frequency_minutes?: number;
 };
 
 export type Questionnaire = Pick<
