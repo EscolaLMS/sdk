@@ -362,14 +362,16 @@ export interface EscolaLMSContextAPIConfig {
     | API.DefaultMetaResponse<API.AppointmentTerm>
   >;
   approveConsultationTerm: (
-    consultation: number
+    consultation: number,
+    term: string
   ) => Promise<
     | void
     | API.DefaultResponse<API.AppointmentTerm>
     | API.DefaultMetaResponse<API.AppointmentTerm>
   >;
   rejectConsultationTerm: (
-    consultation: number
+    consultation: number,
+    term:string
   ) => Promise<
     | void
     | API.DefaultResponse<API.AppointmentTerm>

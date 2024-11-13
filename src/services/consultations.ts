@@ -100,10 +100,11 @@ export async function approveConsultation(
   apiUrl: string,
   token: string,
   id: number,
+  term: string,
   options?: RequestOptionsInit
 ) {
   return request<API.TutorConsultationList>(
-    `${apiUrl}/api/consultations/approve-term/${id}`,
+    `${apiUrl}/api/consultations/approve-term/${id}?term=${term}`,
     {
       method: "GET",
       headers: {
@@ -122,10 +123,11 @@ export async function rejectConsultation(
   apiUrl: string,
   token: string,
   id: number,
+  term: string,
   options?: RequestOptionsInit
 ) {
   return request<API.TutorConsultationList>(
-    `${apiUrl}/api/consultations/reject-term/${id}`,
+    `${apiUrl}/api/consultations/reject-term/${id}?term=${term}`,
     {
       method: "GET",
       headers: {

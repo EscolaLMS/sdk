@@ -866,16 +866,21 @@ const EscolaLMSContextProviderInner: FunctionComponent<
   }, [token]);
 
   const approveConsultationTerm = useCallback(
-    (id: number) => {
+    (id: number, term: string) => {
       return token
         ? fetchDataType<API.AppointmentTerm>({
             controllers: abortControllers.current,
             controller: `aprovetutorterm${id}`,
             mode: "paginated",
-            fetchAction: approveConsultation.bind(null, apiUrl)(token, id, {
-              signal:
-                abortControllers.current?.[`aprovetutorterm${id}`]?.signal,
-            }),
+            fetchAction: approveConsultation.bind(null, apiUrl)(
+              token,
+              id,
+              term,
+              {
+                signal:
+                  abortControllers.current?.[`aprovetutorterm${id}`]?.signal,
+              }
+            ),
             setState: setTutorConsultations,
           })
         : Promise.reject("noToken");
@@ -884,15 +889,20 @@ const EscolaLMSContextProviderInner: FunctionComponent<
   );
 
   const rejectConsultationTerm = useCallback(
-    (id: number) => {
+    (id: number, term: string) => {
       return token
         ? fetchDataType<API.AppointmentTerm>({
             controllers: abortControllers.current,
             controller: `rejectterm${id}`,
             mode: "paginated",
-            fetchAction: rejectConsultation.bind(null, apiUrl)(token, id, {
-              signal: abortControllers.current?.[`rejectterm${id}`]?.signal,
-            }),
+            fetchAction: rejectConsultation.bind(null, apiUrl)(
+              token,
+              id,
+              term,
+              {
+                signal: abortControllers.current?.[`rejectterm${id}`]?.signal,
+              }
+            ),
             setState: setTutorConsultations,
           })
         : Promise.reject("noToken");

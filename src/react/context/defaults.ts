@@ -242,8 +242,8 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
   bookConsultationTerm: (id: number, term: string) => Promise.reject(),
   fetchWebinars: (filter: API.WebinarParams) => Promise.reject(),
   fetchTutorConsultations: () => Promise.reject(),
-  approveConsultationTerm: (consultationTermId: number) => Promise.reject(),
-  rejectConsultationTerm: (consultationTermId: number) => Promise.reject(),
+  approveConsultationTerm: (consultationTermId: number, term:string) => Promise.reject(),
+  rejectConsultationTerm: (consultationTermId: number, term:string) => Promise.reject(),
   generateConsultationJitsy: (consultationTermId: number) =>
     Promise.reject(consultationTermId),
   generateWebinarJitsy: (webinarId: number) => Promise.reject(webinarId),
@@ -653,8 +653,8 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
     loading: false,
   },
   fetchTutorConsultations: () => Promise.reject(),
-  approveConsultationTerm: (consultationTermId: number) => Promise.reject(),
-  rejectConsultationTerm: (consultationTermId: number) => Promise.reject(),
+  approveConsultationTerm: (consultationTermId: number, term:string) => Promise.reject(),
+  rejectConsultationTerm: (consultationTermId: number, term:string) => Promise.reject(),
   generateConsultationJitsy: (consultationTermId: number) =>
     Promise.reject(consultationTermId),
   generateWebinarJitsy: (webinarId: number) => Promise.reject(webinarId),
