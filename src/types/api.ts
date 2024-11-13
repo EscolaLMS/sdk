@@ -1429,13 +1429,15 @@ export type JitsyData = {
   yt_stream_key: string;
 };
 
+export type ApointmentTermUser = UserItem & Record<string, string>;
+
 export type AppointmentTerm = {
   consultation_term_id: number;
   date: string;
   duration: string;
   // TODO: enum status
   status: string;
-  user: UserItem & Record<string, string>;
+  users: ApointmentTermUser[];
   is_started?: boolean;
   is_ended?: boolean;
   in_coming?: boolean;
@@ -1744,6 +1746,8 @@ export type QuestionnaireModel = {
   model_type_class: string;
   model_type_id: number;
   model_type_title: string;
+  target_goroup?: 'user' | 'author';
+  display_frequency_minutes?: number;
 };
 
 export type Questionnaire = Pick<
