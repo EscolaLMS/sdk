@@ -1429,13 +1429,15 @@ export type JitsyData = {
   yt_stream_key: string;
 };
 
+export type ApointmentTermUser = UserItem & Record<string, string>;
+
 export type AppointmentTerm = {
   consultation_term_id: number;
   date: string;
   duration: string;
   // TODO: enum status
   status: string;
-  users: UserItem & Record<string, string>[];
+  users: ApointmentTermUser[];
   is_started?: boolean;
   is_ended?: boolean;
   in_coming?: boolean;
