@@ -1746,7 +1746,7 @@ export type QuestionnaireModel = {
   model_type_class: string;
   model_type_id: number;
   model_type_title: string;
-  target_goroup?: 'user' | 'author';
+  target_goroup?: "user" | "author";
   display_frequency_minutes?: number;
 };
 
