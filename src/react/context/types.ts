@@ -363,7 +363,8 @@ export interface EscolaLMSContextAPIConfig {
   >;
   approveConsultationTerm: (
     consultation: number,
-    term: string
+    term: string,
+    userId?: number
   ) => Promise<
     | void
     | API.DefaultResponse<API.AppointmentTerm>
@@ -383,7 +384,8 @@ export interface EscolaLMSContextAPIConfig {
 
   deleteAccount: () => Promise<API.AuthResponse>;
   generateConsultationJitsy: (
-    consultation: number
+    consultation: number,
+    term: string
   ) => Promise<API.DefaultResponse<API.JitsyData>>;
   generateWebinarJitsy: (
     webinarId: number
@@ -439,7 +441,9 @@ export interface EscolaLMSContextAPIConfig {
   ) => Promise<Blob>;
   changeConsultationTerm: (
     termId: number,
-    newDate: string
+    newDate: string,
+    term: string,
+    userId?: number
   ) => Promise<API.DefaultResponse<object>>;
   fetchTasks: (
     filter: API.TaskParams
