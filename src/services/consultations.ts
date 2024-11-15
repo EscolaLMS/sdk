@@ -101,10 +101,13 @@ export async function approveConsultation(
   token: string,
   id: number,
   term: string,
+  userId?: number,
   options?: RequestOptionsInit
 ) {
   return request<API.TutorConsultationList>(
-    `${apiUrl}/api/consultations/approve-term/${id}?term=${term}`,
+    `${apiUrl}/api/consultations/approve-term/${id}?term=${term}${
+      userId ? `&user_id=${userId}` : ""
+    }`,
     {
       method: "GET",
       headers: {
@@ -124,10 +127,13 @@ export async function rejectConsultation(
   token: string,
   id: number,
   term: string,
+  userId?: number,
   options?: RequestOptionsInit
 ) {
   return request<API.TutorConsultationList>(
-    `${apiUrl}/api/consultations/reject-term/${id}?term=${term}`,
+    `${apiUrl}/api/consultations/reject-term/${id}?term=${term}${
+      userId ? `&user_id=${userId}` : ""
+    }`,
     {
       method: "GET",
       headers: {
@@ -146,10 +152,11 @@ export async function generateJitsy(
   apiUrl: string,
   token: string,
   id: number,
+  term: string,
   options?: RequestOptionsInit
 ) {
   return request<API.DefaultResponse<API.JitsyData>>(
-    `${apiUrl}/api/consultations/generate-jitsi/${id}`,
+    `${apiUrl}/api/consultations/generate-jitsi/${id}?term=${term}`,
     {
       method: "GET",
       headers: {
@@ -168,11 +175,15 @@ export async function changeTermDate(
   apiUrl: string,
   termId: number,
   newDate: string,
+  term: string,
   token: string,
+  userId?: number,
   options?: RequestOptionsInit
 ) {
   return request<API.DefaultResponse<API.Consultation>>(
-    `${apiUrl}/api/consultations/change-term/${termId}`,
+    `${apiUrl}/api/consultations/change-term/${termId}?term=${term}${
+      userId ? `&user_id=${userId}` : ""
+    }`,
     {
       method: "POST",
       headers: {

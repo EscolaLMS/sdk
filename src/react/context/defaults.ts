@@ -242,11 +242,14 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
   bookConsultationTerm: (id: number, term: string) => Promise.reject(),
   fetchWebinars: (filter: API.WebinarParams) => Promise.reject(),
   fetchTutorConsultations: () => Promise.reject(),
-  approveConsultationTerm: (consultationTermId: number, term: string) =>
-    Promise.reject(),
+  approveConsultationTerm: (
+    consultationTermId: number,
+    term: string,
+    userId?: number
+  ) => Promise.reject(),
   rejectConsultationTerm: (consultationTermId: number, term: string) =>
     Promise.reject(),
-  generateConsultationJitsy: (consultationTermId: number) =>
+  generateConsultationJitsy: (consultationTermId: number, term: string) =>
     Promise.reject(consultationTermId),
   generateWebinarJitsy: (webinarId: number) => Promise.reject(webinarId),
   webinars: {
@@ -298,7 +301,12 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
     loading: false,
   },
   fetchOrderInvoice: (id: number) => Promise.reject(id),
-  changeConsultationTerm: (termId: number, newDate: string) => Promise.reject(),
+  changeConsultationTerm: (
+    termId: number,
+    newDate: string,
+    term: string,
+    userId?: number
+  ) => Promise.reject(),
   tasks: {
     loading: false,
   },
@@ -655,11 +663,14 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
     loading: false,
   },
   fetchTutorConsultations: () => Promise.reject(),
-  approveConsultationTerm: (consultationTermId: number, term: string) =>
-    Promise.reject(),
+  approveConsultationTerm: (
+    consultationTermId: number,
+    term: string,
+    userId?: number
+  ) => Promise.reject(),
   rejectConsultationTerm: (consultationTermId: number, term: string) =>
     Promise.reject(),
-  generateConsultationJitsy: (consultationTermId: number) =>
+  generateConsultationJitsy: (consultationTermId: number, term: string) =>
     Promise.reject(consultationTermId),
   generateWebinarJitsy: (webinarId: number) => Promise.reject(webinarId),
   events: {
@@ -707,7 +718,12 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
     loading: false,
   },
   fetchOrderInvoice: (id: number) => Promise.reject(id),
-  changeConsultationTerm: (termId: number, newDate: string) => Promise.reject(),
+  changeConsultationTerm: (
+    termId: number,
+    newDate: string,
+    term: string,
+    userId?: number
+  ) => Promise.reject(),
   tasks: {
     loading: false,
   },

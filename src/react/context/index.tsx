@@ -866,7 +866,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
   }, [token]);
 
   const approveConsultationTerm = useCallback(
-    (id: number, term: string) => {
+    (id: number, term: string, userId?: number) => {
       return token
         ? fetchDataType<API.AppointmentTerm>({
             controllers: abortControllers.current,
@@ -876,6 +876,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
               token,
               id,
               term,
+              userId,
               {
                 signal:
                   abortControllers.current?.[`aprovetutorterm${id}`]?.signal,
@@ -889,7 +890,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
   );
 
   const rejectConsultationTerm = useCallback(
-    (id: number, term: string) => {
+    (id: number, term: string, userId?: number) => {
       return token
         ? fetchDataType<API.AppointmentTerm>({
             controllers: abortControllers.current,
@@ -899,6 +900,7 @@ const EscolaLMSContextProviderInner: FunctionComponent<
               token,
               id,
               term,
+              userId,
               {
                 signal: abortControllers.current?.[`rejectterm${id}`]?.signal,
               }
@@ -914,9 +916,9 @@ const EscolaLMSContextProviderInner: FunctionComponent<
   // https://github.com/EscolaLMS/sdk/issues/251
 
   const generateConsultationJitsy = useCallback(
-    (id: number) => {
+    (id: number, term: string) => {
       return token
-        ? generateJitsy.bind(null, apiUrl)(token, id)
+        ? generateJitsy.bind(null, apiUrl)(token, id, term)
         : Promise.reject("noToken");
     },
     [token]
@@ -999,9 +1001,15 @@ const EscolaLMSContextProviderInner: FunctionComponent<
   }, [token]);
 
   const changeConsultationTerm = useCallback(
-    (termId: number, newDate: string) => {
+    (termId: number, newDate: string, term: string, userId?: number) => {
       return token
-        ? changeTermDate.bind(null, apiUrl)(termId, newDate, token)
+        ? changeTermDate.bind(null, apiUrl)(
+            termId,
+            newDate,
+            term,
+            token,
+            userId
+          )
         : Promise.reject("noToken");
     },
     [token]
