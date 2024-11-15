@@ -106,7 +106,7 @@ export async function approveConsultation(
 ) {
   return request<API.TutorConsultationList>(
     `${apiUrl}/api/consultations/approve-term/${id}?term=${term}${
-      userId ? `&userId=${userId}` : ""
+      userId ? `&user_id=${userId}` : ""
     }`,
     {
       method: "GET",
@@ -132,7 +132,7 @@ export async function rejectConsultation(
 ) {
   return request<API.TutorConsultationList>(
     `${apiUrl}/api/consultations/reject-term/${id}?term=${term}${
-      userId ? `&userId=${userId}` : ""
+      userId ? `&user_id=${userId}` : ""
     }`,
     {
       method: "GET",
@@ -182,7 +182,7 @@ export async function changeTermDate(
 ) {
   return request<API.DefaultResponse<API.Consultation>>(
     `${apiUrl}/api/consultations/change-term/${termId}?term=${term}${
-      userId ? `&userId=${userId}` : ""
+      userId ? `&user_id=${userId}` : ""
     }`,
     {
       method: "POST",
