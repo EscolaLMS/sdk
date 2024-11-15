@@ -247,8 +247,11 @@ export const defaultReadConfig: EscolaLMSContextConfig = {
     term: string,
     userId?: number
   ) => Promise.reject(),
-  rejectConsultationTerm: (consultationTermId: number, term: string) =>
-    Promise.reject(),
+  rejectConsultationTerm: (
+    consultationTermId: number,
+    term: string,
+    userId?: number
+  ) => Promise.reject(),
   generateConsultationJitsy: (consultationTermId: number, term: string) =>
     Promise.reject(consultationTermId),
   generateWebinarJitsy: (webinarId: number) => Promise.reject(webinarId),
@@ -668,8 +671,11 @@ export const defaultApiConfig: EscolaLMSContextConfig = {
     term: string,
     userId?: number
   ) => Promise.reject(),
-  rejectConsultationTerm: (consultationTermId: number, term: string) =>
-    Promise.reject(),
+  rejectConsultationTerm: (
+    consultationTermId: number,
+    term: string,
+    userId?: number
+  ) => Promise.reject(),
   generateConsultationJitsy: (consultationTermId: number, term: string) =>
     Promise.reject(consultationTermId),
   generateWebinarJitsy: (webinarId: number) => Promise.reject(webinarId),
