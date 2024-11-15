@@ -372,7 +372,8 @@ export interface EscolaLMSContextAPIConfig {
   >;
   rejectConsultationTerm: (
     consultation: number,
-    term: string
+    term: string,
+    userId?: number
   ) => Promise<
     | void
     | API.DefaultResponse<API.AppointmentTerm>
