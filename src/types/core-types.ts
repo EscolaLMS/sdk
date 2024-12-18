@@ -1,5 +1,3 @@
-// core-types.ts
-
 export type Nullable<T> = T | null | undefined;
 
 export type IStatementCategory = {
@@ -104,3 +102,25 @@ export type PageParams = {
 };
 
 export type Json = string | number | Json[] | { [key: string]: Json };
+
+export type Category = {
+  id: number;
+  name: string;
+  slug: string;
+  is_active: boolean;
+  parent_id?: number;
+  icon?: string;
+  icon_class: string;
+  created_at: string;
+  updated_at: string;
+  order: number;
+  pivot?: {
+    course_id: number;
+    category_id: number;
+  };
+  subcategories?: Category[];
+  count?: number;
+  count_free?: number;
+  description?: string;
+  name_with_breadcrumbs?: string;
+};

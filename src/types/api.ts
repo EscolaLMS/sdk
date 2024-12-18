@@ -12,6 +12,7 @@ import {
   PageParams,
   DefaultResponseError,
   DataResponseSuccess,
+  Category,
 } from "./core-types";
 import {
   BookmarkableType,
@@ -25,6 +26,8 @@ import {
   EventTypes,
   PaymentStatusType,
 } from "./enums";
+
+import { UserItem } from "./user-types";
 
 export type IStatement = {
   actor: unknown;
@@ -43,28 +46,6 @@ export type IEventException =
   | "GuessTheAnswer"
   | "Questionnaire"
   | "QuestionSet";
-
-export type Category = {
-  id: number;
-  name: string;
-  slug: string;
-  is_active: boolean;
-  parent_id?: number;
-  icon?: string;
-  icon_class: string;
-  created_at: string;
-  updated_at: string;
-  order: number;
-  pivot?: {
-    course_id: number;
-    category_id: number;
-  };
-  subcategories?: Category[];
-  count?: number;
-  count_free?: number;
-  description?: string;
-  name_with_breadcrumbs?: string;
-};
 
 export type Tag = {
   id: number;
@@ -242,14 +223,6 @@ export type StationaryEventsList = DefaultMetaResponse<StationaryEvent>;
 export type EventsList = DefaultMetaResponse<Event>;
 
 export type TutorConsultationList = DefaultMetaResponse<AppointmentTerm>;
-
-export type UserGroups = UserGroup[];
-
-export type UserGroupRow = DefaultResponse<UserGroup>;
-
-export type UserGroupAddRow = DefaultResponse<UserItem[]>;
-
-export type UserGroupList = DefaultMetaResponse<UserGroup>;
 
 export type Consultation = EscolaLms.Consultations.Models.Consultation & {
   product?: Product;
@@ -480,33 +453,6 @@ export type AcademicYear = {
   active: boolean;
 };
 
-export type UserItem = Partial<
-  Exclude<
-    EscolaLms.Auth.Models.User,
-    | "password"
-    | "remember_token"
-    | "password_reset_token"
-    | "email_verified_at"
-    | "is_active"
-  >
-> & {
-  // id: number;
-  // name: string;
-  // first_name: string;
-  // last_name: string;
-  // email: string;
-  // is_active: boolean;
-  // created_at: string;
-  // onboarding_completed: boolean;
-  // email_verified: boolean;
-  avatar?: string;
-  url_avatar: string | null;
-  // path_avatar: string | null;
-  bio?: string | null;
-  categories?: Category[] | null;
-  interests?: Array<EscolaLms.Categories.Models.Category> | null | never[];
-};
-
 export type MembershipDetails = {
   id: number;
   value: string;
@@ -521,18 +467,6 @@ export type UserAsProfile = Omit<UserItem, "roles"> & {
     type: MembershipDetails;
   }[];
 };
-
-export type UpdateUserDetails = {
-  first_name?: string;
-  last_name?: string;
-  age?: number;
-  gender?: number;
-  country?: string;
-  city?: string;
-  street?: string;
-  postcode?: string;
-  phone?: string;
-} & Record<string, string | number | boolean | null>;
 
 export type UpdateUserEmail = {
   email?: string;
@@ -950,15 +884,6 @@ export type Payment = {
   status: PaymentStatusType;
   updated_at: string;
   payable: Order;
-};
-
-export type UserGroup = {
-  id: number;
-  name: string;
-  users: UserItem[];
-  name_with_breadcrumbs?: string;
-  parent_id?: null | number;
-  registerable?: boolean;
 };
 
 export type UserGroupsParams = {
