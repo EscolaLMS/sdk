@@ -17,7 +17,7 @@ import { defaultConfig } from "./defaults";
 import { fetchDataType } from "./states";
 
 import { useLocalStorage } from "../hooks/useLocalStorage";
-import * as API from "./../../types/api";
+import * as API from "../../types";
 import { getDefaultData } from "./index";
 import {
   getTask,

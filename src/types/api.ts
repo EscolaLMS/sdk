@@ -1,67 +1,30 @@
 import { API } from "..";
-
-type Nullable<T> = T | null | undefined;
-
-export enum TopicType {
-  Unselected = "",
-  RichText = "EscolaLms\\TopicTypes\\Models\\TopicContent\\RichText",
-  OEmbed = "EscolaLms\\TopicTypes\\Models\\TopicContent\\OEmbed",
-  Audio = "EscolaLms\\TopicTypes\\Models\\TopicContent\\Audio",
-  Video = "EscolaLms\\TopicTypes\\Models\\TopicContent\\Video",
-  H5P = "EscolaLms\\TopicTypes\\Models\\TopicContent\\H5P",
-  Image = "EscolaLms\\TopicTypes\\Models\\TopicContent\\Image",
-  Pdf = "EscolaLms\\TopicTypes\\Models\\TopicContent\\PDF",
-  Scorm = "EscolaLms\\TopicTypes\\Models\\TopicContent\\ScormSco",
-  Project = "EscolaLms\\TopicTypeProject\\Models\\Project",
-  GiftQuiz = "EscolaLms\\TopicTypeGift\\Models\\GiftQuiz",
-}
-
-export enum BookmarkableType {
-  Course = "EscolaLms\\Courses\\Models\\Course",
-  Lesson = "EscolaLms\\Courses\\Models\\Lesson",
-  Topic = "EscolaLms\\Courses\\Models\\Topic",
-}
-
-export enum PaymentStatusType {
-  NEW = "new",
-  PAID = "paid",
-  CANCELLED = "cancelled",
-}
-
-export type IEvent =
-  | "http://adlnet.gov/expapi/verbs/experienced"
-  | "http://adlnet.gov/expapi/verbs/attended"
-  | "http://adlnet.gov/expapi/verbs/attempted"
-  | "http://adlnet.gov/expapi/verbs/completed"
-  | "http://adlnet.gov/expapi/verbs/passed"
-  | "http://adlnet.gov/expapi/verbs/failed"
-  | "http://adlnet.gov/expapi/verbs/answered"
-  | "http://adlnet.gov/expapi/verbs/interacted"
-  | "http://adlnet.gov/expapi/verbs/imported"
-  | "http://adlnet.gov/expapi/verbs/created"
-  | "http://adlnet.gov/expapi/verbs/shared"
-  | "http://adlnet.gov/expapi/verbs/voided"
-  | "http://activitystrea.ms/schema/1.0/consume"
-  | "http://adlnet.gov/expapi/verbs/mastered";
-
-export type IStatementCategory = {
-  id: string;
-  objectType: "string";
-};
-
-export type IScore = {
-  min: number;
-  raw: number;
-  max: number;
-  scaled: number;
-};
-
-export type IResult = {
-  completion: boolean;
-  duration: string;
-  response: string;
-  score: IScore;
-};
+import {
+  IStatementCategory,
+  IResult,
+  Nullable,
+  PaginatedList,
+  PaginatedMetaList,
+  DefaultResponseSuccess,
+  PaginationParams,
+  DefaultResponse,
+  DefaultMetaResponse,
+  PageParams,
+  DefaultResponseError,
+  DataResponseSuccess,
+} from "./core-types";
+import {
+  BookmarkableType,
+  IEvent,
+  TopicType,
+  CertificateAssignableTypes,
+  CompetencyChallengeType,
+  CourseProgressItemElementStatus,
+  QuestionType,
+  AttendanceStatus,
+  EventTypes,
+  PaymentStatusType,
+} from "./enums";
 
 export type IStatement = {
   actor: unknown;
@@ -188,11 +151,6 @@ export type CompetencyChallengeCategory = {
   parent_id?: number;
 };
 
-export enum CompetencyChallengeType {
-  Simple = "simple",
-  Complex = "complex",
-}
-
 export type BaseCompetencyChallenge = {
   id: number;
   name: string;
@@ -222,83 +180,11 @@ export type CompetencyChallenge =
   | SimpleCompetencyChallenge
   | ComplexCompetencyChallenge;
 
-export type PaginatedList<Model> = {
-  current_page: number;
-  data: Model[];
-  next_page_url: string;
-  path: string;
-  per_page: number | string;
-  prev_page_url: string;
-  to: number;
-  total: number;
-  last_page: number;
-};
-
-export type PaginatedMetaList<Model> = {
-  data: Model[];
-  meta: {
-    current_page: number;
-    next_page_url: string;
-    last_page: number;
-    path: string;
-    per_page: number | string;
-    prev_page_url: string | null;
-    to: number;
-    total: number;
-    links:
-      | {
-          first: string;
-          last: string;
-          next: string;
-          prev: string;
-        }
-      | { url: string | null; label: string; active: boolean }[];
-  };
-};
-
 export type PaginatedListParams = {
   current_page: number;
   total?: number;
   per_page: number;
 };
-
-export type DefaultResponseSuccess<Model> = {
-  success: true;
-  data: Model;
-  message: string;
-};
-
-export type DataResponseSuccess<Model> = {
-  data: Model;
-};
-
-export type DefaultResponseError = {
-  success: false;
-  message: string;
-  error: string;
-  errors: {
-    [key: string]: string[]; // list of errors
-  };
-};
-
-export type DefaultResponse<Model> =
-  | DefaultResponseSuccess<Model>
-  | DefaultResponseError;
-
-export type DataResponse<Model> =
-  | DataResponseSuccess<Model>
-  | DefaultResponseError;
-
-export type DefaultMetaResponse<Model> =
-  | (PaginatedMetaList<Model> & {
-      message: string;
-      success: true;
-    })
-  | DefaultResponseError;
-
-export type RawResponse<Model> = Model | DefaultResponseError;
-
-export type SuccessResponse = { success: true } | DefaultResponseError;
 
 export type CourseList = DefaultMetaResponse<Course>;
 
@@ -378,6 +264,8 @@ export type Consultation = EscolaLms.Consultations.Models.Consultation & {
       string | number | boolean
     >;
   busy_terms: string[];
+  teachers: User[];
+  public?: boolean;
 };
 
 export type Product = Omit<EscolaLms.Cart.Models.Product, "productables"> & {
@@ -442,18 +330,6 @@ export type CartItem = EscolaLms.Cart.Models.CartItem & {
   };
   product_id?: number;
   total_with_tax?: number;
-};
-
-export type PaginationParams = {
-  order_by?: string;
-  order?: "ASC" | "DESC";
-  page?: number;
-  per_page?: number;
-};
-
-export type PageParams = {
-  current?: number;
-  pageSize?: number;
 };
 
 export type ExamsParams = PaginationParams & {
@@ -893,7 +769,6 @@ export type Page = {
   content: string;
 };
 
-export type Json = string | number | Json[] | { [key: string]: Json };
 // TODO: create proper type
 export type AppSettings = any & {
   currencies?: AppCurrency;
@@ -1021,12 +896,6 @@ export type CourseProgressItemElement = {
   seconds?: number;
 };
 
-export enum CourseProgressItemElementStatus {
-  INCOMPLETE = 0,
-  COMPLETE = 1,
-  IN_PROGRESS = 2,
-}
-
 export type CourseProgressItem = {
   categories: CategoryListItem[];
   course: Course;
@@ -1097,106 +966,6 @@ export type UserGroupsParams = {
   pageSize?: number;
   search?: string;
 };
-
-export enum EventTypes {
-  UserLogged = "EscolaLms\\Auth\\Events\\UserLogged",
-  StationaryEventAssigned = "EscolaLms\\StationaryEvents\\Events\\StationaryEventAssigned",
-  StationaryEventUnassigned = "EscolaLms\\StationaryEvents\\Events\\StationaryEventUnassigned",
-  StationaryEventAuthorAssigned = "EscolaLms\\StationaryEvents\\Events\\StationaryEventAuthorAssigned",
-  StationaryEventAuthorUnassigned = "EscolaLms\\StationaryEvents\\Events\\StationaryEventAuthorUnassigned",
-  AbandonedCartEvent = "EscolaLms\\Cart\\Events\\AbandonedCartEvent",
-  OrderCancelled = "EscolaLms\\Cart\\Events\\OrderCancelled",
-  OrderCreated = "EscolaLms\\Cart\\Events\\OrderCreated",
-  OrderPaid = "EscolaLms\\Cart\\Events\\OrderPaid",
-  ProductableAttached = "EscolaLms\\Cart\\Events\\ProductableAttached",
-  ProductableDetached = "EscolaLms\\Cart\\Events\\ProductableDetached",
-  ProductAddedToCart = "EscolaLms\\Cart\\Events\\ProductAddedToCart",
-  ProductAttached = "EscolaLms\\Cart\\Events\\ProductAttached",
-  ProductBought = "EscolaLms\\Cart\\Events\\ProductBought",
-  ProductDetached = "EscolaLms\\Cart\\Events\\ProductDetached",
-  ProductRemovedFromCart = "EscolaLms\\Cart\\Events\\ProductRemovedFromCart",
-  PaymentCancelled = "EscolaLms\\Payments\\Events\\PaymentCancelled",
-  PaymentFailed = "EscolaLms\\Payments\\Events\\PaymentFailed",
-  PaymentRegistered = "EscolaLms\\Payments\\Events\\PaymentRegistered",
-  PaymentSuccess = "EscolaLms\\Payments\\Events\\PaymentSuccess",
-  CourseAccessFinished = "EscolaLms\\Courses\\Events\\CourseAccessFinished",
-  CourseAccessStarted = "EscolaLms\\Courses\\Events\\CourseAccessStarted",
-  CourseAssigned = "EscolaLms\\Courses\\Events\\CourseAssigned",
-  CourseDeadlineSoon = "EscolaLms\\Courses\\Events\\CourseDeadlineSoon",
-  CoursedPublished = "EscolaLms\\Courses\\Events\\CoursedPublished",
-  CourseFinished = "EscolaLms\\Courses\\Events\\CourseFinished",
-  CourseStarted = "EscolaLms\\Courses\\Events\\CourseStarted",
-  CourseStatusChanged = "EscolaLms\\Courses\\Events\\CourseStatusChanged",
-  CourseTutorAssigned = "EscolaLms\\Courses\\Events\\CourseTutorAssigned",
-  CourseTutorUnassigned = "EscolaLms\\Courses\\Events\\CourseTutorUnassigned",
-  CourseUnassigned = "EscolaLms\\Courses\\Events\\CourseUnassigned",
-  TopicFinished = "EscolaLms\\Courses\\Events\\TopicFinished",
-  TopicTypeChanged = "EscolaLms\\TopicTypes\\Events\\TopicTypeChanged",
-  ApprovedTerm = "EscolaLms\\Consultations\\Events\\ApprovedTerm",
-  ApprovedTermWithTrainer = "EscolaLms\\Consultations\\Events\\ApprovedTermWithTrainer",
-  ChangeTerm = "EscolaLms\\Consultations\\Events\\ChangeTerm",
-  RejectTerm = "EscolaLms\\Consultations\\Events\\RejectTerm",
-  RejectTermWithTrainer = "EscolaLms\\Consultations\\Events\\RejectTermWithTrainer",
-  ReminderAboutTerm = "EscolaLms\\Consultations\\Events\\ReminderAboutTerm",
-  ReminderTrainerAboutTerm = "EscolaLms\\Consultations\\Events\\ReminderTrainerAboutTerm",
-  ReportTerm = "EscolaLms\\Consultations\\Events\\ReportTerm",
-  WebinarReminderAboutTerm = "EscolaLms\\Webinar\\Events\\ReminderAboutTerm",
-  WebinarTrainerAssigned = "EscolaLms\\Webinar\\Events\\WebinarTrainerAssigned",
-  WebinarTrainerUnassigned = "EscolaLms\\Webinar\\Events\\WebinarTrainerUnassigned",
-  ProcessVideoFailed = "ProcessVideoFailed",
-  ProcessVideoStarted = "ProcessVideoStarted",
-  ImportedNewUserTemplateEvent = "EscolaLms\\CsvUsers\\Events\\EscolaLmsImportedNewUserTemplateEvent",
-  AssignToProduct = "AssignToProduct", // ASSIGN WITHOUT ACCONT
-  AssignToProductable = "AssignToProductable", // ASSIGN WITHOUT ACCONT
-  FileDeleted = "FileDeleted",
-  FileStored = "FileStored",
-  SettingPackageConfigUpdated = "EscolaLms\\Settings\\Events\\SettingPackageConfigUpdated",
-  AccountBlocked = "EscolaLms\\Auth\\Events\\AccountBlocked",
-  AccountConfirmed = "EscolaLms\\Auth\\Events\\AccountConfirmed",
-  AccountDeleted = "EscolaLms\\Auth\\Events\\AccountDeleted",
-  AccountMustBeEnableByAdmin = "EscolaLms\\Auth\\Events\\AccountMustBeEnableByAdmin",
-  AccountRegistered = "EscolaLms\\Auth\\Events\\AccountRegistered",
-  ForgotPassword = "EscolaLms\\Auth\\Events\\ForgotPassword",
-  Login = "EscolaLms\\Auth\\Events\\Login",
-  Logout = "EscolaLms\\Auth\\Events\\Logout",
-  PasswordChanged = "EscolaLms\\Auth\\Events\\PasswordChanged",
-  ResetPassword = "EscolaLms\\Auth\\Events\\ResetPassword",
-  UserAddedToGroup = "EscolaLms\\Auth\\Events\\UserAddedToGroup",
-  UserRemovedFromGroup = "EscolaLms\\Auth\\Events\\UserRemovedFromGroup",
-  BulkNotification = "EscolaLms\\BulkNotifications\\Events\\NotificationSent",
-  PushNotification = "EscolaLms\\BulkNotifications\\Channels\\PushNotificationChannel",
-  // new and missed event types
-  WebinarUserAssigned = "EscolaLms\\Webinar\\Events\\WebinarUserAssigned",
-  EscolaLmsCartOrderSuccessTemplateEvent = "EscolaLms\\Cart\\Events\\EscolaLmsCartOrderSuccessTemplateEvent",
-  EscolaLmsLoginTemplateEvent = "EscolaLms\\Auth\\Events\\EscolaLmsLoginTemplateEvent",
-  EscolaLmsAccountBlockedTemplateEvent = "EscolaLms\\Auth\\Events\\EscolaLmsAccountBlockedTemplateEvent",
-  EscolaLmsCourseFinishedTemplateEvent = "EscolaLms\\Courses\\Events\\EscolaLmsCourseFinishedTemplateEvent",
-  EscolaLmsImportedNewUserTemplateEvent = "EscolaLms\\CsvUsers\\Events\\EscolaLmsImportedNewUserTemplateEvent",
-  TaskUpdatedEvent = "EscolaLms\\Tasks\\Events\\TaskUpdatedEvent",
-  CartOrderPaid = "EscolaLms\\Cart\\Events\\CartOrderPaid",
-  EscolaLmsUserRemovedFromGroupTemplateEvent = "EscolaLms\\Auth\\Events\\EscolaLmsUserRemovedFromGroupTemplateEvent",
-  EscolaLmsUserAddedToGroupTemplateEvent = "EscolaLms\\Auth\\Events\\EscolaLmsUserAddedToGroupTemplateEvent",
-  ProjectSolutionCreatedEvent = "EscolaLms\\TopicTypeProject\\Events\\ProjectSolutionCreatedEvent",
-  QuizAttemptFinishedEvent = "EscolaLms\\TopicTypeGift\\Events\\QuizAttemptFinishedEvent",
-  EscolaLmsTopicTypeChangedTemplateEvent = "EscolaLms\\TopicTypes\\Events\\EscolaLmsTopicTypeChangedTemplateEvent",
-  EscolaLmsCourseUnassignedTemplateEvent = "EscolaLms\\Courses\\Events\\EscolaLmsCourseUnassignedTemplateEvent",
-  EscolaLmsAccountDeletedTemplateEvent = "EscolaLms\\Auth\\Events\\EscolaLmsAccountDeletedTemplateEvent",
-  TaskOverdueEvent = "EscolaLms\\Tasks\\Events\\TaskOverdueEvent",
-  TaskNoteCreatedEvent = "EscolaLms\\Tasks\\Events\\TaskNoteCreatedEvent",
-  TaskAssignedEvent = "EscolaLms\\Tasks\\Events\\TaskAssignedEvent",
-  EscolaLmsCoursedPublishedTemplateEvent = "EscolaLms\\Courses\\Events\\EscolaLmsCoursedPublishedTemplateEvent",
-  EscolaLmsResetPasswordTemplateEvent = "EscolaLms\\Auth\\Events\\EscolaLmsResetPasswordTemplateEvent",
-  EscolaLmsForgotPasswordTemplateEvent = "EscolaLms\\Auth\\Events\\EscolaLmsForgotPasswordTemplateEvent",
-  EscolaLmsCourseAssignedTemplateEvent = "EscolaLms\\Courses\\Events\\EscolaLmsCourseAssignedTemplateEvent",
-  EscolaLmsPaymentRegisteredTemplateEvent = "EscolaLms\\Payments\\Events\\EscolaLmsPaymentRegisteredTemplateEvent",
-  EscolaLmsPermissionRoleChangedTemplateEvent = "EscolaLms\\Permissions\\Events\\EscolaLmsPermissionRoleChangedTemplateEvent",
-  EscolaLmsPermissionRoleRemovedTemplateEvent = "EscolaLms\\Permissions\\Events\\EscolaLmsPermissionRoleRemovedTemplateEvent",
-  EscolaLmsAccountConfirmedTemplateEvent = "EscolaLms\\Auth\\Events\\EscolaLmsAccountConfirmedTemplateEvent",
-  EscolaLmsCartOrderPaidTemplateEvent = "EscolaLms\\Cart\\Events\\EscolaLmsCartOrderPaidTemplateEvent",
-  PdfCreated = "EscolaLms\\TemplatesPdf\\Events\\PdfCreated",
-  LessonFinished = "EscolaLms\\Courses\\Events\\LessonFinished",
-  CourseAccessEnquiryStudentCreatedEvent = "EscolaLms\\CourseAccess\\Events\\CourseAccessEnquiryStudentCreatedEvent",
-}
 
 export type ConsultationTerm = {
   consultation: Consultation;
@@ -1272,10 +1041,6 @@ export type Certificate = {
   title?: string;
   assignable_id?: number;
 };
-
-export enum CertificateAssignableTypes {
-  Course = "EscolaLms\\Courses\\Models\\Course",
-}
 
 export type CertificateParams = PaginationParams & {
   assignable_type?: CertificateAssignableTypes;
@@ -1415,6 +1180,7 @@ export type JitsyConfig = {
   userInfo: {
     displayName: string;
     email: string;
+    id: number;
   };
   jwt: string;
   app_id: string;
@@ -1433,6 +1199,8 @@ export type ApointmentTermUser = UserItem & Record<string, string>;
 
 export type AppointmentTerm = {
   consultation_term_id: number;
+  consultation_id: number;
+  consultation_media: any;
   date: string;
   duration: string;
   // TODO: enum status
@@ -1629,17 +1397,6 @@ export type CreateBookmarkNote = {
   bookmarkable_type: BookmarkableType;
 };
 
-export enum QuestionType {
-  MULTIPLE_CHOICE = "multiple_choice",
-  MULTIPLE_CHOICE_WITH_MULTIPLE_RIGHT_ANSWERS = "multiple_choice_with_multiple_right_answers",
-  TRUE_FALSE = "true_false",
-  SHORT_ANSWERS = "short_answers",
-  MATCHING = "matching",
-  NUMERICAL_QUESTION = "numerical_question",
-  ESSAY = "essay",
-  DESCRIPTION = "description",
-}
-
 type QuizQuestionBase = {
   id: number;
   question: string;
@@ -1756,6 +1513,8 @@ export type Questionnaire = Pick<
 > & {
   models: QuestionnaireModel[];
   questions: QuestionnaireQuestion[];
+  taget_group: "user" | "author";
+  display_frequency_minutes: number;
 };
 
 export type QuestionnaireAnswerResponse = {
@@ -1934,13 +1693,6 @@ export type Attendance = {
   teacher_id: number;
   term_status_id: number;
 };
-
-export enum AttendanceStatus {
-  PRESENT = "present",
-  PRESENT_NOT_EXERCISING = "present_not_exercising",
-  ABSENT = "absent",
-  EXCUSED_ABSENCE = "excused_absence",
-}
 
 export type NotificationsTokensBody = {
   token: string;

@@ -21,7 +21,7 @@ import {
 } from "../../services/notify";
 
 import { useLocalStorage } from "../hooks/useLocalStorage";
-import * as API from "./../../types/api";
+import * as API from "../../types";
 import { getDefaultData } from "./index";
 
 import { UserContext } from "./user";

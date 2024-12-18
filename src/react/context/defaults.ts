@@ -1,4 +1,4 @@
-import * as API from "./../../types/api";
+import * as API from "../../types";
 
 import { EscolaLMSContextConfig } from "./types";
 

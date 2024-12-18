@@ -1,5 +1,5 @@
 import request, { RequestOptionsInit } from "umi-request";
-import * as API from "../../types/api";
+import * as API from "../../types";
 
 /**  GET /api/schedule */
 export async function schedule(

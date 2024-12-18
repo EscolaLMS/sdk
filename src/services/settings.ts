@@ -1,5 +1,5 @@
 import request from "umi-request";
-import * as API from "../types/api";
+import * as API from "../types";
 import type { RequestOptionsInit } from "umi-request";
 
 export enum Currency {
