@@ -101,6 +101,12 @@ export type PageParams = {
   pageSize?: number;
 };
 
+export type PaginatedListParams = {
+  current_page: number;
+  total?: number;
+  per_page: number;
+};
+
 export type Json = string | number | Json[] | { [key: string]: Json };
 
 export type Category = {
@@ -124,3 +130,14 @@ export type Category = {
   description?: string;
   name_with_breadcrumbs?: string;
 };
+
+export type Tag = {
+  id: number;
+  title: string;
+  morphable_type: string;
+  morphable_id: number;
+  created_at: string;
+  updated_at: string;
+};
+
+export type CategoryListItem = Category;

@@ -1,4 +1,6 @@
 import { API } from "..";
+import { CartItem, Product, ProductItems } from "./cart-types";
+import { ConsultationTerm } from "./consultation-types";
 import {
   IStatementCategory,
   IResult,
@@ -15,6 +17,11 @@ import {
   Category,
 } from "./core-types";
 import {
+  Course,
+  CourseProgressItem,
+  CourseProgressItemElement,
+} from "./course-types";
+import {
   BookmarkableType,
   IEvent,
   TopicType,
@@ -26,8 +33,9 @@ import {
   EventTypes,
   PaymentStatusType,
 } from "./enums";
+import { TopicableBase } from "./topic-types";
 
-import { UserItem } from "./user-types";
+import { Author, Tutor, User, UserItem } from "./user-types";
 
 export type IStatement = {
   actor: unknown;
@@ -46,62 +54,6 @@ export type IEventException =
   | "GuessTheAnswer"
   | "Questionnaire"
   | "QuestionSet";
-
-export type Tag = {
-  id: number;
-  title: string;
-  morphable_type: string;
-  morphable_id: number;
-  created_at: string;
-  updated_at: string;
-};
-
-export type Course = {
-  id: number;
-  description: string | null;
-  created_at: string;
-  updated_at: string;
-  title: string;
-  topic_count?: number;
-  base_price?: number;
-  author_id: number;
-  image_url?: string | null;
-  author: UserItem;
-  authors: UserItem[];
-  lessons_count?: number;
-  lessons?: Lesson[];
-  language?: string | null;
-  subtitle?: string | null;
-  summary?: string | null;
-  image_path?: string | null;
-  video_path?: string | null;
-  duration?: string | null;
-  findable: boolean;
-  video_url?: string | null;
-  categories?: Array<EscolaLms.Categories.Models.Category> & {
-    description?: string | null;
-  };
-  tags?: Tag[] | string[] | null;
-  users_count?: number;
-  level?: string | null;
-  scorm_sco?: SCORM_SCO | null;
-  scorm_id?: number | null;
-  scorm_sco_id?: number | null;
-  scorm?: SCORM | null;
-  target_group?: string | null;
-  active_to?: string;
-  active_from?: string;
-  hours_to_complete?: number | null;
-  product?: Product;
-  poster_url?: string;
-};
-
-export type Author = {
-  first_name: string;
-  last_name: string;
-  id: number;
-  path_avatar: string | null;
-} & Record<string, string | number | boolean | null>;
 
 export type Scale = {
   parent_category_id: number;
@@ -161,14 +113,6 @@ export type CompetencyChallenge =
   | SimpleCompetencyChallenge
   | ComplexCompetencyChallenge;
 
-export type PaginatedListParams = {
-  current_page: number;
-  total?: number;
-  per_page: number;
-};
-
-export type CourseList = DefaultMetaResponse<Course>;
-
 export type ChallengesList = DefaultMetaResponse<CompetencyChallenge>;
 
 export type CertificateList = DefaultMetaResponse<Certificate>;
@@ -178,21 +122,9 @@ export type MattermostChannelList = DefaultResponseSuccess<MattermostData>;
 export type P24Response =
   DefaultResponseSuccess<EscolaLms.Payments.Models.Payment>;
 
-export type TutorList = DefaultResponse<UserItem[]>;
-
 export type OrderList = DefaultMetaResponse<Order>;
 
-export type TutorSingle = DefaultResponse<UserItem>;
-
-export type CourseListItem = Course;
-
 export type CategoryList = DataResponseSuccess<Category[]>;
-
-export type CategoryListItem = Category;
-
-export type UserList = PaginatedMetaList<UserItem>;
-
-export type UserListItem = UserItem;
 
 export type OrderListItem = Order;
 
@@ -204,13 +136,9 @@ export type PageList = DefaultMetaResponse<Page>;
 
 export type PageListItem = Page;
 
-export type ConsultationsList = DefaultMetaResponse<Consultation>;
-
 export type SubjectsList = DefaultMetaResponse<GroupSubject>;
 
 export type ExamsList = DefaultMetaResponse<Exam>;
-
-export type LessonTutors = DefaultResponse<LessonTutor[]>;
 
 export type Schedule = DefaultResponse<ScheduleData[]>;
 
@@ -221,61 +149,6 @@ export type ProductList = DefaultMetaResponse<Product>;
 export type StationaryEventsList = DefaultMetaResponse<StationaryEvent>;
 
 export type EventsList = DefaultMetaResponse<Event>;
-
-export type TutorConsultationList = DefaultMetaResponse<AppointmentTerm>;
-
-export type Consultation = EscolaLms.Consultations.Models.Consultation & {
-  product?: Product;
-  executed_status?: null | "reported" | "not_reported" | "reject" | "approved";
-  executed_at?: string;
-  consultation_term_id?: number;
-  is_ended?: boolean;
-  is_started?: boolean;
-  in_coming?: boolean;
-  author: User & { categories: Category[] } & Record<
-      string,
-      string | number | boolean
-    >;
-  busy_terms: string[];
-  teachers: User[];
-  public?: boolean;
-};
-
-export type Product = Omit<EscolaLms.Cart.Models.Product, "productables"> & {
-  available_quantity: number;
-  created_at?: string | null;
-  updated_at?: string | null;
-  buyable?: boolean;
-  poster_path?: string | null;
-  owned?: boolean;
-  owned_quantity: number;
-  related_products?: Product[];
-  sold_quantity: number;
-  gross_price: number;
-  productables?: Array<ProductItems> | null;
-  authors?: User[] | null;
-  end_date?: string;
-  poster_url?: string;
-  is_active?: boolean;
-  id?: string;
-  tags?: string[];
-  name?: string;
-  subscription_period?: string;
-  subscription_duration?: number;
-  fields?: {
-    in_app_purchase_ids?: {
-      revenuecat?: {
-        app_store?: string;
-        play_store?: string;
-      };
-    };
-  };
-};
-
-export type ProductItems = EscolaLms.Cart.Models.ProductProductable & {
-  name?: string;
-  description?: string;
-};
 
 export type Webinar = Omit<EscolaLms.Webinar.Models.Webinar, "trainers"> & {
   product?: Product;
@@ -288,41 +161,8 @@ export type Webinar = Omit<EscolaLms.Webinar.Models.Webinar, "trainers"> & {
   deadline?: string | null;
 };
 
-export type CartProductParameters = {
-  description: string;
-  id: number;
-  morph_class: string;
-  name: string;
-  productable_id: number;
-  productable_type: string;
-};
-
-export type CartItem = EscolaLms.Cart.Models.CartItem & {
-  product?: Product & {
-    productables: CartProductParameters[];
-  };
-  product_id?: number;
-  total_with_tax?: number;
-};
-
 export type ExamsParams = PaginationParams & {
   group_id?: number;
-};
-
-export type CourseParams = PageParams &
-  PaginationParams & {
-    "categories[]"?: number[];
-    title?: string;
-    category_id?: number;
-    author_id?: number;
-    tag?: string;
-    free?: boolean;
-    only_with_categories?: boolean;
-    no_expired?: 0 | 1;
-  };
-
-export type PaginatedProgressParams = CourseParams & {
-  status?: string;
 };
 
 export type ChallengesParams = PaginationParams & {
@@ -331,14 +171,6 @@ export type ChallengesParams = PaginationParams & {
   order?: "ASC" | "DESC";
   name?: string;
 };
-
-export type ConsultationParams = PageParams &
-  PaginationParams & {
-    name?: string;
-    status?: string;
-    base_price?: number;
-    only_with_categories?: boolean;
-  };
 
 export type WebinarParams = PageParams &
   PaginationParams & {
@@ -396,13 +228,6 @@ export type RegisterResponse =
     }
   | DefaultResponseError;
 
-export type ScheduleConsultationResponse =
-  | {
-      success: true;
-      message: string;
-    }
-  | DefaultResponseError;
-
 export type ForgotRequest = {
   email: string;
   return_url: string;
@@ -427,10 +252,6 @@ export type ChangePasswordRequest = {
   new_confirm_password: string;
 };
 
-export type User = EscolaLms.Auth.Models.User & {
-  url_avatar: string | null;
-};
-
 export type SemesterData = {
   id: number;
   name: string;
@@ -453,21 +274,6 @@ export type AcademicYear = {
   active: boolean;
 };
 
-export type MembershipDetails = {
-  id: number;
-  value: string;
-};
-
-export type UserAsProfile = Omit<UserItem, "roles"> & {
-  roles: string[];
-  membership_info?: {
-    course: MembershipDetails;
-    faculty: MembershipDetails;
-    kind: MembershipDetails;
-    type: MembershipDetails;
-  }[];
-};
-
 export type UpdateUserEmail = {
   email?: string;
 };
@@ -476,223 +282,6 @@ export interface CompleteSocialAuth {
   email: string;
   return_url: string;
 }
-
-export type Lesson = Omit<
-  EscolaLms.Courses.Models.Lesson,
-  "topics" | "lessons"
-> & {
-  id: number;
-  created_at: string;
-  title: string;
-  course_id: number;
-  updated_at?: string;
-  order: number;
-  lessons?: Lesson[];
-  duration: string;
-  summary?: string;
-  topics?: Topic[];
-  isNew?: boolean;
-  active_from?: string;
-  active_to?: string;
-};
-
-export type TopicBase = {
-  id: number;
-  lesson_id: number;
-  duration?: string;
-  title: string;
-  topicable_id: number;
-  created_at: string;
-  updated_at?: string;
-  order: number;
-  value?: any;
-  isNew?: boolean;
-  preview?: boolean;
-  introduction?: string;
-  description?: string;
-  summary?: string;
-  resources?: TopicResource[];
-  can_skip?: boolean;
-  json?: Record<string, unknown>;
-  /*
-      topicable_type?:
-        | TopicType.RichText
-        | TopicType.OEmbed
-        | TopicType.Audio
-        | TopicType.H5P
-        | TopicType.Unselected
-        | TopicType.Video;
-        */
-};
-
-export type TopicableBase = {
-  created_at?: string;
-  updated_at?: string;
-  id: number;
-  value: string;
-};
-
-export type TopicResource = {
-  id: number;
-  name: string;
-  path: string;
-  topic_id: number;
-  url: string;
-};
-
-export type TopicRichText = TopicBase & {
-  topicable_type: TopicType.RichText;
-  topicable: TopicableBase;
-};
-
-export type TopicOEmbed = TopicBase & {
-  topicable_type: TopicType.OEmbed;
-  topicable: TopicableBase;
-};
-
-export type TopicAudio = TopicBase & {
-  topicable_type: TopicType.Audio;
-  topicable: TopicableBase & {
-    length: number;
-    url: string;
-  };
-};
-
-export type TopicVideo = TopicBase & {
-  topicable_type: TopicType.Video;
-  topicable: TopicableBase & {
-    height: number;
-    poster: string;
-    poster_url: string;
-    url: string;
-    width: number;
-  };
-};
-
-export type TopicImage = TopicBase & {
-  topicable_type: TopicType.Image;
-  topicable: TopicableBase & {
-    height: number;
-    url: string;
-    width: number;
-  };
-};
-
-export type TopicH5P = TopicBase & {
-  topicable_type: TopicType.H5P;
-  topicable: TopicableBase & {
-    content: H5PContent;
-  };
-};
-
-export type TopicPdf = TopicBase & {
-  topicable_type: TopicType.Pdf;
-  topicable: TopicableBase & {
-    url: string;
-  };
-};
-
-export type TopicScorm = TopicBase & {
-  topicable_type: TopicType.Scorm;
-  topicable: TopicableBase & {
-    uuid: string;
-  };
-};
-
-export type TopicProject = TopicBase & {
-  topicable_type: TopicType.Project;
-  topicable: TopicableBase;
-};
-
-export type TopicQuiz = TopicBase & {
-  topicable_type: TopicType.GiftQuiz;
-  topicable: TopicableBase & {
-    max_attempts?: number | null;
-    max_execution_time?: number | null;
-  };
-};
-
-export type TopicUnselected = TopicBase & {
-  topicable_type?: TopicType.Unselected;
-  topicable?: never;
-};
-
-export type Topic =
-  | TopicUnselected
-  | TopicRichText
-  | TopicOEmbed
-  | TopicAudio
-  | TopicVideo
-  | TopicH5P
-  | TopicImage
-  | TopicPdf
-  | TopicScorm
-  | TopicProject
-  | TopicQuiz;
-
-export type TopicNotEmpty =
-  | TopicRichText
-  | TopicOEmbed
-  | TopicAudio
-  | TopicVideo
-  | TopicH5P
-  | TopicImage
-  | TopicPdf
-  | TopicScorm
-  | TopicProject
-  | TopicQuiz;
-
-export type CourseProgram = Course & {
-  lessons: Lesson[];
-};
-
-export type H5PLibrary = {
-  id: number;
-  created_at: string;
-  updated_at: string;
-  name: string;
-  title: string;
-  runnable: number;
-  restricted: number;
-  fullscreen: number;
-  embed_types: string;
-  semantics: object;
-  machineName: string;
-  uberName: string;
-  majorVersion: string;
-  minorVersion: string;
-  patchVersion: string;
-  preloadedJs: string;
-  preloadedCss: string;
-  dropLibraryCss: string;
-  tutorialUrl: string;
-  hasIcon: string;
-  libraryId: number;
-};
-
-export type H5PContent = {
-  id: number;
-  uuid: string;
-  created_at: string;
-  updated_at: string;
-  user_id: string | number;
-  title: string;
-  library_id: string;
-  parameters: string;
-  filtered: string;
-  slug: string;
-  embed_type: string;
-  params: object;
-  metadata: object;
-  library: H5PLibrary;
-  nonce: string;
-};
-
-export type H5PContentList = PaginatedList<H5PContent>;
-
-export type H5PContentListItem = H5PContent;
-
-export type H5PContentParams = PageParams & PaginationParams;
 
 export type Page = {
   id: number;
@@ -776,71 +365,6 @@ export type Event = {
   is_started?: boolean;
 };
 
-export type SCORM = {
-  id: number;
-  resource_type: null;
-  resource_id: number;
-  version: "scorm_12" | "scorm_2004";
-  hash_name: string;
-  origin_file: string;
-  origin_file_mime: string;
-  ratio: number;
-  uuid: string;
-  created_at: string;
-  updated_at: string;
-  scos: SCORM_SCO[];
-};
-
-export type SCORM_SCO = {
-  id: number;
-  scorm_id: number;
-  uuid: string;
-  sco_parent_id: number;
-  entry_url: string;
-  identifier: string;
-  title: string;
-  visible?: 1 | 0;
-  sco_parameters: any;
-  launch_data?: any;
-  max_time_allowed?: number;
-  time_limit_action?: number;
-  block?: number;
-  score_int?: number;
-  score_decimal?: number;
-  completion_threshold?: number;
-  prerequisites?: any;
-  created_at?: string;
-  updated_at?: string;
-};
-
-export type Cart = {
-  items: CartItem[];
-  total?: string | number;
-  subtotal?: string | number;
-  tax?: string | number;
-  total_with_tax?: number;
-  coupon?: string | null;
-};
-
-export type CourseProgressItemElement = {
-  topic_id: number;
-  status: CourseProgressItemElementStatus;
-  started_at?: string;
-  finished_at?: string;
-  seconds?: number;
-};
-
-export type CourseProgressItem = {
-  categories: CategoryListItem[];
-  course: Course;
-  start_date?: Date;
-  finish_date?: Date;
-  deadline?: Date | null;
-  total_spent_time?: number;
-  progress: CourseProgressItemElement[];
-  tags: Tag[];
-};
-
 export type OrderItems = EscolaLms.Cart.Models.CartItem & {
   name?: string;
   product?: Product;
@@ -867,9 +391,6 @@ export type Order = {
   client_street_number: string | null;
 };
 
-export type CourseProgress = CourseProgressItem[];
-export type CourseProgressDetails = CourseProgressItemElement[];
-
 export type Payment = {
   amount: number;
   billable_id: number;
@@ -884,26 +405,6 @@ export type Payment = {
   status: PaymentStatusType;
   updated_at: string;
   payable: Order;
-};
-
-export type UserGroupsParams = {
-  current?: number;
-  pageSize?: number;
-  search?: string;
-};
-
-export type ConsultationTerm = {
-  consultation: Consultation;
-  consultation_id: number;
-  created_at: string;
-  executed_at: string;
-  executed_status: string;
-  id: number;
-  product_id: number;
-  reminder_status: string | null;
-  updated_at: string;
-  user: UserItem;
-  user_id: number;
 };
 
 export type BulkNotificationSection = {
@@ -1038,105 +539,6 @@ export type Template = {
   default: boolean;
 };
 
-type Dict = {
-  [key: string]: string | Dict;
-};
-
-export type H5PObject = {
-  baseUrl: string;
-  url: string;
-  postUserStatistics: boolean;
-  ajax: { setFinished: string; contentUserData: string };
-  saveFreq: boolean;
-  siteUrl: string;
-  l10n: Dict;
-  hubIsEnabled: boolean;
-  loadedJs: string[];
-  loadedCss: string[];
-  core: {
-    styles: string[];
-    scripts: string[];
-  };
-  editor?: {
-    filesPath: string;
-    fileIcon: { path: string; width: number; height: number };
-    ajaxPath: string;
-    libraryUrl: string;
-    copyrightSemantics: Dict;
-    metadataSemantics: Dict[];
-
-    assets: {
-      css: string[];
-      js: string[];
-    };
-    deleteMessage: string;
-    apiVersion: { majorVersion: number; minorVersion: number };
-  };
-  nonce: string;
-  contents?: Record<
-    string,
-    {
-      library: string;
-      jsonContent: string;
-      fullScreen: boolean;
-      title: string;
-      content: {
-        id: number;
-        library: {
-          id: number;
-          embedTypes: string;
-          name: string;
-        };
-      };
-      contentUserData: [
-        {
-          state: object;
-        }
-      ];
-    }
-  >;
-};
-
-export type JitsyConfig = {
-  domain: string;
-  roomName: string;
-  configOverwrite: Record<string, string>[];
-  interfaceConfigOverwrite: Record<string, string>;
-  userInfo: {
-    displayName: string;
-    email: string;
-    id: number;
-  };
-  jwt: string;
-  app_id: string;
-};
-
-export type JitsyData = {
-  data: JitsyConfig;
-  domain: string;
-  url: string;
-  yt_url: string;
-  yt_stream_url: string;
-  yt_stream_key: string;
-};
-
-export type ApointmentTermUser = UserItem & Record<string, string>;
-
-export type AppointmentTerm = {
-  consultation_term_id: number;
-  consultation_id: number;
-  consultation_media: any;
-  date: string;
-  duration: string;
-  // TODO: enum status
-  status: string;
-  users: ApointmentTermUser[];
-  is_started?: boolean;
-  is_ended?: boolean;
-  in_coming?: boolean;
-  related_product?: API.Product;
-};
-
 export type QuestionnaireStarsRated = {
   1: number;
   2: number;
@@ -1205,63 +607,6 @@ export type TaskParams = PageParams &
     due_date_from?: Date | string;
     due_date_to?: Date | string;
   };
-
-export type CourseAccessEnquiryList = DefaultMetaResponse<CourseAccessEnquiry>;
-
-export type CourseAccessEnquiry =
-  EscolaLms.CourseAccess.Models.CourseAccessEnquiry & {
-    data?: object;
-  };
-
-export type CourseAccessEnquiryStatus = "pending" | "approved";
-
-export type CourseAccessEnquiryListParams =
-  EscolaLms.CourseAccess.Http.Requests.ListCourseAccessEnquiryRequest &
-    PaginatedListParams & {
-      course_id?: number;
-      status?: CourseAccessEnquiryStatus;
-    };
-
-export type CourseAccessEnquiryCreateRequest =
-  EscolaLms.CourseAccess.Http.Requests.CreateCourseAccessEnquiryApiRequest & {
-    data?: object;
-  };
-
-export type ConsultationsAccessEnquiry =
-  EscolaLms.ConsultationAccess.Models.ConsultationAccessEnquiry;
-
-export type ConsultationAccessEnquiryUrl = {
-  id: number;
-  meeting_link: string;
-  meeting_link_type: string;
-};
-
-export type ConsultationsAccessEnquiryTerm =
-  EscolaLms.ConsultationAccess.Models.ConsultationAccessEnquiryProposedTerm;
-
-export type ConsultationsAccessEnquiryParams = PaginationParams & {
-  consultation_id?: number;
-  status?: string;
-  proposed_at_from?: Date | string;
-  proposed_at_to?: Date | string;
-  is_coming?: boolean;
-  consultation_term_ids?: number[];
-};
-
-export type ConsultationsAccessEnquiryList =
-  DefaultMetaResponse<ConsultationsAccessEnquiry>;
-
-export type ConsultationsAccessEnquiryCreateRequest =
-  EscolaLms.ConsultationAccess.Http.Requests.CreateConsultationAccessEnquiryRequest & {
-    description?: string;
-  };
-
-export type ConsultationsAccessEnquiryUpdateRequest = Omit<
-  EscolaLms.ConsultationAccess.Http.Requests.CreateConsultationAccessEnquiryRequest,
-  "consultation_id"
-> & {
-  description?: string;
-};
 
 export type Metadata = Omit<EscolaLms.ModelFields.Models.Metadata, "rules"> & {
   rules: string | string[] | null;
@@ -1509,13 +854,6 @@ export type Semester = {
   year: string;
 };
 
-export type Tutor = {
-  email: string;
-  first_name: string;
-  id: number;
-  last_name: string;
-};
-
 export type ExamScale = {
   s_subject_scale_form_id: number;
   scale: {
@@ -1590,16 +928,6 @@ export type ScheduleData = {
   term_status: TermStatus;
   group: Group;
   ms_teams_join_url: string | null;
-};
-
-export type LessonTutor = {
-  subjects: Subject[];
-  tutor: Tutor & {
-    degree_name: string;
-    department: string;
-    organization_unit: string;
-    path_avatar?: string;
-  };
 };
 
 export type AttendanceItem = {
