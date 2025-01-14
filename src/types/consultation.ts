@@ -4,10 +4,10 @@ import {
   DefaultResponseError,
   PageParams,
   PaginationParams,
-} from "./core-types";
-import { User, UserItem } from "./user-types";
+} from "./core";
+import { User, UserItem } from "./user";
 import { API } from "..";
-import { Product } from "./cart-types";
+import { Product } from "./cart";
 
 export type Consultation = EscolaLms.Consultations.Models.Consultation & {
   product?: Product;

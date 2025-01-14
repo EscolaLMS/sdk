@@ -1,4 +1,4 @@
-import { PageParams, PaginatedList, PaginationParams } from "./core-types";
+import { PageParams, PaginatedList, PaginationParams } from "./core";
 
 type Dict = {
   [key: string]: string | Dict;

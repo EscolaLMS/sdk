@@ -172,3 +172,13 @@ export enum QuestionType {
   ESSAY = "essay",
   DESCRIPTION = "description",
 }
+
+export type TaskRelatedType =
+  | "EscolaLMS\\Courses\\Course"
+  | "EscolaLMS\\Courses\\Topic"
+  | "EscolaLMS\\Courses\\Lesson";
+
+export type IEventException =
+  | "GuessTheAnswer"
+  | "Questionnaire"
+  | "QuestionSet";

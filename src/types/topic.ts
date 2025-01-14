@@ -1,5 +1,5 @@
 import { TopicType } from "./enums";
-import { H5PContent } from "./h5p-types";
+import { H5PContent } from "./h5p";
 
 export type TopicBase = {
   id: number;

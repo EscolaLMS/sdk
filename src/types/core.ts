@@ -1,4 +1,48 @@
+import { IEvent } from "./enums";
+import { UserItem } from "./user";
+
 export type Nullable<T> = T | null | undefined;
+
+export type AppCurrency = {
+  default: string;
+  enum: string[];
+};
+
+export type AppSettings = any & {
+  currencies?: AppCurrency;
+  consents?: {
+    [key: string]: string;
+  };
+  faq?: {
+    [key: string]: string;
+  };
+  homepage?: Record<string, Record<string, string>>;
+  register?: {
+    [key: string]: string;
+  };
+  env?: string;
+  stripe?: {
+    publishable_key: string;
+  };
+  global?: {
+    [key: string]: string;
+  };
+};
+
+export type AppConfig = Record<string, Record<string, string[] | string>>;
+
+export type IStatement = {
+  actor: unknown;
+  context: {
+    contextActivities: {
+      category: IStatementCategory[];
+      parent?: IStatementCategory[];
+    };
+  };
+  object: unknown;
+  result?: IResult;
+  verb: { id: IEvent };
+};
 
 export type IStatementCategory = {
   id: string;
@@ -141,3 +185,44 @@ export type Tag = {
 };
 
 export type CategoryListItem = Category;
+
+export type Pdf = {
+  title: string;
+};
+
+export type FieldsParams = {
+  class_type: string;
+};
+
+export type Metadata = Omit<EscolaLms.ModelFields.Models.Metadata, "rules"> & {
+  rules: string | string[] | null;
+};
+
+export type Page = {
+  id: number;
+  slug: string;
+  title: string;
+  author_id: number;
+  author: UserItem;
+  content: string;
+};
+
+export type Template = {
+  id: number;
+  name: string;
+  event: string;
+  channel: string;
+  created_at: Date;
+  updated_at: Date;
+  title: string | null;
+  mail_theme: null;
+  mail_markdown: null;
+  is_default: boolean;
+  assignable_type: null;
+  assignable_id: null;
+  default: boolean;
+};
+
+export type PageList = DefaultMetaResponse<Page>;
+export type CategoryList = DataResponseSuccess<Category[]>;
+export type PageListItem = Page;

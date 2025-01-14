@@ -6,13 +6,13 @@ import {
   PaginatedListParams,
   PaginationParams,
   Tag,
-} from "./core-types";
-import { UserItem } from "./user-types";
+} from "./core";
+import { UserItem } from "./user";
 import { CourseProgressItemElementStatus } from "./enums";
 
-import { Topic } from "./topic-types";
-import { Product } from "./cart-types";
-import { SCORM, SCORM_SCO } from "./scorm-types";
+import { Topic } from "./topic";
+import { Product } from "./cart";
+import { SCORM, SCORM_SCO } from "./scorm";
 
 export type Course = {
   id: number;

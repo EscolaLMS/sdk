@@ -1,4 +1,5 @@
-import { User } from "./user-types";
+import { DefaultMetaResponse, DefaultResponse } from "./core";
+import { User } from "./user";
 
 export type Product = Omit<EscolaLms.Cart.Models.Product, "productables"> & {
   available_quantity: number;
@@ -61,3 +62,14 @@ export type CartItem = EscolaLms.Cart.Models.CartItem & {
   product_id?: number;
   total_with_tax?: number;
 };
+
+export type AddProductResponse = DefaultResponse<{
+  buyable: boolean;
+  difference: number;
+  limit: number;
+  operation: "increment" | "decrement" | "unchanged";
+  quantity_in_cart: number;
+  quantity_owned: number;
+}>;
+
+export type ProductList = DefaultMetaResponse<Product>;

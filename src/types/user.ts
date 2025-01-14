@@ -1,11 +1,11 @@
-import { Subject } from "./api";
-import { AppointmentTerm } from "./consultation-types";
+import { AppointmentTerm } from "./consultation";
 import {
   Category,
   DefaultMetaResponse,
   DefaultResponse,
   PaginatedMetaList,
-} from "./core-types";
+} from "./core";
+import { Subject } from "./educycle";
 
 export type User = EscolaLms.Auth.Models.User & {
   url_avatar: string | null;
