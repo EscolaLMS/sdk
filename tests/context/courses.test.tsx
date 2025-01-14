@@ -1,5 +1,5 @@
-import { useContext, useEffect } from "react";
-import { act } from "react-dom/test-utils";
+import { useContext, useEffect, act } from "react";
+
 import {
   EscolaLMSContext,
   EscolaLMSContextProvider,

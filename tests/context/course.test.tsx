@@ -1,5 +1,4 @@
-import { useContext, useEffect } from "react";
-import { act } from "react-dom/test-utils";
+import { useContext, useEffect, act } from "react";
 import { EscolaLMSContext } from "./../../src/react/context";
 import { render, waitFor, screen } from "../test-utils";
 import { response as courseResponse } from "../test_server/course";

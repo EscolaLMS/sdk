@@ -1,14 +1,14 @@
-import { useContext, useEffect, useState, useMemo } from 'react';
-import { act } from 'react-dom/test-utils';
-import { EscolaLMSContext } from './../../src/react/context';
-import { render, waitFor, screen, fireEvent } from '../test-utils';
-import { Login } from './helpers/login';
-import { usePrevious } from './helpers/usePrevious';
-import { generateDataResponse } from '../test_server/jwt';
-import { dataSuccess as dataSuccessResponse } from '../test_server/me';
-import '@testing-library/jest-dom';
+import { useContext, useEffect, useState, act } from "react";
 
-import fakeServer from '../test_server';
+import { EscolaLMSContext } from "./../../src/react/context";
+import { render, waitFor, screen, fireEvent } from "../test-utils";
+import { Login } from "./helpers/login";
+import { usePrevious } from "./helpers/usePrevious";
+import { generateDataResponse } from "../test_server/jwt";
+import { dataSuccess as dataSuccessResponse } from "../test_server/me";
+import "@testing-library/jest-dom";
+
+import fakeServer from "../test_server";
 
 jest.useFakeTimers();
 jest.setTimeout(30000);
@@ -40,25 +40,25 @@ const LoginRefresh: React.FC = () => {
   );
 };
 
-it('test restore data from localstorage login invalid token ', async () => {
+it("test restore data from localstorage login invalid token ", async () => {
   window.localStorage.setItem(
-    'user',
+    "user",
     JSON.stringify({
       // token: 'invalid token',
       user: {
         loading: false,
         value: {
           id: 1,
-          email: 'invalid@xxx',
+          email: "invalid@xxx",
         },
       },
     })
   );
 
   window.localStorage.setItem(
-    'user_token',
+    "user_token",
     JSON.stringify({
-      token: 'invalid token',
+      token: "invalid token",
     })
   );
 
@@ -67,19 +67,19 @@ it('test restore data from localstorage login invalid token ', async () => {
   });
 
   await waitFor(() => {
-    expect(screen.queryByText('User Loaded')).toBeInTheDocument();
+    expect(screen.queryByText("User Loaded")).toBeInTheDocument();
   });
 
   await waitFor(() => {
-    expect(screen.queryByText('Logged out')).toBeInTheDocument();
+    expect(screen.queryByText("Logged out")).toBeInTheDocument();
   });
 });
 
-it('test restore data from localstorage login valid token ', async () => {
+it("test restore data from localstorage login valid token ", async () => {
   const data = generateDataResponse(5);
   const email = dataSuccessResponse.data.email;
   window.localStorage.setItem(
-    'user_token',
+    "user_token",
     JSON.stringify({
       token: data.data.token,
     })
@@ -90,7 +90,7 @@ it('test restore data from localstorage login valid token ', async () => {
   });
 
   await waitFor(() => {
-    expect(screen.queryByText('User Loaded')).toBeInTheDocument();
+    expect(screen.queryByText("User Loaded")).toBeInTheDocument();
   });
 
   await waitFor(() => {

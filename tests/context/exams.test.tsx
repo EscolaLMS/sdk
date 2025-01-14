@@ -1,5 +1,5 @@
-import { useContext, useEffect } from "react";
-import { act } from "react-dom/test-utils";
+import { useContext, useEffect, act } from "react";
+
 import { EscolaLMSContext } from "./../../src/react/context";
 import { render, waitFor, screen, fireEvent } from "../test-utils";
 import { response as examsResponse } from "../test_server/exams";
@@ -8,7 +8,7 @@ import "@testing-library/jest-dom";
 import fakeServer from "../test_server";
 import { Login } from "./helpers/login";
 import React from "react";
-import { Exam } from "../../src/types/api";
+import { Exam } from "../../src/types";
 
 beforeAll(() => {
   fakeServer();

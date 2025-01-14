@@ -1,25 +1,25 @@
-import { useContext, useEffect, useMemo } from 'react';
-import { act } from 'react-dom/test-utils';
-import { Login } from './helpers/login';
+import { useContext, useEffect, act } from "react";
+
+import { Login } from "./helpers/login";
 
 import {
   EscolaLMSContext,
   EscolaLMSContextProvider,
-} from './../../src/react/context';
+} from "./../../src/react/context";
 import {
   render,
   waitFor,
   screen,
   getAllByRole,
   fireEvent,
-} from '../test-utils';
+} from "../test-utils";
 import {
   response as tasksResponse,
   oneTaskResponse,
-} from '../test_server/tasks';
-import '@testing-library/jest-dom';
+} from "../test_server/tasks";
+import "@testing-library/jest-dom";
 
-import fakeServer from '../test_server';
+import fakeServer from "../test_server";
 
 beforeAll(() => {
   fakeServer();
@@ -51,7 +51,7 @@ const Tasks = () => {
     <div>
       <Login />
       {/*<p>{page.loading ? "Page Loading" : "Page Loaded"}</p>*/}
-      <p>{tasks.loading ? 'Tasks Loading' : 'Tasks Loaded'}</p>
+      <p>{tasks.loading ? "Tasks Loading" : "Tasks Loaded"}</p>
 
       <p data-testid="loadedTasks">{tasks.list?.data.length}</p>
 
@@ -83,15 +83,15 @@ const Tasks = () => {
   );
 };
 
-it('test fetching tasks', async () => {
+it("test fetching tasks", async () => {
   await act(async () => {
     render(<Tasks />);
   });
 
   act(() => {
     fireEvent(
-      screen.getByTestId('button-login'),
-      new MouseEvent('click', {
+      screen.getByTestId("button-login"),
+      new MouseEvent("click", {
         bubbles: true,
         cancelable: true,
       })
@@ -99,11 +99,11 @@ it('test fetching tasks', async () => {
   });
 
   await waitFor(() => {
-    expect(screen.getByTestId('user-token-expire-date')).toBeInTheDocument();
+    expect(screen.getByTestId("user-token-expire-date")).toBeInTheDocument();
   });
 
   await waitFor(() => {
-    expect(screen.queryByText('Tasks Loaded')).toBeInTheDocument();
+    expect(screen.queryByText("Tasks Loaded")).toBeInTheDocument();
   });
 
   /*
@@ -129,7 +129,7 @@ it('test fetching tasks', async () => {
   */
 
   await waitFor(() => {
-    expect(screen.getByTestId('loadedTasks')).toHaveTextContent(
+    expect(screen.getByTestId("loadedTasks")).toHaveTextContent(
       tasksResponse.data.length.toString()
     );
   });
