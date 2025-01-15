@@ -39,9 +39,14 @@ export async function handleNoTokenError<T>(promise: Promise<T>): Promise<T> {
     return await promise;
   } catch (error) {
     if (error === "noToken") {
-      console.warn("Token is missing. Please log in.");
+      console.warn("Token is missing.");
+
+      return {} as T;
     }
-    throw error;
+
+    console.error("An error occurred:", error);
+
+    return error as T;
   }
 }
 
