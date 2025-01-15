@@ -12,7 +12,7 @@ import {
   ContextPaginatedMetaState,
 } from "./types";
 import { defaultConfig } from "./defaults";
-import { fetchDataType } from "./states";
+import { fetchDataType, handleNoTokenError } from "./states";
 
 import {
   getNotifications,
@@ -73,20 +73,22 @@ export const NotificationsContextProvider: FunctionComponent<
         per_page: 25,
       }
     ) => {
-      return token
-        ? fetchDataType<API.Notification>({
-            controllers: abortControllers.current,
-            controller: `notifications/${JSON.stringify(filter)}`,
-            mode: "paginated",
-            fetchAction: getNotifications.bind(null, apiUrl)(token, filter, {
-              signal:
-                abortControllers.current[
-                  `notifications/${JSON.stringify(filter)}`
-                ]?.signal,
-            }),
-            setState: setNotifications,
-          })
-        : Promise.reject("noToken");
+      return handleNoTokenError(
+        token
+          ? fetchDataType<API.Notification>({
+              controllers: abortControllers.current,
+              controller: `notifications/${JSON.stringify(filter)}`,
+              mode: "paginated",
+              fetchAction: getNotifications.bind(null, apiUrl)(token, filter, {
+                signal:
+                  abortControllers.current[
+                    `notifications/${JSON.stringify(filter)}`
+                  ]?.signal,
+              }),
+              setState: setNotifications,
+            })
+          : Promise.reject("noToken")
+      );
     },
     [token]
   );

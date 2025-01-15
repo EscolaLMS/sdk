@@ -34,6 +34,17 @@ type fetchDataType<T> =
       onError?: (error: API.DefaultResponseError | any) => void;
     };
 
+export async function handleNoTokenError<T>(promise: Promise<T>): Promise<T> {
+  try {
+    return await promise;
+  } catch (error) {
+    if (error === "noToken") {
+      console.warn("Token is missing. Please log in.");
+    }
+    throw error;
+  }
+}
+
 export function fetchDataType<T>(
   params: fetchDataType<T> & { mode: "paginated" }
 ): Promise<API.DefaultMetaResponse<T>>;
