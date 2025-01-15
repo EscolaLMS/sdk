@@ -1,6 +1,6 @@
 import React from "react";
-import { useContext, useEffect } from "react";
-import { act } from "react-dom/test-utils";
+import { useContext, useEffect, act } from "react";
+
 import { EscolaLMSContext, EscolaLMSContextProvider } from "../../src/react";
 import { waitFor, screen, unwrappedRender } from "../test-utils";
 import { response as challengesResponse } from "../test_server/challenges";

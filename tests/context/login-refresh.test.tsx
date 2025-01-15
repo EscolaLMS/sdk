@@ -1,11 +1,11 @@
-import { useContext, useEffect, useState } from 'react';
-import { act } from 'react-dom/test-utils';
-import { EscolaLMSContext } from './../../src/react/context';
-import { render, waitFor, screen, fireEvent } from '../test-utils';
-import { Login } from './helpers/login';
-import '@testing-library/jest-dom';
+import { useContext, useEffect, useState, act } from "react";
 
-import fakeServer from '../test_server';
+import { EscolaLMSContext } from "./../../src/react/context";
+import { render, waitFor, screen, fireEvent } from "../test-utils";
+import { Login } from "./helpers/login";
+import "@testing-library/jest-dom";
+
+import fakeServer from "../test_server";
 
 //jest.useFakeTimers();
 //jest.setTimeout(30000);
@@ -36,15 +36,15 @@ const LoginRefresh: React.FC = () => {
   );
 };
 
-it('test fetching refresh tokens ', async () => {
+it("test fetching refresh tokens ", async () => {
   act(() => {
     render(<LoginRefresh />);
   });
 
   act(() => {
     fireEvent(
-      screen.getByTestId('button-login'),
-      new MouseEvent('click', {
+      screen.getByTestId("button-login"),
+      new MouseEvent("click", {
         bubbles: true,
         cancelable: true,
       })
@@ -52,13 +52,13 @@ it('test fetching refresh tokens ', async () => {
   });
 
   await waitFor(() => {
-    expect(screen.getByTestId('user-token-expire-date')).toBeInTheDocument();
+    expect(screen.getByTestId("user-token-expire-date")).toBeInTheDocument();
   });
 
   // jest.runAllTimers();
 
   await waitFor(() => {
-    expect(screen.getByTestId('tokenIncrement')).toHaveTextContent('2'); // This means that the token was refreshed 2 times
+    expect(screen.getByTestId("tokenIncrement")).toHaveTextContent("2"); // This means that the token was refreshed 2 times
   });
 
   await act(async () => {

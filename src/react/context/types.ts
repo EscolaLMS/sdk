@@ -1,5 +1,5 @@
 import { RequestOptionsInit } from "umi-request";
-import * as API from "./../../types/api";
+import * as API from "../../types";
 
 export interface ContextState<T> {
   loading: boolean;

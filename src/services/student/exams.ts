@@ -1,5 +1,5 @@
 import request, { RequestOptionsInit } from "umi-request";
-import * as API from "../../types/api";
+import * as API from "../../types";
 
 export async function exams(
   apiUrl: string,

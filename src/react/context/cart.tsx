@@ -24,7 +24,7 @@ import {
   addMissingProducts as postAddMissingProducts,
   removeFromCart as deleteRemoveFromCart,
 } from "./../../services/cart";
-import { DefaultResponseError } from "../../types/api";
+import { DefaultResponseError } from "../../types";
 
 export const CartContext: React.Context<
   Pick<

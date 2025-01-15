@@ -1,5 +1,5 @@
-import React, { useContext, useState } from "react";
-import { act } from "react-dom/test-utils";
+import React, { useContext, useState, act } from "react";
+
 import { EscolaLMSContext } from "./../../src/react/context";
 import { render, fireEvent, waitFor, screen } from "../test-utils";
 import { Login } from "./helpers/login";

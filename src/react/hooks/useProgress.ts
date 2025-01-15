@@ -1,5 +1,5 @@
 import { useCallback, useContext, useEffect, useState } from "react";
-import { CourseProgress, DefaultResponseSuccess } from "../../types/api";
+import { CourseProgress, DefaultResponseSuccess } from "../../types";
 import { EscolaLMSContext } from "../context";
 
 type PogressState = {

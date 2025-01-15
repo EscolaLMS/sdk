@@ -16,7 +16,6 @@ import {
   getQuestionnaireStarsByModel,
 } from "../../services/questionnaire";
 import { UserContext } from "./user";
-import { PaginationParams } from "../../types/api";
 import { API } from "../..";
 
 export const QuestionnairesContext: React.Context<

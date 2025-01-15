@@ -1,5 +1,5 @@
 import request, { RequestOptionsInit } from "umi-request";
-import * as API from "../types/api";
+import * as API from "../types";
 import { currentTimezone } from "../utils";
 
 /**  GET /api/consultations */
