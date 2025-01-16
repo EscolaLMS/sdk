@@ -30,7 +30,7 @@ import {
   DictionariesWordsCategoriesContext,
   DictionariesWordsCategoriesContextProvider,
 } from "./dictionary/dictionariesWordsCategories";
-import { fetchDataType } from "./states";
+import { fetchDataType, handleNoTokenError } from "./states";
 import {
   getCourse,
   getCourseProgram,
@@ -717,42 +717,48 @@ const EscolaLMSContextProviderInner: FunctionComponent<
           name?: string;
         }
     ) => {
-      return token
-        ? fetchDataType<API.Product>({
-            controllers: abortControllers.current,
-            controller: `products/my/${JSON.stringify(filter)}`,
-            mode: "paginated",
-            fetchAction: getMyProducts.bind(null, apiUrl)(filter, token, {
-              signal:
-                abortControllers.current[
-                  `products/my/${JSON.stringify(filter)}`
-                ]?.signal,
-            }),
-            setState: setUserProducts,
-          })
-        : Promise.reject("noToken");
+      return handleNoTokenError(
+        token
+          ? fetchDataType<API.Product>({
+              controllers: abortControllers.current,
+              controller: `products/my/${JSON.stringify(filter)}`,
+              mode: "paginated",
+              fetchAction: getMyProducts.bind(null, apiUrl)(filter, token, {
+                signal:
+                  abortControllers.current[
+                    `products/my/${JSON.stringify(filter)}`
+                  ]?.signal,
+              }),
+              setState: setUserProducts,
+            })
+          : Promise.reject("noToken")
+      );
     },
     [token]
   );
 
   const attachProduct = useCallback(
     (productableId: number, productableType: string) => {
-      return token
-        ? postAttachProduct
-            .bind(null, apiUrl)(productableId, productableType, token)
-            .catch((err) => err)
-        : Promise.reject("noToken");
+      return handleNoTokenError(
+        token
+          ? postAttachProduct
+              .bind(null, apiUrl)(productableId, productableType, token)
+              .catch((err) => err)
+          : Promise.reject("noToken")
+      );
     },
     [token]
   );
 
   const cancelSubscription = useCallback(
     (productId: number) => {
-      return token
-        ? postCancelSubscription
-            .bind(null, apiUrl)(productId, token)
-            .catch((err) => err)
-        : Promise.reject("noToken");
+      return handleNoTokenError(
+        token
+          ? postCancelSubscription
+              .bind(null, apiUrl)(productId, token)
+              .catch((err) => err)
+          : Promise.reject("noToken")
+      );
     },
     [token]
   );
@@ -838,76 +844,84 @@ const EscolaLMSContextProviderInner: FunctionComponent<
 
   // https://github.com/EscolaLMS/sdk/issues/248
   const fetchUserStationaryEvents = useCallback(() => {
-    return token
-      ? fetchDataType<API.StationaryEvent>({
-          controllers: abortControllers.current,
-          controller: `userstationaryevents`,
-          mode: "list",
-          fetchAction: getMyStationaryEvents.bind(null, apiUrl)(token, {
-            signal: abortControllers.current?.userstationaryevents?.signal,
-          }),
-          setState: setUserStationaryEvents,
-        })
-      : Promise.reject("noToken");
+    return handleNoTokenError(
+      token
+        ? fetchDataType<API.StationaryEvent>({
+            controllers: abortControllers.current,
+            controller: `userstationaryevents`,
+            mode: "list",
+            fetchAction: getMyStationaryEvents.bind(null, apiUrl)(token, {
+              signal: abortControllers.current?.userstationaryevents?.signal,
+            }),
+            setState: setUserStationaryEvents,
+          })
+        : Promise.reject("noToken")
+    );
   }, [token]);
 
   const fetchTutorConsultations = useCallback(() => {
-    return token
-      ? fetchDataType<API.AppointmentTerm>({
-          controllers: abortControllers.current,
-          controller: `tutorconsultation`,
-          mode: "paginated",
-          fetchAction: getTutorConsultations.bind(null, apiUrl)(token, {
-            signal: abortControllers.current?.tutorconsultation?.signal,
-          }),
-          setState: setTutorConsultations,
-        })
-      : Promise.reject("noToken");
+    return handleNoTokenError(
+      token
+        ? fetchDataType<API.AppointmentTerm>({
+            controllers: abortControllers.current,
+            controller: `tutorconsultation`,
+            mode: "paginated",
+            fetchAction: getTutorConsultations.bind(null, apiUrl)(token, {
+              signal: abortControllers.current?.tutorconsultation?.signal,
+            }),
+            setState: setTutorConsultations,
+          })
+        : Promise.reject("noToken")
+    );
   }, [token]);
 
   const approveConsultationTerm = useCallback(
     (id: number, term: string, userId?: number) => {
-      return token
-        ? fetchDataType<API.AppointmentTerm>({
-            controllers: abortControllers.current,
-            controller: `aprovetutorterm${id}`,
-            mode: "paginated",
-            fetchAction: approveConsultation.bind(null, apiUrl)(
-              token,
-              id,
-              term,
-              userId,
-              {
-                signal:
-                  abortControllers.current?.[`aprovetutorterm${id}`]?.signal,
-              }
-            ),
-            setState: setTutorConsultations,
-          })
-        : Promise.reject("noToken");
+      return handleNoTokenError(
+        token
+          ? fetchDataType<API.AppointmentTerm>({
+              controllers: abortControllers.current,
+              controller: `aprovetutorterm${id}`,
+              mode: "paginated",
+              fetchAction: approveConsultation.bind(null, apiUrl)(
+                token,
+                id,
+                term,
+                userId,
+                {
+                  signal:
+                    abortControllers.current?.[`aprovetutorterm${id}`]?.signal,
+                }
+              ),
+              setState: setTutorConsultations,
+            })
+          : Promise.reject("noToken")
+      );
     },
     [token]
   );
 
   const rejectConsultationTerm = useCallback(
     (id: number, term: string, userId?: number) => {
-      return token
-        ? fetchDataType<API.AppointmentTerm>({
-            controllers: abortControllers.current,
-            controller: `rejectterm${id}`,
-            mode: "paginated",
-            fetchAction: rejectConsultation.bind(null, apiUrl)(
-              token,
-              id,
-              term,
-              userId,
-              {
-                signal: abortControllers.current?.[`rejectterm${id}`]?.signal,
-              }
-            ),
-            setState: setTutorConsultations,
-          })
-        : Promise.reject("noToken");
+      return handleNoTokenError(
+        token
+          ? fetchDataType<API.AppointmentTerm>({
+              controllers: abortControllers.current,
+              controller: `rejectterm${id}`,
+              mode: "paginated",
+              fetchAction: rejectConsultation.bind(null, apiUrl)(
+                token,
+                id,
+                term,
+                userId,
+                {
+                  signal: abortControllers.current?.[`rejectterm${id}`]?.signal,
+                }
+              ),
+              setState: setTutorConsultations,
+            })
+          : Promise.reject("noToken")
+      );
     },
     [token]
   );
@@ -917,18 +931,22 @@ const EscolaLMSContextProviderInner: FunctionComponent<
 
   const generateConsultationJitsy = useCallback(
     (id: number, term: string) => {
-      return token
-        ? generateJitsy.bind(null, apiUrl)(token, id, term)
-        : Promise.reject("noToken");
+      return handleNoTokenError(
+        token
+          ? generateJitsy.bind(null, apiUrl)(token, id, term)
+          : Promise.reject("noToken")
+      );
     },
     [token]
   );
 
   const generateWebinarJitsy = useCallback(
     (id: number) => {
-      return token
-        ? generateJitsyWebinar.bind(null, apiUrl)(token, id)
-        : Promise.reject("noToken");
+      return handleNoTokenError(
+        token
+          ? generateJitsyWebinar.bind(null, apiUrl)(token, id)
+          : Promise.reject("noToken")
+      );
     },
     [token]
   );
@@ -937,115 +955,129 @@ const EscolaLMSContextProviderInner: FunctionComponent<
 
   const fetchCertificates = useCallback(
     (params?: API.CertificateParams) => {
-      return token
-        ? fetchDataType<API.Certificate>({
-            controllers: abortControllers.current,
-            controller: `certificates/${JSON.stringify(params)}`,
-            mode: "paginated",
-            fetchAction: getCertificates.bind(null, apiUrl)(token, params, {
-              signal:
-                abortControllers.current[
-                  `certificates/${JSON.stringify(params)}`
-                ]?.signal,
-            }),
-            setState: setCertificates,
-          })
-        : Promise.reject("noToken");
+      return handleNoTokenError(
+        token
+          ? fetchDataType<API.Certificate>({
+              controllers: abortControllers.current,
+              controller: `certificates/${JSON.stringify(params)}`,
+              mode: "paginated",
+              fetchAction: getCertificates.bind(null, apiUrl)(token, params, {
+                signal:
+                  abortControllers.current[
+                    `certificates/${JSON.stringify(params)}`
+                  ]?.signal,
+              }),
+              setState: setCertificates,
+            })
+          : Promise.reject("noToken")
+      );
     },
     [token]
   );
 
   const createTeamsChat = useCallback(
     (id: number) => {
-      return token
-        ? postTeamsChat(apiUrl, token, id)
-        : Promise.reject("noToken");
+      return handleNoTokenError(
+        token ? postTeamsChat(apiUrl, token, id) : Promise.reject("noToken")
+      );
     },
     [token]
   );
 
   const fetchCertificate = useCallback(
     (id: number) => {
-      return token
-        ? getCertificate.bind(null, apiUrl)(token, id)
-        : Promise.reject("noToken");
+      return handleNoTokenError(
+        token
+          ? getCertificate.bind(null, apiUrl)(token, id)
+          : Promise.reject("noToken")
+      );
     },
     [token]
   );
 
   const generateCertificate = useCallback(
     (id: number) => {
-      return token
-        ? generateCertificatePdf.bind(null, apiUrl)(token, id)
-        : Promise.reject("noToken");
+      return handleNoTokenError(
+        token
+          ? generateCertificatePdf.bind(null, apiUrl)(token, id)
+          : Promise.reject("noToken")
+      );
     },
     [token]
   );
 
   const fetchMattermostChannels = useCallback(() => {
-    return token
-      ? fetchDataType<API.MattermostData>({
-          controllers: abortControllers.current,
-          controller: `mattermostchannels`,
-          mode: "value",
-          fetchAction: getMattermostChannels.bind(null, apiUrl)(
-            token,
-            {},
-            {
-              signal: abortControllers.current?.mattermostchannels?.signal,
-            }
-          ),
-          setState: setMattermostChannels,
-        })
-      : Promise.reject("noToken");
+    return handleNoTokenError(
+      token
+        ? fetchDataType<API.MattermostData>({
+            controllers: abortControllers.current,
+            controller: `mattermostchannels`,
+            mode: "value",
+            fetchAction: getMattermostChannels.bind(null, apiUrl)(
+              token,
+              {},
+              {
+                signal: abortControllers.current?.mattermostchannels?.signal,
+              }
+            ),
+            setState: setMattermostChannels,
+          })
+        : Promise.reject("noToken")
+    );
   }, [token]);
 
   const changeConsultationTerm = useCallback(
     (termId: number, newDate: string, term: string, userId?: number) => {
-      return token
-        ? changeTermDate.bind(null, apiUrl)(
-            termId,
-            newDate,
-            term,
-            token,
-            userId
-          )
-        : Promise.reject("noToken");
+      return handleNoTokenError(
+        token
+          ? changeTermDate.bind(null, apiUrl)(
+              termId,
+              newDate,
+              term,
+              token,
+              userId
+            )
+          : Promise.reject("noToken")
+      );
     },
     [token]
   );
 
   const fetchUserConsultations = useCallback(() => {
-    return token
-      ? fetchDataType<API.Consultation>({
-          controllers: abortControllers.current,
-          controller: `userconsultations`,
-          mode: "paginated",
-          fetchAction: getUserConsultations.bind(null, apiUrl)(
-            token,
+    return handleNoTokenError(
+      token
+        ? fetchDataType<API.Consultation>({
+            controllers: abortControllers.current,
+            controller: `userconsultations`,
+            mode: "paginated",
+            fetchAction: getUserConsultations.bind(null, apiUrl)(
+              token,
 
-            {
-              signal: abortControllers.current?.userconsultations?.signal,
-            }
-          ),
-          setState: setUserConsultations,
-        })
-      : Promise.reject("noToken");
+              {
+                signal: abortControllers.current?.userconsultations?.signal,
+              }
+            ),
+            setState: setUserConsultations,
+          })
+        : Promise.reject("noToken")
+    );
   }, [token]);
 
   const bookConsultationTerm = useCallback(
     (id: number, term: string) => {
-      return token
-        ? bookConsultationDate
-            .bind(null, apiUrl)(token, id, term)
-            .then((response) => {
-              if (response.success) {
-                fetchUserConsultations();
-                return response;
-              }
-              throw Error("Error occured");
-            })
-        : Promise.reject("noToken");
+      return handleNoTokenError(
+        token
+          ? bookConsultationDate
+              .bind(null, apiUrl)(token, id, term)
+              .then((response) => {
+                if (response.success) {
+                  fetchUserConsultations();
+                  return response;
+                }
+                throw Error("Error occured");
+              })
+          : Promise.reject("noToken")
+      );
     },
     [token]
   );
@@ -1065,9 +1097,11 @@ const EscolaLMSContextProviderInner: FunctionComponent<
 
   const getProductInfo = useCallback(
     (id: number) => {
-      return token
-        ? getSingleProduct.bind(null, apiUrl)(id, token)
-        : Promise.reject("noToken");
+      return handleNoTokenError(
+        token
+          ? getSingleProduct.bind(null, apiUrl)(id, token)
+          : Promise.reject("noToken")
+      );
     },
     [token]
   );
@@ -1230,30 +1264,34 @@ const EscolaLMSContextProviderInner: FunctionComponent<
 
   const payWithStripe = useCallback(
     (payment_method: string, return_url: string) => {
-      return token
-        ? postPayWithStripe
-            .bind(null, apiUrl)(payment_method, return_url, token)
-            .then((res) => {
-              console.log(res);
-            })
-        : Promise.reject("noToken");
+      return handleNoTokenError(
+        token
+          ? postPayWithStripe
+              .bind(null, apiUrl)(payment_method, return_url, token)
+              .then((res) => {
+                console.log(res);
+              })
+          : Promise.reject("noToken")
+      );
     },
     [token]
   );
 
   const payWithP24 = useCallback(
     (email: string, return_url: string, data?: API.InvoiceData) => {
-      return token
-        ? postPayWithP24
-            .bind(null, apiUrl)(email, return_url, token, data)
-            .then((res) => {
-              return res;
-            })
-            .catch((err) => {
-              console.log(err);
-              return err;
-            })
-        : Promise.reject("noToken");
+      return handleNoTokenError(
+        token
+          ? postPayWithP24
+              .bind(null, apiUrl)(email, return_url, token, data)
+              .then((res) => {
+                return res;
+              })
+              .catch((err) => {
+                console.log(err);
+                return err;
+              })
+          : Promise.reject("noToken")
+      );
     },
     [token]
   );
@@ -1265,26 +1303,30 @@ const EscolaLMSContextProviderInner: FunctionComponent<
       return_url: string,
       data?: API.InvoiceData
     ) => {
-      return token
-        ? postSubscriptionPayWithP24
-            .bind(null, apiUrl)(subId, email, return_url, token, data)
-            .then((res) => {
-              return res;
-            })
-            .catch((err) => {
-              console.log(err);
-              return err;
-            })
-        : Promise.reject("noToken");
+      return handleNoTokenError(
+        token
+          ? postSubscriptionPayWithP24
+              .bind(null, apiUrl)(subId, email, return_url, token, data)
+              .then((res) => {
+                return res;
+              })
+              .catch((err) => {
+                console.log(err);
+                return err;
+              })
+          : Promise.reject("noToken")
+      );
     },
     [token]
   );
 
   const fetchOrderInvoice = useCallback(
     (id: number, options?: RequestOptionsInit) => {
-      return token
-        ? orderInvoice.bind(null, apiUrl)(token, id, options)
-        : Promise.reject("noToken");
+      return handleNoTokenError(
+        token
+          ? orderInvoice.bind(null, apiUrl)(token, id, options)
+          : Promise.reject("noToken")
+      );
     },
     [token]
   );
@@ -1366,63 +1408,69 @@ const EscolaLMSContextProviderInner: FunctionComponent<
 
   // https://github.com/EscolaLMS/sdk/issues/241
   const fetchProgress = useCallback(() => {
-    return token
-      ? fetchDataType<API.CourseProgress>({
-          controllers: abortControllers.current,
-          controller: `progress`,
-          mode: "value",
-          fetchAction: getProgress.bind(null, apiUrl)(token, {
-            signal: abortControllers.current?.progress?.signal,
-          }),
-          setState: setProgress,
-        })
-      : Promise.reject("noToken");
+    return handleNoTokenError(
+      token
+        ? fetchDataType<API.CourseProgress>({
+            controllers: abortControllers.current,
+            controller: `progress`,
+            mode: "value",
+            fetchAction: getProgress.bind(null, apiUrl)(token, {
+              signal: abortControllers.current?.progress?.signal,
+            }),
+            setState: setProgress,
+          })
+        : Promise.reject("noToken")
+    );
   }, [token]);
 
   const fetchPaginatedProgress = useCallback(
     (filter: API.PaginatedProgressParams) => {
-      return token
-        ? fetchDataType<API.CourseProgressItem>({
-            controllers: abortControllers.current,
-            controller: `progressPaginated/${JSON.stringify(filter)}`,
-            mode: "paginated",
-            fetchAction: getProgressPaginated.bind(null, apiUrl)(
-              token,
-              filter,
-              {
-                signal:
-                  abortControllers.current[
-                    `progressPaginated/${JSON.stringify(filter)}`
-                  ]?.signal,
-              }
-            ),
-            setState: setPaginatedProgress,
-          })
-        : Promise.reject("noToken");
+      return handleNoTokenError(
+        token
+          ? fetchDataType<API.CourseProgressItem>({
+              controllers: abortControllers.current,
+              controller: `progressPaginated/${JSON.stringify(filter)}`,
+              mode: "paginated",
+              fetchAction: getProgressPaginated.bind(null, apiUrl)(
+                token,
+                filter,
+                {
+                  signal:
+                    abortControllers.current[
+                      `progressPaginated/${JSON.stringify(filter)}`
+                    ]?.signal,
+                }
+              ),
+              setState: setPaginatedProgress,
+            })
+          : Promise.reject("noToken")
+      );
     },
     [token]
   );
 
   const fetchMyAuthoredCourses = useCallback(
     (params?: API.PaginationParams) => {
-      return token
-        ? fetchDataType<API.Course>({
-            controllers: abortControllers.current,
-            controller: `myAuthoredCourses/${JSON.stringify(params)}`,
-            mode: "paginated",
-            fetchAction: getMyAuthoredCourses.bind(null, apiUrl)(
-              token,
-              params,
-              {
-                signal:
-                  abortControllers.current[
-                    `myAuthoredCourses/${JSON.stringify(params)}`
-                  ]?.signal,
-              }
-            ),
-            setState: setMyAuthoredCourses,
-          })
-        : Promise.reject("noToken");
+      return handleNoTokenError(
+        token
+          ? fetchDataType<API.Course>({
+              controllers: abortControllers.current,
+              controller: `myAuthoredCourses/${JSON.stringify(params)}`,
+              mode: "paginated",
+              fetchAction: getMyAuthoredCourses.bind(null, apiUrl)(
+                token,
+                params,
+                {
+                  signal:
+                    abortControllers.current[
+                      `myAuthoredCourses/${JSON.stringify(params)}`
+                    ]?.signal,
+                }
+              ),
+              setState: setMyAuthoredCourses,
+            })
+          : Promise.reject("noToken")
+      );
     },
     [token]
   );
@@ -1510,87 +1558,94 @@ const EscolaLMSContextProviderInner: FunctionComponent<
 
   const fetchOrders = useCallback(
     (params?: API.PaginationParams) => {
-      return token
-        ? fetchDataType<API.Order>({
-            controllers: abortControllers.current,
-            controller: `orders/${JSON.stringify(params)}`,
-            mode: "paginated",
-            fetchAction: getOrders.bind(null, apiUrl)(token, params, {
-              signal:
-                abortControllers.current[`orders/${JSON.stringify(params)}`]
-                  ?.signal,
-            }),
-            setState: setOrders,
-          })
-        : Promise.reject("noToken");
+      return handleNoTokenError(
+        token
+          ? fetchDataType<API.Order>({
+              controllers: abortControllers.current,
+              controller: `orders/${JSON.stringify(params)}`,
+              mode: "paginated",
+              fetchAction: getOrders.bind(null, apiUrl)(token, params, {
+                signal:
+                  abortControllers.current[`orders/${JSON.stringify(params)}`]
+                    ?.signal,
+              }),
+              setState: setOrders,
+            })
+          : Promise.reject("noToken")
+      );
     },
     [token]
   );
 
   const fetchPayments = useCallback(() => {
-    return token
-      ? fetchDataType<API.Payment>({
-          controllers: abortControllers.current,
-          controller: "payments",
-          mode: "paginated",
-          fetchAction: getPayments.bind(null, apiUrl)(token, {
-            signal: abortControllers.current?.payments?.signal,
-          }),
-          setState: setPayments,
-        })
-      : Promise.reject("noToken");
+    return handleNoTokenError(
+      token
+        ? fetchDataType<API.Payment>({
+            controllers: abortControllers.current,
+            controller: "payments",
+            mode: "paginated",
+            fetchAction: getPayments.bind(null, apiUrl)(token, {
+              signal: abortControllers.current?.payments?.signal,
+            }),
+            setState: setPayments,
+          })
+        : Promise.reject("noToken")
+    );
   }, [token]);
 
   // https://github.com/EscolaLMS/sdk/issues/241
   const sendProgress = useCallback(
     (courseId: number, data: API.CourseProgressItemElement[]) => {
-      return token
-        ? postSendProgress
-            .bind(null, apiUrl)(courseId, data, token)
-            .then((res) => {
-              setCourseProgressDetails((prevState) => ({
-                ...prevState,
-                byId: {
-                  ...prevState.byId,
-                  [courseId]: res.success
-                    ? {
-                        loading: false,
-                        value: res.data,
-                      }
-                    : {
-                        loading: false,
-                        error: res,
-                      },
-                },
-              }));
-
-              setProgress((prevState) => ({
-                ...prevState,
-                value:
-                  prevState && prevState.value
-                    ? prevState.value.map((courseProgress) => {
-                        if (courseProgress.course.id === courseId) {
-                          return {
-                            ...courseProgress,
-                            progress: courseProgress.progress.map(
-                              (progress) => {
-                                const el = data.find(
-                                  (item) => item.topic_id === progress.topic_id
-                                );
-                                if (el) {
-                                  return el;
-                                }
-                                return progress;
-                              }
-                            ),
-                          };
+      return handleNoTokenError(
+        token
+          ? postSendProgress
+              .bind(null, apiUrl)(courseId, data, token)
+              .then((res) => {
+                setCourseProgressDetails((prevState) => ({
+                  ...prevState,
+                  byId: {
+                    ...prevState.byId,
+                    [courseId]: res.success
+                      ? {
+                          loading: false,
+                          value: res.data,
                         }
-                        return courseProgress;
-                      })
-                    : [],
-              }));
-            })
-        : Promise.reject("noToken");
+                      : {
+                          loading: false,
+                          error: res,
+                        },
+                  },
+                }));
+
+                setProgress((prevState) => ({
+                  ...prevState,
+                  value:
+                    prevState && prevState.value
+                      ? prevState.value.map((courseProgress) => {
+                          if (courseProgress.course.id === courseId) {
+                            return {
+                              ...courseProgress,
+                              progress: courseProgress.progress.map(
+                                (progress) => {
+                                  const el = data.find(
+                                    (item) =>
+                                      item.topic_id === progress.topic_id
+                                  );
+                                  if (el) {
+                                    return el;
+                                  }
+                                  return progress;
+                                }
+                              ),
+                            };
+                          }
+                          return courseProgress;
+                        })
+                      : [],
+                }));
+              })
+          : Promise.reject("noToken")
+      );
     },
     [token]
   );
@@ -1690,11 +1745,13 @@ const EscolaLMSContextProviderInner: FunctionComponent<
   // https://github.com/EscolaLMS/sdk/issues/241
   const topicPing = useCallback(
     (topicId: number) => {
-      return token
-        ? putTopicPing
-            .bind(null, apiUrl)(topicId, token)
-            .catch((err) => err)
-        : Promise.reject("noToken");
+      return handleNoTokenError(
+        token
+          ? putTopicPing
+              .bind(null, apiUrl)(topicId, token)
+              .catch((err) => err)
+          : Promise.reject("noToken")
+      );
     },
     [token]
   );
@@ -1793,24 +1850,28 @@ const EscolaLMSContextProviderInner: FunctionComponent<
 
   const realizeVoucher = useCallback(
     (voucher: string) => {
-      return token
-        ? postVoucher
-            .bind(null, apiUrl)(voucher, token)
-            .finally(() => fetchCart())
-        : Promise.reject("noToken");
+      return handleNoTokenError(
+        token
+          ? postVoucher
+              .bind(null, apiUrl)(voucher, token)
+              .finally(() => fetchCart())
+          : Promise.reject("noToken")
+      );
     },
     [token]
   );
 
   const removeVoucher = useCallback(() => {
-    return token
-      ? deleteVoucher
-          .bind(
-            null,
-            apiUrl
-          )(token)
-          .finally(() => fetchCart())
-      : Promise.reject("noToken");
+    return handleNoTokenError(
+      token
+        ? deleteVoucher
+            .bind(
+              null,
+              apiUrl
+            )(token)
+            .finally(() => fetchCart())
+        : Promise.reject("noToken")
+    );
   }, [token]);
 
   return (

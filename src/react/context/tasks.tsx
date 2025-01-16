@@ -13,7 +13,7 @@ import {
   ContextPaginatedMetaState,
 } from "./types";
 import { defaultConfig } from "./defaults";
-import { fetchDataType } from "./states";
+import { fetchDataType, handleNoTokenError } from "./states";
 
 import { useLocalStorage } from "../hooks/useLocalStorage";
 import * as API from "../../types";
@@ -76,28 +76,30 @@ export const TasksContextProvider: FunctionComponent<
 
   const fetchTasks = useCallback(
     (filter: API.TaskParams = { current: 0, pageSize: 25 }) => {
-      return token
-        ? fetchDataType<API.Task>({
-            controllers: abortControllers.current,
-            controller: `tasks/${JSON.stringify(filter)}`,
-            mode: "paginated",
-            fetchAction: getTasks.bind(null, apiUrl)(token, filter, {
-              signal:
-                abortControllers.current[`tasks/${JSON.stringify(filter)}`]
-                  ?.signal,
-            }),
-            setState: setTasks,
-          })
-        : Promise.reject("noToken");
+      return handleNoTokenError(
+        token
+          ? fetchDataType<API.Task>({
+              controllers: abortControllers.current,
+              controller: `tasks/${JSON.stringify(filter)}`,
+              mode: "paginated",
+              fetchAction: getTasks.bind(null, apiUrl)(token, filter, {
+                signal:
+                  abortControllers.current[`tasks/${JSON.stringify(filter)}`]
+                    ?.signal,
+              }),
+              setState: setTasks,
+            })
+          : Promise.reject("noToken")
+      );
     },
     [token]
   );
 
   const addTask = useCallback(
     (data: EscolaLms.Tasks.Http.Requests.CreateTaskRequest) => {
-      return token
-        ? createTask(apiUrl, token, data)
-        : Promise.reject("noToken");
+      return handleNoTokenError(
+        token ? createTask(apiUrl, token, data) : Promise.reject("noToken")
+      );
     },
     [token]
   );
@@ -106,9 +108,9 @@ export const TasksContextProvider: FunctionComponent<
     (id: number) => {
       // TODO: remove task on list and byID once it fine
       // TODO: what about error ?
-      return token
-        ? deleteTaskCall(apiUrl, token, id)
-        : Promise.reject("noToken");
+      return handleNoTokenError(
+        token ? deleteTaskCall(apiUrl, token, id) : Promise.reject("noToken")
+      );
     },
     [token]
   );

@@ -11,7 +11,7 @@ import { getDefaultData } from ".";
 import { API } from "../..";
 import { useLocalStorage } from "../hooks/useLocalStorage";
 import { defaultConfig } from "./defaults";
-import { fetchDataType } from "./states";
+import { fetchDataType, handleNoTokenError } from "./states";
 import {
   EscolaLMSContextConfig,
   EscolaLMSContextReadConfig,
@@ -68,17 +68,19 @@ export const CartContextProvider: FunctionComponent<
   );
 
   const fetchCart = useCallback(() => {
-    return token
-      ? fetchDataType<API.Cart>({
-          controllers: abortControllers.current,
-          controller: `cart`,
-          mode: "value",
-          fetchAction: getCart.bind(null, apiUrl)(token, {
-            signal: abortControllers.current?.cart?.signal,
-          }),
-          setState: setCart,
-        })
-      : Promise.reject("noToken");
+    return handleNoTokenError(
+      token
+        ? fetchDataType<API.Cart>({
+            controllers: abortControllers.current,
+            controller: `cart`,
+            mode: "value",
+            fetchAction: getCart.bind(null, apiUrl)(token, {
+              signal: abortControllers.current?.cart?.signal,
+            }),
+            setState: setCart,
+          })
+        : Promise.reject("noToken")
+    );
   }, [token]);
 
   const addToCart = useCallback(
@@ -130,7 +132,7 @@ export const CartContextProvider: FunctionComponent<
           }));
         });
     },
-    [fetchCart]
+    [fetchCart, token]
   );
 
   const removeFromCart = useCallback(
@@ -170,12 +172,12 @@ export const CartContextProvider: FunctionComponent<
           return error;
         });
     },
-    [fetchCart]
+    [fetchCart, token]
   );
 
   const resetCart = useCallback(() => {
     setCart(defaultConfig.cart);
-  }, []);
+  }, [setCart]);
 
   useEffect(() => {
     if (defaults) {

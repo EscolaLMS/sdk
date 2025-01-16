@@ -13,7 +13,7 @@ import {
   ContextPaginatedMetaState,
 } from "./types";
 import { defaultConfig } from "./defaults";
-import { fetchDataType } from "./states";
+import { fetchDataType, handleNoTokenError } from "./states";
 
 import { useLocalStorage } from "../hooks/useLocalStorage";
 import * as API from "../../types";
@@ -65,19 +65,21 @@ export const SubjectsContextProvider: FunctionComponent<
 
   const fetchSubjects = useCallback(
     (params?: API.SubjectsParams) => {
-      return token
-        ? fetchDataType<API.GroupSubject>({
-            controllers: abortControllers.current,
-            controller: `subjects/${JSON.stringify(params)}`,
-            mode: "paginated",
-            fetchAction: getSubjects.bind(null, apiUrl)(token, params, {
-              signal:
-                abortControllers.current[`subjects/${JSON.stringify(params)}`]
-                  ?.signal,
-            }),
-            setState: setSubjects,
-          })
-        : Promise.reject("noToken");
+      return handleNoTokenError(
+        token
+          ? fetchDataType<API.GroupSubject>({
+              controllers: abortControllers.current,
+              controller: `subjects/${JSON.stringify(params)}`,
+              mode: "paginated",
+              fetchAction: getSubjects.bind(null, apiUrl)(token, params, {
+                signal:
+                  abortControllers.current[`subjects/${JSON.stringify(params)}`]
+                    ?.signal,
+              }),
+              setState: setSubjects,
+            })
+          : Promise.reject("noToken")
+      );
     },
     [token]
   );

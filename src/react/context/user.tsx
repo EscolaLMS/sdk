@@ -14,7 +14,7 @@ import {
   ContextStateValue,
 } from "./types";
 import { defaultConfig } from "./defaults";
-import { fetchDataType } from "./states";
+import { fetchDataType, handleNoTokenError } from "./states";
 
 import { useLocalStorage } from "../hooks/useLocalStorage";
 import * as API from "../../types";
@@ -198,17 +198,19 @@ export const UserContextProvider: FunctionComponent<
   }, []);
 
   const fetchProfile = useCallback(() => {
-    return token
-      ? fetchDataType<API.UserAsProfile>({
-          controllers: abortControllers.current,
-          controller: `profile`,
-          mode: "value",
-          fetchAction: getProfile.bind(null, apiUrl)(token, {
-            signal: abortControllers.current?.profile?.signal,
-          }),
-          setState: setUser,
-        })
-      : Promise.reject("noToken");
+    return handleNoTokenError(
+      token
+        ? fetchDataType<API.UserAsProfile>({
+            controllers: abortControllers.current,
+            controller: `profile`,
+            mode: "value",
+            fetchAction: getProfile.bind(null, apiUrl)(token, {
+              signal: abortControllers.current?.profile?.signal,
+            }),
+            setState: setUser,
+          })
+        : Promise.reject("noToken")
+    );
   }, [token]);
 
   const updateProfile = useCallback(
@@ -218,27 +220,39 @@ export const UserContextProvider: FunctionComponent<
         loading: true,
       }));
 
-      return token
-        ? postUpdateProfile
-            .bind(null, apiUrl)(body, token)
-            .then((res) => {
-              if (res.success === true) {
-                setUser((prevState) => ({
-                  value: {
-                    ...res.data,
-                  },
-                  loading: false,
-                }));
-              } else if (res.success === false) {
-                setUser((prevState) => ({
-                  ...prevState,
-                  error: res,
-                  loading: false,
-                }));
-              }
-              return res;
-            })
-        : Promise.reject("noToken");
+      return handleNoTokenError(
+        token
+          ? postUpdateProfile
+              .bind(null, apiUrl)(body, token)
+              .then((res) => {
+                if (res.success === true) {
+                  setUser((prevState) => ({
+                    value: {
+                      ...res.data,
+                    },
+                    loading: false,
+                  }));
+                } else if (res.success === false) {
+                  setUser((prevState) => ({
+                    ...prevState,
+                    error: res,
+                    loading: false,
+                  }));
+                }
+                return res;
+              })
+          : Promise.reject("noToken"),
+        () => {
+          setUser((prevState) => ({
+            ...prevState,
+            loading: false,
+          }));
+          return {
+            success: false,
+            message: "No token",
+          };
+        }
+      );
     },
     [token]
   );
@@ -250,27 +264,39 @@ export const UserContextProvider: FunctionComponent<
         loading: true,
       }));
 
-      return token
-        ? postUpdateProfileEmail
-            .bind(null, apiUrl)(body, token)
-            .then((res) => {
-              if (res.success === true) {
-                setUser((prevState) => ({
-                  value: {
-                    ...res.data,
-                  },
-                  loading: false,
-                }));
-              } else if (res.success === false) {
-                setUser((prevState) => ({
-                  ...prevState,
-                  error: res,
-                  loading: false,
-                }));
-              }
-              return res;
-            })
-        : Promise.reject("noToken");
+      return handleNoTokenError(
+        token
+          ? postUpdateProfileEmail
+              .bind(null, apiUrl)(body, token)
+              .then((res) => {
+                if (res.success === true) {
+                  setUser((prevState) => ({
+                    value: {
+                      ...res.data,
+                    },
+                    loading: false,
+                  }));
+                } else if (res.success === false) {
+                  setUser((prevState) => ({
+                    ...prevState,
+                    error: res,
+                    loading: false,
+                  }));
+                }
+                return res;
+              })
+          : Promise.reject("noToken"),
+        () => {
+          setUser((prevState) => ({
+            ...prevState,
+            loading: false,
+          }));
+          return {
+            success: false,
+            message: "No token",
+          };
+        }
+      );
     },
     [token]
   );
@@ -283,60 +309,74 @@ export const UserContextProvider: FunctionComponent<
           loading: true,
         };
       });
-      return token
-        ? postUpdateAvatar
-            .bind(null, apiUrl)(file, token)
-            .then((res) => {
-              if (res.success === true) {
-                setUser((prevState) => ({
-                  ...prevState,
-                  value: {
-                    ...res.data,
-                    avatar: res.data.avatar,
-                    path_avatar: res.data.path_avatar,
-                  },
-                  loading: false,
-                }));
-              }
-              return res;
-            })
-            .catch((error) => error)
-        : Promise.reject("noToken");
+      return handleNoTokenError(
+        token
+          ? postUpdateAvatar
+              .bind(null, apiUrl)(file, token)
+              .then((res) => {
+                if (res.success === true) {
+                  setUser((prevState) => ({
+                    ...prevState,
+                    value: {
+                      ...res.data,
+                      avatar: res.data.avatar,
+                      path_avatar: res.data.path_avatar,
+                    },
+                    loading: false,
+                  }));
+                }
+                return res;
+              })
+              .catch((error) => error)
+          : Promise.reject("noToken"),
+        () => {
+          setUser((prevState) => ({
+            ...prevState,
+            loading: false,
+          }));
+        }
+      );
     },
     [token]
   );
 
   const getRefreshedToken = useCallback(() => {
-    return token
-      ? refreshToken
-          .bind(
-            null,
-            apiUrl
-          )(token)
-          .then((res) => {
-            if (res.success) {
-              setToken(res.data.token);
-            }
-          })
-          .catch((error) => {
-            console.log(error);
-          })
-      : Promise.reject("noToken");
+    return handleNoTokenError(
+      token
+        ? refreshToken
+            .bind(
+              null,
+              apiUrl
+            )(token)
+            .then((res) => {
+              if (res.success) {
+                setToken(res.data.token);
+              }
+            })
+            .catch((error) => {
+              console.log(error);
+            })
+        : Promise.reject("noToken")
+    );
   }, [token]);
 
   const changePassword = useCallback(
     (body: API.ChangePasswordRequest) => {
-      return token
-        ? postNewPassword.bind(null, apiUrl)(token, body)
-        : Promise.reject("noToken");
+      return handleNoTokenError(
+        token
+          ? postNewPassword.bind(null, apiUrl)(token, body)
+          : Promise.reject("noToken")
+      );
     },
     [token]
   );
 
   const deleteAccount = useCallback(() => {
-    return token
-      ? postDeleteAccount.bind(null, apiUrl)(token)
-      : Promise.reject("noToken");
+    return handleNoTokenError(
+      token
+        ? postDeleteAccount.bind(null, apiUrl)(token)
+        : Promise.reject("noToken")
+    );
   }, [token]);
 
   const socialAuthorize = useCallback((token: string) => {
@@ -357,28 +397,32 @@ export const UserContextProvider: FunctionComponent<
 
   const initAccountDelete = useCallback(
     (returnUrl: string) => {
-      return token
-        ? startAccountDelete
-            .bind(null, apiUrl)(token, returnUrl)
-            .then((res) => {
-              return res;
-            })
-            .catch((error) => error)
-        : Promise.reject("noToken");
+      return handleNoTokenError(
+        token
+          ? startAccountDelete
+              .bind(null, apiUrl)(token, returnUrl)
+              .then((res) => {
+                return res;
+              })
+              .catch((error) => error)
+          : Promise.reject("noToken")
+      );
     },
     [token, logout]
   );
 
   const confirmAccountDelete = useCallback(
     (userId: string, deleteToken: string) => {
-      return token
-        ? finishAccountDelete
-            .bind(null, apiUrl)(token, userId, deleteToken)
-            .then((res) => {
-              return res;
-            })
-            .catch((error) => error)
-        : Promise.reject("noToken");
+      return handleNoTokenError(
+        token
+          ? finishAccountDelete
+              .bind(null, apiUrl)(token, userId, deleteToken)
+              .then((res) => {
+                return res;
+              })
+              .catch((error) => error)
+          : Promise.reject("noToken")
+      );
     },
     [token, logout]
   );
