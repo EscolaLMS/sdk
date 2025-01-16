@@ -13,7 +13,7 @@ import {
   ContextPaginatedMetaState,
 } from "./types";
 import { defaultConfig } from "./defaults";
-import { fetchDataType } from "./states";
+import { fetchDataType, handleNoTokenError } from "./states";
 
 import { useLocalStorage } from "../hooks/useLocalStorage";
 import * as API from "../../types";
@@ -82,29 +82,33 @@ export const BookmarkNotesContextProvider: FunctionComponent<
 
   const fetchBookmarkNotes = useCallback(
     (filter: API.BookmarkNoteParams = { page: 0, per_page: 25 }) => {
-      return token
-        ? fetchDataType<API.BookmarkNote>({
-            controllers: abortControllers.current,
-            controller: `bookmarkNotes/${JSON.stringify(filter)}`,
-            mode: "paginated",
-            fetchAction: getBookmarkNotes.bind(null, apiUrl)(token, filter, {
-              signal:
-                abortControllers.current[
-                  `bookmarkNotes/${JSON.stringify(filter)}`
-                ]?.signal,
-            }),
-            setState: setBookmarkNotes,
-          })
-        : Promise.reject("noToken");
+      return handleNoTokenError(
+        token
+          ? fetchDataType<API.BookmarkNote>({
+              controllers: abortControllers.current,
+              controller: `bookmarkNotes/${JSON.stringify(filter)}`,
+              mode: "paginated",
+              fetchAction: getBookmarkNotes.bind(null, apiUrl)(token, filter, {
+                signal:
+                  abortControllers.current[
+                    `bookmarkNotes/${JSON.stringify(filter)}`
+                  ]?.signal,
+              }),
+              setState: setBookmarkNotes,
+            })
+          : Promise.reject("noToken")
+      );
     },
     [token]
   );
 
   const createBookmarkNote = useCallback(
     (data: API.CreateBookmarkNote) => {
-      return token
-        ? postCreateBookmarkNote(apiUrl, token, data)
-        : Promise.reject("noToken");
+      return handleNoTokenError(
+        token
+          ? postCreateBookmarkNote(apiUrl, token, data)
+          : Promise.reject("noToken")
+      );
     },
     [token]
   );
@@ -113,9 +117,11 @@ export const BookmarkNotesContextProvider: FunctionComponent<
     (id: number) => {
       // TODO: remove note on list and byID once it fine
       // TODO: what about error ?
-      return token
-        ? deleteDeleteBookmarkNote(apiUrl, token, id)
-        : Promise.reject("noToken");
+      return handleNoTokenError(
+        token
+          ? deleteDeleteBookmarkNote(apiUrl, token, id)
+          : Promise.reject("noToken")
+      );
     },
     [token]
   );

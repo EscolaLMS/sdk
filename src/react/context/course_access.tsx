@@ -14,7 +14,7 @@ import {
   ContextStateValue,
 } from "./types";
 import { defaultConfig } from "./defaults";
-import { fetchDataType } from "./states";
+import { fetchDataType, handleNoTokenError } from "./states";
 
 import { useLocalStorage } from "../hooks/useLocalStorage";
 import * as API from "../../types";
@@ -96,23 +96,25 @@ export const CourseAccessContextProvider: FunctionComponent<
   );
 
   const fetchMyCourses = useCallback(() => {
-    return token
-      ? getMyCourses(apiUrl, token).then((response) => {
-          if (response.success) {
-            setMyCourses((prevState) => ({
-              value: response.data,
-              loading: false,
-              error: undefined,
-            }));
-          } else {
-            setMyCourses((prevState) => ({
-              ...prevState,
-              loading: false,
-              error: response,
-            }));
-          }
-        })
-      : Promise.reject("noToken");
+    return handleNoTokenError(
+      token
+        ? getMyCourses(apiUrl, token).then((response) => {
+            if (response.success) {
+              setMyCourses((prevState) => ({
+                value: response.data,
+                loading: false,
+                error: undefined,
+              }));
+            } else {
+              setMyCourses((prevState) => ({
+                ...prevState,
+                loading: false,
+                error: response,
+              }));
+            }
+          })
+        : Promise.reject("noToken")
+    );
   }, [token]);
 
   const fetchCourseAccess = useCallback(
@@ -122,29 +124,33 @@ export const CourseAccessContextProvider: FunctionComponent<
         per_page: 25,
       }
     ) => {
-      return token
-        ? fetchDataType<API.CourseAccessEnquiry>({
-            controllers: abortControllers.current,
-            controller: `courseAccess/${JSON.stringify(filter)}`,
-            mode: "paginated",
-            fetchAction: getCourseAccess.bind(null, apiUrl)(token, filter, {
-              signal:
-                abortControllers.current[
-                  `courseAccess/${JSON.stringify(filter)}`
-                ]?.signal,
-            }),
-            setState: setCourseAccess,
-          })
-        : Promise.reject("noToken");
+      return handleNoTokenError(
+        token
+          ? fetchDataType<API.CourseAccessEnquiry>({
+              controllers: abortControllers.current,
+              controller: `courseAccess/${JSON.stringify(filter)}`,
+              mode: "paginated",
+              fetchAction: getCourseAccess.bind(null, apiUrl)(token, filter, {
+                signal:
+                  abortControllers.current[
+                    `courseAccess/${JSON.stringify(filter)}`
+                  ]?.signal,
+              }),
+              setState: setCourseAccess,
+            })
+          : Promise.reject("noToken")
+      );
     },
     [token]
   );
 
   const addCourseAccess = useCallback(
     (data: API.CourseAccessEnquiryCreateRequest) => {
-      return token
-        ? createCourseAccess(apiUrl, token, data)
-        : Promise.reject("noToken");
+      return handleNoTokenError(
+        token
+          ? createCourseAccess(apiUrl, token, data)
+          : Promise.reject("noToken")
+      );
     },
     [token]
   );
@@ -153,9 +159,11 @@ export const CourseAccessContextProvider: FunctionComponent<
     (id: number) => {
       // TODO: remove task on list and byID once it fine
       // TODO: what about error ?
-      return token
-        ? deleteCourseAccessCall(apiUrl, token, id)
-        : Promise.reject("noToken");
+      return handleNoTokenError(
+        token
+          ? deleteCourseAccessCall(apiUrl, token, id)
+          : Promise.reject("noToken")
+      );
     },
     [token]
   );

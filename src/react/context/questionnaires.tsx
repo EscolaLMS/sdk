@@ -17,6 +17,7 @@ import {
 } from "../../services/questionnaire";
 import { UserContext } from "./user";
 import { API } from "../..";
+import { handleNoTokenError } from "./states";
 
 export const QuestionnairesContext: React.Context<
   Pick<
@@ -55,14 +56,16 @@ export const QuestionnairesContextProvider: FunctionComponent<
 
   const fetchQuestionnaire = useCallback(
     (modelTypeTitle: string, modelID: number, id: number) => {
-      return token
-        ? getQuestionnaire.bind(null, apiUrl)(
-            token,
-            modelTypeTitle,
-            modelID,
-            id
-          )
-        : Promise.reject("noToken");
+      return handleNoTokenError(
+        token
+          ? getQuestionnaire.bind(null, apiUrl)(
+              token,
+              modelTypeTitle,
+              modelID,
+              id
+            )
+          : Promise.reject("noToken")
+      );
     },
     [token]
   );
@@ -102,15 +105,17 @@ export const QuestionnairesContextProvider: FunctionComponent<
       id: number,
       body: Partial<EscolaLms.Questionnaire.Models.QuestionAnswer>
     ) => {
-      return token
-        ? questionnaireAnswer.bind(null, apiUrl)(
-            token,
-            model,
-            modelID,
-            id,
-            body
-          )
-        : Promise.reject("noToken");
+      return handleNoTokenError(
+        token
+          ? questionnaireAnswer.bind(null, apiUrl)(
+              token,
+              model,
+              modelID,
+              id,
+              body
+            )
+          : Promise.reject("noToken")
+      );
     },
     [token]
   );

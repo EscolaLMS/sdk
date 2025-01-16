@@ -4,18 +4,15 @@ import {
   PropsWithChildren,
   useCallback,
   useRef,
-  useEffect,
-  useMemo,
   useContext,
 } from "react";
 import {
   EscolaLMSContextConfig,
   EscolaLMSContextReadConfig,
-  ContextPaginatedMetaState,
   ContextStateValue,
 } from "./types";
 import { defaultConfig } from "./defaults";
-import { fetchDataType } from "./states";
+import { fetchDataType, handleNoTokenError } from "./states";
 
 import { useLocalStorage } from "../hooks/useLocalStorage";
 import * as API from "../../types";
@@ -26,7 +23,6 @@ import {
   academicYears as getAcademicYears,
 } from "./../../services/student/studentDetails";
 
-import { changePassword as postNewPassword } from "../../services/profile";
 import { UserContext } from "./user";
 
 type StudentDetailsContextType = Pick<
@@ -83,34 +79,38 @@ export const StudentDetailsContextProvider: FunctionComponent<
 
   const fetchSemesters = useCallback(
     (params?: API.SemestersParams) => {
-      return token
-        ? fetchDataType<API.SemesterData>({
-            controllers: abortControllers.current,
-            controller: `semesters`,
-            mode: "list",
-            fetchAction: getSemesters.bind(null, apiUrl)(token, params, {
-              signal: abortControllers.current?.semesters?.signal,
-            }),
-            setState: setSemesters,
-          })
-        : Promise.reject("noToken");
+      return handleNoTokenError(
+        token
+          ? fetchDataType<API.SemesterData>({
+              controllers: abortControllers.current,
+              controller: `semesters`,
+              mode: "list",
+              fetchAction: getSemesters.bind(null, apiUrl)(token, params, {
+                signal: abortControllers.current?.semesters?.signal,
+              }),
+              setState: setSemesters,
+            })
+          : Promise.reject("noToken")
+      );
     },
     [token]
   );
 
   const fetchAcademicYears = useCallback(
     (params?: API.AcademicYearParams) => {
-      return token
-        ? fetchDataType<API.AcademicYear>({
-            controllers: abortControllers.current,
-            controller: `academicYears`,
-            mode: "list",
-            fetchAction: getAcademicYears.bind(null, apiUrl)(token, params, {
-              signal: abortControllers.current?.semesters?.signal,
-            }),
-            setState: setAcademicYears,
-          })
-        : Promise.reject("noToken");
+      return handleNoTokenError(
+        token
+          ? fetchDataType<API.AcademicYear>({
+              controllers: abortControllers.current,
+              controller: `academicYears`,
+              mode: "list",
+              fetchAction: getAcademicYears.bind(null, apiUrl)(token, params, {
+                signal: abortControllers.current?.semesters?.signal,
+              }),
+              setState: setAcademicYears,
+            })
+          : Promise.reject("noToken")
+      );
     },
     [token]
   );

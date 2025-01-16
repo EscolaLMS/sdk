@@ -13,7 +13,7 @@ import {
   ContextPaginatedMetaState,
 } from "./types";
 import { defaultConfig } from "./defaults";
-import { fetchDataType } from "./states";
+import { fetchDataType, handleNoTokenError } from "./states";
 
 import { useLocalStorage } from "../hooks/useLocalStorage";
 import * as API from "../../types";
@@ -54,21 +54,24 @@ export const ExamsContextProvider: FunctionComponent<
 
   const fetchExams = useCallback(
     (params?: API.ExamsParams) => {
-      return token
-        ? fetchDataType<API.Exam[]>({
-            controllers: abortControllers.current,
-            controller: `exams${params?.group_id}`,
-            id: params?.group_id,
-            mode: "value",
-            fetchAction: getExams.bind(null, apiUrl)(token, params, {
-              signal:
-                abortControllers.current?.[`exams${params?.group_id}`]?.signal,
-            }),
-            setState: setExams,
-          })
-        : Promise.reject("noToken");
+      return handleNoTokenError(
+        token
+          ? fetchDataType<API.Exam[]>({
+              controllers: abortControllers.current,
+              controller: `exams${params?.group_id}`,
+              id: params?.group_id,
+              mode: "value",
+              fetchAction: getExams.bind(null, apiUrl)(token, params, {
+                signal:
+                  abortControllers.current?.[`exams${params?.group_id}`]
+                    ?.signal,
+              }),
+              setState: setExams,
+            })
+          : Promise.reject("noToken")
+      );
     },
-    [token]
+    [token, apiUrl, setExams]
   );
 
   return (

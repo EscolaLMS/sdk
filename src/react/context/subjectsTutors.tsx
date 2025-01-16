@@ -13,7 +13,7 @@ import {
   ContextListState,
 } from "./types";
 import { defaultConfig } from "./defaults";
-import { fetchDataType } from "./states";
+import { fetchDataType, handleNoTokenError } from "./states";
 
 import { useLocalStorage } from "../hooks/useLocalStorage";
 import * as API from "../../types";
@@ -64,17 +64,19 @@ export const ScheduleTutorsContextProvider: FunctionComponent<
   );
 
   const fetchScheduleTutors = useCallback(() => {
-    return token
-      ? fetchDataType<API.LessonTutor>({
-          controllers: abortControllers.current,
-          controller: `scheduleTutors`,
-          mode: "list",
-          fetchAction: getTutors.bind(null, apiUrl)(token, {
-            signal: abortControllers.current?.scheduleTutors?.signal,
-          }),
-          setState: setScheduleTutors,
-        })
-      : Promise.reject("noToken");
+    return handleNoTokenError(
+      token
+        ? fetchDataType<API.LessonTutor>({
+            controllers: abortControllers.current,
+            controller: `scheduleTutors`,
+            mode: "list",
+            fetchAction: getTutors.bind(null, apiUrl)(token, {
+              signal: abortControllers.current?.scheduleTutors?.signal,
+            }),
+            setState: setScheduleTutors,
+          })
+        : Promise.reject("noToken")
+    );
   }, [token]);
 
   return (

@@ -13,7 +13,7 @@ import {
   ContextPaginatedMetaState,
 } from "./types";
 import { defaultConfig } from "./defaults";
-import { fetchDataType } from "./states";
+import { fetchDataType, handleNoTokenError } from "./states";
 
 import { useLocalStorage } from "../hooks/useLocalStorage";
 import * as API from "../../types";
@@ -87,33 +87,37 @@ export const ConsultationAccessContextProvider: FunctionComponent<
         per_page: 25,
       }
     ) => {
-      return token
-        ? fetchDataType<API.ConsultationsAccessEnquiry>({
-            controllers: abortControllers.current,
-            controller: `consultationAccess/${JSON.stringify(filter)}`,
-            mode: "paginated",
-            fetchAction: getConsultationAccess.bind(null, apiUrl)(
-              token,
-              filter,
-              {
-                signal:
-                  abortControllers.current[
-                    `consultationAccess/${JSON.stringify(filter)}`
-                  ]?.signal,
-              }
-            ),
-            setState: setConsultationAccess,
-          })
-        : Promise.reject("noToken");
+      return handleNoTokenError(
+        token
+          ? fetchDataType<API.ConsultationsAccessEnquiry>({
+              controllers: abortControllers.current,
+              controller: `consultationAccess/${JSON.stringify(filter)}`,
+              mode: "paginated",
+              fetchAction: getConsultationAccess.bind(null, apiUrl)(
+                token,
+                filter,
+                {
+                  signal:
+                    abortControllers.current[
+                      `consultationAccess/${JSON.stringify(filter)}`
+                    ]?.signal,
+                }
+              ),
+              setState: setConsultationAccess,
+            })
+          : Promise.reject("noToken")
+      );
     },
     [token]
   );
 
   const addConsultationAccess = useCallback(
     (data: API.ConsultationsAccessEnquiryCreateRequest) => {
-      return token
-        ? createConsultationAccess(apiUrl, token, data)
-        : Promise.reject("noToken");
+      return handleNoTokenError(
+        token
+          ? createConsultationAccess(apiUrl, token, data)
+          : Promise.reject("noToken")
+      );
     },
     [token]
   );
@@ -121,9 +125,11 @@ export const ConsultationAccessContextProvider: FunctionComponent<
   const updateConsultationAccess = useCallback(
     // TODO: update on the list
     (id: number, data: API.ConsultationsAccessEnquiryUpdateRequest) => {
-      return token
-        ? patchConsultationAccess(apiUrl, token, id, data)
-        : Promise.reject("noToken");
+      return handleNoTokenError(
+        token
+          ? patchConsultationAccess(apiUrl, token, id, data)
+          : Promise.reject("noToken")
+      );
     },
     [token]
   );
@@ -132,9 +138,11 @@ export const ConsultationAccessContextProvider: FunctionComponent<
     (id: number) => {
       // TODO: remove task on list and byID once it fine
       // TODO: what about error ?
-      return token
-        ? deleteConsultationAccessCall(apiUrl, token, id)
-        : Promise.reject("noToken");
+      return handleNoTokenError(
+        token
+          ? deleteConsultationAccessCall(apiUrl, token, id)
+          : Promise.reject("noToken")
+      );
     },
     [token]
   );

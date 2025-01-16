@@ -14,7 +14,7 @@ import {
   ContextStateValue,
 } from "./types";
 import { defaultConfig } from "./defaults";
-import { fetchDataType } from "./states";
+import { fetchDataType, handleNoTokenError } from "./states";
 
 import { useLocalStorage } from "../hooks/useLocalStorage";
 import * as API from "../../types";
@@ -55,19 +55,21 @@ export const AttendancesContextProvider: FunctionComponent<
 
   const fetchAttendances = useCallback(
     (groupId: number) => {
-      return token
-        ? fetchDataType<API.Attendance[]>({
-            controllers: abortControllers.current,
-            controller: `attendances${groupId}`,
-            id: groupId,
-            mode: "value",
-            fetchAction: getAttendances.bind(null, apiUrl)(token, groupId, {
-              signal:
-                abortControllers.current?.[`attendances${groupId}`]?.signal,
-            }),
-            setState: setAttendances,
-          })
-        : Promise.reject("noToken");
+      return handleNoTokenError(
+        token
+          ? fetchDataType<API.Attendance[]>({
+              controllers: abortControllers.current,
+              controller: `attendances${groupId}`,
+              id: groupId,
+              mode: "value",
+              fetchAction: getAttendances.bind(null, apiUrl)(token, groupId, {
+                signal:
+                  abortControllers.current?.[`attendances${groupId}`]?.signal,
+              }),
+              setState: setAttendances,
+            })
+          : Promise.reject("noToken")
+      );
     },
     [token]
   );

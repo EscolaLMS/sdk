@@ -14,7 +14,7 @@ import {
   ContextStateValue,
 } from "./types";
 import { defaultConfig } from "./defaults";
-import { fetchDataType } from "./states";
+import { fetchDataType, handleNoTokenError } from "./states";
 
 import { useLocalStorage } from "../hooks/useLocalStorage";
 import * as API from "../../types";
@@ -87,37 +87,42 @@ export const ChallengesContextProvider: FunctionComponent<
 
   const fetchChallenges = useCallback(
     (filter?: API.ChallengesParams) => {
-      return token
-        ? fetchDataType<API.CompetencyChallenge>({
-            controllers: abortControllers.current,
-            controller: `challenges/${JSON.stringify(filter)}`,
-            mode: "paginated",
-            fetchAction: getChallenges.bind(null, apiUrl)(token, filter, {
-              signal:
-                abortControllers.current[`challenges/${JSON.stringify(filter)}`]
-                  ?.signal,
-            }),
-            setState: setChallenges,
-          })
-        : Promise.reject("noToken");
+      return handleNoTokenError(
+        token
+          ? fetchDataType<API.CompetencyChallenge>({
+              controllers: abortControllers.current,
+              controller: `challenges/${JSON.stringify(filter)}`,
+              mode: "paginated",
+              fetchAction: getChallenges.bind(null, apiUrl)(token, filter, {
+                signal:
+                  abortControllers.current[
+                    `challenges/${JSON.stringify(filter)}`
+                  ]?.signal,
+              }),
+              setState: setChallenges,
+            })
+          : Promise.reject("noToken")
+      );
     },
     [token]
   );
 
   const fetchChallenge = useCallback(
     (id: number) => {
-      return token
-        ? fetchDataType<API.CompetencyChallenge>({
-            controllers: abortControllers.current,
-            controller: `challenge${id}`,
-            id: id,
-            mode: "value",
-            fetchAction: getSingleChallenge.bind(null, apiUrl)(token, id, {
-              signal: abortControllers.current?.[`challenge${id}`]?.signal,
-            }),
-            setState: setChallenge,
-          })
-        : Promise.reject("noToken");
+      return handleNoTokenError(
+        token
+          ? fetchDataType<API.CompetencyChallenge>({
+              controllers: abortControllers.current,
+              controller: `challenge${id}`,
+              id: id,
+              mode: "value",
+              fetchAction: getSingleChallenge.bind(null, apiUrl)(token, id, {
+                signal: abortControllers.current?.[`challenge${id}`]?.signal,
+              }),
+              setState: setChallenge,
+            })
+          : Promise.reject("noToken")
+      );
     },
     [token]
   );

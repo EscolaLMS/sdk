@@ -90,7 +90,7 @@ export const NotificationsContextProvider: FunctionComponent<
           : Promise.reject("noToken")
       );
     },
-    [token]
+    [token, setNotifications, apiUrl]
   );
 
   const readNotify = useCallback(
@@ -127,7 +127,7 @@ export const NotificationsContextProvider: FunctionComponent<
           : Promise.reject("noToken")
       );
     },
-    [token, notifications]
+    [token, setNotifications, apiUrl]
   );
 
   const readAllNotifications = useCallback(() => {
@@ -174,7 +174,7 @@ export const NotificationsContextProvider: FunctionComponent<
             })
         : Promise.reject("noToken")
     );
-  }, [token, notifications]);
+  }, [token, setNotifications, apiUrl]);
 
   return (
     <NotificationsContext.Provider

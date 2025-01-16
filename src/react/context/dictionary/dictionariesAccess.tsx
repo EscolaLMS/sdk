@@ -12,7 +12,7 @@ import {
   ContextStateValue,
 } from "../types";
 import { defaultConfig } from "../defaults";
-import { fetchDataType } from "../states";
+import { fetchDataType, handleNoTokenError } from "../states";
 
 import { useLocalStorage } from "../../hooks/useLocalStorage";
 import * as API from "../../../types";
@@ -53,21 +53,23 @@ export const DictionariesAccessContextProvider: FunctionComponent<
   );
 
   const fetchDictionariesAccess = useCallback(() => {
-    return token
-      ? fetchDataType<API.DictionariesAccess>({
-          controllers: abortControllers.current,
-          controller: `dictionariesAccess`,
-          mode: "value",
-          fetchAction: getDictionariesAccess.bind(
-            null,
-            apiUrl,
-            token
-          )({
-            signal: abortControllers.current?.[`dictionariesAccess`]?.signal,
-          }),
-          setState: setDictionariesAccess,
-        })
-      : Promise.reject("noToken");
+    return handleNoTokenError(
+      token
+        ? fetchDataType<API.DictionariesAccess>({
+            controllers: abortControllers.current,
+            controller: `dictionariesAccess`,
+            mode: "value",
+            fetchAction: getDictionariesAccess.bind(
+              null,
+              apiUrl,
+              token
+            )({
+              signal: abortControllers.current?.[`dictionariesAccess`]?.signal,
+            }),
+            setState: setDictionariesAccess,
+          })
+        : Promise.reject("noToken")
+    );
   }, [token]);
 
   return (

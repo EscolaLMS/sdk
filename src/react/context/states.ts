@@ -34,13 +34,18 @@ type fetchDataType<T> =
       onError?: (error: API.DefaultResponseError | any) => void;
     };
 
-export async function handleNoTokenError<T>(promise: Promise<T>): Promise<T> {
+export async function handleNoTokenError<T>(
+  promise: Promise<T>,
+  generateDefaultValue?: () => T
+): Promise<T> {
   try {
     return await promise;
   } catch (error) {
     if (error === "noToken") {
       console.warn("Token is missing.");
-
+      if (generateDefaultValue) {
+        return generateDefaultValue();
+      }
       return {} as T;
     }
 

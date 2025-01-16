@@ -14,7 +14,7 @@ import {
   ContextStateValue,
 } from "./types";
 import { defaultConfig } from "./defaults";
-import { fetchDataType } from "./states";
+import { fetchDataType, handleNoTokenError } from "./states";
 
 import { useLocalStorage } from "../hooks/useLocalStorage";
 import * as API from "../../types";
@@ -78,18 +78,20 @@ export const TaskContextProvider: FunctionComponent<
 
   const fetchTask = useCallback(
     (id: number) => {
-      return token
-        ? fetchDataType<API.Task>({
-            controllers: abortControllers.current,
-            controller: `task${id}`,
-            id: id,
-            mode: "value",
-            fetchAction: getTask.bind(null, apiUrl)(token, id, {
-              signal: abortControllers.current?.[`task${id}`]?.signal,
-            }),
-            setState: setTask,
-          })
-        : Promise.reject("noToken");
+      return handleNoTokenError(
+        token
+          ? fetchDataType<API.Task>({
+              controllers: abortControllers.current,
+              controller: `task${id}`,
+              id: id,
+              mode: "value",
+              fetchAction: getTask.bind(null, apiUrl)(token, id, {
+                signal: abortControllers.current?.[`task${id}`]?.signal,
+              }),
+              setState: setTask,
+            })
+          : Promise.reject("noToken")
+      );
     },
     [token]
   );
@@ -98,9 +100,11 @@ export const TaskContextProvider: FunctionComponent<
     // TODO: update task on list and byID once it fine
     // TODO: what about error ?
     (id: number, data: EscolaLms.Tasks.Http.Requests.UpdateTaskRequest) => {
-      return token
-        ? postUpdateTask(apiUrl, token, id, data)
-        : Promise.reject("noToken");
+      return handleNoTokenError(
+        token
+          ? postUpdateTask(apiUrl, token, id, data)
+          : Promise.reject("noToken")
+      );
     },
     [token]
   );
@@ -109,12 +113,13 @@ export const TaskContextProvider: FunctionComponent<
     // TODO: update task on list and byID once it fine
     // TODO: what about error ?
     (id: number, done: boolean = true) => {
-      if (!token) {
-        return Promise.reject("noToken");
-      }
-      return done
-        ? completeTask(apiUrl, token, id)
-        : incompleteTask(apiUrl, token, id);
+      return handleNoTokenError(
+        token
+          ? done
+            ? completeTask(apiUrl, token, id)
+            : incompleteTask(apiUrl, token, id)
+          : Promise.reject("noToken")
+      );
     },
     [token]
   );
@@ -123,13 +128,14 @@ export const TaskContextProvider: FunctionComponent<
     // TODO: update task on list and byID once it fine
     // TODO: what about error ?
     (id: number, note: string) => {
-      if (!token) {
-        return Promise.reject("noToken");
-      }
-      return postCreateTaskNote(apiUrl, token, {
-        task_id: id,
-        note,
-      });
+      return handleNoTokenError(
+        token
+          ? postCreateTaskNote(apiUrl, token, {
+              task_id: id,
+              note,
+            })
+          : Promise.reject("noToken")
+      );
     },
     [token]
   );
@@ -138,13 +144,14 @@ export const TaskContextProvider: FunctionComponent<
     // TODO: update task on list and byID once it fine
     // TODO: what about error ?
     (taskId: number, taskNoteId: number, note: string) => {
-      if (!token) {
-        return Promise.reject("noToken");
-      }
-      return patchUpdateTaskNote(apiUrl, token, taskNoteId, {
-        task_id: taskId,
-        note,
-      });
+      return handleNoTokenError(
+        token
+          ? patchUpdateTaskNote(apiUrl, token, taskNoteId, {
+              task_id: taskId,
+              note,
+            })
+          : Promise.reject("noToken")
+      );
     },
     [token]
   );
@@ -153,10 +160,11 @@ export const TaskContextProvider: FunctionComponent<
     // TODO: update task on list and byID once it fine
     // TODO: what about error ?
     (taskNoteId: number) => {
-      if (!token) {
-        return Promise.reject("noToken");
-      }
-      return deleteDeleteTaskNote(apiUrl, token, taskNoteId);
+      return handleNoTokenError(
+        token
+          ? deleteDeleteTaskNote(apiUrl, token, taskNoteId)
+          : Promise.reject("noToken")
+      );
     },
     [token]
   );

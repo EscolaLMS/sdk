@@ -13,7 +13,7 @@ import {
   ContextStateValue,
 } from "./types";
 import { defaultConfig } from "./defaults";
-import { fetchDataType } from "./states";
+import { fetchDataType, handleNoTokenError } from "./states";
 
 import { useLocalStorage } from "../hooks/useLocalStorage";
 import * as API from "../../types";
@@ -72,25 +72,27 @@ export const ConsultationAccessEnquiryContextProvider: FunctionComponent<
 
   const fetchConsultationAccessEnquiry = useCallback(
     (enquiryId: number) => {
-      return token
-        ? fetchDataType<API.ConsultationsAccessEnquiry>({
-            controllers: abortControllers.current,
-            controller: `consultationAccessEnquiry${enquiryId}`,
-            mode: "value",
-            id: enquiryId,
-            fetchAction: getConsultationAccessEnquiry.bind(null, apiUrl)(
-              token,
-              enquiryId,
-              {
-                signal:
-                  abortControllers.current[
-                    `consultationAccessEnquiry${enquiryId}`
-                  ]?.signal,
-              }
-            ),
-            setState: setConsultationAccessEnquiry,
-          })
-        : Promise.reject("noToken");
+      return handleNoTokenError(
+        token
+          ? fetchDataType<API.ConsultationsAccessEnquiry>({
+              controllers: abortControllers.current,
+              controller: `consultationAccessEnquiry${enquiryId}`,
+              mode: "value",
+              id: enquiryId,
+              fetchAction: getConsultationAccessEnquiry.bind(null, apiUrl)(
+                token,
+                enquiryId,
+                {
+                  signal:
+                    abortControllers.current[
+                      `consultationAccessEnquiry${enquiryId}`
+                    ]?.signal,
+                }
+              ),
+              setState: setConsultationAccessEnquiry,
+            })
+          : Promise.reject("noToken")
+      );
     },
     [token]
   );
