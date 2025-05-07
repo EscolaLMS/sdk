@@ -1,6 +1,6 @@
 import { useCallback, useContext, useEffect, useState } from "react";
 import { EscolaLMSContext } from "../context";
-import { Cart, DefaultResponseSuccess } from "../../types/api";
+import { Cart, DefaultResponseSuccess } from "../../types";
 
 type PogressState = {
   data: Cart | undefined;

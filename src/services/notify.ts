@@ -1,5 +1,5 @@
 import request from "umi-request";
-import * as API from "../types/api";
+import * as API from "../types";
 import { currentTimezone } from "../utils";
 
 export async function getNotifications(

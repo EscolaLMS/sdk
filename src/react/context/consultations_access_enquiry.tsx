@@ -16,7 +16,7 @@ import { defaultConfig } from "./defaults";
 import { fetchDataType } from "./states";
 
 import { useLocalStorage } from "../hooks/useLocalStorage";
-import * as API from "./../../types/api";
+import * as API from "../../types";
 import { getDefaultData } from "./index";
 
 import { consultationAccessEnquiry as getConsultationAccessEnquiry } from "./../../services/consultations_access_enquiry";

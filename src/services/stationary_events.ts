@@ -1,6 +1,6 @@
 import request from "umi-request";
 import type { RequestOptionsInit } from "umi-request";
-import * as API from "../types/api";
+import * as API from "../types";
 import { currentTimezone } from "../utils";
 
 /**  GET /api/stationary-events */
